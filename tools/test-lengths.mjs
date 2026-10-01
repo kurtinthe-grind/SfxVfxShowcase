@@ -8,6 +8,9 @@
 //   - a one-shot row shows its length ("ONE 13.3s", "ONE 17s+" when the recording
 //     itself was cut off), and a loop still shows LOOP;
 //   - PLAY lets a long one-shot run for its whole length, and still stops it;
+//   - PLAY plays a 3D sound at the player, for that player only. It used to play
+//     at the map origin with no location, so 3D sounds were silent on PLAY
+//     (often underground) while gadget fire worked;
 //   - EXPORT FAVOURITES writes the length;
 //   - the gadget cannot pile up long sounds: past CONFIG.maxSoundsPerPlayer the
 //     oldest is stopped.
@@ -133,6 +136,11 @@ try {
             continue;
         }
         const o = life[0];
+        const play = s.calls.find((c) => c.name === "PlaySound" && c.args[0]?.spawn === o.spawn);
+        if (play === undefined) problems.push(`PLAY on ${x.name} never called PlaySound`);
+        else if (play.args.length !== 5 || typeof play.args[3] !== "number" || play.args[4] !== s.player) {
+            problems.push(`PLAY on ${x.name} (3D) called PlaySound with ${play.args.length} args; expected (sound, amplitude, location, range, player) so the player hears it where they stand`);
+        }
         if (o.stoppedAt === undefined) problems.push(`${x.name} was never stopped (30 s later)`);
         else if (o.stoppedAt - o.at < x.minMs) problems.push(`${x.name} was stopped after ${o.stoppedAt - o.at} ms; the recording is ${x.minMs} ms`);
         else if (o.stoppedAt - o.at > x.minMs + 6000) problems.push(`${x.name} ran ${o.stoppedAt - o.at} ms; it should stop soon after its ${x.minMs} ms`);
@@ -183,4 +191,4 @@ if (problems.length > 0) {
     for (const p of problems) console.error("    - " + p);
     process.exit(1);
 }
-console.log(`  lengths : rows show recorded lengths, PLAY runs a sound's whole length then stops it, EXPORT writes it, at most ${maxSounds} placed sounds per player`);
+console.log(`  lengths : rows show recorded lengths, PLAY plays 3D sounds at the player and runs their whole length, EXPORT writes it, at most ${maxSounds} placed sounds per player`);

@@ -535,11 +535,18 @@ function armSelected(st: PlayerState): void {
     defer(st);
 }
 
-function spawnSfx(st: PlayerState, entry: SfxEntry, at: mod.Vector | undefined): mod.SFX {
-    const pos = at !== undefined ? at : ZERO;
-    const sfx = mod.SpawnObject(entry.asset, pos, ZERO, ONE) as mod.SFX;
-    if (at !== undefined && entry.dim === "3d") mod.PlaySound(sfx, st.ui.amp, pos, st.ui.rng);
-    else mod.PlaySound(sfx, st.ui.amp, st.ui.player);
+/**
+ * Plays a sound at `at`. A 3D sound needs the location and range: without them it
+ * plays where it was spawned. PLAY used to spawn at the map origin with no
+ * location, so 3D sounds were silent on PLAY (the origin is often underground)
+ * while gadget fire worked. `onlyMe` keeps an audition to the player who clicked;
+ * a placed sound is heard by everyone near it. 2D sounds go to the player only.
+ */
+function spawnSfx(st: PlayerState, entry: SfxEntry, at: mod.Vector, onlyMe: boolean): mod.SFX {
+    const sfx = mod.SpawnObject(entry.asset, at, ZERO, ONE) as mod.SFX;
+    if (entry.dim === "2d") mod.PlaySound(sfx, st.ui.amp, st.ui.player);
+    else if (onlyMe) mod.PlaySound(sfx, st.ui.amp, at, st.ui.rng, st.ui.player);
+    else mod.PlaySound(sfx, st.ui.amp, at, st.ui.rng);
     track(st, sfx, entry.windowMs);
     return sfx;
 }
@@ -597,7 +604,8 @@ function stopPreview(st: PlayerState): void {
 function preview(st: PlayerState, r: Row): void {
     stopPreview(st);
     if (r.type === "sfx") {
-        const sfx = spawnSfx(st, r.entry, undefined);
+        // 3 m in front of the eyes, like a VFX audition.
+        const sfx = spawnSfx(st, r.entry, eyeFront(st), true);
         st.preview = { type: "sfx", sfx: sfx, key: rowKey(r) };
         return;
     }
@@ -775,7 +783,7 @@ Events.OnRayCastHit.subscribe((player: mod.Player, point: mod.Vector, _normal: m
     if (armed === undefined || armed.type === "tpl") return;
 
     if (armed.type === "sfx") {
-        spawnSfx(st, armed.entry, point);
+        spawnSfx(st, armed.entry, point, false);
     } else if (armed.type === "spawn") {
         spawnVfx(st, armed, point);
     } else {
