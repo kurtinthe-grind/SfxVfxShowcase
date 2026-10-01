@@ -896,12 +896,14 @@ effects, so nothing surprises you in game.
 
 ## MUSIC / RADIO tester (2026-10-01)
 
+**No scripted music plays on the Portal Sandbox map.** Every other map plays it. This was isolated with `probe/MusicProbe.ts`, a standalone script that copies the SDK doc and CustomConquest calls verbatim; `npm run test:probe` type-checks it and locks its calls. Test music on any other map.
+
 Spec: `docs/superpowers/specs/2026-10-01-music-radio-tester-design.md`. Plan: `docs/superpowers/plans/2026-10-01-music-radio-tester.md`.
 
 | Piece | Role |
 | --- | --- |
-| `tools/gen-music.mjs` | Reads `MusicPackages` / `MusicEvents` / `MusicParams` from `types_original/mod/index.d.ts` and writes `src/music.gen.ts` + `src/musickeys.json`. Holds the guessed param ranges. Fails if a package has no `*_Stop` or `*_Amplitude`, or more params than the 5 UI rows. |
-| `src/tester.ts` | Per-player tester state, the `mt*` action handler (all calls use the player overload), and `testerFields()` for the panel. |
+| `tools/gen-music.mjs` | Reads `MusicPackages` / `MusicEvents` / `MusicParams` from `types_original/mod/index.d.ts` and writes `src/music.gen.ts` + `src/musickeys.json`. Holds the param ranges from the SDK Music System docs. Fails if a package has no `*_Stop` or `*_Amplitude`, or more params than the 5 UI rows. |
+| `src/tester.ts` | Per-player tester state, the `mt*` action handler (player overloads for `FOR: ME`, global ones for `FOR: EVERYONE`), the load gate, and `testerFields()` for the panel. |
 | `scene.json` | The `tester` group (four cards) and the `browser` group, which now wraps the asset browser body so the tester tabs can hide it. |
 | `tools/test-tester.mjs` | Replays the bundle, clicks through both tabs, and asserts the exact `LoadMusic` / `PlayMusic` / `SetMusicParam` calls. |
 

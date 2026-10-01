@@ -211,7 +211,13 @@ Feedback and bug reports welcome. **Turn DEBUG on, reproduce the problem, paste 
 
 ## MUSIC and RADIO
 
-Two tester tabs for Portal's music system. Everything you trigger plays **for you only**, so testing never blares music at the rest of the lobby.
+Two tester tabs for Portal's music system.
+
+> **No music on Portal Sandbox.** The game plays no scripted music on the Portal Sandbox map, from this mod or any other. Every other map works. Sounds and effects are unaffected, so test music on any other map.
+
+`FOR: ME` (the default) plays everything for you only, so testing never blares music at the rest of the lobby. `FOR: EVERYONE` uses the global calls instead.
+
+Only Core is loaded when the mode starts. `LOAD` switches to the package on screen and unloads the previous one; the button reads `LOADING...` for 5 seconds, and anything you press meanwhile is sent once loading is done.
 
 **MUSIC**
 - `<` / `>` picks the package: CORE, BR or GAUNTLET.
@@ -221,10 +227,11 @@ Two tester tabs for Portal's music system. Everything you trigger plays **for yo
 - `PLAY` re-sends every param and the volume before the event, so what you hear always matches the numbers on screen.
 
 **RADIO**
+- The radio queue starts empty, and `PLAY` on an empty queue plays nothing. Pick a channel, choose a track number, press `QUEUE TRACK`, then `PLAY`.
 - `CLEAR QUEUE`, `PLAY`, `STOP` and `NEXT TRACK` send the four `Radio_*` events.
-- **PARAMS** covers channel, biome, queue track number, loop queue, and continue on track end.
+- **PARAMS** covers channel, biome, queue track number, loop queue, and continue on track end. Biome only matters on channel 4.
 
 **LAST CALL** shows the exact call that was sent last, for example `PlayMusic(Core_PhaseEnded)`. The game cannot report what is actually playing or a param's real value, so the panel shows what was sent.
 
-The parameter ranges are educated guesses, because the SDK does not document them. All four music packages are loaded when the mode starts.
+The parameter ranges come from the SDK's Music System docs.
 
