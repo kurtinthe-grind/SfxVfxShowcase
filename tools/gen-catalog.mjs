@@ -61,7 +61,7 @@ function classifySfx(name) {
         stem = body.slice(0, body.length - one[0].length);
     } else if (loop) {
         kind = "loop";
-        dim = loop[1] === "2D" ? "2d" : "3d";
+        dim = loop[2] === "2D" ? "2d" : "3d";
         stem = body.slice(0, body.length - loop[0].length);
     } else {
         const d = body.match(DIM_ONLY);
@@ -155,6 +155,18 @@ function main() {
             };
         })
         .sort((a, b) => a.category.localeCompare(b.category) || a.display.localeCompare(b.display));
+    // The name's trailing 2D/3D is the only dimension data the SDK gives. 43 loops
+    // once read the wrong regex group and shipped as 3D, so a 2D loop played at a
+    // point in the world instead of in the player's ears.
+    const wrongDim = sfx.filter((e) => {
+        const d = e.name.match(/([23]D)$/);
+        return d !== null && e.dim !== d[1].toLowerCase();
+    });
+    if (wrongDim.length > 0) {
+        console.error(`\n  GENERATOR BUG: ${wrongDim.length} SFX have a dim that contradicts their name, e.g.`);
+        for (const e of wrongDim.slice(0, 3)) console.error(`    ${e.name} -> ${e.dim}`);
+        process.exit(1);
+    }
 
     // ---------------------------------------------------------------- VFX
     // name -> first enum that declares it, so the emitted ref is always valid.
