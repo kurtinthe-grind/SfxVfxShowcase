@@ -14793,8 +14793,28 @@ export function removeTemplate(st: TesterState, key: string): void {
     log("template: removed " + key);
 }
 
+/**
+ * One plain-text line for EXPORT: names and values only, not code. A radio queue
+ * names each track's station when any track is not on the template's own station.
+ */
 export function templateExportLine(t: Template): string {
-    return (t.kind === "music" ? "MUSIC" : "RADIO") + " TEMPLATE " + t.n;
+    if (t.kind === "music") {
+        const pkg = musicPkg(t);
+        const params = pkg.params.map((p) => p.name + " " + t.values[p.name]).join(", ");
+        return "MUSIC TEMPLATE " + t.n + " | " + pkg.name + " | " + t.evt + " | " + (params === "" ? "no params" : params) + " | volume " + t.values[pkg.amp.name];
+    }
+    const ch = Math.round(t.values["Radio_Channel"] ?? 0);
+    const biome = Math.round(t.values["Radio_Biome"] ?? 0);
+    const own = (p: RadioPick) => p.ch === ch && (ch !== 4 || p.biome === biome);
+    const mixed = t.queue.some((p) => !own(p));
+    const queue = t.queue.length === 0 ? "queue empty" : "queue " + t.queue.map((p) => (mixed ? stationText(p.ch, p.biome) + " " : "") + "#" + p.track).join(", ");
+    return (
+        "RADIO TEMPLATE " + t.n +
+        " | channel " + ch + " " + stationText(ch, biome) +
+        " | " + queue +
+        " | continue " + t.values["Radio_ContinueQueueOnTrackEnd"] + ", loop " + t.values["Radio_LoopQueuedTracks"] +
+        " | volume " + t.values["Radio_Amplitude"]
+    );
 }
 
 /**
@@ -16194,6 +16214,11 @@ function exportFavourites(st: PlayerState): void {
         if (r === undefined) continue;
         // name (index file) | group | type
         logAlways(rowRawName(r) + " | " + rowCategory(r) + " | " + (r.type === "sfx" ? "SFX" : "VFX"));
+    }
+    // Templates after the assets, in save order: plain names and values, not code.
+    for (const key of ui.favourites) {
+        const t = key.startsWith("tpl") ? findTemplate(ui.tester, key) : undefined;
+        if (t !== undefined) logAlways(templateExportLine(t));
     }
     logAlways("---- END FAVOURITES ----");
     mod.DisplayHighlightedWorldLogMessage(mod.Message(TPL.exportedN, ui.favourites.length), ui.player);

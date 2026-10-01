@@ -124,6 +124,18 @@ FX_Vehicle_Wreck_PTV | Vehicle | VFX
 
 Format is **index-file name | group | type**. The name is the enum member on purpose — that's what you paste into the editor. The display name ("Alarm") is useless for looking an asset up, so it is not used.
 
+**Music and radio templates.** On the MUSIC or RADIO tab, `SAVE TEMPLATE` saves the setup on screen to FAVOURITES:
+- MUSIC: the package, track, every parameter and the volume;
+- RADIO: the station settings, the volume and the tracks you queued since the last `CLEAR QUEUE`.
+
+Saving the same setup twice keeps one copy. In FAVOURITES, a template row shows the track or station and its number:
+- `OPEN` puts it back into the tester;
+- `PLAY` loads the package if needed and plays it (a radio template re-queues its tracks first);
+- `STOP` stops it;
+- `*` removes it.
+
+`EXPORT FAVOURITES` writes each template as one plain line of names and values. Templates last for the match, like the rest of your favourites.
+
 ---
 
 ## Parameters

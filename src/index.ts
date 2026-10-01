@@ -11,7 +11,7 @@ import { Timers } from "bf6-portal-utils/timers";
 import { SFX_CATALOG, SFX_CATEGORIES, SFX_PREFIXES, type SfxEntry, VFX_CATALOG, VFX_CATEGORIES, VFX_PREFIXES } from "./catalog";
 import { CONFIG } from "./config";
 import { debugEnabled, initLog, log, logAlways, setDebug } from "./diag";
-import { applyTemplate, handleTesterAction, loadStartupMusic, needsLoad, newTesterState, playTemplate, removeTemplate, saveTemplate, stopTemplate, templateKey, templateKindKey } from "./tester";
+import { applyTemplate, findTemplate, handleTesterAction, loadStartupMusic, needsLoad, newTesterState, playTemplate, removeTemplate, saveTemplate, stopTemplate, templateExportLine, templateKey, templateKindKey } from "./tester";
 import { T, TPL } from "./text.gen";
 import { clickSound, playUiSound, UI_SOUND } from "./uisound";
 import {
@@ -688,6 +688,11 @@ function exportFavourites(st: PlayerState): void {
         if (r === undefined) continue;
         // name (index file) | group | type
         logAlways(rowRawName(r) + " | " + rowCategory(r) + " | " + (r.type === "sfx" ? "SFX" : "VFX"));
+    }
+    // Templates after the assets, in save order: plain names and values, not code.
+    for (const key of ui.favourites) {
+        const t = key.startsWith("tpl") ? findTemplate(ui.tester, key) : undefined;
+        if (t !== undefined) logAlways(templateExportLine(t));
     }
     logAlways("---- END FAVOURITES ----");
     mod.DisplayHighlightedWorldLogMessage(mod.Message(TPL.exportedN, ui.favourites.length), ui.player);

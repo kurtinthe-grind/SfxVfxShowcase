@@ -407,6 +407,31 @@ try {
     check("remove radio tpl", rowsWith(labelKey("tplRadioOf")).length === 0, "radio template still listed");
     check("remove radio tpl", rowsWith(labelKey("tplMusicOf")).length === 1, "music template gone too");
 
+    // A mixed-station queue: add a BF Themes (channel 2) track on top of the two
+    // Reggaeton ones, then save. EXPORT names each track's station.
+    await step("tab radio mix", () => s.click("RADIO"));
+    await step("channel down", () => s.clickId("mtP1Down"));
+    await step("queue mixed", () => s.clickId("mtQueue"));
+    expect("queue mixed", ["SetMusicParam(MusicParams.Radio_QueueTrackNumber, 1, player)"]);
+    await step("save mixed", () => s.clickId("mtSave"));
+    check("save mixed", notified("save mixed").join() === labelKey("tplSaved"), "expected tplSaved");
+
+    await step("tab fav export", () => s.click("FAVOURITES"));
+    await step("export", () => s.clickText(labelKey("exportFavs")));
+    const lines = [
+        "MUSIC TEMPLATE 2 | BR | BR_InsertionJump | BRGauntlet_LobbyTimerRemaining 10 | volume 1",
+        "RADIO TEMPLATE 3 | channel 2 BF Themes | queue Reggaeton #1, Reggaeton #0, BF Themes #1 | continue 1, loop 1 | volume 1",
+    ];
+    for (const l of lines) check("export", s.logs.some((x) => x.endsWith(l)), `missing export line: ${l}\n        got: ${s.logs.filter((x) => /TEMPLATE/.test(x)).join("\n             ")}`);
+
+    // A package with no params exports "no params".
+    await step("tab music g", () => s.click("MUSIC"));
+    await step("pkg to gauntlet", () => s.clickId("mtPkgNext"));
+    await step("save gauntlet", () => s.clickId("mtSave"));
+    await step("tab fav export 2", () => s.click("FAVOURITES"));
+    await step("export 2", () => s.clickText(labelKey("exportFavs")));
+    check("export 2", s.logs.some((x) => x.endsWith("MUSIC TEMPLATE 4 | Gauntlet | Gauntlet_Deploy | no params | volume 1")), "missing Gauntlet export line");
+
     // Back on a browser tab the tester must be gone and the browser back.
     await step("tab sound", () => s.click("SOUND"));
     await step("close", () => s.click("CLOSE X"));
