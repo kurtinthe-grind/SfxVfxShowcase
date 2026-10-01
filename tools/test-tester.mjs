@@ -65,7 +65,8 @@ async function step(phase, fn) {
 try {
     s.start();
     await s.ticks(5);
-    expect("boot", ["LoadMusic(MusicPackages.Core)"]);
+    // The SDK doc's OnGameModeStarted example, call for call: load, then volume.
+    expect("boot", ["LoadMusic(MusicPackages.Core)", "SetMusicParam(MusicParams.Core_Amplitude, 1)"]);
 
     // Smoke test: the first deploy plays a loud one-shot to everyone, exactly as
     // CustomConquest does after loading Core. It isolates "music is silent in this

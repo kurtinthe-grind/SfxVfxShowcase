@@ -14179,10 +14179,14 @@ export function newTesterState(): TesterState {
 
 /** Called once from OnGameModeStarted: the docs advise loading early. */
 export function loadStartupMusic(): void {
+    // The SDK doc's example (gameplay_logic.html, Music System Summary), call
+    // for call: LoadMusic, then the package's amplitude, in OnGameModeStarted.
     mod.LoadMusic(STARTUP.pkg);
     loaded = STARTUP;
     loadedAt = Date.now();
     log("music: LoadMusic(" + STARTUP.name + ") at game-mode start");
+    mod.SetMusicParam(STARTUP.amp.param, STARTUP.amp.def);
+    log("music: SetMusicParam(" + STARTUP.amp.name + ", " + STARTUP.amp.def + ") for=everyone at game-mode start");
 }
 
 /**
