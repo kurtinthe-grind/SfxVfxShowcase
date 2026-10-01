@@ -24,6 +24,8 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(HERE, "..");
 const SCENE = resolve(ROOT, "src", "scene.json");
 const PAIRS = resolve(ROOT, "src", "textkeys.json");
+// Music package / event / param names, written by tools/gen-music.mjs.
+const MUSIC_PAIRS = resolve(ROOT, "src", "musickeys.json");
 const OUT_TS = resolve(ROOT, "src", "text.gen.ts");
 const OUT_JSON = resolve(ROOT, "src", "strings.json");
 
@@ -111,6 +113,21 @@ const STATIC = {
     pickFirst: "Select an item first",
     nothingToUndo: "Nothing to undo",
     // player-wide effects: not catalog assets, so they get their own keys
+    // MUSIC / RADIO tester (src/tester.ts)
+    mtCardTrack: "TRACK",
+    mtCardRadio: "RADIO",
+    mtPrev: "|<",
+    mtNext: ">|",
+    mtPlay: "PLAY",
+    mtStop: "STOP",
+    mtClearQueue: "CLEAR QUEUE",
+    mtNextTrack: "NEXT TRACK",
+    mtRadioLine: "RADIO STATION",
+    mtNothingSent: "nothing sent yet",
+    mtNoteParams: "Sent to you only. Ranges are guesses - the engine does not report them.",
+    mtNoParams: "No params in this package besides VOLUME.",
+    hintMusic: "Pick a package and a track, then PLAY. Params and VOLUME apply live, and PLAY re-sends them first.",
+    hintRadio: "PLAY starts the radio with the params on the right. NEXT TRACK and CLEAR QUEUE drive its queue.",
     screenVl7gas: "VL7 Gas Mask",
     screenNight: "Night Vision",
     screenSaturated: "Saturated",
@@ -156,6 +173,11 @@ const TEMPLATES = {
     filters2: "FILTERS: {} + {}",
     filters3: "FILTERS: {} + {} + {}",
     screenToggle: "{} {}",
+    mtPackageOf: "PACKAGE: {}",
+    mtTrackOf: "TRACK {} / {}",
+    mtParamLabel: "{} :",
+    mtCallPlay: "PlayMusic({})",
+    mtCallParam: "SetMusicParam({}, {})",
 };
 
 const q = (s) => JSON.stringify(String(s));
@@ -188,7 +210,7 @@ function harvestSceneLiterals() {
 
 const { scene, found } = harvestSceneLiterals();
 
-const pairs = JSON.parse(readFileSync(PAIRS, "utf8")).pairs;
+const pairs = [...JSON.parse(readFileSync(PAIRS, "utf8")).pairs, ...JSON.parse(readFileSync(MUSIC_PAIRS, "utf8")).pairs];
 const dupes = new Map();
 for (const p of pairs) {
     if (dupes.has(p.key)) throw new Error("duplicate message key " + p.key);

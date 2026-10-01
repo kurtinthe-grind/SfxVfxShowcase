@@ -38,6 +38,7 @@ import { CATEGORY_TEXT as CAT_TEXT, SFX_CATALOG, SFX_PREFIXES, VFX_CATALOG, VFX_
 import { FILTERS, GRID, KEYBOARD, PALETTE, RAIL, RAIL_PAGER, RAIL_ROW, ROW, SCREEN, type SceneNode } from "./scene.gen";
 import { CHAR_KEY, SCENE_TEXT, T, TPL } from "./text.gen";
 import { debugEnabled, log, reportMissingKey } from "./diag";
+import { testerFields, type TesterState } from "./tester";
 import { UI } from "bf6-portal-utils/ui";
 import { UIContainer } from "bf6-portal-utils/ui/components/container";
 import { UIText } from "bf6-portal-utils/ui/components/text";
@@ -92,12 +93,17 @@ type WidgetSpec = Omit<SceneNode, "text"> & { readonly text?: string | mod.Messa
 
 type WidgetNode = SceneNode | WidgetSpec;
 
-type Scope = Record<string, string | number | mod.Message>;
+export type Scope = Record<string, string | number | mod.Message>;
 export type Fields = Record<string, Scope>;
 
 const P = PALETTE as Record<string, string>;
 
-export type Tab = "sfx" | "vfx" | "fav";
+export type Tab = "sfx" | "vfx" | "fav" | "music" | "radio";
+
+/** MUSIC and RADIO are the tester tabs: no rail, list, chips or keyboard. */
+export function isTesterTab(tab: Tab): tab is "music" | "radio" {
+    return tab === "music" || tab === "radio";
+}
 
 export type ScreenRow = { readonly type: "screen"; readonly id: string; readonly display: string; readonly category: string; readonly key: string; readonly catKey: string };
 
@@ -373,6 +379,7 @@ export function isFavourite(ui: PlayerUi, key: string): boolean {
  * catalog entry and deleting a favourite added a new one instead.
  */
 export function visibleList(ui: PlayerUi): Row[] {
+    if (isTesterTab(ui.tab)) return [];
     const f = filtersOf(ui);
     return ui.tab === "fav" ? favRows(ui, f) : listFor(ui.tab, ui.group, f);
 }
@@ -486,6 +493,8 @@ export interface PlayerUi {
     fDim: string;
     fKind: string;
     fVfx: string;
+    /** MUSIC / RADIO tester state; see src/tester.ts. */
+    tester: TesterState;
 
     root: UIContainer | undefined;
     nodes: Record<string, Handle>;
@@ -608,6 +617,7 @@ function activeFilterLabel(ui: PlayerUi): mod.Message {
 export function chromeFields(ui: PlayerUi, shown: number, listed: number, total: number): Scope {
     const sfx = ui.tab === "sfx";
     const onFav = ui.tab === "fav";
+    const tester = isTesterTab(ui.tab);
     const debug = debugEnabled();
     const armedRow = ui.armedKey === "" ? undefined : findRow(ui.armedKey);
     const armedTextKey = armedRow === undefined ? T.nothingArmed : rowTextKey(armedRow);
@@ -623,10 +633,17 @@ export function chromeFields(ui: PlayerUi, shown: number, listed: number, total:
         // the utils package exposes no cursor-over event to hang it on.
         tabSfxColor: sfx ? "#FFFFFF" : P.inkDim,
         tabSfxBg: sfx ? P.hot : P.line,
-        tabVfxColor: sfx ? P.inkDim : "#FFFFFF",
-        tabVfxBg: sfx ? P.line : P.hot,
+        tabVfxColor: ui.tab === "vfx" ? "#FFFFFF" : P.inkDim,
+        tabVfxBg: ui.tab === "vfx" ? P.hot : P.line,
         tabFavColor: onFav ? "#FFFFFF" : P.inkDim,
         tabFavBg: onFav ? P.hot : P.line,
+        tabMusicColor: ui.tab === "music" ? "#FFFFFF" : P.inkDim,
+        tabMusicBg: ui.tab === "music" ? P.hot : P.line,
+        tabRadioColor: ui.tab === "radio" ? "#FFFFFF" : P.inkDim,
+        tabRadioBg: ui.tab === "radio" ? P.hot : P.line,
+        browserOn: tester ? "0" : "1",
+        testerOn: tester ? "1" : "0",
+        ...testerFields(ui.tab === "radio" ? "radio" : "music", ui.tester),
         // On the shortlist the header's button exports instead of arming: there is
         // nothing to confirm, the whole tab IS the selection.
         selectLabel: onFav ? K(ui.favourites.length === 0 ? T.noFavourites : T.exportFavs) : K(ui.selectedKey === "" ? T.selectAnItem : ui.armedKey === ui.selectedKey ? T.selected : T.select),
@@ -661,6 +678,8 @@ export function findLabel(key: string): string {
 function hintFor(ui: PlayerUi): mod.Message {
     if (ui.searchOpen) return mod.Message(T.hintSearch);
     if (!ui.open) return mod.Message(T.hintClosed);
+    if (ui.tab === "music") return mod.Message(T.hintMusic);
+    if (ui.tab === "radio") return mod.Message(T.hintRadio);
     if (ui.tab === "vfx") {
         return mod.Message(ui.selectedKey === "" ? T.hintVfxPick : T.hintVfxArmed);
     }
@@ -922,11 +941,17 @@ function buildNodes(
             for (let j = 0; j < count; j++) {
                 const cx = cols > 0 ? (j % cols) * (tw + gapX) : j * (tw + gap);
                 const cy = cols > 0 ? Math.floor(j / cols) * (th + gapY) : 0;
+                if (!visible && ui.nodes[action + "_r" + j] === undefined) continue;
                 ensureWidget(ui, { ...tpl, x: tpl.x + cx, y: tpl.y + cy }, action + "_r" + j, parent, fields, scope, ox + gx + n.x, oy + gy + n.y, visible);
             }
             continue;
         }
 
+        // A hidden node is not created until its group is first shown. Every
+        // scene node used to be allocated on the first open, including whole tabs
+        // nobody had visited; with the 2026-10-01 widget-burst crash, widgets that
+        // are never seen are pure risk.
+        if (!visible && ui.nodes[action] === undefined) continue;
         ensureWidget(ui, n, action, parent, fields, scope, ox + gx, oy + gy, visible);
     }
 }
@@ -1058,8 +1083,9 @@ export function render(ui: PlayerUi, spawnedCount: number): void {
     const onFav = ui.tab === "fav";
     // The FAVOURITES tab ignores the group rail entirely -- there are no groups in
     // a shortlist -- so its total is the shortlist, not the catalog.
+    const tester = isTesterTab(ui.tab);
     const list = visibleList(ui);
-    const total = onFav ? ui.favourites.length : totalCount(ui.tab);
+    const total = tester ? 0 : onFav ? ui.favourites.length : totalCount(ui.tab);
     const maxPage = pageCount(list.length) - 1;
     if (ui.page > maxPage) ui.page = maxPage;
     if (ui.page < 0) ui.page = 0;
@@ -1074,6 +1100,13 @@ export function render(ui: PlayerUi, spawnedCount: number): void {
     // The rail, chips, rows and keyboard live outside the `menu` group, so the
     // group's bind does not cover them. They are gated on `open` explicitly.
     if (!open) return;
+
+    // The tester panel is all scene nodes, drawn by buildNodes above. Everything
+    // the browser builds by hand has to be hidden here, for the same reason.
+    if (tester) {
+        hideBrowserWidgets(ui);
+        return;
+    }
 
     // ---- filter chips + search button
     const chips = ui.tab === "sfx" ? FILTERS.sfx : FILTERS.vfx;
@@ -1366,6 +1399,18 @@ function buildKeyboard(ui: PlayerUi, shown: number, total: number): void {
         ensureWidget(ui, { k: "textbutton", x: bx, y: kb.bottomY - kb.y, w: b.w, h: kb.bottomH, fill: "Solid", bg: bg, bgAlpha: 1, text: label, textSize: 17, textColor: isDone ? "#FFFFFF" : P.ink, align: "Center" }, b.action, kbParent, { sh: P, f: { text: label, textColor: isDone ? "#FFFFFF" : P.ink, bg: bg } }, "f", 0, 0, true);
         bx += b.w + kb.gap;
     }
+}
+
+/** Hides every widget render() builds by hand for the asset browser. */
+function hideBrowserWidgets(ui: PlayerUi): void {
+    hideSlots(ui, "chip", MAX_CHIPS);
+    hideSlots(ui, "railBtn", RAIL.visibleRows - 1);
+    hideSlots(ui, "row", GRID.rows);
+    for (const id of ["btnSearch", "railAll", "btnRailPrev", "btnRailNext", "railPage"]) {
+        const h = ui.nodes[id];
+        if (h !== undefined) h.el.visible = false;
+    }
+    hideKeyboard(ui);
 }
 
 function hideSlots(ui: PlayerUi, prefix: string, max: number): void {

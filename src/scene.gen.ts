@@ -155,6 +155,17 @@ export const SCREEN: readonly SceneNode[] = [
         }
     },
     {
+        "k": "group",
+        "id": "browser",
+        "x": 0,
+        "y": 0,
+        "visible": true,
+        "bind": {
+            "visible": "browserOn"
+        },
+        "parent": "menu"
+    },
+    {
         "k": "container",
         "x": 140,
         "y": 140,
@@ -196,7 +207,7 @@ export const SCREEN: readonly SceneNode[] = [
         "fill": "Solid",
         "bg": "{{sh.panel}}",
         "bgAlpha": 1,
-        "parent": "menu"
+        "parent": "browser"
     },
     {
         "k": "container",
@@ -207,7 +218,7 @@ export const SCREEN: readonly SceneNode[] = [
         "fill": "Solid",
         "bg": "{{sh.hairline}}",
         "bgAlpha": 1,
-        "parent": "menu"
+        "parent": "browser"
     },
     {
         "k": "container",
@@ -218,7 +229,7 @@ export const SCREEN: readonly SceneNode[] = [
         "fill": "Solid",
         "bg": "{{sh.panel}}",
         "bgAlpha": 1,
-        "parent": "menu"
+        "parent": "browser"
     },
     {
         "k": "container",
@@ -229,7 +240,7 @@ export const SCREEN: readonly SceneNode[] = [
         "fill": "Solid",
         "bg": "{{sh.hairline}}",
         "bgAlpha": 1,
-        "parent": "menu"
+        "parent": "browser"
     },
     {
         "k": "container",
@@ -240,7 +251,7 @@ export const SCREEN: readonly SceneNode[] = [
         "fill": "Solid",
         "bg": "{{sh.shell}}",
         "bgAlpha": 1,
-        "parent": "menu"
+        "parent": "browser"
     },
     {
         "k": "container",
@@ -251,7 +262,7 @@ export const SCREEN: readonly SceneNode[] = [
         "fill": "Solid",
         "bg": "{{sh.panel}}",
         "bgAlpha": 1,
-        "parent": "menu"
+        "parent": "browser"
     },
     {
         "k": "container",
@@ -262,7 +273,7 @@ export const SCREEN: readonly SceneNode[] = [
         "fill": "Solid",
         "bg": "{{sh.panel}}",
         "bgAlpha": 1,
-        "parent": "menu"
+        "parent": "browser"
     },
     {
         "k": "container",
@@ -279,10 +290,10 @@ export const SCREEN: readonly SceneNode[] = [
         "k": "text",
         "x": 156,
         "y": 140,
-        "w": 260,
+        "w": 216,
         "h": 76,
         "text": "SFX / VFX SHOWCASE",
-        "textSize": 26,
+        "textSize": 20,
         "color": "{{sh.ink}}",
         "textAlpha": 1,
         "align": "Left",
@@ -291,9 +302,9 @@ export const SCREEN: readonly SceneNode[] = [
     {
         "k": "textbutton",
         "id": "tabSfx",
-        "x": 600,
+        "x": 512,
         "y": 152,
-        "w": 180,
+        "w": 124,
         "h": 56,
         "text": "SOUND",
         "textSize": 18,
@@ -306,9 +317,9 @@ export const SCREEN: readonly SceneNode[] = [
     {
         "k": "textbutton",
         "id": "tabVfx",
-        "x": 792,
+        "x": 644,
         "y": 152,
-        "w": 180,
+        "w": 124,
         "h": 56,
         "text": "VISUAL",
         "textSize": 18,
@@ -321,12 +332,12 @@ export const SCREEN: readonly SceneNode[] = [
     {
         "k": "textbutton",
         "id": "tabFav",
-        "x": 1196,
+        "x": 776,
         "y": 152,
-        "w": 150,
+        "w": 140,
         "h": 56,
         "text": "FAVOURITES",
-        "textSize": 15,
+        "textSize": 14,
         "textColor": "{{f.tabFavColor}}",
         "bg": "{{f.tabFavBg}}",
         "bgAlpha": 1,
@@ -335,18 +346,48 @@ export const SCREEN: readonly SceneNode[] = [
     },
     {
         "k": "textbutton",
-        "id": "btnSelect",
-        "x": 992,
+        "id": "tabMusic",
+        "x": 924,
         "y": 152,
-        "w": 196,
+        "w": 124,
+        "h": 56,
+        "text": "MUSIC",
+        "textSize": 18,
+        "textColor": "{{f.tabMusicColor}}",
+        "bg": "{{f.tabMusicBg}}",
+        "bgAlpha": 1,
+        "align": "Center",
+        "parent": "menu"
+    },
+    {
+        "k": "textbutton",
+        "id": "tabRadio",
+        "x": 1056,
+        "y": 152,
+        "w": 124,
+        "h": 56,
+        "text": "RADIO",
+        "textSize": 18,
+        "textColor": "{{f.tabRadioColor}}",
+        "bg": "{{f.tabRadioBg}}",
+        "bgAlpha": 1,
+        "align": "Center",
+        "parent": "menu"
+    },
+    {
+        "k": "textbutton",
+        "id": "btnSelect",
+        "x": 1188,
+        "y": 152,
+        "w": 164,
         "h": 56,
         "text": "{{f.selectLabel}}",
-        "textSize": 18,
+        "textSize": 15,
         "textColor": "{{sh.ink}}",
         "bg": "{{f.selectBg}}",
         "bgAlpha": 1,
         "align": "Center",
-        "parent": "menu",
+        "parent": "browser",
         "bind": {
             "text": "selectLabel",
             "bg": "selectBg"
@@ -355,9 +396,9 @@ export const SCREEN: readonly SceneNode[] = [
     {
         "k": "text",
         "id": "armed",
-        "x": 1356,
+        "x": 1360,
         "y": 142,
-        "w": 200,
+        "w": 192,
         "h": 52,
         "text": "{{f.armed}}",
         "textSize": 11,
@@ -395,7 +436,7 @@ export const SCREEN: readonly SceneNode[] = [
         "textSize": 13,
         "color": "{{sh.muted}}",
         "align": "Left",
-        "parent": "menu"
+        "parent": "browser"
     },
     {
         "k": "text",
@@ -408,7 +449,7 @@ export const SCREEN: readonly SceneNode[] = [
         "textSize": 11,
         "color": "{{sh.faint}}",
         "align": "Right",
-        "parent": "menu",
+        "parent": "browser",
         "bind": {
             "text": "railSummary"
         }
@@ -422,7 +463,7 @@ export const SCREEN: readonly SceneNode[] = [
         "fill": "Solid",
         "bg": "{{sh.hairline}}",
         "bgAlpha": 1,
-        "parent": "menu"
+        "parent": "browser"
     },
     {
         "k": "text",
@@ -434,7 +475,7 @@ export const SCREEN: readonly SceneNode[] = [
         "textSize": 12,
         "color": "{{sh.muted}}",
         "align": "Left",
-        "parent": "menu"
+        "parent": "browser"
     },
     {
         "k": "text",
@@ -446,7 +487,7 @@ export const SCREEN: readonly SceneNode[] = [
         "textSize": 12,
         "color": "{{sh.muted}}",
         "align": "Left",
-        "parent": "menu"
+        "parent": "browser"
     },
     {
         "k": "text",
@@ -458,7 +499,7 @@ export const SCREEN: readonly SceneNode[] = [
         "textSize": 12,
         "color": "{{sh.muted}}",
         "align": "Left",
-        "parent": "menu"
+        "parent": "browser"
     },
     {
         "k": "text",
@@ -470,7 +511,7 @@ export const SCREEN: readonly SceneNode[] = [
         "textSize": 12,
         "color": "{{sh.muted}}",
         "align": "Center",
-        "parent": "menu",
+        "parent": "browser",
         "bind": {
             "text": "headBadge"
         }
@@ -488,7 +529,7 @@ export const SCREEN: readonly SceneNode[] = [
         "bg": "{{sh.orangeDim}}",
         "bgAlpha": 1,
         "align": "Center",
-        "parent": "menu"
+        "parent": "browser"
     },
     {
         "k": "text",
@@ -501,7 +542,7 @@ export const SCREEN: readonly SceneNode[] = [
         "textSize": 15,
         "color": "{{sh.inkDim}}",
         "align": "Center",
-        "parent": "menu",
+        "parent": "browser",
         "bind": {
             "text": "page"
         }
@@ -519,7 +560,7 @@ export const SCREEN: readonly SceneNode[] = [
         "bg": "{{sh.orangeDim}}",
         "bgAlpha": 1,
         "align": "Center",
-        "parent": "menu"
+        "parent": "browser"
     },
     {
         "k": "group",
@@ -530,7 +571,7 @@ export const SCREEN: readonly SceneNode[] = [
         "bind": {
             "visible": "sfxParams"
         },
-        "parent": "menu"
+        "parent": "browser"
     },
     {
         "k": "text",
@@ -657,7 +698,7 @@ export const SCREEN: readonly SceneNode[] = [
         "bind": {
             "visible": "vfxParams"
         },
-        "parent": "menu"
+        "parent": "browser"
     },
     {
         "k": "text",
@@ -742,7 +783,7 @@ export const SCREEN: readonly SceneNode[] = [
         "color": "{{sh.faint}}",
         "align": "Left",
         "wrap": true,
-        "parent": "menu",
+        "parent": "browser",
         "bind": {
             "text": "spawned"
         }
@@ -750,12 +791,12 @@ export const SCREEN: readonly SceneNode[] = [
     {
         "k": "textbutton",
         "id": "btnDebug",
-        "x": 426,
+        "x": 380,
         "y": 152,
-        "w": 170,
+        "w": 124,
         "h": 56,
         "text": "{{f.debugLabel}}",
-        "textSize": 13,
+        "textSize": 12,
         "textColor": "{{f.debugColor}}",
         "bg": "{{f.debugBg}}",
         "bgAlpha": 1,
@@ -775,7 +816,7 @@ export const SCREEN: readonly SceneNode[] = [
         "bg": "{{sh.orangeDim}}",
         "bgAlpha": 1,
         "align": "Center",
-        "parent": "menu"
+        "parent": "browser"
     },
     {
         "k": "textbutton",
@@ -790,7 +831,7 @@ export const SCREEN: readonly SceneNode[] = [
         "bg": "{{sh.orangeDim}}",
         "bgAlpha": 1,
         "align": "Center",
-        "parent": "menu"
+        "parent": "browser"
     },
     {
         "k": "textbutton",
@@ -805,7 +846,7 @@ export const SCREEN: readonly SceneNode[] = [
         "bg": "{{sh.redDeep}}",
         "bgAlpha": 1,
         "align": "Center",
-        "parent": "menu"
+        "parent": "browser"
     },
     {
         "k": "text",
@@ -833,7 +874,769 @@ export const SCREEN: readonly SceneNode[] = [
         "textSize": 12,
         "textColor": "{{sh.muted}}",
         "align": "Center",
+        "parent": "browser"
+    },
+    {
+        "k": "group",
+        "id": "tester",
+        "x": 0,
+        "y": 0,
+        "visible": false,
+        "bind": {
+            "visible": "testerOn"
+        },
         "parent": "menu"
+    },
+    {
+        "k": "container",
+        "x": 156,
+        "y": 232,
+        "w": 790,
+        "h": 300,
+        "fill": "Solid",
+        "bg": "{{sh.panel}}",
+        "bgAlpha": 1,
+        "parent": "tester"
+    },
+    {
+        "k": "container",
+        "x": 962,
+        "y": 232,
+        "w": 802,
+        "h": 460,
+        "fill": "Solid",
+        "bg": "{{sh.panel}}",
+        "bgAlpha": 1,
+        "parent": "tester"
+    },
+    {
+        "k": "container",
+        "x": 156,
+        "y": 548,
+        "w": 790,
+        "h": 144,
+        "fill": "Solid",
+        "bg": "{{sh.panel}}",
+        "bgAlpha": 1,
+        "parent": "tester"
+    },
+    {
+        "k": "container",
+        "x": 156,
+        "y": 708,
+        "w": 1608,
+        "h": 176,
+        "fill": "Solid",
+        "bg": "{{sh.panel}}",
+        "bgAlpha": 1,
+        "parent": "tester"
+    },
+    {
+        "k": "text",
+        "textAlpha": 1,
+        "align": "Center",
+        "color": "{{sh.ink}}",
+        "parent": "tester",
+        "id": "mtTitle",
+        "x": 156,
+        "y": 240,
+        "w": 790,
+        "h": 36,
+        "text": "{{f.mtTitle}}",
+        "textSize": 18,
+        "bind": {
+            "text": "mtTitle"
+        }
+    },
+    {
+        "k": "text",
+        "textAlpha": 1,
+        "align": "Center",
+        "color": "{{sh.ink}}",
+        "parent": "tester",
+        "x": 962,
+        "y": 240,
+        "w": 802,
+        "h": 36,
+        "text": "PARAMS",
+        "textSize": 18
+    },
+    {
+        "k": "text",
+        "textAlpha": 1,
+        "align": "Center",
+        "color": "{{sh.ink}}",
+        "parent": "tester",
+        "x": 156,
+        "y": 556,
+        "w": 790,
+        "h": 36,
+        "text": "VOLUME",
+        "textSize": 18
+    },
+    {
+        "k": "text",
+        "textAlpha": 1,
+        "align": "Center",
+        "color": "{{sh.ink}}",
+        "parent": "tester",
+        "x": 156,
+        "y": 716,
+        "w": 1608,
+        "h": 32,
+        "text": "LAST CALL",
+        "textSize": 16
+    },
+    {
+        "k": "group",
+        "id": "mtPkgArrows",
+        "x": 0,
+        "y": 0,
+        "visible": false,
+        "bind": {
+            "visible": "mtPkgArrows"
+        },
+        "parent": "tester"
+    },
+    {
+        "k": "textbutton",
+        "bgAlpha": 1,
+        "align": "Center",
+        "textColor": "#FFFFFF",
+        "fill": "Solid",
+        "parent": "mtPkgArrows",
+        "id": "mtPkgPrev",
+        "x": 196,
+        "y": 288,
+        "w": 80,
+        "h": 48,
+        "text": "<",
+        "textSize": 20,
+        "bg": "{{sh.orangeDim}}"
+    },
+    {
+        "k": "textbutton",
+        "bgAlpha": 1,
+        "align": "Center",
+        "textColor": "#FFFFFF",
+        "fill": "Solid",
+        "parent": "mtPkgArrows",
+        "id": "mtPkgNext",
+        "x": 866,
+        "y": 288,
+        "w": 80,
+        "h": 48,
+        "text": ">",
+        "textSize": 20,
+        "bg": "{{sh.orangeDim}}"
+    },
+    {
+        "k": "text",
+        "textAlpha": 1,
+        "align": "Center",
+        "color": "{{sh.ink}}",
+        "parent": "tester",
+        "id": "mtPkg",
+        "x": 286,
+        "y": 288,
+        "w": 570,
+        "h": 48,
+        "text": "{{f.mtPkg}}",
+        "textSize": 20,
+        "bind": {
+            "text": "mtPkg"
+        }
+    },
+    {
+        "k": "text",
+        "textAlpha": 1,
+        "align": "Center",
+        "color": "{{sh.ink}}",
+        "parent": "tester",
+        "id": "mtEvent",
+        "x": 196,
+        "y": 346,
+        "w": 750,
+        "h": 52,
+        "text": "{{f.mtEvent}}",
+        "textSize": 24,
+        "bind": {
+            "text": "mtEvent"
+        }
+    },
+    {
+        "k": "text",
+        "textAlpha": 1,
+        "align": "Center",
+        "color": "{{sh.muted}}",
+        "parent": "tester",
+        "id": "mtEventIdx",
+        "x": 196,
+        "y": 398,
+        "w": 750,
+        "h": 26,
+        "text": "{{f.mtEventIdx}}",
+        "textSize": 13,
+        "bind": {
+            "text": "mtEventIdx"
+        }
+    },
+    {
+        "k": "textbutton",
+        "bgAlpha": 1,
+        "align": "Center",
+        "textColor": "#FFFFFF",
+        "fill": "Solid",
+        "parent": "tester",
+        "id": "mtPrev",
+        "x": 196,
+        "y": 440,
+        "w": 180,
+        "h": 72,
+        "text": "{{f.mtPrevLabel}}",
+        "textSize": 18,
+        "bg": "{{sh.row}}",
+        "bind": {
+            "text": "mtPrevLabel"
+        }
+    },
+    {
+        "k": "textbutton",
+        "bgAlpha": 1,
+        "align": "Center",
+        "textColor": "#FFFFFF",
+        "fill": "Solid",
+        "parent": "tester",
+        "id": "mtPlay",
+        "x": 386,
+        "y": 440,
+        "w": 180,
+        "h": 72,
+        "text": "{{f.mtPlayLabel}}",
+        "textSize": 18,
+        "bg": "{{sh.green}}",
+        "bind": {
+            "text": "mtPlayLabel"
+        }
+    },
+    {
+        "k": "textbutton",
+        "bgAlpha": 1,
+        "align": "Center",
+        "textColor": "#FFFFFF",
+        "fill": "Solid",
+        "parent": "tester",
+        "id": "mtStop",
+        "x": 576,
+        "y": 440,
+        "w": 180,
+        "h": 72,
+        "text": "{{f.mtStopLabel}}",
+        "textSize": 18,
+        "bg": "{{sh.redDim}}",
+        "bind": {
+            "text": "mtStopLabel"
+        }
+    },
+    {
+        "k": "textbutton",
+        "bgAlpha": 1,
+        "align": "Center",
+        "textColor": "#FFFFFF",
+        "fill": "Solid",
+        "parent": "tester",
+        "id": "mtNext",
+        "x": 766,
+        "y": 440,
+        "w": 180,
+        "h": 72,
+        "text": "{{f.mtNextLabel}}",
+        "textSize": 18,
+        "bg": "{{sh.row}}",
+        "bind": {
+            "text": "mtNextLabel"
+        }
+    },
+    {
+        "k": "group",
+        "id": "mtP0",
+        "x": 0,
+        "y": 0,
+        "visible": false,
+        "bind": {
+            "visible": "mtP0On"
+        },
+        "parent": "tester"
+    },
+    {
+        "k": "text",
+        "textAlpha": 1,
+        "align": "Right",
+        "color": "{{sh.ink}}",
+        "parent": "mtP0",
+        "id": "mtP0Label",
+        "x": 978,
+        "y": 288,
+        "w": 330,
+        "h": 60,
+        "text": "{{f.mtP0Label}}",
+        "textSize": 17,
+        "bind": {
+            "text": "mtP0Label"
+        }
+    },
+    {
+        "k": "text",
+        "textAlpha": 1,
+        "align": "Center",
+        "color": "{{sh.ink}}",
+        "parent": "mtP0",
+        "id": "mtP0Val",
+        "x": 1318,
+        "y": 288,
+        "w": 130,
+        "h": 60,
+        "text": "{{f.mtP0Val}}",
+        "textSize": 20,
+        "bind": {
+            "text": "mtP0Val"
+        }
+    },
+    {
+        "k": "textbutton",
+        "bgAlpha": 1,
+        "align": "Center",
+        "textColor": "#FFFFFF",
+        "fill": "Solid",
+        "parent": "mtP0",
+        "id": "mtP0Down",
+        "x": 1458,
+        "y": 288,
+        "w": 140,
+        "h": 60,
+        "text": "-",
+        "textSize": 20,
+        "bg": "{{sh.orangeDim}}"
+    },
+    {
+        "k": "textbutton",
+        "bgAlpha": 1,
+        "align": "Center",
+        "textColor": "#FFFFFF",
+        "fill": "Solid",
+        "parent": "mtP0",
+        "id": "mtP0Up",
+        "x": 1608,
+        "y": 288,
+        "w": 140,
+        "h": 60,
+        "text": "+",
+        "textSize": 20,
+        "bg": "{{sh.orangeDim}}"
+    },
+    {
+        "k": "group",
+        "id": "mtP1",
+        "x": 0,
+        "y": 0,
+        "visible": false,
+        "bind": {
+            "visible": "mtP1On"
+        },
+        "parent": "tester"
+    },
+    {
+        "k": "text",
+        "textAlpha": 1,
+        "align": "Right",
+        "color": "{{sh.ink}}",
+        "parent": "mtP1",
+        "id": "mtP1Label",
+        "x": 978,
+        "y": 360,
+        "w": 330,
+        "h": 60,
+        "text": "{{f.mtP1Label}}",
+        "textSize": 17,
+        "bind": {
+            "text": "mtP1Label"
+        }
+    },
+    {
+        "k": "text",
+        "textAlpha": 1,
+        "align": "Center",
+        "color": "{{sh.ink}}",
+        "parent": "mtP1",
+        "id": "mtP1Val",
+        "x": 1318,
+        "y": 360,
+        "w": 130,
+        "h": 60,
+        "text": "{{f.mtP1Val}}",
+        "textSize": 20,
+        "bind": {
+            "text": "mtP1Val"
+        }
+    },
+    {
+        "k": "textbutton",
+        "bgAlpha": 1,
+        "align": "Center",
+        "textColor": "#FFFFFF",
+        "fill": "Solid",
+        "parent": "mtP1",
+        "id": "mtP1Down",
+        "x": 1458,
+        "y": 360,
+        "w": 140,
+        "h": 60,
+        "text": "-",
+        "textSize": 20,
+        "bg": "{{sh.orangeDim}}"
+    },
+    {
+        "k": "textbutton",
+        "bgAlpha": 1,
+        "align": "Center",
+        "textColor": "#FFFFFF",
+        "fill": "Solid",
+        "parent": "mtP1",
+        "id": "mtP1Up",
+        "x": 1608,
+        "y": 360,
+        "w": 140,
+        "h": 60,
+        "text": "+",
+        "textSize": 20,
+        "bg": "{{sh.orangeDim}}"
+    },
+    {
+        "k": "group",
+        "id": "mtP2",
+        "x": 0,
+        "y": 0,
+        "visible": false,
+        "bind": {
+            "visible": "mtP2On"
+        },
+        "parent": "tester"
+    },
+    {
+        "k": "text",
+        "textAlpha": 1,
+        "align": "Right",
+        "color": "{{sh.ink}}",
+        "parent": "mtP2",
+        "id": "mtP2Label",
+        "x": 978,
+        "y": 432,
+        "w": 330,
+        "h": 60,
+        "text": "{{f.mtP2Label}}",
+        "textSize": 17,
+        "bind": {
+            "text": "mtP2Label"
+        }
+    },
+    {
+        "k": "text",
+        "textAlpha": 1,
+        "align": "Center",
+        "color": "{{sh.ink}}",
+        "parent": "mtP2",
+        "id": "mtP2Val",
+        "x": 1318,
+        "y": 432,
+        "w": 130,
+        "h": 60,
+        "text": "{{f.mtP2Val}}",
+        "textSize": 20,
+        "bind": {
+            "text": "mtP2Val"
+        }
+    },
+    {
+        "k": "textbutton",
+        "bgAlpha": 1,
+        "align": "Center",
+        "textColor": "#FFFFFF",
+        "fill": "Solid",
+        "parent": "mtP2",
+        "id": "mtP2Down",
+        "x": 1458,
+        "y": 432,
+        "w": 140,
+        "h": 60,
+        "text": "-",
+        "textSize": 20,
+        "bg": "{{sh.orangeDim}}"
+    },
+    {
+        "k": "textbutton",
+        "bgAlpha": 1,
+        "align": "Center",
+        "textColor": "#FFFFFF",
+        "fill": "Solid",
+        "parent": "mtP2",
+        "id": "mtP2Up",
+        "x": 1608,
+        "y": 432,
+        "w": 140,
+        "h": 60,
+        "text": "+",
+        "textSize": 20,
+        "bg": "{{sh.orangeDim}}"
+    },
+    {
+        "k": "group",
+        "id": "mtP3",
+        "x": 0,
+        "y": 0,
+        "visible": false,
+        "bind": {
+            "visible": "mtP3On"
+        },
+        "parent": "tester"
+    },
+    {
+        "k": "text",
+        "textAlpha": 1,
+        "align": "Right",
+        "color": "{{sh.ink}}",
+        "parent": "mtP3",
+        "id": "mtP3Label",
+        "x": 978,
+        "y": 504,
+        "w": 330,
+        "h": 60,
+        "text": "{{f.mtP3Label}}",
+        "textSize": 17,
+        "bind": {
+            "text": "mtP3Label"
+        }
+    },
+    {
+        "k": "text",
+        "textAlpha": 1,
+        "align": "Center",
+        "color": "{{sh.ink}}",
+        "parent": "mtP3",
+        "id": "mtP3Val",
+        "x": 1318,
+        "y": 504,
+        "w": 130,
+        "h": 60,
+        "text": "{{f.mtP3Val}}",
+        "textSize": 20,
+        "bind": {
+            "text": "mtP3Val"
+        }
+    },
+    {
+        "k": "textbutton",
+        "bgAlpha": 1,
+        "align": "Center",
+        "textColor": "#FFFFFF",
+        "fill": "Solid",
+        "parent": "mtP3",
+        "id": "mtP3Down",
+        "x": 1458,
+        "y": 504,
+        "w": 140,
+        "h": 60,
+        "text": "-",
+        "textSize": 20,
+        "bg": "{{sh.orangeDim}}"
+    },
+    {
+        "k": "textbutton",
+        "bgAlpha": 1,
+        "align": "Center",
+        "textColor": "#FFFFFF",
+        "fill": "Solid",
+        "parent": "mtP3",
+        "id": "mtP3Up",
+        "x": 1608,
+        "y": 504,
+        "w": 140,
+        "h": 60,
+        "text": "+",
+        "textSize": 20,
+        "bg": "{{sh.orangeDim}}"
+    },
+    {
+        "k": "group",
+        "id": "mtP4",
+        "x": 0,
+        "y": 0,
+        "visible": false,
+        "bind": {
+            "visible": "mtP4On"
+        },
+        "parent": "tester"
+    },
+    {
+        "k": "text",
+        "textAlpha": 1,
+        "align": "Right",
+        "color": "{{sh.ink}}",
+        "parent": "mtP4",
+        "id": "mtP4Label",
+        "x": 978,
+        "y": 576,
+        "w": 330,
+        "h": 60,
+        "text": "{{f.mtP4Label}}",
+        "textSize": 17,
+        "bind": {
+            "text": "mtP4Label"
+        }
+    },
+    {
+        "k": "text",
+        "textAlpha": 1,
+        "align": "Center",
+        "color": "{{sh.ink}}",
+        "parent": "mtP4",
+        "id": "mtP4Val",
+        "x": 1318,
+        "y": 576,
+        "w": 130,
+        "h": 60,
+        "text": "{{f.mtP4Val}}",
+        "textSize": 20,
+        "bind": {
+            "text": "mtP4Val"
+        }
+    },
+    {
+        "k": "textbutton",
+        "bgAlpha": 1,
+        "align": "Center",
+        "textColor": "#FFFFFF",
+        "fill": "Solid",
+        "parent": "mtP4",
+        "id": "mtP4Down",
+        "x": 1458,
+        "y": 576,
+        "w": 140,
+        "h": 60,
+        "text": "-",
+        "textSize": 20,
+        "bg": "{{sh.orangeDim}}"
+    },
+    {
+        "k": "textbutton",
+        "bgAlpha": 1,
+        "align": "Center",
+        "textColor": "#FFFFFF",
+        "fill": "Solid",
+        "parent": "mtP4",
+        "id": "mtP4Up",
+        "x": 1608,
+        "y": 576,
+        "w": 140,
+        "h": 60,
+        "text": "+",
+        "textSize": 20,
+        "bg": "{{sh.orangeDim}}"
+    },
+    {
+        "k": "text",
+        "textAlpha": 1,
+        "align": "Center",
+        "color": "{{sh.muted}}",
+        "parent": "tester",
+        "id": "mtParamNote",
+        "x": 978,
+        "y": 648,
+        "w": 770,
+        "h": 32,
+        "text": "{{f.mtParamNote}}",
+        "textSize": 12,
+        "bind": {
+            "text": "mtParamNote"
+        }
+    },
+    {
+        "k": "textbutton",
+        "bgAlpha": 1,
+        "align": "Center",
+        "textColor": "#FFFFFF",
+        "fill": "Solid",
+        "parent": "tester",
+        "id": "mtVolDown",
+        "x": 196,
+        "y": 604,
+        "w": 200,
+        "h": 64,
+        "text": "-",
+        "textSize": 22,
+        "bg": "{{sh.orangeDim}}"
+    },
+    {
+        "k": "text",
+        "textAlpha": 1,
+        "align": "Center",
+        "color": "{{sh.ink}}",
+        "parent": "tester",
+        "id": "mtVol",
+        "x": 406,
+        "y": 604,
+        "w": 330,
+        "h": 64,
+        "text": "{{f.mtVol}}",
+        "textSize": 26,
+        "bind": {
+            "text": "mtVol"
+        }
+    },
+    {
+        "k": "textbutton",
+        "bgAlpha": 1,
+        "align": "Center",
+        "textColor": "#FFFFFF",
+        "fill": "Solid",
+        "parent": "tester",
+        "id": "mtVolUp",
+        "x": 746,
+        "y": 604,
+        "w": 200,
+        "h": 64,
+        "text": "+",
+        "textSize": 22,
+        "bg": "{{sh.orangeDim}}"
+    },
+    {
+        "k": "text",
+        "textAlpha": 1,
+        "align": "Center",
+        "color": "{{sh.green}}",
+        "parent": "tester",
+        "id": "mtLast",
+        "x": 196,
+        "y": 756,
+        "w": 1528,
+        "h": 48,
+        "text": "{{f.mtLast}}",
+        "textSize": 20,
+        "bind": {
+            "text": "mtLast"
+        }
+    },
+    {
+        "k": "text",
+        "textAlpha": 1,
+        "align": "Center",
+        "color": "{{sh.muted}}",
+        "parent": "tester",
+        "x": 196,
+        "y": 812,
+        "w": 1528,
+        "h": 56,
+        "text": "PLAY re-sends the package params and VOLUME before the event, so what you hear matches the numbers.",
+        "textSize": 13
     }
 ];
 
@@ -1157,9 +1960,29 @@ export const NODE_ACTIONS: readonly string[] = [
     "btnUndo",
     "clr",
     "done",
+    "mtNext",
+    "mtP0Down",
+    "mtP0Up",
+    "mtP1Down",
+    "mtP1Up",
+    "mtP2Down",
+    "mtP2Up",
+    "mtP3Down",
+    "mtP3Up",
+    "mtP4Down",
+    "mtP4Up",
+    "mtPkgNext",
+    "mtPkgPrev",
+    "mtPlay",
+    "mtPrev",
+    "mtStop",
+    "mtVolDown",
+    "mtVolUp",
     "page",
     "spc",
     "tabFav",
+    "tabMusic",
+    "tabRadio",
     "tabSfx",
     "tabVfx"
 ];

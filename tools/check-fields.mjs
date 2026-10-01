@@ -25,6 +25,9 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(HERE, "..");
 const scene = JSON.parse(readFileSync(resolve(ROOT, "src", "scene.json"), "utf8"));
 const ui = readFileSync(resolve(ROOT, "src", "ui.ts"), "utf8").replace(/\r\n/g, "\n");
+// The MUSIC / RADIO tester's fields are produced by src/tester.ts (testerFields),
+// which chromeFields() spreads into the `f` scope.
+const testerSrc = readFileSync(resolve(ROOT, "src", "tester.ts"), "utf8").replace(/\r\n/g, "\n");
 const cfg = readFileSync(resolve(ROOT, "src", "config.ts"), "utf8").replace(/\r\n/g, "\n");
 const gt = readFileSync(resolve(HERE, "gen-text.mjs"), "utf8").replace(/\r\n/g, "\n");
 const strings = JSON.parse(readFileSync(resolve(ROOT, "src", "strings.json"), "utf8"));
@@ -53,7 +56,7 @@ function scopeBodies(src) {
     }
     return out.join("\n");
 }
-const uiScopes = scopeBodies(ui);
+const uiScopes = scopeBodies(ui) + "\n" + scopeBodies(testerSrc);
 const uiCode = ui.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^[ \t]*\/\/.*$/gm, "");
 // Comments stripped for the same reason: the resolvers explain in prose that
 // String() is what breaks them, and a naive scan matches its own warning.
@@ -124,8 +127,23 @@ for (const [name, scopes] of wanted) {
             );
         }
     }
+    // Slot families: f["mtP" + i + "Label"] = ... assigns mtP0Label..mtP<n>Label in
+    // a loop. Held to the same rule as a literal assignment: every branch of the
+    // value must be a Message producer.
+    const slot = name.match(/^([A-Za-z_]+?)(\d+)([A-Za-z_]+)$/);
+    if (!seen && slot !== null) {
+        const sre = new RegExp('\\[\\s*"' + slot[1] + '" \\+ i \\+ "' + slot[3] + '"\\s*\\]\\s*=\\s*(.+?);\\s*$', "gm");
+        while ((m = sre.exec(uiScopeCode)) !== null) {
+            seen = true;
+            const value = m[1].trim();
+            const branches = value.split(/\s[?:]\s/);
+            for (const b of branches.slice(branches.length > 1 ? 1 : 0)) {
+                if (!PRODUCERS.test(b)) problems.push(`field ${[...scopes].join("/")}.${name} is a raw string (${value}); wrap it in K() or mod.Message()`);
+            }
+        }
+    }
     if (!seen) {
-        problems.push(`field ${[...scopes].join("/")}.${name} is consumed as text but never assigned in ui.ts`);
+        problems.push(`field ${[...scopes].join("/")}.${name} is consumed as text but never assigned in ui.ts or tester.ts`);
     }
 }
 

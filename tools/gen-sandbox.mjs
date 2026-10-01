@@ -4,7 +4,7 @@
 //
 // Regenerate: npm run gen:preview     Then: npm run preview
 //
-// Views: sfx | vfx | snow | gas | grouped | selected | armed | closed | empty | search | filters | pfxSfx | pfxVfx
+// Views: sfx | vfx | snow | gas | grouped | selected | armed | closed | empty | search | filters | pfxSfx | pfxVfx | music | radio
 
 import { readFileSync, writeFileSync, mkdirSync, copyFileSync, existsSync, readdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -20,7 +20,7 @@ const TOOL = resolve(ROOT, "..", "main_resources", "bf6-portal-ui-preview-main")
 const PREVIEW = resolve(ROOT, "preview");
 const SANDBOX = resolve(PREVIEW, "src", "sandbox.js");
 
-const VIEW_LIST = "sfx | vfx | snow | gas | grouped | selected | armed | closed | empty | search | filters | pfxSfx | pfxVfx";
+const VIEW_LIST = "sfx | vfx | snow | gas | grouped | selected | armed | closed | empty | search | filters | pfxSfx | pfxVfx | music | radio";
 
 function main() {
     const scene = JSON.parse(readFileSync(SCENE, "utf8"));
@@ -145,6 +145,38 @@ function groupIndex(tab, name) {
 const perPage = SCENE.grid.rows;
 const pageCount = (n) => Math.max(1, Math.ceil(n / perPage));
 
+// ------------------------------------------------------------- tester sample
+// A representative MUSIC / RADIO state, mirroring src/tester.ts testerFields().
+// Layout-only, like the rest of the preview: the values are the owner's reference
+// screenshot (Core_PhaseEnded, IsWinning 1, volume 1.3), not live music data.
+function testerSample(tab) {
+  const radio = tab === "radio";
+  const rows = radio
+    ? [["Radio_Biome", "0"], ["Radio_Channel", "3"], ["Radio_ContinueQueueOnTrackEnd", "1"], ["Radio_LoopQueuedTracks", "0"], ["Radio_QueueTrackNumber", "2"]]
+    : [["Core_IsWinning", "1"], ["Core_PhaseUrgency", "0"], ["Core_Sector", "0"], ["Core_Urgency", "0"]];
+  const f = {
+    mtTitle: radio ? "RADIO" : "TRACK",
+    mtPkgArrows: radio ? "0" : "1",
+    mtPkg: "PACKAGE: " + (radio ? "RADIO" : "CORE"),
+    mtEvent: radio ? "RADIO STATION" : "Core_PhaseEnded",
+    mtEventIdx: radio ? " " : "TRACK 7 / 10",
+    mtPrevLabel: radio ? "CLEAR QUEUE" : "|<",
+    mtPlayLabel: "PLAY",
+    mtStopLabel: "STOP",
+    mtNextLabel: radio ? "NEXT TRACK" : ">|",
+    mtParamNote: "Sent to you only. Ranges are guesses - the engine does not report them.",
+    mtVol: radio ? "1" : "1.3",
+    mtLast: radio ? "SetMusicParam(Radio_Channel, 3)" : "PlayMusic(Core_PhaseEnded)",
+  };
+  for (let i = 0; i < 5; i++) {
+    const r = rows[i];
+    f["mtP" + i + "On"] = r === undefined ? "0" : "1";
+    f["mtP" + i + "Label"] = r === undefined ? "" : r[0] + " :";
+    f["mtP" + i + "Val"] = r === undefined ? "" : r[1];
+  }
+  return f;
+}
+
 // ------------------------------------------------------------- view selection
 
 const view = new URLSearchParams(location.search).get("view") || VIEW;
@@ -164,14 +196,18 @@ function pick() {
       case "pfxSfx": return { ...base, tab: "sfx", searchOpen: true, kbPage: 1 };
       case "pfxVfx": return { ...base, tab: "vfx", searchOpen: true, kbPage: 1 };
     case "filters": return { ...base, tab: "sfx", dim: "3d", kind: "loop" };
+    case "music": return { ...base, tab: "music" };
+    case "radio": return { ...base, tab: "radio" };
     default: return base;
   }
 }
 
 const V = pick();
-const list = listFor(V.tab, V.group, V);
+const TESTER = V.tab === "music" || V.tab === "radio";
+// The tester tabs have no catalog list; listFor() only knows sfx / vfx.
+const list = TESTER ? [] : listFor(V.tab, V.group, V);
 const page = list.slice(V.page * perPage, V.page * perPage + perPage);
-const total = ROWS[V.tab].length;
+const total = TESTER ? 0 : ROWS[V.tab].length;
 const shown = list.length;
 const armedLabel = V.armed === "" ? "" : (rowDisplay(list.find((r) => rowKey(r) === V.armed) ?? { type: "screen", display: V.armed, category: "" }));
 const selLabel = V.selected === "" ? "no selection" : (rowDisplay(list.find((r) => rowKey(r) === V.selected) ?? { type: "screen", display: V.selected, category: "" }));
@@ -187,10 +223,21 @@ const chromeFields = {
   vfxParams: V.tab === "sfx" ? "0" : "1",
   tabSfxColor: V.tab === "sfx" ? "#FFFFFF" : P.inkDim,
   tabSfxBg: V.tab === "sfx" ? P.hot : P.line,
-  tabVfxColor: V.tab === "sfx" ? P.inkDim : "#FFFFFF",
-  tabVfxBg: V.tab === "sfx" ? P.line : P.hot,
+  tabVfxColor: V.tab === "vfx" ? "#FFFFFF" : P.inkDim,
+  tabVfxBg: V.tab === "vfx" ? P.hot : P.line,
   tabFavColor: V.tab === "fav" ? "#FFFFFF" : P.inkDim,
   tabFavBg: V.tab === "fav" ? P.hot : P.line,
+  tabMusicColor: V.tab === "music" ? "#FFFFFF" : P.inkDim,
+  tabMusicBg: V.tab === "music" ? P.hot : P.line,
+  tabRadioColor: V.tab === "radio" ? "#FFFFFF" : P.inkDim,
+  tabRadioBg: V.tab === "radio" ? P.hot : P.line,
+  // The mod starts with debug logging on (src/diag.ts).
+  debugLabel: "DEBUG ON",
+  debugColor: P.green,
+  debugBg: P.panel,
+  browserOn: TESTER ? "0" : "1",
+  testerOn: TESTER ? "1" : "0",
+  ...testerSample(V.tab),
   headBadge: V.tab === "sfx" ? "SPATIALITY" : "SCALE",
   armed: V.armed === "" ? "NOTHING ARMED" : "ARMED: " + trunc(armedLabel, 40),
   armedColor: V.armed === "" ? P.faint : P.green,
@@ -203,7 +250,11 @@ const chromeFields = {
   selInfo: trunc(selLabel, 34),
   selectLabel: V.selected === "" ? "SELECT AN ITEM" : V.armed === V.selected ? "SELECTED \\u2713" : "SELECT",
   selectBg: V.selected === "" ? P.row : V.armed === V.selected ? P.green : P.blue,
-  hint: !V.open
+  hint: V.tab === "music"
+    ? "Pick a package and a track, then PLAY. Params and VOLUME apply live, and PLAY re-sends them first."
+    : V.tab === "radio"
+    ? "PLAY starts the radio with the params on the right. NEXT TRACK and CLEAR QUEUE drive its queue."
+    : !V.open
     ? "MENU CLOSED \u2014 aim (right mouse) to reopen \u00b7 fire (left mouse) to spawn what is armed"
     : V.tab === "vfx"
       ? (V.selected === ""
@@ -325,7 +376,7 @@ function walk(nodes, ox, oy, fields, scope) {
 
 const GF = { sh: P, f: chromeFields };
 walk(SCENE.screen, 0, 0, GF, "f");
-if (V.open) {
+if (V.open && !TESTER) {
 // rail: ALL is a static text row, the groups are buttons below it
 const NOF = { query: "", dim: "", kind: "", vfx: "" };
 const counts = [listFor(V.tab, 0, NOF).length];

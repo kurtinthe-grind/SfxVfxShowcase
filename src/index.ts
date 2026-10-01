@@ -11,11 +11,13 @@ import { Timers } from "bf6-portal-utils/timers";
 import { SFX_CATALOG, SFX_CATEGORIES, SFX_PREFIXES, type SfxEntry, VFX_CATALOG, VFX_CATEGORIES, VFX_PREFIXES } from "./catalog";
 import { CONFIG } from "./config";
 import { debugEnabled, initLog, log, logAlways, setDebug } from "./diag";
+import { handleTesterAction, loadAllMusic, newTesterState } from "./tester";
 import { T, TPL } from "./text.gen";
 import {
     destroyUI,
     filtersOf,
     findRow,
+    isTesterTab,
     listFor,
     MAX_QUERY,
     type PlayerUi,
@@ -99,6 +101,8 @@ Events.OnGameModeStarted.subscribe(() => {
         screenRows
     );
     mod.SetSpawnMode(mod.SpawnModes.AutoSpawn);
+    // MUSIC / RADIO tester: every package, once, as early as possible.
+    loadAllMusic();
 });
 
 // Grant the portal gadget at runtime on every deployment, so it survives death
@@ -151,6 +155,7 @@ function ensure(player: mod.Player): PlayerState {
         pfxAct: [],
         rowKeys: [],
         chipAct: [],
+        tester: newTesterState(),
     };
     const st: PlayerState = { ui: ui, spawned: [], playing: [], preview: undefined, building: false };
     states[pid] = st;
@@ -228,13 +233,22 @@ function handle(st: PlayerState, action: string): void {
         defer(st);
         return;
     }
-    if (action === "tabSfx" || action === "tabVfx" || action === "tabFav") {
-        ui.tab = action === "tabSfx" ? "sfx" : action === "tabVfx" ? "vfx" : "fav";
+    if (action === "tabSfx" || action === "tabVfx" || action === "tabFav" || action === "tabMusic" || action === "tabRadio") {
+        ui.tab = action === "tabSfx" ? "sfx" : action === "tabVfx" ? "vfx" : action === "tabFav" ? "fav" : action === "tabMusic" ? "music" : "radio";
         ui.group = 0;
         ui.railPage = 0;
         ui.page = 0;
         ui.selectedKey = "";
         defer(st);
+        return;
+    }
+    // MUSIC / RADIO tester: every action is mt*, owned by src/tester.ts.
+    if (action.slice(0, 2) === "mt") {
+        if (isTesterTab(ui.tab) && handleTesterAction(ui.tab, ui.tester, ui.player, action)) {
+            defer(st);
+            return;
+        }
+        log(`UNHANDLED ACTION "${action}" (open=${ui.open} tab=${ui.tab})`);
         return;
     }
     if (action === "btnSearch") {

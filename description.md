@@ -13,7 +13,7 @@ An in-game asset browser for **Battlefield 6 Portal**. Every sound and visual ef
 You need **two** files:
 
 - `bundle.ts` — the mod
-- `bundle.strings.json` — the string table, **1608 keys**
+- `bundle.strings.json` — the string table, **1720 keys**
 
 Add both to your experience in the Portal editor at **portal.battlefield.com**.
 
@@ -42,11 +42,13 @@ To change your mind about a placement, aim again to reopen, adjust, and fire aga
 
 ## The menu
 
-Three tabs across the top. The one you're on stays lit, so you always know where you are.
+Five tabs across the top. The one you're on stays lit, so you always know where you are.
 
 **SOUND** — 936 `SFX_` members, in 61 groups.
 **VISUAL** — 312 `FX_` / `VFX_` members plus the 4 player-wide effects, in 52 groups.
 **FAVOURITES** — your own shortlist, described below.
+**MUSIC** — every Core, BR and Gauntlet music event and parameter, described below.
+**RADIO** — the Radio music package: play, stop, next track, clear queue and its five params.
 
 A compact panel rather than a fullscreen takeover: 1640x800, centred with a margin all round, 8 rows per page, and a group rail down the left.
 
@@ -204,3 +206,25 @@ The browser preview is a geometry mock only. It answers "does this layout fit" a
 ---
 
 Feedback and bug reports welcome. **Turn DEBUG on, reproduce the problem, paste the log** — that gets a fix far faster than a description does.
+
+---
+
+## MUSIC and RADIO
+
+Two tester tabs for Portal's music system. Everything you trigger plays **for you only**, so testing never blares music at the rest of the lobby.
+
+**MUSIC**
+- `<` / `>` picks the package: CORE, BR or GAUNTLET.
+- `|<` / `>|` steps through that package's events, and `PLAY` plays the selected one. `STOP` sends the package's own stop event.
+- **PARAMS** lists the package's parameters (for example `Core_IsWinning`, `Core_Sector` and `Core_Urgency`), each with `-` / `+`. A change is sent immediately.
+- **VOLUME** is the package's amplitude.
+- `PLAY` re-sends every param and the volume before the event, so what you hear always matches the numbers on screen.
+
+**RADIO**
+- `CLEAR QUEUE`, `PLAY`, `STOP` and `NEXT TRACK` send the four `Radio_*` events.
+- **PARAMS** covers channel, biome, queue track number, loop queue, and continue on track end.
+
+**LAST CALL** shows the exact call that was sent last, for example `PlayMusic(Core_PhaseEnded)`. The game cannot report what is actually playing or a param's real value, so the panel shows what was sent.
+
+The parameter ranges are educated guesses, because the SDK does not document them. All four music packages are loaded when the mode starts.
+

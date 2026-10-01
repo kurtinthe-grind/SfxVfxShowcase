@@ -74,7 +74,7 @@ during development:
 ### Uploading the table
 
 The build writes the merged table to `dist/bundle.strings.json` — currently about
-**1590 keys**. `bf6-portal-bundler` merges every `strings.json` in the project
+**1720 keys**. `bf6-portal-bundler` merges every `strings.json` in the project
 into that one file.
 
 **That file has to be added to the Experience in the Portal editor, or every label
@@ -893,4 +893,26 @@ effects, so nothing surprises you in game.
   raw `mod.AddUI*`/`SetUI*` + `GetUIWidgetName` substring routing
 - **Tier 2** — `CustomCQ` / `CustomBT` ignored: no bearing on UI or audio, and
   unreliable per AGENT.md §2
+
+## MUSIC / RADIO tester (2026-10-01)
+
+Spec: `docs/superpowers/specs/2026-10-01-music-radio-tester-design.md`. Plan: `docs/superpowers/plans/2026-10-01-music-radio-tester.md`.
+
+| Piece | Role |
+| --- | --- |
+| `tools/gen-music.mjs` | Reads `MusicPackages` / `MusicEvents` / `MusicParams` from `types_original/mod/index.d.ts` and writes `src/music.gen.ts` + `src/musickeys.json`. Holds the guessed param ranges. Fails if a package has no `*_Stop` or `*_Amplitude`, or more params than the 5 UI rows. |
+| `src/tester.ts` | Per-player tester state, the `mt*` action handler (all calls use the player overload), and `testerFields()` for the panel. |
+| `scene.json` | The `tester` group (four cards) and the `browser` group, which now wraps the asset browser body so the tester tabs can hide it. |
+| `tools/test-tester.mjs` | Replays the bundle, clicks through both tabs, and asserts the exact `LoadMusic` / `PlayMusic` / `SetMusicParam` calls. |
+
+Hidden scene nodes are no longer created until their group is first shown (`buildNodes`), so the tester panel costs nothing until it is opened.
+
+## Widget batching and the crash gate (2026-10-01)
+
+Since 2026-10-01 the game client crashes when about 245 UI widgets are created in one tick. The script logs `render end`, and then the engine dies. `renderBatch()` caps new elements per pass (`CONFIG.widgetsPerBatch`, `CONFIG.widgetBatchDelayMs`). `tools/test-ui-batching.mjs` (`npm run check:batching`) replays the bundle and fails if any pass creates more than 100 engine widgets, or if the batched final UI differs from an unbatched copy.
+
+## Commands added
+
+- `npm run release` builds, then copies `dist/` to `SfxVfxShowcase.ts` + `SfxVfxShowcase.strings.json`, the two files to upload.
+- `npm run test:tester` runs the tester behaviour test. It is also part of `build`.
 

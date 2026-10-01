@@ -25,11 +25,11 @@ const ts = require("typescript");
 
 const TICK_MS = 16;
 
-/** strings.json value -> key, for clicking a button by its visible label. */
+/** strings.json value -> every key with that value (several can read "RADIO"). */
 function reverseStrings() {
     const strings = JSON.parse(readFileSync(resolve(ROOT, "dist", "bundle.strings.json"), "utf8"));
     const byText = {};
-    for (const [k, v] of Object.entries(strings)) if (typeof v === "string" && byText[v] === undefined) byText[v] = k;
+    for (const [k, v] of Object.entries(strings)) if (typeof v === "string") (byText[v] ??= []).push(k);
     return byText;
 }
 
@@ -124,12 +124,38 @@ export async function replay(source) {
         },
         /** Clicks the text button whose label is `text` (the strings.json value). */
         click(text) {
-            const key = byText[text];
-            if (key === undefined) throw new Error(`no strings.json entry reads ${JSON.stringify(text)}`);
-            const label = [...calls].reverse().find((c) => c.name === "AddUIText" && c.args[10]?.msg?.[0] === key);
+            const keys = byText[text];
+            if (keys === undefined) throw new Error(`no strings.json entry reads ${JSON.stringify(text)}`);
+            const buttons = new Set(calls.filter((c) => c.name === "AddUIButton").map((c) => c.args[0]));
+            const label = [...calls]
+                .reverse()
+                .find((c) => c.name === "AddUIText" && keys.includes(c.args[10]?.msg?.[0]) && buttons.has(c.args[4]?.widget + "_b"));
             if (label === undefined) throw new Error(`no widget is labelled ${JSON.stringify(text)}`);
             const container = label.args[4].widget;
             M.OnPlayerUIButtonEvent(player, { widget: container + "_b" }, "UIButtonEvent.ButtonUp");
+        },
+        /**
+         * Clicks the scene button with this id: finds the visible text-button
+         * container at that node's scene position (top-level nodes only, which are
+         * placed in absolute coordinates under the root).
+         */
+        clickId(id) {
+            const scene = JSON.parse(readFileSync(resolve(ROOT, "src", "scene.json"), "utf8"));
+            const node = scene.screen.find((n) => n.id === id);
+            if (node === undefined) throw new Error(`scene.json has no node "${id}"`);
+            const want = `${node.x},${node.y},0`;
+            const live = {};
+            for (const c of calls) {
+                if (c.name === "AddUIContainer") live[c.args[0]] = { pos: c.args[1].v.join(","), vis: c.args[5] };
+                const w = c.args[0]?.widget;
+                if (w === undefined || live[w] === undefined) continue;
+                if (c.name === "SetUIWidgetVisible") live[w].vis = c.args[1];
+                if (c.name === "SetUIWidgetPosition") live[w].pos = c.args[1].v.join(",");
+            }
+            const buttons = new Set(calls.filter((c) => c.name === "AddUIButton").map((c) => c.args[0]));
+            const hit = Object.entries(live).find(([name, s]) => s.vis && s.pos === want && buttons.has(name + "_b"));
+            if (hit === undefined) throw new Error(`no visible button at ${want} for "${id}"`);
+            M.OnPlayerUIButtonEvent(player, { widget: hit[0] + "_b" }, "UIButtonEvent.ButtonUp");
         },
         dispose() {
             globalThis.mod = prevMod;

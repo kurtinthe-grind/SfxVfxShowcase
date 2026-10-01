@@ -1,0 +1,260 @@
+{
+ "pairs": [
+  {
+   "key": "sxM00",
+   "text": "BR"
+  },
+  {
+   "key": "sxM01",
+   "text": "BR_Stop"
+  },
+  {
+   "key": "sxM02",
+   "text": "BR_InsertionCinematic_Dropzone_Loop"
+  },
+  {
+   "key": "sxM03",
+   "text": "BR_InsertionCinematic_Loop"
+  },
+  {
+   "key": "sxM04",
+   "text": "BR_InsertionJump"
+  },
+  {
+   "key": "sxM05",
+   "text": "BR_InsertionLanding"
+  },
+  {
+   "key": "sxM06",
+   "text": "BR_LastTwoSquads"
+  },
+  {
+   "key": "sxM07",
+   "text": "BR_Loss_Early_Loop"
+  },
+  {
+   "key": "sxM08",
+   "text": "BR_Loss_EndOfRound_Loop"
+  },
+  {
+   "key": "sxM09",
+   "text": "BR_Loss_SecondPlace_Loop"
+  },
+  {
+   "key": "sxM10",
+   "text": "BR_Pause"
+  },
+  {
+   "key": "sxM11",
+   "text": "BR_RespawnSecondChance"
+  },
+  {
+   "key": "sxM12",
+   "text": "BR_RespawnTower"
+  },
+  {
+   "key": "sxM13",
+   "text": "BR_Unpause"
+  },
+  {
+   "key": "sxM14",
+   "text": "BR_WonRound_Loop"
+  },
+  {
+   "key": "sxM15",
+   "text": "BRGauntlet_LobbyFilled"
+  },
+  {
+   "key": "sxM16",
+   "text": "BRGauntlet_WaitingForPlayers_Loop"
+  },
+  {
+   "key": "sxM17",
+   "text": "BR_Amplitude"
+  },
+  {
+   "key": "sxM18",
+   "text": "BRGauntlet_LobbyTimerRemaining"
+  },
+  {
+   "key": "sxM19",
+   "text": "CORE"
+  },
+  {
+   "key": "sxM20",
+   "text": "Core_Stop"
+  },
+  {
+   "key": "sxM21",
+   "text": "Core_Deploy_Loop"
+  },
+  {
+   "key": "sxM22",
+   "text": "Core_EndOfRound_Loop"
+  },
+  {
+   "key": "sxM23",
+   "text": "Core_LastPhaseBegin"
+  },
+  {
+   "key": "sxM24",
+   "text": "Core_Overtime_Loop"
+  },
+  {
+   "key": "sxM25",
+   "text": "Core_PauseMenu_Loop"
+  },
+  {
+   "key": "sxM26",
+   "text": "Core_PhaseBegin"
+  },
+  {
+   "key": "sxM27",
+   "text": "Core_PhaseEnded"
+  },
+  {
+   "key": "sxM28",
+   "text": "Core_Stinger_Negative"
+  },
+  {
+   "key": "sxM29",
+   "text": "Core_Stinger_Positive"
+  },
+  {
+   "key": "sxM30",
+   "text": "Core_Stinger_RankUp"
+  },
+  {
+   "key": "sxM31",
+   "text": "Core_Amplitude"
+  },
+  {
+   "key": "sxM32",
+   "text": "Core_IsWinning"
+  },
+  {
+   "key": "sxM33",
+   "text": "Core_PhaseUrgency"
+  },
+  {
+   "key": "sxM34",
+   "text": "Core_Sector"
+  },
+  {
+   "key": "sxM35",
+   "text": "Core_Urgency"
+  },
+  {
+   "key": "sxM36",
+   "text": "GAUNTLET"
+  },
+  {
+   "key": "sxM37",
+   "text": "Gauntlet_Stop"
+  },
+  {
+   "key": "sxM38",
+   "text": "Gauntlet_Deploy"
+  },
+  {
+   "key": "sxM39",
+   "text": "Gauntlet_Loss_FinalMission_Loop"
+  },
+  {
+   "key": "sxM40",
+   "text": "Gauntlet_Loss_Loop"
+  },
+  {
+   "key": "sxM41",
+   "text": "Gauntlet_MissionBriefing_Final"
+  },
+  {
+   "key": "sxM42",
+   "text": "Gauntlet_MissionBriefing_One"
+  },
+  {
+   "key": "sxM43",
+   "text": "Gauntlet_MissionBriefing_Three"
+  },
+  {
+   "key": "sxM44",
+   "text": "Gauntlet_MissionBriefing_Two"
+  },
+  {
+   "key": "sxM45",
+   "text": "Gauntlet_Pause"
+  },
+  {
+   "key": "sxM46",
+   "text": "Gauntlet_Qualified_Loop"
+  },
+  {
+   "key": "sxM47",
+   "text": "Gauntlet_Qualified_Outro"
+  },
+  {
+   "key": "sxM48",
+   "text": "Gauntlet_Unpause"
+  },
+  {
+   "key": "sxM49",
+   "text": "Gauntlet_Urgency"
+  },
+  {
+   "key": "sxM50",
+   "text": "Gauntlet_Urgency_FinalMission"
+  },
+  {
+   "key": "sxM51",
+   "text": "Gauntlet_WonOperation_Loop"
+  },
+  {
+   "key": "sxM52",
+   "text": "Gauntlet_Amplitude"
+  },
+  {
+   "key": "sxM53",
+   "text": "RADIO"
+  },
+  {
+   "key": "sxM54",
+   "text": "Radio_Stop"
+  },
+  {
+   "key": "sxM55",
+   "text": "Radio_ClearQueue"
+  },
+  {
+   "key": "sxM56",
+   "text": "Radio_NextQueuedTrack"
+  },
+  {
+   "key": "sxM57",
+   "text": "Radio_Play"
+  },
+  {
+   "key": "sxM58",
+   "text": "Radio_Amplitude"
+  },
+  {
+   "key": "sxM59",
+   "text": "Radio_Biome"
+  },
+  {
+   "key": "sxM60",
+   "text": "Radio_Channel"
+  },
+  {
+   "key": "sxM61",
+   "text": "Radio_ContinueQueueOnTrackEnd"
+  },
+  {
+   "key": "sxM62",
+   "text": "Radio_LoopQueuedTracks"
+  },
+  {
+   "key": "sxM63",
+   "text": "Radio_QueueTrackNumber"
+  }
+ ]
+}
