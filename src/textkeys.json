@@ -3838,23 +3838,23 @@
   },
   {
    "key": "sxv23",
-   "text": "BASE Smoke Column XXL"
+   "text": "BASE SmokeFX Column XXL"
   },
   {
    "key": "sxv24",
-   "text": "BASE Smoke Pillar Black L"
+   "text": "BASE SmokeFX Pillar Black L"
   },
   {
    "key": "sxv25",
-   "text": "BASE Smoke Pillar Black L Dist"
+   "text": "BASE SmokeFX Pillar Black L Dist"
   },
   {
    "key": "sxv26",
-   "text": "BASE Smoke Pillar White L"
+   "text": "BASE SmokeFX Pillar White L"
   },
   {
    "key": "sxv27",
-   "text": "BASE Smoke Soft S"
+   "text": "BASE SmokeFX Soft S"
   },
   {
    "key": "sxv28",
@@ -3942,27 +3942,27 @@
   },
   {
    "key": "sxv49",
-   "text": "CIN MF Large Static Fire"
+   "text": "CIN MFX Large Static Fire"
   },
   {
    "key": "sxv50",
-   "text": "CIN MF Large Static VortexFire"
+   "text": "CIN MFX Large Static VortexFire"
   },
   {
    "key": "sxv51",
-   "text": "CIN MF Medium Static Fire"
+   "text": "CIN MFX Medium Static Fire"
   },
   {
    "key": "sxv52",
-   "text": "CIN MF Medium Static Smoke"
+   "text": "CIN MFX Medium Static SmokeFX"
   },
   {
    "key": "sxv53",
-   "text": "CIN MF Small Static Fire"
+   "text": "CIN MFX Small Static Fire"
   },
   {
    "key": "sxv54",
-   "text": "CIN MF Small Static Smoke"
+   "text": "CIN MFX Small Static SmokeFX"
   },
   {
    "key": "sxv55",
@@ -4242,7 +4242,7 @@
   },
   {
    "key": "sxv124",
-   "text": "Gadget M320 Reload Smoke"
+   "text": "Gadget M320 Reload SmokeFX"
   },
   {
    "key": "sxv125",
@@ -4342,7 +4342,7 @@
   },
   {
    "key": "sxv149",
-   "text": "Gadget RemoteTurret Smoke Open"
+   "text": "Gadget RemoteTurret SmokeFX Open"
   },
   {
    "key": "sxv150",
@@ -4466,19 +4466,19 @@
   },
   {
    "key": "sxv180",
-   "text": "Granite Strike Smoke Marker Green"
+   "text": "Granite Strike SmokeFX Marker Green"
   },
   {
    "key": "sxv181",
-   "text": "Granite Strike Smoke Marker Red"
+   "text": "Granite Strike SmokeFX Marker Red"
   },
   {
    "key": "sxv182",
-   "text": "Granite Strike Smoke Marker Violet"
+   "text": "Granite Strike SmokeFX Marker Violet"
   },
   {
    "key": "sxv183",
-   "text": "Granite Strike Smoke Marker Yellow"
+   "text": "Granite Strike SmokeFX Marker Yellow"
   },
   {
    "key": "sxv184",
@@ -4594,15 +4594,15 @@
   },
   {
    "key": "sxv212",
-   "text": "Grenade Smoke Detonation"
+   "text": "Grenade SmokeFX Detonation"
   },
   {
    "key": "sxv213",
-   "text": "Grenade Smoke Detonation Upgraded"
+   "text": "Grenade SmokeFX Detonation Upgraded"
   },
   {
    "key": "sxv214",
-   "text": "Grenade Smoke Trail"
+   "text": "Grenade SmokeFX Trail"
   },
   {
    "key": "sxv215",
@@ -4722,19 +4722,19 @@
   },
   {
    "key": "sxv244",
-   "text": "MF M320 1P"
+   "text": "MFX M320 1P"
   },
   {
    "key": "sxv245",
-   "text": "MF M320 3P"
+   "text": "MFX M320 3P"
   },
   {
    "key": "sxv246",
-   "text": "MF TRR8 1P"
+   "text": "MFX TRR8 1P"
   },
   {
    "key": "sxv247",
-   "text": "MF TRR8 3P"
+   "text": "MFX TRR8 3P"
   },
   {
    "key": "sxv248",
@@ -4878,7 +4878,7 @@
   },
   {
    "key": "sxv283",
-   "text": "Smoke Marker Custom"
+   "text": "SmokeFX Marker Custom"
   },
   {
    "key": "sxv284",
@@ -5366,7 +5366,7 @@
   },
   {
    "key": "sxg93",
-   "text": "MF"
+   "text": "MuzzleFlash"
   },
   {
    "key": "sxg94",
@@ -5402,7 +5402,7 @@
   },
   {
    "key": "sxg102",
-   "text": "Smoke"
+   "text": "SmokeFX"
   },
   {
    "key": "sxg103",
@@ -5542,7 +5542,7 @@
   },
   {
    "key": "sxp24",
-   "text": "MF"
+   "text": "MFX"
   },
   {
    "key": "sxp25",
@@ -5662,7 +5662,7 @@
   },
   {
    "key": "sxp54",
-   "text": "Smoke"
+   "text": "SmokeFX"
   },
   {
    "key": "sxp55",

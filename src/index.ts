@@ -426,11 +426,8 @@ function handle(st: PlayerState, action: string): void {
     if (action.slice(0, 4) === "rail" || (action.charAt(0) === "c" && action.length > 1)) {
         const body = action.slice(0, 4) === "rail" ? action.slice(4) : action.slice(1);
         const group = parseInt(body, 10);
-        // 0 is a valid group. An earlier "row < 1" guard made the first group
-        // unselectable, so choosing any group was a one-way trip.
+        // 0 is ALL (the ALL row emits rail0), 1.. are the groups.
         if (isNaN(group) || group < 0) return;
-        // The ALL row is a static text node and emits nothing, so there is no
-        // "clear the filter" action to accept here.
         ui.group = group;
         ui.page = 0;
         defer(st);

@@ -182,12 +182,11 @@ for (const [name, emit] of [
     if (!emit.test(ui)) problems.push(`ui.ts no longer builds the ${name} family (${emit})`);
 }
 
-// The ALL row is the absence of a filter, not an action. It must be a text node
-// of its own, never a button, and it must not share a key with the group rows:
-// when one slot served both, the handle created on a later page could not change
-// kind and ALL stayed clickable.
-if (!/\{ \.\.\.RAIL_ROW, k: "text" \}/.test(ui)) {
-    problems.push('ui.ts no longer builds the rail ALL row as text ({ ...RAIL_ROW, k: "text" })');
+// The ALL row clears the group (rail0). It is a button with a key of its own and
+// must not share one with the group rows: when one slot served both, the handle
+// created on a later page could not change kind.
+if (!/ensureWidget\(ui, RAIL_ROW, "railAll", [^;]*\(\) => "rail0"\);/.test(ui)) {
+    problems.push('ui.ts no longer builds the rail ALL row as a button emitting rail0');
 }
 if (!/"railAll"/.test(ui)) {
     problems.push('ui.ts no longer gives the rail ALL row its own "railAll" handle key');

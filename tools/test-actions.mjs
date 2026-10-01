@@ -50,15 +50,13 @@ const CASES = [
         expect: /does not handle \d+ scene action|no longer builds the rail/,
     },
     {
-        // The ALL row is the absence of a filter, so it emits nothing. If it ever
-        // goes back to sharing a key with the group rows, the handle created on a
-        // later page can no longer change kind and ALL becomes clickable again --
-        // a button that looks like a label and does nothing.
-        name: "rail ALL row given a button handle key",
+        // The ALL row is the only way back from a picked group. Without its
+        // rail0 action it would emit its handle key, which nothing handles.
+        name: "rail ALL row loses its rail0 action",
         file: UI,
         original: uiOriginal,
-        broken: uiOriginal.replace('{ ...RAIL_ROW, k: "text" }', "RAIL_ROW"),
-        expect: /no longer builds the rail ALL row as text/,
+        broken: uiOriginal.replace(', () => "rail0");', ");"),
+        expect: /no longer builds the rail ALL row as a button emitting rail0/,
     },
     {
         // The reverse: handle() keeps testing a name ui.ts stopped emitting. No
@@ -76,7 +74,8 @@ const CASES = [
         name: "the unhandled-action log removed",
         file: IDX,
         original: idxOriginal,
-        broken: idxOriginal.replace('log(\`UNHANDLED ACTION "\${action}" (open=\${ui.open} tab=\${ui.tab})\`);', ""),
+        // Every copy: the mt* branch has its own.
+        broken: idxOriginal.split('log(\`UNHANDLED ACTION "\${action}" (open=\${ui.open} tab=\${ui.tab})\`);').join(""),
         expect: /does not log an unhandled action/,
     },
 ];

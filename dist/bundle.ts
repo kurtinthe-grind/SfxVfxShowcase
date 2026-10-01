@@ -2482,11 +2482,11 @@ export const VFX_CATALOG: readonly VfxEntry[] = [
     { name: "FX_BASE_Fire_S_NoSmoke", display: "BASE Fire S NoSmoke", category: "BASE", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_BASE_Fire_S_NoSmoke, key: "sxv20", catKey: "sxg67" },
     { name: "FX_BASE_Flies_Small", display: "BASE Flies Small", category: "BASE", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_BASE_Flies_Small, key: "sxv21", catKey: "sxg67" },
     { name: "FX_BASE_Seagull_Flock", display: "BASE Seagull Flock", category: "BASE", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_BASE_Seagull_Flock, key: "sxv22", catKey: "sxg67" },
-    { name: "FX_BASE_Smoke_Column_XXL", display: "BASE Smoke Column XXL", category: "BASE", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_BASE_Smoke_Column_XXL, key: "sxv23", catKey: "sxg67" },
-    { name: "FX_BASE_Smoke_Pillar_Black_L", display: "BASE Smoke Pillar Black L", category: "BASE", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_BASE_Smoke_Pillar_Black_L, key: "sxv24", catKey: "sxg67" },
-    { name: "FX_BASE_Smoke_Pillar_Black_L_Dist", display: "BASE Smoke Pillar Black L Dist", category: "BASE", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_BASE_Smoke_Pillar_Black_L_Dist, key: "sxv25", catKey: "sxg67" },
-    { name: "FX_BASE_Smoke_Pillar_White_L", display: "BASE Smoke Pillar White L", category: "BASE", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_BASE_Smoke_Pillar_White_L, key: "sxv26", catKey: "sxg67" },
-    { name: "FX_BASE_Smoke_Soft_S_GS", display: "BASE Smoke Soft S", category: "BASE", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_BASE_Smoke_Soft_S_GS, key: "sxv27", catKey: "sxg67" },
+    { name: "FX_BASE_Smoke_Column_XXL", display: "BASE SmokeFX Column XXL", category: "BASE", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_BASE_Smoke_Column_XXL, key: "sxv23", catKey: "sxg67" },
+    { name: "FX_BASE_Smoke_Pillar_Black_L", display: "BASE SmokeFX Pillar Black L", category: "BASE", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_BASE_Smoke_Pillar_Black_L, key: "sxv24", catKey: "sxg67" },
+    { name: "FX_BASE_Smoke_Pillar_Black_L_Dist", display: "BASE SmokeFX Pillar Black L Dist", category: "BASE", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_BASE_Smoke_Pillar_Black_L_Dist, key: "sxv25", catKey: "sxg67" },
+    { name: "FX_BASE_Smoke_Pillar_White_L", display: "BASE SmokeFX Pillar White L", category: "BASE", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_BASE_Smoke_Pillar_White_L, key: "sxv26", catKey: "sxg67" },
+    { name: "FX_BASE_Smoke_Soft_S_GS", display: "BASE SmokeFX Soft S", category: "BASE", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_BASE_Smoke_Soft_S_GS, key: "sxv27", catKey: "sxg67" },
     { name: "FX_BASE_Sparks_Pulse_L", display: "BASE Sparks Pulse L", category: "BASE", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_BASE_Sparks_Pulse_L, key: "sxv28", catKey: "sxg67" },
     { name: "FX_BD_Huge_Horizon_Exp", display: "BD Huge Horizon Exp", category: "BD", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_BD_Huge_Horizon_Exp, key: "sxv29", catKey: "sxg68" },
     { name: "FX_BD_Med_Horizon_Exp", display: "BD Med Horizon Exp", category: "BD", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_BD_Med_Horizon_Exp, key: "sxv30", catKey: "sxg68" },
@@ -2508,12 +2508,12 @@ export const VFX_CATALOG: readonly VfxEntry[] = [
     { name: "FX_CarlGustaf_MK4_Impact", display: "CarlGustaf MK4 Impact", category: "CarlGustaf", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_CarlGustaf_MK4_Impact, key: "sxv46", catKey: "sxg78" },
     { name: "FX_Carrier_Explosion_Dist", display: "Carrier Explosion Dist", category: "Carrier", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Carrier_Explosion_Dist, key: "sxv47", catKey: "sxg79" },
     { name: "FX_Chaingun_30mm_HEDP_Hit", display: "Chaingun 30mm HEDP Hit", category: "Chaingun", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Chaingun_30mm_HEDP_Hit, key: "sxv48", catKey: "sxg80" },
-    { name: "FX_CIN_MF_Large_Static_Fire", display: "CIN MF Large Static Fire", category: "CIN", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_CIN_MF_Large_Static_Fire, key: "sxv49", catKey: "sxg81" },
-    { name: "FX_CIN_MF_Large_Static_VortexFire", display: "CIN MF Large Static VortexFire", category: "CIN", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_CIN_MF_Large_Static_VortexFire, key: "sxv50", catKey: "sxg81" },
-    { name: "FX_CIN_MF_Medium_Static_Fire", display: "CIN MF Medium Static Fire", category: "CIN", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_CIN_MF_Medium_Static_Fire, key: "sxv51", catKey: "sxg81" },
-    { name: "FX_CIN_MF_Medium_Static_Smoke", display: "CIN MF Medium Static Smoke", category: "CIN", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_CIN_MF_Medium_Static_Smoke, key: "sxv52", catKey: "sxg81" },
-    { name: "FX_CIN_MF_Small_Static_Fire", display: "CIN MF Small Static Fire", category: "CIN", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_CIN_MF_Small_Static_Fire, key: "sxv53", catKey: "sxg81" },
-    { name: "FX_CIN_MF_Small_Static_Smoke", display: "CIN MF Small Static Smoke", category: "CIN", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_CIN_MF_Small_Static_Smoke, key: "sxv54", catKey: "sxg81" },
+    { name: "FX_CIN_MF_Large_Static_Fire", display: "CIN MFX Large Static Fire", category: "CIN", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_CIN_MF_Large_Static_Fire, key: "sxv49", catKey: "sxg81" },
+    { name: "FX_CIN_MF_Large_Static_VortexFire", display: "CIN MFX Large Static VortexFire", category: "CIN", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_CIN_MF_Large_Static_VortexFire, key: "sxv50", catKey: "sxg81" },
+    { name: "FX_CIN_MF_Medium_Static_Fire", display: "CIN MFX Medium Static Fire", category: "CIN", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_CIN_MF_Medium_Static_Fire, key: "sxv51", catKey: "sxg81" },
+    { name: "FX_CIN_MF_Medium_Static_Smoke", display: "CIN MFX Medium Static SmokeFX", category: "CIN", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_CIN_MF_Medium_Static_Smoke, key: "sxv52", catKey: "sxg81" },
+    { name: "FX_CIN_MF_Small_Static_Fire", display: "CIN MFX Small Static Fire", category: "CIN", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_CIN_MF_Small_Static_Fire, key: "sxv53", catKey: "sxg81" },
+    { name: "FX_CIN_MF_Small_Static_Smoke", display: "CIN MFX Small Static SmokeFX", category: "CIN", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_CIN_MF_Small_Static_Smoke, key: "sxv54", catKey: "sxg81" },
     { name: "FX_CivCar_SUV_Explosion", display: "CivCar SUV Explosion", category: "CivCar", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_CivCar_SUV_Explosion, key: "sxv55", catKey: "sxg82" },
     { name: "FX_CivCar_Tire_fire_S_GS", display: "CivCar Tire fire S", category: "CivCar", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_CivCar_Tire_fire_S_GS, key: "sxv56", catKey: "sxg82" },
     { name: "FX_Cloud_Cluster", display: "Cloud Cluster", category: "Cloud", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Cloud_Cluster, key: "sxv57", catKey: "sxg83" },
@@ -2583,7 +2583,7 @@ export const VFX_CATALOG: readonly VfxEntry[] = [
     { name: "FX_Gadget_Javelin_Launch_1P", display: "Gadget Javelin Launch 1P", category: "Gadget", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Gadget_Javelin_Launch_1P, key: "sxv121", catKey: "sxg88" },
     { name: "FX_Gadget_Javelin_Launch_3P", display: "Gadget Javelin Launch 3P", category: "Gadget", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Gadget_Javelin_Launch_3P, key: "sxv122", catKey: "sxg88" },
     { name: "FX_Gadget_M320_Reload_ShellCasing", display: "Gadget M320 Reload ShellCasing", category: "Gadget", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Gadget_M320_Reload_ShellCasing, key: "sxv123", catKey: "sxg88" },
-    { name: "FX_Gadget_M320_Reload_Smoke", display: "Gadget M320 Reload Smoke", category: "Gadget", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Gadget_M320_Reload_Smoke, key: "sxv124", catKey: "sxg88" },
+    { name: "FX_Gadget_M320_Reload_Smoke", display: "Gadget M320 Reload SmokeFX", category: "Gadget", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Gadget_M320_Reload_Smoke, key: "sxv124", catKey: "sxg88" },
     { name: "FX_Gadget_M4_SLAM_Detonation", display: "Gadget M4 SLAM Detonation", category: "Gadget", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Gadget_M4_SLAM_Detonation, key: "sxv125", catKey: "sxg88" },
     { name: "FX_Gadget_MBTLAW_Launch_1P", display: "Gadget MBTLAW Launch 1P", category: "Gadget", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Gadget_MBTLAW_Launch_1P, key: "sxv126", catKey: "sxg88" },
     { name: "FX_Gadget_MBTLAW_Launch_3P", display: "Gadget MBTLAW Launch 3P", category: "Gadget", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Gadget_MBTLAW_Launch_3P, key: "sxv127", catKey: "sxg88" },
@@ -2608,7 +2608,7 @@ export const VFX_CATALOG: readonly VfxEntry[] = [
     { name: "FX_Gadget_RemoteTurret_Box_WreckState", display: "Gadget RemoteTurret Box WreckState", category: "Gadget", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Gadget_RemoteTurret_Box_WreckState, key: "sxv146", catKey: "sxg88" },
     { name: "FX_Gadget_RemoteTurret_Damage_Light", display: "Gadget RemoteTurret Damage Light", category: "Gadget", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Gadget_RemoteTurret_Damage_Light, key: "sxv147", catKey: "sxg88" },
     { name: "FX_Gadget_RemoteTurret_ScreenEffect_Damage", display: "Gadget RemoteTurret ScreenEffect Damage", category: "Gadget", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Gadget_RemoteTurret_ScreenEffect_Damage, key: "sxv148", catKey: "sxg88" },
-    { name: "FX_Gadget_RemoteTurret_Smoke_Open", display: "Gadget RemoteTurret Smoke Open", category: "Gadget", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Gadget_RemoteTurret_Smoke_Open, key: "sxv149", catKey: "sxg88" },
+    { name: "FX_Gadget_RemoteTurret_Smoke_Open", display: "Gadget RemoteTurret SmokeFX Open", category: "Gadget", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Gadget_RemoteTurret_Smoke_Open, key: "sxv149", catKey: "sxg88" },
     { name: "FX_Gadget_RPG7V2_Launch_1P", display: "Gadget RPG7V2 Launch 1P", category: "Gadget", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Gadget_RPG7V2_Launch_1P, key: "sxv150", catKey: "sxg88" },
     { name: "FX_Gadget_RPG7V2_Launch_3P", display: "Gadget RPG7V2 Launch 3P", category: "Gadget", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Gadget_RPG7V2_Launch_3P, key: "sxv151", catKey: "sxg88" },
     { name: "FX_Gadget_Sabotage_01_StartSparks", display: "Gadget Sabotage 01 StartSparks", category: "Gadget", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Gadget_Sabotage_01_StartSparks, key: "sxv152", catKey: "sxg88" },
@@ -2639,10 +2639,10 @@ export const VFX_CATALOG: readonly VfxEntry[] = [
     { name: "FX_Gadget_VehicleRessuplyCrate_Destruction", display: "Gadget VehicleRessuplyCrate Destruction", category: "Gadget", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Gadget_VehicleRessuplyCrate_Destruction, key: "sxv177", catKey: "sxg88" },
     { name: "FX_Gadget_VehicleSupplyCrate_Range_Indicator", display: "Gadget VehicleSupplyCrate Range Indicator", category: "Gadget", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Gadget_VehicleSupplyCrate_Range_Indicator, key: "sxv178", catKey: "sxg88" },
     { name: "FX_Gadget_VehicleSupplyCrate_Range_Indicator_Upgraded", display: "Gadget VehicleSupplyCrate Range Indicator Upgraded", category: "Gadget", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Gadget_VehicleSupplyCrate_Range_Indicator_Upgraded, key: "sxv179", catKey: "sxg88" },
-    { name: "FX_Granite_Strike_Smoke_Marker_Green", display: "Granite Strike Smoke Marker Green", category: "Granite", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Granite_Strike_Smoke_Marker_Green, key: "sxv180", catKey: "sxg89" },
-    { name: "FX_Granite_Strike_Smoke_Marker_Red", display: "Granite Strike Smoke Marker Red", category: "Granite", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Granite_Strike_Smoke_Marker_Red, key: "sxv181", catKey: "sxg89" },
-    { name: "FX_Granite_Strike_Smoke_Marker_Violet", display: "Granite Strike Smoke Marker Violet", category: "Granite", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Granite_Strike_Smoke_Marker_Violet, key: "sxv182", catKey: "sxg89" },
-    { name: "FX_Granite_Strike_Smoke_Marker_Yellow", display: "Granite Strike Smoke Marker Yellow", category: "Granite", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Granite_Strike_Smoke_Marker_Yellow, key: "sxv183", catKey: "sxg89" },
+    { name: "FX_Granite_Strike_Smoke_Marker_Green", display: "Granite Strike SmokeFX Marker Green", category: "Granite", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Granite_Strike_Smoke_Marker_Green, key: "sxv180", catKey: "sxg89" },
+    { name: "FX_Granite_Strike_Smoke_Marker_Red", display: "Granite Strike SmokeFX Marker Red", category: "Granite", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Granite_Strike_Smoke_Marker_Red, key: "sxv181", catKey: "sxg89" },
+    { name: "FX_Granite_Strike_Smoke_Marker_Violet", display: "Granite Strike SmokeFX Marker Violet", category: "Granite", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Granite_Strike_Smoke_Marker_Violet, key: "sxv182", catKey: "sxg89" },
+    { name: "FX_Granite_Strike_Smoke_Marker_Yellow", display: "Granite Strike SmokeFX Marker Yellow", category: "Granite", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Granite_Strike_Smoke_Marker_Yellow, key: "sxv183", catKey: "sxg89" },
     { name: "FX_Grenade_40mm_AT_Detonation", display: "Grenade 40mm AT Detonation", category: "Grenade", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Grenade_40mm_AT_Detonation, key: "sxv184", catKey: "sxg90" },
     { name: "FX_Grenade_40mm_HE_Detonation", display: "Grenade 40mm HE Detonation", category: "Grenade", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Grenade_40mm_HE_Detonation, key: "sxv185", catKey: "sxg90" },
     { name: "FX_Grenade_40mm_HE_Detonation_Underwater", display: "Grenade 40mm HE Detonation Underwater", category: "Grenade", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Grenade_40mm_HE_Detonation_Underwater, key: "sxv186", catKey: "sxg90" },
@@ -2671,9 +2671,9 @@ export const VFX_CATALOG: readonly VfxEntry[] = [
     { name: "FX_Grenade_RGO_Impact_Trail", display: "Grenade RGO Impact Trail", category: "Grenade", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Grenade_RGO_Impact_Trail, key: "sxv209", catKey: "sxg90" },
     { name: "FX_Grenade_SignalSmoke", display: "Grenade SignalSmoke", category: "Grenade", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Grenade_SignalSmoke, key: "sxv210", catKey: "sxg90" },
     { name: "FX_Grenade_SignalSmoke_INV", display: "Grenade SignalSmoke INV", category: "Grenade", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Grenade_SignalSmoke_INV, key: "sxv211", catKey: "sxg90" },
-    { name: "FX_Grenade_Smoke_Detonation", display: "Grenade Smoke Detonation", category: "Grenade", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Grenade_Smoke_Detonation, key: "sxv212", catKey: "sxg90" },
-    { name: "FX_Grenade_Smoke_Detonation_Upgraded", display: "Grenade Smoke Detonation Upgraded", category: "Grenade", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Grenade_Smoke_Detonation_Upgraded, key: "sxv213", catKey: "sxg90" },
-    { name: "FX_Grenade_Smoke_Trail", display: "Grenade Smoke Trail", category: "Grenade", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Grenade_Smoke_Trail, key: "sxv214", catKey: "sxg90" },
+    { name: "FX_Grenade_Smoke_Detonation", display: "Grenade SmokeFX Detonation", category: "Grenade", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Grenade_Smoke_Detonation, key: "sxv212", catKey: "sxg90" },
+    { name: "FX_Grenade_Smoke_Detonation_Upgraded", display: "Grenade SmokeFX Detonation Upgraded", category: "Grenade", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Grenade_Smoke_Detonation_Upgraded, key: "sxv213", catKey: "sxg90" },
+    { name: "FX_Grenade_Smoke_Trail", display: "Grenade SmokeFX Trail", category: "Grenade", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Grenade_Smoke_Trail, key: "sxv214", catKey: "sxg90" },
     { name: "FX_Impact_LoadoutCrate_Bricks", display: "Impact LoadoutCrate Bricks", category: "Impact", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Impact_LoadoutCrate_Bricks, key: "sxv215", catKey: "sxg91" },
     { name: "FX_Impact_LoadoutCrate_Dirt", display: "Impact LoadoutCrate Dirt", category: "Impact", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Impact_LoadoutCrate_Dirt, key: "sxv216", catKey: "sxg91" },
     { name: "FX_Impact_LoadoutCrate_Generic", display: "Impact LoadoutCrate Generic", category: "Impact", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Impact_LoadoutCrate_Generic, key: "sxv217", catKey: "sxg91" },
@@ -2703,10 +2703,10 @@ export const VFX_CATALOG: readonly VfxEntry[] = [
     { name: "FX_Impact_SupplyDrop_Wood", display: "Impact SupplyDrop Wood", category: "Impact", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Impact_SupplyDrop_Wood, key: "sxv241", catKey: "sxg91" },
     { name: "FX_LoadoutCrate_AirSpawn", display: "LoadoutCrate AirSpawn", category: "LoadoutCrate", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_LoadoutCrate_AirSpawn, key: "sxv242", catKey: "sxg92" },
     { name: "FX_LoadoutCrate_Drop_Trails", display: "LoadoutCrate Drop Trails", category: "LoadoutCrate", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_LoadoutCrate_Drop_Trails, key: "sxv243", catKey: "sxg92" },
-    { name: "FX_MF_M320_1P", display: "MF M320 1P", category: "MF", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_MF_M320_1P, key: "sxv244", catKey: "sxg93" },
-    { name: "FX_MF_M320_3P", display: "MF M320 3P", category: "MF", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_MF_M320_3P, key: "sxv245", catKey: "sxg93" },
-    { name: "FX_MF_TRR8_1P", display: "MF TRR8 1P", category: "MF", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_MF_TRR8_1P, key: "sxv246", catKey: "sxg93" },
-    { name: "FX_MF_TRR8_3P", display: "MF TRR8 3P", category: "MF", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_MF_TRR8_3P, key: "sxv247", catKey: "sxg93" },
+    { name: "FX_MF_M320_1P", display: "MFX M320 1P", category: "MF", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_MF_M320_1P, key: "sxv244", catKey: "sxg93" },
+    { name: "FX_MF_M320_3P", display: "MFX M320 3P", category: "MF", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_MF_M320_3P, key: "sxv245", catKey: "sxg93" },
+    { name: "FX_MF_TRR8_1P", display: "MFX TRR8 1P", category: "MF", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_MF_TRR8_1P, key: "sxv246", catKey: "sxg93" },
+    { name: "FX_MF_TRR8_3P", display: "MFX TRR8 3P", category: "MF", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_MF_TRR8_3P, key: "sxv247", catKey: "sxg93" },
     { name: "FX_Mine_M18_Claymore_Detonation", display: "Mine M18 Claymore Detonation", category: "Mine", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Mine_M18_Claymore_Detonation, key: "sxv248", catKey: "sxg94" },
     { name: "FX_Mine_M18_Claymore_Laser_Tripwire", display: "Mine M18 Claymore Laser Tripwire", category: "Mine", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Mine_M18_Claymore_Laser_Tripwire, key: "sxv249", catKey: "sxg94" },
     { name: "FX_Missile_IGLA_Trail", display: "Missile IGLA Trail", category: "Missile", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Missile_IGLA_Trail, key: "sxv250", catKey: "sxg95" },
@@ -2742,7 +2742,7 @@ export const VFX_CATALOG: readonly VfxEntry[] = [
     { name: "FX_Rocket_RPG7V2_Trail", display: "Rocket RPG7V2 Trail", category: "Rocket", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Rocket_RPG7V2_Trail, key: "sxv280", catKey: "sxg100" },
     { name: "FX_Rocket_RPG7V2_Trail_SP", display: "Rocket RPG7V2 Trail SP", category: "Rocket", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Rocket_RPG7V2_Trail_SP, key: "sxv281", catKey: "sxg100" },
     { name: "FX_ShellEjection_DP12_12g_Buckshot", display: "ShellEjection DP12 12g Buckshot", category: "ShellEjection", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_ShellEjection_DP12_12g_Buckshot, key: "sxv282", catKey: "sxg101" },
-    { name: "FX_Smoke_Marker_Custom", display: "Smoke Marker Custom", category: "Smoke", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Smoke_Marker_Custom, key: "sxv283", catKey: "sxg102" },
+    { name: "FX_Smoke_Marker_Custom", display: "SmokeFX Marker Custom", category: "Smoke", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Smoke_Marker_Custom, key: "sxv283", catKey: "sxg102" },
     { name: "FX_Snow_BlowingSnow_L_01_TerrainSnap", display: "Snow BlowingSnow L", category: "Snow", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Snow_BlowingSnow_L_01_TerrainSnap, key: "sxv284", catKey: "sxg103" },
     { name: "FX_Snow_BlowingSnow_M_01_TerrainSnap", display: "Snow BlowingSnow M", category: "Snow", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Snow_BlowingSnow_M_01_TerrainSnap, key: "sxv285", catKey: "sxg103" },
     { name: "FX_Snow_BlowingSnow_S_01", display: "Snow BlowingSnow S", category: "Snow", enum: "RuntimeSpawn_Common", asset: mod.RuntimeSpawn_Common.FX_Snow_BlowingSnow_S_01, key: "sxv286", catKey: "sxg103" },
@@ -3741,11 +3741,11 @@ export const VFX_TEXT: readonly TextPair[] = [
     { key: "sxv20", text: "BASE Fire S NoSmoke" },
     { key: "sxv21", text: "BASE Flies Small" },
     { key: "sxv22", text: "BASE Seagull Flock" },
-    { key: "sxv23", text: "BASE Smoke Column XXL" },
-    { key: "sxv24", text: "BASE Smoke Pillar Black L" },
-    { key: "sxv25", text: "BASE Smoke Pillar Black L Dist" },
-    { key: "sxv26", text: "BASE Smoke Pillar White L" },
-    { key: "sxv27", text: "BASE Smoke Soft S" },
+    { key: "sxv23", text: "BASE SmokeFX Column XXL" },
+    { key: "sxv24", text: "BASE SmokeFX Pillar Black L" },
+    { key: "sxv25", text: "BASE SmokeFX Pillar Black L Dist" },
+    { key: "sxv26", text: "BASE SmokeFX Pillar White L" },
+    { key: "sxv27", text: "BASE SmokeFX Soft S" },
     { key: "sxv28", text: "BASE Sparks Pulse L" },
     { key: "sxv29", text: "BD Huge Horizon Exp" },
     { key: "sxv30", text: "BD Med Horizon Exp" },
@@ -3767,12 +3767,12 @@ export const VFX_TEXT: readonly TextPair[] = [
     { key: "sxv46", text: "CarlGustaf MK4 Impact" },
     { key: "sxv47", text: "Carrier Explosion Dist" },
     { key: "sxv48", text: "Chaingun 30mm HEDP Hit" },
-    { key: "sxv49", text: "CIN MF Large Static Fire" },
-    { key: "sxv50", text: "CIN MF Large Static VortexFire" },
-    { key: "sxv51", text: "CIN MF Medium Static Fire" },
-    { key: "sxv52", text: "CIN MF Medium Static Smoke" },
-    { key: "sxv53", text: "CIN MF Small Static Fire" },
-    { key: "sxv54", text: "CIN MF Small Static Smoke" },
+    { key: "sxv49", text: "CIN MFX Large Static Fire" },
+    { key: "sxv50", text: "CIN MFX Large Static VortexFire" },
+    { key: "sxv51", text: "CIN MFX Medium Static Fire" },
+    { key: "sxv52", text: "CIN MFX Medium Static SmokeFX" },
+    { key: "sxv53", text: "CIN MFX Small Static Fire" },
+    { key: "sxv54", text: "CIN MFX Small Static SmokeFX" },
     { key: "sxv55", text: "CivCar SUV Explosion" },
     { key: "sxv56", text: "CivCar Tire fire S" },
     { key: "sxv57", text: "Cloud Cluster" },
@@ -3842,7 +3842,7 @@ export const VFX_TEXT: readonly TextPair[] = [
     { key: "sxv121", text: "Gadget Javelin Launch 1P" },
     { key: "sxv122", text: "Gadget Javelin Launch 3P" },
     { key: "sxv123", text: "Gadget M320 Reload ShellCasing" },
-    { key: "sxv124", text: "Gadget M320 Reload Smoke" },
+    { key: "sxv124", text: "Gadget M320 Reload SmokeFX" },
     { key: "sxv125", text: "Gadget M4 SLAM Detonation" },
     { key: "sxv126", text: "Gadget MBTLAW Launch 1P" },
     { key: "sxv127", text: "Gadget MBTLAW Launch 3P" },
@@ -3867,7 +3867,7 @@ export const VFX_TEXT: readonly TextPair[] = [
     { key: "sxv146", text: "Gadget RemoteTurret Box WreckState" },
     { key: "sxv147", text: "Gadget RemoteTurret Damage Light" },
     { key: "sxv148", text: "Gadget RemoteTurret ScreenEffect Damage" },
-    { key: "sxv149", text: "Gadget RemoteTurret Smoke Open" },
+    { key: "sxv149", text: "Gadget RemoteTurret SmokeFX Open" },
     { key: "sxv150", text: "Gadget RPG7V2 Launch 1P" },
     { key: "sxv151", text: "Gadget RPG7V2 Launch 3P" },
     { key: "sxv152", text: "Gadget Sabotage 01 StartSparks" },
@@ -3898,10 +3898,10 @@ export const VFX_TEXT: readonly TextPair[] = [
     { key: "sxv177", text: "Gadget VehicleRessuplyCrate Destruction" },
     { key: "sxv178", text: "Gadget VehicleSupplyCrate Range Indicator" },
     { key: "sxv179", text: "Gadget VehicleSupplyCrate Range Indicator Upgraded" },
-    { key: "sxv180", text: "Granite Strike Smoke Marker Green" },
-    { key: "sxv181", text: "Granite Strike Smoke Marker Red" },
-    { key: "sxv182", text: "Granite Strike Smoke Marker Violet" },
-    { key: "sxv183", text: "Granite Strike Smoke Marker Yellow" },
+    { key: "sxv180", text: "Granite Strike SmokeFX Marker Green" },
+    { key: "sxv181", text: "Granite Strike SmokeFX Marker Red" },
+    { key: "sxv182", text: "Granite Strike SmokeFX Marker Violet" },
+    { key: "sxv183", text: "Granite Strike SmokeFX Marker Yellow" },
     { key: "sxv184", text: "Grenade 40mm AT Detonation" },
     { key: "sxv185", text: "Grenade 40mm HE Detonation" },
     { key: "sxv186", text: "Grenade 40mm HE Detonation Underwater" },
@@ -3930,9 +3930,9 @@ export const VFX_TEXT: readonly TextPair[] = [
     { key: "sxv209", text: "Grenade RGO Impact Trail" },
     { key: "sxv210", text: "Grenade SignalSmoke" },
     { key: "sxv211", text: "Grenade SignalSmoke INV" },
-    { key: "sxv212", text: "Grenade Smoke Detonation" },
-    { key: "sxv213", text: "Grenade Smoke Detonation Upgraded" },
-    { key: "sxv214", text: "Grenade Smoke Trail" },
+    { key: "sxv212", text: "Grenade SmokeFX Detonation" },
+    { key: "sxv213", text: "Grenade SmokeFX Detonation Upgraded" },
+    { key: "sxv214", text: "Grenade SmokeFX Trail" },
     { key: "sxv215", text: "Impact LoadoutCrate Bricks" },
     { key: "sxv216", text: "Impact LoadoutCrate Dirt" },
     { key: "sxv217", text: "Impact LoadoutCrate Generic" },
@@ -3962,10 +3962,10 @@ export const VFX_TEXT: readonly TextPair[] = [
     { key: "sxv241", text: "Impact SupplyDrop Wood" },
     { key: "sxv242", text: "LoadoutCrate AirSpawn" },
     { key: "sxv243", text: "LoadoutCrate Drop Trails" },
-    { key: "sxv244", text: "MF M320 1P" },
-    { key: "sxv245", text: "MF M320 3P" },
-    { key: "sxv246", text: "MF TRR8 1P" },
-    { key: "sxv247", text: "MF TRR8 3P" },
+    { key: "sxv244", text: "MFX M320 1P" },
+    { key: "sxv245", text: "MFX M320 3P" },
+    { key: "sxv246", text: "MFX TRR8 1P" },
+    { key: "sxv247", text: "MFX TRR8 3P" },
     { key: "sxv248", text: "Mine M18 Claymore Detonation" },
     { key: "sxv249", text: "Mine M18 Claymore Laser Tripwire" },
     { key: "sxv250", text: "Missile IGLA Trail" },
@@ -4001,7 +4001,7 @@ export const VFX_TEXT: readonly TextPair[] = [
     { key: "sxv280", text: "Rocket RPG7V2 Trail" },
     { key: "sxv281", text: "Rocket RPG7V2 Trail SP" },
     { key: "sxv282", text: "ShellEjection DP12 12g Buckshot" },
-    { key: "sxv283", text: "Smoke Marker Custom" },
+    { key: "sxv283", text: "SmokeFX Marker Custom" },
     { key: "sxv284", text: "Snow BlowingSnow L" },
     { key: "sxv285", text: "Snow BlowingSnow M" },
     { key: "sxv286", text: "Snow BlowingSnow S" },
@@ -13340,6 +13340,14 @@ interface Handle {
      * player is still looking at. The update path consults this instead.
      */
     lit: boolean;
+    /**
+     * What a click on this button does, as passed by the latest render. The engine
+     * handlers are bound once, at creation, so they must read this rather than the
+     * resolver they were created with: a rail slot is reused for another group on
+     * every rail page, and a stale resolver made a page-2 group show the page-1
+     * group in the same slot (2026-10-01, Panzerfaust showed Airplane).
+     */
+    resolve?: () => string;
 }
 
 export interface PlayerUi {
@@ -13503,7 +13511,8 @@ function vfxRowFields(ui: PlayerUi, r: Row, selected: boolean, armed: boolean, s
 }
 
 export function railFields(tab: Tab, row: number, count: number, active: boolean): Scope {
-    const label = row === 0 ? T.chipAll : groupTextKey(tab, row - 1);
+    // `row` is the group index groupRows() and the rail action use: 0 is ALL.
+    const label = groupTextKey(tab, row);
     return {
         label: mod.Message(TPL.gap2, label, count),
         color: active ? "#FFFFFF" : P.inkDim,
@@ -13670,6 +13679,7 @@ function ensureWidget(
             b.focusedAlpha = bgAlpha;
         }
         existing.labelled = true;
+        existing.resolve = resolveAction;
         return existing;
     }
 
@@ -13737,7 +13747,7 @@ function ensureWidget(
                 handle.lit = false;
                 btn.baseColor = pal.base;
                 btn.textColor = rgb(tColorHex);
-                const a = resolveAction !== undefined ? resolveAction() : action;
+                const a = handle.resolve !== undefined ? handle.resolve() : action;
                 if (a !== "" && DISPATCH.onAction !== undefined) DISPATCH.onAction(ui, a);
             },
             onClickDown: () => {
@@ -13769,6 +13779,7 @@ function ensureWidget(
             kind: "textbutton",
             labelled: true,
             lit: false,
+            resolve: resolveAction,
         };
     }
     ui.nodes[action] = handle;
@@ -14072,31 +14083,28 @@ export function render(ui: PlayerUi, spawnedCount: number): void {
         }
     } else {
     const counts = groupCounts(ui.tab);
-    // Row 0 of the rail is ALL, which is the absence of a filter rather than an
-    // action: the menu already starts on the unfiltered list, so selecting it
-    // changed nothing. It is therefore a static text node of its own, permanently,
-    // and the group buttons get the rows below it. Both live in separate key
-    // namespaces because one slot used to serve both: the same handle was created
-    // as a button on a later page and could not become text again, which is how
-    // ALL stayed clickable.
+    // Group index 0 is ALL (groupName), and it sits on every rail page as a
+    // button of its own: it is how a picked group is cleared. It has its own key
+    // ("railAll"), never shared with the group slots, so its handle never has to
+    // change kind. The group buttons get the rows below it.
     const groupTotal = counts.length - 1;
     const groupRows = RAIL.visibleRows - 1;
     const railPages = Math.max(1, Math.ceil(groupTotal / groupRows));
     if (ui.railPage >= railPages) ui.railPage = railPages - 1;
     if (ui.railPage < 0) ui.railPage = 0;
     const railX = RAIL.x + RAIL.rowPadX;
-    const allRow: WidgetNode = { ...RAIL_ROW, k: "text" };
-    ensureWidget(ui, allRow, "railAll", parent, { sh: P, rail: railFields(ui.tab, 0, counts[0], false) }, "rail", railX, RAIL.rowsY, true);
+    ensureWidget(ui, RAIL_ROW, "railAll", parent, { sh: P, rail: railFields(ui.tab, 0, counts[0], ui.group === 0) }, "rail", railX, RAIL.rowsY, true, () => "rail0");
     const railFirst = ui.railPage * groupRows;
     for (let slot = 0; slot < groupRows; slot++) {
-        const gi = railFirst + slot;
-        if (gi >= groupTotal) {
+        // Group index, 1-based: 0 is ALL.
+        const gi = railFirst + slot + 1;
+        if (gi > groupTotal) {
             const spare = ui.nodes["railBtn" + slot];
             if (spare !== undefined) spare.el.visible = false;
             continue;
         }
         const active = ui.group === gi;
-        const rf: Fields = { sh: P, rail: railFields(ui.tab, gi + 1, counts[gi + 1], active) };
+        const rf: Fields = { sh: P, rail: railFields(ui.tab, gi, counts[gi], active) };
         // The emitted action is the group index itself, not the slot, so the
         // handler needs no knowledge of paging and the two halves cannot drift.
         const action = "rail" + gi;
@@ -15952,11 +15960,8 @@ function handle(st: PlayerState, action: string): void {
     if (action.slice(0, 4) === "rail" || (action.charAt(0) === "c" && action.length > 1)) {
         const body = action.slice(0, 4) === "rail" ? action.slice(4) : action.slice(1);
         const group = parseInt(body, 10);
-        // 0 is a valid group. An earlier "row < 1" guard made the first group
-        // unselectable, so choosing any group was a one-way trip.
+        // 0 is ALL (the ALL row emits rail0), 1.. are the groups.
         if (isNaN(group) || group < 0) return;
-        // The ALL row is a static text node and emits nothing, so there is no
-        // "clear the filter" action to accept here.
         ui.group = group;
         ui.page = 0;
         defer(st);

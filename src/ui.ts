@@ -468,6 +468,14 @@ interface Handle {
      * player is still looking at. The update path consults this instead.
      */
     lit: boolean;
+    /**
+     * What a click on this button does, as passed by the latest render. The engine
+     * handlers are bound once, at creation, so they must read this rather than the
+     * resolver they were created with: a rail slot is reused for another group on
+     * every rail page, and a stale resolver made a page-2 group show the page-1
+     * group in the same slot (2026-10-01, Panzerfaust showed Airplane).
+     */
+    resolve?: () => string;
 }
 
 export interface PlayerUi {
@@ -631,7 +639,8 @@ function vfxRowFields(ui: PlayerUi, r: Row, selected: boolean, armed: boolean, s
 }
 
 export function railFields(tab: Tab, row: number, count: number, active: boolean): Scope {
-    const label = row === 0 ? T.chipAll : groupTextKey(tab, row - 1);
+    // `row` is the group index groupRows() and the rail action use: 0 is ALL.
+    const label = groupTextKey(tab, row);
     return {
         label: mod.Message(TPL.gap2, label, count),
         color: active ? "#FFFFFF" : P.inkDim,
@@ -798,6 +807,7 @@ function ensureWidget(
             b.focusedAlpha = bgAlpha;
         }
         existing.labelled = true;
+        existing.resolve = resolveAction;
         return existing;
     }
 
@@ -865,7 +875,7 @@ function ensureWidget(
                 handle.lit = false;
                 btn.baseColor = pal.base;
                 btn.textColor = rgb(tColorHex);
-                const a = resolveAction !== undefined ? resolveAction() : action;
+                const a = handle.resolve !== undefined ? handle.resolve() : action;
                 if (a !== "" && DISPATCH.onAction !== undefined) DISPATCH.onAction(ui, a);
             },
             onClickDown: () => {
@@ -897,6 +907,7 @@ function ensureWidget(
             kind: "textbutton",
             labelled: true,
             lit: false,
+            resolve: resolveAction,
         };
     }
     ui.nodes[action] = handle;
@@ -1200,31 +1211,28 @@ export function render(ui: PlayerUi, spawnedCount: number): void {
         }
     } else {
     const counts = groupCounts(ui.tab);
-    // Row 0 of the rail is ALL, which is the absence of a filter rather than an
-    // action: the menu already starts on the unfiltered list, so selecting it
-    // changed nothing. It is therefore a static text node of its own, permanently,
-    // and the group buttons get the rows below it. Both live in separate key
-    // namespaces because one slot used to serve both: the same handle was created
-    // as a button on a later page and could not become text again, which is how
-    // ALL stayed clickable.
+    // Group index 0 is ALL (groupName), and it sits on every rail page as a
+    // button of its own: it is how a picked group is cleared. It has its own key
+    // ("railAll"), never shared with the group slots, so its handle never has to
+    // change kind. The group buttons get the rows below it.
     const groupTotal = counts.length - 1;
     const groupRows = RAIL.visibleRows - 1;
     const railPages = Math.max(1, Math.ceil(groupTotal / groupRows));
     if (ui.railPage >= railPages) ui.railPage = railPages - 1;
     if (ui.railPage < 0) ui.railPage = 0;
     const railX = RAIL.x + RAIL.rowPadX;
-    const allRow: WidgetNode = { ...RAIL_ROW, k: "text" };
-    ensureWidget(ui, allRow, "railAll", parent, { sh: P, rail: railFields(ui.tab, 0, counts[0], false) }, "rail", railX, RAIL.rowsY, true);
+    ensureWidget(ui, RAIL_ROW, "railAll", parent, { sh: P, rail: railFields(ui.tab, 0, counts[0], ui.group === 0) }, "rail", railX, RAIL.rowsY, true, () => "rail0");
     const railFirst = ui.railPage * groupRows;
     for (let slot = 0; slot < groupRows; slot++) {
-        const gi = railFirst + slot;
-        if (gi >= groupTotal) {
+        // Group index, 1-based: 0 is ALL.
+        const gi = railFirst + slot + 1;
+        if (gi > groupTotal) {
             const spare = ui.nodes["railBtn" + slot];
             if (spare !== undefined) spare.el.visible = false;
             continue;
         }
         const active = ui.group === gi;
-        const rf: Fields = { sh: P, rail: railFields(ui.tab, gi + 1, counts[gi + 1], active) };
+        const rf: Fields = { sh: P, rail: railFields(ui.tab, gi, counts[gi], active) };
         // The emitted action is the group index itself, not the slot, so the
         // handler needs no knowledge of paging and the two halves cannot drift.
         const action = "rail" + gi;

@@ -18,7 +18,7 @@
         "test:gates": "node tools/test-ascii-gate.mjs && node tools/test-invariants.mjs && node tools/test-fields.mjs && node tools/test-actions.mjs",
         "bundle": "bf6-portal-bundler --entrypoint ./src/index.ts --outDir ./dist",
         "typecheck:dist": "node tools/check-dist.mjs",
-        "build": "npm run gen && npm run typecheck && npm run check:strings && npm run check:invariants && npm run check:fields && npm run check:actions && npm run check:layout && npm run bundle && npm run typecheck:dist && npm run check:bundle && npm run check:batching && npm run test:tester && npm run test:probe",
+        "build": "npm run gen && npm run typecheck && npm run check:strings && npm run check:invariants && npm run check:fields && npm run check:actions && npm run check:layout && npm run bundle && npm run typecheck:dist && npm run check:bundle && npm run check:batching && npm run test:rail && npm run test:tester && npm run test:probe",
         "preview": "node preview/server.mjs",
         "check:actions": "node tools/check-actions.mjs",
         "probe:keyboard": "node tools/probe-queryband.mjs",
@@ -26,7 +26,8 @@
         "check:batching": "node tools/test-ui-batching.mjs",
         "release": "npm run build && node tools/release.mjs",
         "test:tester": "node tools/test-tester.mjs",
-        "test:probe": "tsc --noEmit -p probe/tsconfig.json && node tools/test-probe.mjs"
+        "test:probe": "tsc --noEmit -p probe/tsconfig.json && node tools/test-probe.mjs",
+        "test:rail": "node tools/test-rail.mjs"
     },
     "devDependencies": {
         "bf6-portal-bundler": "1.4.1",

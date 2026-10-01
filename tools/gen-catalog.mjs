@@ -337,11 +337,22 @@ function main() {
     // empty or non-ASCII value would come out blank or as a "*" glyph; normalise
     // to printable ASCII and fall back to the enum name when the name carries no
     // descriptive tail (e.g. SFX_Alarm).
+    // The game masks some whole words with '#' when it draws strings.json text:
+    // in game on 2026-10-01 the MF group showed as "##" and Smoke as "#####".
+    // On-screen text gets a spelling the game leaves alone (a search for "mf" or
+    // "smoke" still finds it); asset names keep the real word. MF is muzzle flash
+    // (FX_MF_M320_1P, ...).
+    const UNMASK = [
+        [/\bMF\b/g, "MFX"],
+        [/\bSmoke\b/g, "SmokeFX"],
+    ];
+    const GROUP_TEXT = { MF: "MuzzleFlash" };
     const rowText = (d) => {
         let t = String(d ?? "").replace(/[^\x20-\x7E]/g, "").trim();
-        if (t === "") t = "";
+        for (const [re, to] of UNMASK) t = t.replace(re, to);
         return t;
     };
+    const groupText = (name) => GROUP_TEXT[name] ?? rowText(name);
     const asciiOnly = (list) => {
         for (const e of list) {
             const cleaned = rowText(e.display);
@@ -414,7 +425,7 @@ function main() {
     const pairs = [];
     sfx.forEach((e, i) => pairs.push({ key: keyOf("a", i), text: rowText(e.display) }));
     vfx.forEach((e, i) => pairs.push({ key: keyOf("v", i), text: rowText(e.display) }));
-    for (const [name, key] of allCatKeys) pairs.push({ key, text: rowText(name) });
+    for (const [name, key] of allCatKeys) pairs.push({ key, text: groupText(name) });
     [...sfxPrefixes, ...vfxPrefixes].forEach((e, i) => pairs.push({ key: keyOf("p", i), text: rowText(e.token) }));
     writeFileSync(
         resolve(ROOT, "src", "textkeys.json"),
