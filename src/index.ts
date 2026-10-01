@@ -11,7 +11,7 @@ import { Timers } from "bf6-portal-utils/timers";
 import { SFX_CATALOG, SFX_CATEGORIES, SFX_PREFIXES, type SfxEntry, VFX_CATALOG, VFX_CATEGORIES, VFX_PREFIXES } from "./catalog";
 import { CONFIG } from "./config";
 import { debugEnabled, initLog, log, logAlways, setDebug } from "./diag";
-import { handleTesterAction, loadStartupMusic, needsLoad, newTesterState, saveTemplate, templateKey, templateKindKey } from "./tester";
+import { applyTemplate, handleTesterAction, loadStartupMusic, needsLoad, newTesterState, playTemplate, removeTemplate, saveTemplate, stopTemplate, templateKey, templateKindKey } from "./tester";
 import { T, TPL } from "./text.gen";
 import { clickSound, playUiSound, UI_SOUND } from "./uisound";
 import {
@@ -460,6 +460,36 @@ function handle(st: PlayerState, action: string): void {
         const item = page[idx];
         if (item === undefined) return;
         const key = rowKey(item);
+        if (item.type === "tpl") {
+            const t = item.tpl;
+            if (tag === "sel") {
+                ui.tab = applyTemplate(ui.tester, t);
+                ui.selectedKey = "";
+                defer(st);
+                return;
+            }
+            if (tag === "play") {
+                playTemplate(ui.tester, ui.player, t, () => defer(st));
+                defer(st);
+                return;
+            }
+            if (tag === "stop") {
+                const unloaded = stopTemplate(ui.tester, ui.player, t);
+                if (unloaded !== undefined) {
+                    playUiSound(ui.player, UI_SOUND.denied);
+                    mod.DisplayNotificationMessage(mod.Message(TPL.mtLoadFirst, unloaded.key, unloaded.key), ui.player);
+                }
+                defer(st);
+                return;
+            }
+            if (tag === "fav") {
+                ui.favourites.splice(ui.favourites.indexOf(key), 1);
+                removeTemplate(ui.tester, key);
+                playUiSound(ui.player, UI_SOUND.off);
+                defer(st);
+                return;
+            }
+        }
         if (tag === "sel") {
             // One click arms. This used to only highlight, which made every pick a
             // two-step: row, then the header's SELECT again. The menu stays open --

@@ -346,6 +346,67 @@ try {
     await step("filter off", () => s.clickText(labelKey("chipWorld")));
     await step("filter off", () => s.click("FAVOURITES"));
 
+    // OPEN fills the tester and sends nothing. Change the MUSIC panel first so
+    // the restore is visible: volume up, the next track, then the next package.
+    await step("tab music change", () => s.click("MUSIC"));
+    await step("vol up", () => s.clickId("mtVolUp"));
+    await step("track next", () => s.clickId("mtNext"));
+    await step("pkg next", () => s.clickId("mtPkgNext"));
+    await step("tab fav 2", () => s.click("FAVOURITES"));
+    await step("open music", () => s.clickText(labelKey("tplOpen"), 1));
+    expect("open music", []);
+    shows("open music", "mtEventDesc", () => descOf("BR_InsertionJump"));
+    showsMsg("open music", "mtVol", () => [labelKey("num1"), 1]);
+
+    // OPEN on the radio template leaves the queue read-out alone.
+    await step("tab fav 3", () => s.click("FAVOURITES"));
+    await step("open radio", () => s.clickText(labelKey("tplOpen"), 0));
+    expect("open radio", []);
+    showsMsg("open radio", "mtEventIdx", () => [labelKey("mtQueueCount"), 2, labelKey("radioCh3"), 0]);
+
+    // P on the music template: BR is not loaded, so it loads it (unloading Radio),
+    // holds, then sends what PLAY sends.
+    await step("tab fav 4", () => s.click("FAVOURITES"));
+    await step("play music tpl", () => s.clickText(labelKey("play"), 1));
+    expect("play music tpl", ["UnloadMusic(MusicPackages.Radio)", "LoadMusic(MusicPackages.BR)"]);
+    await wait("music tpl plays", LOAD_MS + 600);
+    expect("music tpl plays", [
+        "SetMusicParam(MusicParams.BRGauntlet_LobbyTimerRemaining, 10, player)",
+        "SetMusicParam(MusicParams.BR_Amplitude, 1, player)",
+        "PlayMusic(MusicEvents.BR_InsertionJump, player)",
+    ]);
+
+    // STOP on the radio template while BR is loaded: nothing sent, notification.
+    await step("stop radio tpl unloaded", () => s.clickText(labelKey("stop"), 0));
+    expect("stop radio tpl unloaded", []);
+    check("stop radio tpl unloaded", notified("stop radio tpl unloaded").join() === labelKey("mtLoadFirst"), "expected one mtLoadFirst");
+
+    // P on the radio template: load Radio, then clear, re-queue, settings, play.
+    await step("play radio tpl", () => s.clickText(labelKey("play"), 0));
+    expect("play radio tpl", ["UnloadMusic(MusicPackages.BR)", "LoadMusic(MusicPackages.Radio)"]);
+    await wait("radio tpl plays", LOAD_MS + 600);
+    expect("radio tpl plays", [
+        "PlayMusic(MusicEvents.Radio_ClearQueue, player)",
+        "SetMusicParam(MusicParams.Radio_Channel, 3, player)",
+        "SetMusicParam(MusicParams.Radio_Biome, 0, player)",
+        "SetMusicParam(MusicParams.Radio_QueueTrackNumber, 1, player)",
+        "SetMusicParam(MusicParams.Radio_QueueTrackNumber, 0, player)",
+        "SetMusicParam(MusicParams.Radio_Biome, 0, player)",
+        "SetMusicParam(MusicParams.Radio_Channel, 3, player)",
+        "SetMusicParam(MusicParams.Radio_ContinueQueueOnTrackEnd, 1, player)",
+        "SetMusicParam(MusicParams.Radio_LoopQueuedTracks, 1, player)",
+        "SetMusicParam(MusicParams.Radio_Amplitude, 1, player)",
+        "PlayMusic(MusicEvents.Radio_Play, player)",
+    ]);
+    await step("stop radio tpl", () => s.clickText(labelKey("stop"), 0));
+    expect("stop radio tpl", ["PlayMusic(MusicEvents.Radio_Stop, player)"]);
+
+    // The fav button on a template row removes it.
+    await step("remove radio tpl", () => s.clickText(labelKey("favRemove"), 0));
+    expectSounds("remove radio tpl", ["MenuNavigation_Default_ToggleOff"]);
+    check("remove radio tpl", rowsWith(labelKey("tplRadioOf")).length === 0, "radio template still listed");
+    check("remove radio tpl", rowsWith(labelKey("tplMusicOf")).length === 1, "music template gone too");
+
     // Back on a browser tab the tester must be gone and the browser back.
     await step("tab sound", () => s.click("SOUND"));
     await step("close", () => s.click("CLOSE X"));

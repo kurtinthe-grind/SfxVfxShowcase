@@ -9697,7 +9697,7 @@ export const SCREEN: readonly SceneNode[] = [
         "w": 448,
         "h": 48,
         "text": "{{f.mtLast}}",
-        "textSize": 20,
+        "textSize": 16,
         "bind": {
             "text": "mtLast"
         }
@@ -14712,6 +14712,87 @@ export function templateKindKey(t: Template): string {
     return t.kind === "music" ? T.kindMusic : T.kindRadio;
 }
 
+function templatePkg(t: Template): MusicPackageSpec {
+    return t.kind === "music" ? musicPkg(t) : RADIO;
+}
+
+/**
+ * Puts the template into the panel and returns the tab to show. Sends nothing:
+ * OPEN is for looking and tweaking. The radio queue state is left alone, because
+ * it records what the engine has queued, and OPEN queues nothing.
+ */
+export function applyTemplate(st: TesterState, t: Template): TesterTab {
+    for (const name of Object.keys(t.values)) st.values[name] = t.values[name];
+    if (t.kind === "radio") return "radio";
+    const pkg = musicPkg(t);
+    st.pkg = MUSIC_TAB.indexOf(pkg);
+    st.evt[st.pkg] = pkg.events.indexOf(musicEvt(t));
+    return "music";
+}
+
+/**
+ * P on a template row: apply it, LOAD its package if another one is loaded, then
+ * play. A radio template rebuilds the queue first -- clear, then for each track
+ * its channel and biome (when they change) and its number -- because the queue
+ * is what Radio_Play plays.
+ */
+export function playTemplate(st: TesterState, player: mod.Player, t: Template, redraw: () => void): void {
+    const tab = applyTemplate(st, t);
+    const pkg = templatePkg(t);
+    if (loaded !== pkg) load(st, pkg, redraw);
+    whenLoaded(() => {
+        if (t.kind === "radio") requeue(st, player, t);
+        sendPlay(tab, st, player);
+        redraw();
+    });
+}
+
+function requeue(st: TesterState, player: mod.Player, t: RadioTemplate): void {
+    const q = queueParam(RADIO);
+    const channel = paramNamed(RADIO, "Radio_Channel");
+    const biome = paramNamed(RADIO, "Radio_Biome");
+    if (q === undefined) return;
+    sendEvent(player, st, RADIO_CLEAR.event, RADIO_CLEAR.name, RADIO_CLEAR.key);
+    st.queue = [];
+    let ch = -1;
+    let bi = -1;
+    for (const pick of t.queue) {
+        if (pick.ch !== ch) {
+            st.values[channel.name] = pick.ch;
+            sendParam(player, st, channel);
+            ch = pick.ch;
+        }
+        if (pick.biome !== bi) {
+            st.values[biome.name] = pick.biome;
+            sendParam(player, st, biome);
+            bi = pick.biome;
+        }
+        st.values[q.name] = pick.track;
+        sendParam(player, st, q);
+        noteQueued(st, q);
+    }
+    // The saved settings, not the last track's station, are what PLAY re-sends.
+    for (const name of Object.keys(t.values)) st.values[name] = t.values[name];
+}
+
+function paramNamed(pkg: MusicPackageSpec, name: string): MusicParamSpec {
+    for (const p of pkg.params) if (p.name === name) return p;
+    throw new Error("param missing from music.gen.ts: " + name);
+}
+
+/** STOP on a template row. Returns the package when it is not loaded (nothing is sent). */
+export function stopTemplate(st: TesterState, player: mod.Player, t: Template): MusicPackageSpec | undefined {
+    const pkg = templatePkg(t);
+    if (loaded !== pkg) return pkg;
+    whenLoaded(() => sendEvent(player, st, pkg.stop, pkg.name + "_Stop", pkg.stopKey));
+    return undefined;
+}
+
+export function removeTemplate(st: TesterState, key: string): void {
+    st.templates = st.templates.filter((t) => templateKey(t) !== key);
+    log("template: removed " + key);
+}
+
 export function templateExportLine(t: Template): string {
     return (t.kind === "music" ? "MUSIC" : "RADIO") + " TEMPLATE " + t.n;
 }
@@ -14730,6 +14811,18 @@ export function needsLoad(tab: TesterTab, st: TesterState, action: string): Musi
 function gated(tab: TesterTab, action: string): boolean {
     if (action === "mtPlay" || action === "mtStop") return true;
     return tab === "radio" && (action === "mtPrev" || action === "mtNext" || action === "mtQueue");
+}
+
+/**
+ * What PLAY sends. Re-send everything first, so what plays always matches the
+ * panel. The queue param is the exception: re-sending it would queue another track.
+ */
+function sendPlay(tab: TesterTab, st: TesterState, player: mod.Player): void {
+    const pkg = current(tab, st);
+    const e = tab === "radio" ? RADIO_PLAY : pkg.events[st.evt[st.pkg]];
+    for (const p of pkg.params) if (!p.queues) sendParam(player, st, p);
+    sendParam(player, st, pkg.amp);
+    sendEvent(player, st, e.event, e.name, e.key);
 }
 
 /**
@@ -14779,13 +14872,8 @@ export function handleTesterAction(tab: TesterTab, st: TesterState, player: mod.
         return true;
     }
     if (action === "mtPlay") {
-        // Re-send everything first, so what plays always matches the panel. The
-        // queue param is the exception: re-sending it would queue another track.
-        const e = radio ? RADIO_PLAY : pkg.events[st.evt[st.pkg]];
         whenLoaded(() => {
-            for (const p of pkg.params) if (!p.queues) sendParam(player, st, p);
-            sendParam(player, st, pkg.amp);
-            sendEvent(player, st, e.event, e.name, e.key);
+            sendPlay(tab, st, player);
             redraw();
         });
         return true;
@@ -15878,6 +15966,36 @@ function handle(st: PlayerState, action: string): void {
         const item = page[idx];
         if (item === undefined) return;
         const key = rowKey(item);
+        if (item.type === "tpl") {
+            const t = item.tpl;
+            if (tag === "sel") {
+                ui.tab = applyTemplate(ui.tester, t);
+                ui.selectedKey = "";
+                defer(st);
+                return;
+            }
+            if (tag === "play") {
+                playTemplate(ui.tester, ui.player, t, () => defer(st));
+                defer(st);
+                return;
+            }
+            if (tag === "stop") {
+                const unloaded = stopTemplate(ui.tester, ui.player, t);
+                if (unloaded !== undefined) {
+                    playUiSound(ui.player, UI_SOUND.denied);
+                    mod.DisplayNotificationMessage(mod.Message(TPL.mtLoadFirst, unloaded.key, unloaded.key), ui.player);
+                }
+                defer(st);
+                return;
+            }
+            if (tag === "fav") {
+                ui.favourites.splice(ui.favourites.indexOf(key), 1);
+                removeTemplate(ui.tester, key);
+                playUiSound(ui.player, UI_SOUND.off);
+                defer(st);
+                return;
+            }
+        }
         if (tag === "sel") {
             // One click arms. This used to only highlight, which made every pick a
             // two-step: row, then the header's SELECT again. The menu stays open --
