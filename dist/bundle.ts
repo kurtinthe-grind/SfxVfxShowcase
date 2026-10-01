@@ -8638,14 +8638,14 @@ export const SCREEN: readonly SceneNode[] = [
     {
         "k": "text",
         "id": "spawned",
-        "x": 1020,
+        "x": 896,
         "y": 828,
-        "w": 240,
+        "w": 190,
         "h": 68,
         "text": "{{f.spawned}}",
         "textSize": 12,
         "color": "{{sh.faint}}",
-        "align": "Left",
+        "align": "Right",
         "wrap": true,
         "parent": "browser",
         "bind": {
