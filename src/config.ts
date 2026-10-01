@@ -58,4 +58,9 @@ export const CONFIG = {
     // Music calls made within this long of a LoadMusic are held and sent once it
     // has passed (CustomConquest waits 2 s; 5 s leaves margin).
     musicLoadMs: 5000,
+
+    // ---- UI sounds (src/uisound.ts) ----
+    // Menu one-shots are well under a second; the object is unspawned after this.
+    uiSoundMs: 2000,
+    uiSoundAmp: 1.0,
 } as const;

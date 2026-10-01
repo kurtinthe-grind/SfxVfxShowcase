@@ -267,6 +267,22 @@ function queueLine(st: TesterState): mod.Message {
 }
 
 /**
+ * The package `action` needs loaded, when it is not: PLAY and STOP, and on the
+ * radio tab the queue buttons, which only drive the loaded package. undefined
+ * when the click may go ahead. A package still loading counts as loaded: its
+ * calls are held until it has had time to load (whenLoaded).
+ */
+export function needsLoad(tab: TesterTab, st: TesterState, action: string): MusicPackageSpec | undefined {
+    const pkg = current(tab, st);
+    return loaded !== pkg && gated(tab, action) ? pkg : undefined;
+}
+
+function gated(tab: TesterTab, action: string): boolean {
+    if (action === "mtPlay" || action === "mtStop") return true;
+    return tab === "radio" && (action === "mtPrev" || action === "mtNext" || action === "mtQueue");
+}
+
+/**
  * Handles one mt* action. Returns false for an action it does not know, so the
  * caller's UNHANDLED ACTION log still fires for a misrouted button.
  */
@@ -384,6 +400,13 @@ export function testerFields(tab: TesterTab, st: TesterState): Scope {
         mtTargetBg: st.toAll ? PALETTE.hot : PALETTE.row,
         mtQueueOn: q === undefined ? "0" : "1",
         mtQueueLabel: q === undefined ? mod.Message(T.logEmpty) : mod.Message(TPL.mtQueueOf, st.values[q.name]),
+        // Greyed out while the package on screen is not loaded (see needsLoad).
+        mtPlayBg: isLoaded ? PALETTE.green : PALETTE.line,
+        mtStopBg: isLoaded ? PALETTE.redDim : PALETTE.line,
+        mtSkipBg: radio && !isLoaded ? PALETTE.line : PALETTE.row,
+        mtQueueBg: isLoaded ? PALETTE.violet : PALETTE.line,
+        mtGateInk: isLoaded ? "#FFFFFF" : PALETTE.faint,
+        mtSkipInk: radio && !isLoaded ? PALETTE.faint : "#FFFFFF",
     };
     for (let i = 0; i < PARAM_SLOTS; i++) {
         const p = pkg.params[i];

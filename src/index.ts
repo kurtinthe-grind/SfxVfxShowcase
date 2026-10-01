@@ -11,8 +11,9 @@ import { Timers } from "bf6-portal-utils/timers";
 import { SFX_CATALOG, SFX_CATEGORIES, SFX_PREFIXES, type SfxEntry, VFX_CATALOG, VFX_CATEGORIES, VFX_PREFIXES } from "./catalog";
 import { CONFIG } from "./config";
 import { debugEnabled, initLog, log, logAlways, setDebug } from "./diag";
-import { handleTesterAction, loadStartupMusic, newTesterState } from "./tester";
+import { handleTesterAction, loadStartupMusic, needsLoad, newTesterState } from "./tester";
 import { T, TPL } from "./text.gen";
+import { clickSound, playUiSound, UI_SOUND } from "./uisound";
 import {
     destroyUI,
     filtersOf,
@@ -227,6 +228,18 @@ function handle(st: PlayerState, action: string): void {
             `selected=${labelOf(ui.selectedKey)} armed=${labelOf(ui.armedKey)} ` +
             `dim=${ui.fDim} kind=${ui.fKind} vfx=${ui.fVfx} amp=${ui.amp} rng=${ui.rng} scale=${ui.scale}`
     );
+
+    // MUSIC / RADIO buttons that need their package loaded are greyed out until
+    // it is; a click on one sends nothing and says what to load.
+    const unloaded = isTesterTab(ui.tab) && action.slice(0, 2) === "mt" ? needsLoad(ui.tab, ui.tester, action) : undefined;
+    if (unloaded !== undefined) {
+        playUiSound(ui.player, UI_SOUND.denied);
+        mod.DisplayNotificationMessage(mod.Message(TPL.mtLoadFirst, unloaded.key, unloaded.key), ui.player);
+        log(`music: ${action} ignored, ${unloaded.name} is not loaded`);
+        return;
+    }
+    const sound = clickSound(action);
+    if (sound !== undefined) playUiSound(ui.player, sound);
 
     if (action === "btnClose") {
         setOpen(ui, false);
@@ -453,6 +466,7 @@ function handle(st: PlayerState, action: string): void {
             const at = ui.favourites.indexOf(key);
             if (at >= 0) ui.favourites.splice(at, 1);
             else ui.favourites.push(key);
+            playUiSound(ui.player, at >= 0 ? UI_SOUND.off : UI_SOUND.on);
             defer(st);
             return;
         }
@@ -673,6 +687,7 @@ Events.OnPortalGadgetAimStart.subscribe((player: mod.Player) => {
     const st = ensure(player);
     if (st.ui.open) return;
     setOpen(st.ui, true);
+    playUiSound(player, UI_SOUND.open);
     defer(st);
     log(`gadget aim: opening menu, tab=${st.ui.tab}`);
 });

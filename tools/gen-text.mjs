@@ -208,6 +208,8 @@ const TEMPLATES = {
     mtQueueOf: "QUEUE TRACK {}",
     mtTrackUnloaded: "TRACK {} / {}  -  NOT LOADED, press LOAD",
     mtRadioNote: "CHANNEL {} = {}    BIOME = {} (channel 4 only)",
+    // Notification for a greyed-out button: package, package.
+    mtLoadFirst: "{} is not loaded. Press LOAD {} first.",
     // count, station, track number of the last track queued.
     mtQueueCount: "QUEUE: {} track(s). Last added: {} #{}",
 };

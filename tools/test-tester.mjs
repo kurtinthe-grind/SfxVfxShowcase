@@ -18,7 +18,11 @@
 //   - QUEUE TRACK then moves the number on, wrapping at the station's last
 //     track, and the panel shows what was queued since the last CLEAR QUEUE,
 //     with a hint when the selected station is not the queued one;
-//   - the selected track and every visible param show their description.
+//   - the selected track and every visible param show their description;
+//   - PLAY / STOP (and the radio's queue buttons) send nothing while their
+//     package is not loaded: a notification says to LOAD it;
+//   - buttons click with the game's own menu sounds, played to the clicking
+//     player only, except PLAY, which must not cover what is being tested.
 
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -97,6 +101,27 @@ function showsMsg(phase, id, want) {
 function showsParams(phase, names) {
     names.forEach((n, i) => shows(phase, "mtP" + i + "Desc", () => descOf(n)));
 }
+/** UI sounds spawned in a phase, short names (SFX_UI_ and _OneShot2D dropped). */
+function uiSounds(phase) {
+    return s.calls
+        .filter((c) => c.phase === phase && c.name === "SpawnObject" && /^RuntimeSpawn_Common\.SFX_UI_/.test(String(c.args[0])))
+        .map((c) => String(c.args[0]).replace("RuntimeSpawn_Common.SFX_UI_", "").replace(/_OneShot2D$|_2D$/, ""));
+}
+function expectSounds(phase, want) {
+    const got = uiSounds(phase);
+    if (got.join() !== want.join()) problems.push(`${phase}: UI sounds ${JSON.stringify(got)}, expected ${JSON.stringify(want)}`);
+    // Every UI sound goes to the clicking player only.
+    for (const c of s.calls) {
+        if (c.phase === phase && c.name === "PlaySound" && !c.args.some((a) => a && a.kind === "player")) {
+            problems.push(`${phase}: a UI sound played to everyone`);
+            break;
+        }
+    }
+}
+/** The notification keys shown in a phase. */
+function notified(phase) {
+    return s.calls.filter((c) => c.phase === phase && c.name === "DisplayNotificationMessage").map((c) => c.args[0]?.msg?.[0]);
+}
 async function step(phase, fn) {
     s.setPhase(phase);
     try {
@@ -122,8 +147,10 @@ try {
     await wait("after load", LOAD_MS + 600);
     expect("after load", []);
     await step("open", () => s.aim());
+    expectSounds("open", ["Submenu_Open"]);
     await step("tab music", () => s.click("MUSIC"));
     expect("tab music", []);
+    expectSounds("tab music", ["EOR_NavigationTab"]);
     // The browser body is hidden on the tester tabs: its pager must not be clickable.
     let pagerHidden = false;
     try {
@@ -138,6 +165,7 @@ try {
     // Core starts on Core_LastPhaseBegin (a loud one-shot), so >| is Overtime.
     await step("next", () => s.clickId("mtNext"));
     expect("next", []);
+    expectSounds("next", ["MenuNavigation_Default_PrimarySelect"]);
     shows("next", "mtEventDesc", () => descOf("Core_Overtime_Loop"));
 
     const coreParams = [
@@ -149,9 +177,11 @@ try {
     ];
     await step("play", () => s.clickId("mtPlay"));
     expect("play", [...coreParams, "PlayMusic(MusicEvents.Core_Overtime_Loop, player)"]);
+    expectSounds("play", []);
 
     await step("param up", () => s.clickId("mtP0Up"));
     expect("param up", ["SetMusicParam(MusicParams.Core_IsWinning, 1, player)"]);
+    expectSounds("param up", ["MenuNavigation_Default_SlidersClickDown"]);
     // IsWinning is 0..1: a second + clamps and re-sends the clamped value.
     await step("param up again", () => s.clickId("mtP0Up"));
     expect("param up again", ["SetMusicParam(MusicParams.Core_IsWinning, 1, player)"]);
@@ -180,6 +210,15 @@ try {
     expect("package next", []);
     shows("package next", "mtEventDesc", () => descOf("BR_InsertionJump"));
     showsParams("package next", ["BRGauntlet_LobbyTimerRemaining"]);
+    // BR is on screen but Core is loaded: PLAY and STOP are greyed out and send
+    // nothing; a notification says to load BR.
+    await step("play br unloaded", () => s.clickId("mtPlay"));
+    expect("play br unloaded", []);
+    expectSounds("play br unloaded", ["MenuNavigation_WeaponAttachment_NoPoints"]);
+    if (notified("play br unloaded").join() !== labelKey("mtLoadFirst")) problems.push(`play br unloaded: notifications ${JSON.stringify(notified("play br unloaded"))}, expected one mtLoadFirst`);
+    await step("stop br unloaded", () => s.clickId("mtStop"));
+    expect("stop br unloaded", []);
+    if (notified("stop br unloaded").length !== 1) problems.push("stop br unloaded: expected one notification");
     await step("load br", () => s.clickId("mtLoad"));
     expect("load br", ["UnloadMusic(MusicPackages.Core)", "LoadMusic(MusicPackages.BR)"]);
     // LOAD on a package that is already loaded must not reload it.
@@ -202,6 +241,12 @@ try {
     showsParams("tab radio", ["Radio_Biome", "Radio_Channel", "Radio_ContinueQueueOnTrackEnd", "Radio_LoopQueuedTracks", "Radio_QueueTrackNumber"]);
     // The engine cannot be asked what is queued, so the panel counts it.
     shows("tab radio", "mtEventIdx", () => labelKey("mtQueueEmpty"));
+    // Radio is not loaded yet: the queue buttons send nothing either.
+    await step("queue radio unloaded", () => s.clickId("mtQueue"));
+    expect("queue radio unloaded", []);
+    if (notified("queue radio unloaded").length !== 1) problems.push("queue radio unloaded: expected one notification");
+    await step("next radio unloaded", () => s.clickId("mtNext"));
+    expect("next radio unloaded", []);
     await step("load radio", () => s.clickId("mtLoad"));
     expect("load radio", ["UnloadMusic(MusicPackages.BR)", "LoadMusic(MusicPackages.Radio)"]);
     // Radio_QueueTrackNumber is row 4. Stepping it must NOT send: sending queues.
@@ -255,6 +300,9 @@ try {
 
     // Back on a browser tab the tester must be gone and the browser back.
     await step("tab sound", () => s.click("SOUND"));
+    await step("close", () => s.click("CLOSE X"));
+    expectSounds("close", ["Submenu_Close"]);
+    await step("reopen", () => s.aim());
     await step("browser back", () => s.clickId("btnPrev"));
     let testerHidden = false;
     try {
@@ -280,4 +328,4 @@ if (problems.length > 0) {
     for (const p of problems) console.error("    - " + p);
     process.exit(1);
 }
-console.log("  tester  : Core loaded at start, calls held until loaded, LOAD switches exclusively, ME/EVERYONE overloads, PLAY re-sends params, clamping, stop, radio queue + transport, queue read-out and auto-advance, every call logged");
+console.log("  tester  : Core loaded at start, calls held until loaded, LOAD switches exclusively, ME/EVERYONE overloads, PLAY re-sends params, clamping, stop, radio queue + transport, queue read-out and auto-advance, greyed until loaded, UI sounds, every call logged");

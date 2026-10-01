@@ -148,6 +148,8 @@ Placed effects are capped at **24 per player**; past that the oldest is removed 
 
 ---
 
+Buttons click with the game's own menu sounds, played only to you. The PLAY buttons stay silent so the click never covers the sound you are testing.
+
 ## Debug logging
 
 **DEBUG ON / DEBUG OFF** sits in the header next to the title. It is **off by default** — a debug log is something you switch on to diagnose a problem, not something that runs forever.
@@ -218,6 +220,8 @@ Two tester tabs for Portal's music system.
 `FOR: ME` (the default) plays everything for you only, so testing never blares music at the rest of the lobby. `FOR: EVERYONE` uses the global calls instead.
 
 Only Core is loaded when the mode starts. `LOAD` switches to the package on screen and unloads the previous one; the button reads `LOADING...` for 5 seconds, and anything you press meanwhile is sent once loading is done.
+
+While the package on screen is not loaded, `PLAY` and `STOP` (and on RADIO also `CLEAR QUEUE`, `NEXT TRACK` and `QUEUE TRACK`) are greyed out. Pressing one sends nothing and shows a notification telling you which package to load.
 
 **MUSIC**
 - `<` / `>` picks the package: CORE, BR or GAUNTLET.

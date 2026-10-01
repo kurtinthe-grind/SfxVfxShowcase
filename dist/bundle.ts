@@ -4273,6 +4273,11 @@ export const CONFIG = {
     // Music calls made within this long of a LoadMusic are held and sent once it
     // has passed (CustomConquest waits 2 s; 5 s leaves margin).
     musicLoadMs: 5000,
+
+    // ---- UI sounds (src/uisound.ts) ----
+    // Menu one-shots are well under a second; the object is unspawned after this.
+    uiSoundMs: 2000,
+    uiSoundAmp: 1.0,
 } as const;
 
 
@@ -8911,7 +8916,7 @@ export const SCREEN: readonly SceneNode[] = [
         "k": "textbutton",
         "bgAlpha": 1,
         "align": "Center",
-        "textColor": "#FFFFFF",
+        "textColor": "{{f.mtSkipInk}}",
         "fill": "Solid",
         "parent": "tester",
         "id": "mtPrev",
@@ -8921,7 +8926,7 @@ export const SCREEN: readonly SceneNode[] = [
         "h": 60,
         "text": "{{f.mtPrevLabel}}",
         "textSize": 18,
-        "bg": "{{sh.row}}",
+        "bg": "{{f.mtSkipBg}}",
         "bind": {
             "text": "mtPrevLabel"
         }
@@ -8930,7 +8935,7 @@ export const SCREEN: readonly SceneNode[] = [
         "k": "textbutton",
         "bgAlpha": 1,
         "align": "Center",
-        "textColor": "#FFFFFF",
+        "textColor": "{{f.mtGateInk}}",
         "fill": "Solid",
         "parent": "tester",
         "id": "mtPlay",
@@ -8940,7 +8945,7 @@ export const SCREEN: readonly SceneNode[] = [
         "h": 60,
         "text": "{{f.mtPlayLabel}}",
         "textSize": 18,
-        "bg": "{{sh.green}}",
+        "bg": "{{f.mtPlayBg}}",
         "bind": {
             "text": "mtPlayLabel"
         }
@@ -8949,7 +8954,7 @@ export const SCREEN: readonly SceneNode[] = [
         "k": "textbutton",
         "bgAlpha": 1,
         "align": "Center",
-        "textColor": "#FFFFFF",
+        "textColor": "{{f.mtGateInk}}",
         "fill": "Solid",
         "parent": "tester",
         "id": "mtStop",
@@ -8959,7 +8964,7 @@ export const SCREEN: readonly SceneNode[] = [
         "h": 60,
         "text": "{{f.mtStopLabel}}",
         "textSize": 18,
-        "bg": "{{sh.redDim}}",
+        "bg": "{{f.mtStopBg}}",
         "bind": {
             "text": "mtStopLabel"
         }
@@ -8968,7 +8973,7 @@ export const SCREEN: readonly SceneNode[] = [
         "k": "textbutton",
         "bgAlpha": 1,
         "align": "Center",
-        "textColor": "#FFFFFF",
+        "textColor": "{{f.mtSkipInk}}",
         "fill": "Solid",
         "parent": "tester",
         "id": "mtNext",
@@ -8978,7 +8983,7 @@ export const SCREEN: readonly SceneNode[] = [
         "h": 60,
         "text": "{{f.mtNextLabel}}",
         "textSize": 18,
-        "bg": "{{sh.row}}",
+        "bg": "{{f.mtSkipBg}}",
         "bind": {
             "text": "mtNextLabel"
         }
@@ -9599,7 +9604,7 @@ export const SCREEN: readonly SceneNode[] = [
         "w": 260,
         "h": 48,
         "textSize": 15,
-        "textColor": "#FFFFFF",
+        "textColor": "{{f.mtGateInk}}",
         "bgAlpha": 1,
         "align": "Center",
         "fill": "Solid",
@@ -9607,7 +9612,7 @@ export const SCREEN: readonly SceneNode[] = [
         "id": "mtQueue",
         "x": 466,
         "text": "{{f.mtQueueLabel}}",
-        "bg": "{{sh.violet}}",
+        "bg": "{{f.mtQueueBg}}",
         "bind": {
             "text": "mtQueueLabel"
         }
@@ -10210,145 +10215,146 @@ export const TPL = {
     mtQueueOf: "sxT141",
     mtTrackUnloaded: "sxT142",
     mtRadioNote: "sxT143",
-    mtQueueCount: "sxT144",
+    mtLoadFirst: "sxT144",
+    mtQueueCount: "sxT145",
 } as const;
 
 /** key for a single keyboard character */
 export const CHAR_KEY: Readonly<Record<string, string>> = {
-    "0": "sxC149",
-    "1": "sxC150",
-    "2": "sxC151",
-    "3": "sxC152",
-    "4": "sxC153",
-    "5": "sxC154",
-    "6": "sxC155",
-    "7": "sxC156",
-    "8": "sxC157",
-    "9": "sxC158",
-    " ": "sxC145",
-    ",": "sxC146",
-    "-": "sxC147",
-    ".": "sxC148",
-    "A": "sxC159",
-    "B": "sxC160",
-    "C": "sxC161",
-    "D": "sxC162",
-    "E": "sxC163",
-    "F": "sxC164",
-    "G": "sxC165",
-    "H": "sxC166",
-    "I": "sxC167",
-    "J": "sxC168",
-    "K": "sxC169",
-    "L": "sxC170",
-    "M": "sxC171",
-    "N": "sxC172",
-    "O": "sxC173",
-    "P": "sxC174",
-    "Q": "sxC175",
-    "R": "sxC176",
-    "S": "sxC177",
-    "T": "sxC178",
-    "U": "sxC179",
-    "V": "sxC180",
-    "W": "sxC181",
-    "X": "sxC182",
-    "Y": "sxC183",
-    "Z": "sxC184",
-    "_": "sxC185",
+    "0": "sxC150",
+    "1": "sxC151",
+    "2": "sxC152",
+    "3": "sxC153",
+    "4": "sxC154",
+    "5": "sxC155",
+    "6": "sxC156",
+    "7": "sxC157",
+    "8": "sxC158",
+    "9": "sxC159",
+    " ": "sxC146",
+    ",": "sxC147",
+    "-": "sxC148",
+    ".": "sxC149",
+    "A": "sxC160",
+    "B": "sxC161",
+    "C": "sxC162",
+    "D": "sxC163",
+    "E": "sxC164",
+    "F": "sxC165",
+    "G": "sxC166",
+    "H": "sxC167",
+    "I": "sxC168",
+    "J": "sxC169",
+    "K": "sxC170",
+    "L": "sxC171",
+    "M": "sxC172",
+    "N": "sxC173",
+    "O": "sxC174",
+    "P": "sxC175",
+    "Q": "sxC176",
+    "R": "sxC177",
+    "S": "sxC178",
+    "T": "sxC179",
+    "U": "sxC180",
+    "V": "sxC181",
+    "W": "sxC182",
+    "X": "sxC183",
+    "Y": "sxC184",
+    "Z": "sxC185",
+    "_": "sxC186",
 };
 
 /** key for a literal that comes straight out of scene.json */
 export const SCENE_TEXT: Readonly<Record<string, string>> = {
-    "+": "sxN186",
-    "-": "sxN187",
-    "2D": "sxN188",
-    "3D": "sxN189",
-    "<": "sxN190",
-    "< GROUPS": "sxN191",
-    "< PREV": "sxN192",
-    ">": "sxN193",
-    "ACTION": "sxN194",
-    "ALL": "sxN195",
-    "AMPLITUDE": "sxN196",
-    "Adds the track number to the queue.": "sxN197",
-    "BACK": "sxN198",
-    "CLEAR": "sxN199",
-    "CLOSE X": "sxN200",
-    "DELETE ALL": "sxN201",
-    "DONE": "sxN202",
-    "FAV": "sxN203",
-    "FAVOURITES": "sxN204",
-    "GROUP": "sxN205",
-    "GROUPS >": "sxN206",
-    "LAST CALL": "sxN207",
-    "LOOP": "sxN208",
-    "Loads in about 5 s. One at a time.": "sxN209",
-    "ME: only you. EVERYONE: all players.": "sxN210",
-    "MUSIC": "sxN211",
-    "Multiplier: 0 = silent, 1 = normal, 3 = triple volume.": "sxN212",
-    "NAME": "sxN213",
-    "NEXT >": "sxN214",
-    "ONE": "sxN215",
-    "PARAMS": "sxN216",
-    "PLAY re-sends the package params and VOLUME before the event, so what you hear matches the numbers.": "sxN217",
-    "PLAYER": "sxN218",
-    "PREFIXES": "sxN219",
-    "RADIO": "sxN220",
-    "RANGE m": "sxN221",
-    "SCALE": "sxN222",
-    "SFX / VFX SHOWCASE": "sxN223",
-    "SOUND": "sxN224",
-    "SPACE": "sxN225",
-    "STOP ALL": "sxN226",
-    "The last call sent. The game cannot report what is playing.": "sxN227",
-    "UNDO": "sxN228",
-    "VISUAL": "sxN229",
-    "VOLUME": "sxN230",
-    "WORLD": "sxN231",
-    "amp": "sxN232",
-    "applies to the selected effect": "sxN233",
-    "armed": "sxN234",
-    "headBadge": "sxN235",
-    "hint": "sxN236",
-    "mtEvent": "sxN237",
-    "mtEventDesc": "sxN238",
-    "mtEventIdx": "sxN239",
-    "mtLast": "sxN240",
-    "mtLoadLabel": "sxN241",
-    "mtNextLabel": "sxN242",
-    "mtP0Desc": "sxN243",
-    "mtP0Label": "sxN244",
-    "mtP0Val": "sxN245",
-    "mtP1Desc": "sxN246",
-    "mtP1Label": "sxN247",
-    "mtP1Val": "sxN248",
-    "mtP2Desc": "sxN249",
-    "mtP2Label": "sxN250",
-    "mtP2Val": "sxN251",
-    "mtP3Desc": "sxN252",
-    "mtP3Label": "sxN253",
-    "mtP3Val": "sxN254",
-    "mtP4Desc": "sxN255",
-    "mtP4Label": "sxN256",
-    "mtP4Val": "sxN257",
-    "mtParamNote": "sxN258",
-    "mtPkg": "sxN259",
-    "mtPlayLabel": "sxN260",
-    "mtPrevLabel": "sxN261",
-    "mtQueueLabel": "sxN262",
-    "mtStopLabel": "sxN263",
-    "mtTargetLabel": "sxN264",
-    "mtTitle": "sxN265",
-    "mtVol": "sxN266",
-    "page": "sxN267",
-    "playLabel": "sxN268",
-    "railSummary": "sxN269",
-    "rng": "sxN270",
-    "scale": "sxN271",
-    "selLabel": "sxN272",
-    "selectLabel": "sxN273",
-    "spawned": "sxN274",
+    "+": "sxN187",
+    "-": "sxN188",
+    "2D": "sxN189",
+    "3D": "sxN190",
+    "<": "sxN191",
+    "< GROUPS": "sxN192",
+    "< PREV": "sxN193",
+    ">": "sxN194",
+    "ACTION": "sxN195",
+    "ALL": "sxN196",
+    "AMPLITUDE": "sxN197",
+    "Adds the track number to the queue.": "sxN198",
+    "BACK": "sxN199",
+    "CLEAR": "sxN200",
+    "CLOSE X": "sxN201",
+    "DELETE ALL": "sxN202",
+    "DONE": "sxN203",
+    "FAV": "sxN204",
+    "FAVOURITES": "sxN205",
+    "GROUP": "sxN206",
+    "GROUPS >": "sxN207",
+    "LAST CALL": "sxN208",
+    "LOOP": "sxN209",
+    "Loads in about 5 s. One at a time.": "sxN210",
+    "ME: only you. EVERYONE: all players.": "sxN211",
+    "MUSIC": "sxN212",
+    "Multiplier: 0 = silent, 1 = normal, 3 = triple volume.": "sxN213",
+    "NAME": "sxN214",
+    "NEXT >": "sxN215",
+    "ONE": "sxN216",
+    "PARAMS": "sxN217",
+    "PLAY re-sends the package params and VOLUME before the event, so what you hear matches the numbers.": "sxN218",
+    "PLAYER": "sxN219",
+    "PREFIXES": "sxN220",
+    "RADIO": "sxN221",
+    "RANGE m": "sxN222",
+    "SCALE": "sxN223",
+    "SFX / VFX SHOWCASE": "sxN224",
+    "SOUND": "sxN225",
+    "SPACE": "sxN226",
+    "STOP ALL": "sxN227",
+    "The last call sent. The game cannot report what is playing.": "sxN228",
+    "UNDO": "sxN229",
+    "VISUAL": "sxN230",
+    "VOLUME": "sxN231",
+    "WORLD": "sxN232",
+    "amp": "sxN233",
+    "applies to the selected effect": "sxN234",
+    "armed": "sxN235",
+    "headBadge": "sxN236",
+    "hint": "sxN237",
+    "mtEvent": "sxN238",
+    "mtEventDesc": "sxN239",
+    "mtEventIdx": "sxN240",
+    "mtLast": "sxN241",
+    "mtLoadLabel": "sxN242",
+    "mtNextLabel": "sxN243",
+    "mtP0Desc": "sxN244",
+    "mtP0Label": "sxN245",
+    "mtP0Val": "sxN246",
+    "mtP1Desc": "sxN247",
+    "mtP1Label": "sxN248",
+    "mtP1Val": "sxN249",
+    "mtP2Desc": "sxN250",
+    "mtP2Label": "sxN251",
+    "mtP2Val": "sxN252",
+    "mtP3Desc": "sxN253",
+    "mtP3Label": "sxN254",
+    "mtP3Val": "sxN255",
+    "mtP4Desc": "sxN256",
+    "mtP4Label": "sxN257",
+    "mtP4Val": "sxN258",
+    "mtParamNote": "sxN259",
+    "mtPkg": "sxN260",
+    "mtPlayLabel": "sxN261",
+    "mtPrevLabel": "sxN262",
+    "mtQueueLabel": "sxN263",
+    "mtStopLabel": "sxN264",
+    "mtTargetLabel": "sxN265",
+    "mtTitle": "sxN266",
+    "mtVol": "sxN267",
+    "page": "sxN268",
+    "playLabel": "sxN269",
+    "railSummary": "sxN270",
+    "rng": "sxN271",
+    "scale": "sxN272",
+    "selLabel": "sxN273",
+    "selectLabel": "sxN274",
+    "spawned": "sxN275",
 };
 
 export type StaticLabel = keyof typeof T;
@@ -14498,6 +14504,22 @@ function queueLine(st: TesterState): mod.Message {
 }
 
 /**
+ * The package `action` needs loaded, when it is not: PLAY and STOP, and on the
+ * radio tab the queue buttons, which only drive the loaded package. undefined
+ * when the click may go ahead. A package still loading counts as loaded: its
+ * calls are held until it has had time to load (whenLoaded).
+ */
+export function needsLoad(tab: TesterTab, st: TesterState, action: string): MusicPackageSpec | undefined {
+    const pkg = current(tab, st);
+    return loaded !== pkg && gated(tab, action) ? pkg : undefined;
+}
+
+function gated(tab: TesterTab, action: string): boolean {
+    if (action === "mtPlay" || action === "mtStop") return true;
+    return tab === "radio" && (action === "mtPrev" || action === "mtNext" || action === "mtQueue");
+}
+
+/**
  * Handles one mt* action. Returns false for an action it does not know, so the
  * caller's UNHANDLED ACTION log still fires for a misrouted button.
  */
@@ -14615,6 +14637,13 @@ export function testerFields(tab: TesterTab, st: TesterState): Scope {
         mtTargetBg: st.toAll ? PALETTE.hot : PALETTE.row,
         mtQueueOn: q === undefined ? "0" : "1",
         mtQueueLabel: q === undefined ? mod.Message(T.logEmpty) : mod.Message(TPL.mtQueueOf, st.values[q.name]),
+        // Greyed out while the package on screen is not loaded (see needsLoad).
+        mtPlayBg: isLoaded ? PALETTE.green : PALETTE.line,
+        mtStopBg: isLoaded ? PALETTE.redDim : PALETTE.line,
+        mtSkipBg: radio && !isLoaded ? PALETTE.line : PALETTE.row,
+        mtQueueBg: isLoaded ? PALETTE.violet : PALETTE.line,
+        mtGateInk: isLoaded ? "#FFFFFF" : PALETTE.faint,
+        mtSkipInk: radio && !isLoaded ? PALETTE.faint : "#FFFFFF",
     };
     for (let i = 0; i < PARAM_SLOTS; i++) {
         const p = pkg.params[i];
@@ -14627,6 +14656,574 @@ export function testerFields(tab: TesterTab, st: TesterState): Scope {
 }
 
 
+// --- SOURCE: node_modules\bf6-portal-utils\sounds\index.ts ---
+
+
+
+
+// version 6.0.0
+export namespace Sounds {
+    const logging = new Logging('Sounds');
+
+    /**
+     * A re-export of the `Logging.LogLevel` enum.
+     */
+    export const LogLevel = Logging.LogLevel;
+
+    /**
+     * Attaches a logger and defines a minimum log level and whether to attempt to append a string form of the error to
+     * the text of the log message.
+     * @param log - The logger function: `(formattedText, error?) => void | Promise<void>`. `error` is the same value
+     *              passed to `log()` (if any), for inspection (e.g. `instanceof Error`, `stack`). `formattedText` may
+     *              also include ` - Error: …` when `includeRawError` is true.
+     * @param logLevel - The minimum log level to use.
+     * @param includeRawError - When true and `log()` receives an error, attempts to append a string form of the error
+     *                          to the text of the log message.
+     */
+    export function setLogging(
+        log?: (text: string, error?: unknown) => Promise<void> | void,
+        logLevel?: Logging.LogLevel,
+        includeRawError?: boolean
+    ): void {
+        logging.setLogging(log, logLevel, includeRawError);
+    }
+
+    const DEFAULT_FADE_DURATION: number = 2_000; // 2 seconds default fade duration (in milliseconds).
+    const DEFAULT_FADE_STEPS: number = 10;
+    const DEFAULT_ATTENUATION_RANGE: number = 10; // 10 meters default attenuation range (in meters).
+
+    const _ZERO_VECTOR = mod.CreateVector(0, 0, 0);
+
+    export type Target = mod.Player | mod.Squad | mod.Team;
+
+    /**
+     * The options for sound fading.
+     */
+    export type FadeOptions = {
+        /**
+         * The starting amplitude of the fade.
+         */
+        startAmplitude: number;
+        /**
+         * The target amplitude of the sound.
+         * Default is 0 (which is a fade out).
+         */
+        targetAmplitude?: number;
+        /**
+         * The delay before the fade starts in milliseconds.
+         * Default is 0.
+         */
+        delay?: number;
+        /**
+         * The duration of the fade in milliseconds.
+         * Default is 2,000 milliseconds.
+         */
+        duration?: number;
+        /**
+         * The number of steps to use for the fade.
+         * Default is 10.
+         */
+        steps?: number;
+        /**
+         * Whether to stop the sound when the fade is complete.
+         * Default is true if `targetAmplitude` is 0, false otherwise.
+         */
+        stopOnComplete?: boolean;
+    };
+
+    /**
+     * The options for sound playback.
+     */
+    export type PlayOptions = {
+        /**
+         * The target to play the sound for. Default is undefined, which means all players hear the sound.
+         */
+        target?: Target;
+        /**
+         * The world position to play the sound at (Vectors.Vector3).
+         * Note: Ignored for 2D sounds.
+         */
+        position?: Vectors.Vector3;
+        /**
+         * The attenuation range of the sound in meters. Default is 10 meters if position is specified.
+         * Note: Ignored for 2D sounds.
+         */
+        attenuationRange?: number;
+        /**
+         * The optional playback duration in milliseconds after which the sound is automatically stopped.
+         */
+        duration?: number;
+        /**
+         * Optional fade options applied during playback.
+         */
+        fadeOptions?: Omit<FadeOptions, 'startAmplitude'>;
+    };
+
+    /**
+     * The options for one-shot sound playback.
+     */
+    export type PlayOneShotOptions = PlayOptions;
+
+    type SFXState = {
+        stopTimerId?: Timers.TimerID | null;
+        fadeTimerId?: Timers.TimerID | null;
+    };
+
+    const _states = new Map<number, SFXState>();
+
+    function _playSound(
+        sfx: mod.SFX,
+        amplitude: number,
+        position?: Vectors.Vector3,
+        attenuationRange?: number,
+        target?: Target
+    ): void {
+        if (position !== undefined || attenuationRange !== undefined) {
+            const posVec = position !== undefined ? Vectors.toVector(position) : mod.GetObjectPosition(sfx);
+            attenuationRange = attenuationRange ?? DEFAULT_ATTENUATION_RANGE;
+
+            if (target === undefined) {
+                mod.PlaySound(sfx, amplitude, posVec, attenuationRange);
+            } else if (mod.IsType(target, mod.Types.Player)) {
+                mod.PlaySound(sfx, amplitude, posVec, attenuationRange, target as mod.Player);
+            } else if (mod.IsType(target, mod.Types.Squad)) {
+                mod.PlaySound(sfx, amplitude, posVec, attenuationRange, target as mod.Squad);
+            } else if (mod.IsType(target, mod.Types.Team)) {
+                mod.PlaySound(sfx, amplitude, posVec, attenuationRange, target as mod.Team);
+            } else {
+                logging.log('Target type is invalid', LogLevel.Error);
+            }
+        } else {
+            if (target === undefined) {
+                mod.PlaySound(sfx, amplitude);
+            } else if (mod.IsType(target, mod.Types.Player)) {
+                mod.PlaySound(sfx, amplitude, target as mod.Player);
+            } else if (mod.IsType(target, mod.Types.Squad)) {
+                mod.PlaySound(sfx, amplitude, target as mod.Squad);
+            } else if (mod.IsType(target, mod.Types.Team)) {
+                mod.PlaySound(sfx, amplitude, target as mod.Team);
+            } else {
+                logging.log('Target type is invalid', LogLevel.Error);
+            }
+        }
+    }
+
+    function _getOrCreateState(sfxId: number): SFXState {
+        let state = _states.get(sfxId);
+
+        if (!state) {
+            state = {};
+            _states.set(sfxId, state);
+        }
+
+        return state;
+    }
+
+    function _cancelStop(sfxId: number): void {
+        const state = _states.get(sfxId);
+
+        if (!state) return;
+
+        if (state.stopTimerId != null) {
+            Timers.clearTimeout(state.stopTimerId);
+        }
+        state.stopTimerId = undefined;
+
+        if (!state.fadeTimerId) {
+            _states.delete(sfxId);
+        }
+    }
+
+    function _cancelFade(sfxId: number): void {
+        const state = _states.get(sfxId);
+
+        if (!state) return;
+
+        if (state.fadeTimerId != null) {
+            Timers.clearInterval(state.fadeTimerId);
+        }
+        state.fadeTimerId = undefined;
+
+        if (!state.stopTimerId) {
+            _states.delete(sfxId);
+        }
+    }
+
+    function _cancelTimers(sfxId: number): void {
+        const state = _states.get(sfxId);
+
+        if (!state) return;
+
+        if (state.stopTimerId != null) {
+            Timers.clearTimeout(state.stopTimerId);
+            state.stopTimerId = undefined;
+        }
+
+        if (state.fadeTimerId != null) {
+            Timers.clearInterval(state.fadeTimerId);
+            state.fadeTimerId = undefined;
+        }
+
+        _states.delete(sfxId);
+    }
+
+    function _fadeInternal(
+        sfx: mod.SFX,
+        sfxId: number,
+        startAmplitude: number,
+        targetAmplitude: number = 0,
+        delay: number = 0,
+        duration: number = DEFAULT_FADE_DURATION,
+        steps: number = DEFAULT_FADE_STEPS,
+        stopOnComplete: boolean = targetAmplitude === 0,
+        disposeOnComplete: boolean = false
+    ): void {
+        _cancelFade(sfxId);
+
+        const stepCount = steps > 0 ? steps : 1;
+        const stepSize = (startAmplitude - targetAmplitude) / stepCount;
+        const stepDuration = duration / stepCount;
+
+        let currentAmplitude = startAmplitude;
+        let remainingSteps = stepCount;
+
+        const stepFade = () => {
+            if (!isValid(sfxId)) {
+                _cancelFade(sfxId);
+                return;
+            }
+
+            currentAmplitude = Math.max(0, currentAmplitude - stepSize);
+            mod.SetSoundAmplitude(sfx, currentAmplitude);
+            --remainingSteps;
+
+            if (remainingSteps > 0) return;
+
+            _cancelFade(sfxId);
+
+            if (logging.willLog(LogLevel.Debug)) {
+                logging.log(`Sound ${sfxId} completed fade to ${targetAmplitude}`, LogLevel.Debug);
+            }
+
+            if (disposeOnComplete) {
+                dispose(sfx);
+            } else if (stopOnComplete) {
+                stop(sfx);
+            }
+        };
+
+        const startFade = () => {
+            const state = _getOrCreateState(sfxId);
+
+            if (!isValid(sfxId)) return;
+
+            state.fadeTimerId = Timers.setInterval(stepFade, stepDuration);
+        };
+
+        if (delay > 0) {
+            _getOrCreateState(sfxId).fadeTimerId = Timers.setTimeout(startFade, delay);
+        } else {
+            startFade();
+        }
+
+        if (logging.willLog(LogLevel.Info)) {
+            logging.log(`Sound ${sfxId} fade to ${targetAmplitude} starting in ${delay}ms`, LogLevel.Info);
+        }
+    }
+
+    function _playInternal(
+        sfx: mod.SFX,
+        sfxId: number,
+        amplitude: number,
+        target?: Target,
+        position?: Vectors.Vector3,
+        attenuationRange?: number,
+        duration?: number,
+        fadeOptions?: Omit<FadeOptions, 'startAmplitude'>,
+        disposeOnComplete: boolean = false
+    ): void {
+        _playSound(sfx, amplitude, position, attenuationRange, target);
+
+        if (duration !== undefined) {
+            const onStopTimeout = () => {
+                _cancelStop(sfxId);
+
+                if (disposeOnComplete) {
+                    dispose(sfx);
+                } else {
+                    stop(sfx);
+                }
+            };
+
+            _getOrCreateState(sfxId).stopTimerId = Timers.setTimeout(onStopTimeout, duration);
+        }
+
+        if (fadeOptions !== undefined) {
+            _fadeInternal(
+                sfx,
+                sfxId,
+                amplitude,
+                fadeOptions.targetAmplitude,
+                fadeOptions.delay,
+                fadeOptions.duration,
+                fadeOptions.steps,
+                fadeOptions.stopOnComplete,
+                disposeOnComplete
+            );
+        }
+
+        if (logging.willLog(LogLevel.Info)) {
+            logging.log(`Sound ${sfxId} played at amplitude ${amplitude.toFixed(2)}`, LogLevel.Info);
+        }
+    }
+
+    /**
+     * Spawns a new native `mod.SFX` spatial object at the given position (default 0,0,0) with zero rotation.
+     * @param sfxAsset - The runtime spawn asset.
+     * @param position - Optional 3D spawn position (Vectors.Vector3).
+     * @returns The spawned `mod.SFX` spatial object.
+     */
+    export function create(sfxAsset: mod.RuntimeSpawn_Common, position?: Vectors.Vector3): mod.SFX {
+        const posVec = position !== undefined ? Vectors.toVector(position) : _ZERO_VECTOR;
+        const sfx = mod.SpawnObject(sfxAsset, posVec, _ZERO_VECTOR) as mod.SFX;
+
+        if (logging.willLog(LogLevel.Debug)) {
+            logging.log(`Sound ${mod.GetObjId(sfx)} created`, LogLevel.Debug);
+        }
+
+        return sfx;
+    }
+
+    /**
+     * Plays any `mod.SFX` object with the specified amplitude and optional configuration.
+     * Note: `position` and `attenuationRange` in options are ignored for 2D sounds.
+     * @param sfx - The `mod.SFX` object.
+     * @param amplitude - The playback amplitude.
+     * @param options - Optional playback configuration.
+     * @throws {Error} If the target type is invalid.
+     */
+    export function play(sfx: mod.SFX, amplitude: number, options?: PlayOptions): void {
+        const sfxId = mod.GetObjId(sfx);
+
+        _cancelTimers(sfxId);
+
+        _playInternal(
+            sfx,
+            sfxId,
+            amplitude,
+            options?.target,
+            options?.position,
+            options?.attenuationRange,
+            options?.duration,
+            options?.fadeOptions,
+            false
+        );
+    }
+
+    /**
+     * Fire-and-forget helper: creates an SFX, plays it for the specified duration,
+     * and automatically unspawns/disposes it when finished.
+     * Note: `position` and `attenuationRange` in options are ignored for 2D sounds.
+     * @param sfxAsset - The runtime spawn asset.
+     * @param duration - The playback duration in milliseconds.
+     * @param amplitude - The playback amplitude.
+     * @param options - Optional playback configuration.
+     * @returns The spawned `mod.SFX` spatial object.
+     * @throws {Error} If the target type is invalid.
+     */
+    export function playOneShot(
+        sfxAsset: mod.RuntimeSpawn_Common,
+        duration: number,
+        amplitude: number,
+        options?: PlayOneShotOptions
+    ): mod.SFX {
+        const sfx = create(sfxAsset, options?.position);
+
+        _playInternal(
+            sfx,
+            mod.GetObjId(sfx),
+            amplitude,
+            options?.target,
+            options?.position,
+            options?.attenuationRange,
+            duration,
+            options?.fadeOptions,
+            true
+        );
+
+        return sfx;
+    }
+
+    /**
+     * Stops playback and clears any active stop or fade timers.
+     * @param sfx - The `mod.SFX` object.
+     * @param delay - Optional delay in milliseconds before stopping the sound. Default is 0 (stops immediately).
+     */
+    export function stop(sfx: mod.SFX, delay: number = 0): void {
+        const sfxId = mod.GetObjId(sfx);
+
+        _cancelStop(sfxId);
+        _cancelFade(sfxId);
+
+        if (delay > 0) {
+            const state = _getOrCreateState(sfxId);
+
+            state.stopTimerId = Timers.setTimeout(() => {
+                _cancelStop(sfxId);
+
+                if (isValid(sfxId)) {
+                    mod.StopSound(sfx);
+                }
+
+                if (logging.willLog(LogLevel.Info)) {
+                    logging.log(`Sound ${sfxId} stopped`, LogLevel.Info);
+                }
+            }, delay);
+
+            if (logging.willLog(LogLevel.Info)) {
+                logging.log(`Sound ${sfxId} scheduled to stop in ${delay}ms`, LogLevel.Info);
+            }
+
+            return;
+        }
+
+        if (isValid(sfxId)) {
+            mod.StopSound(sfx);
+        }
+
+        if (logging.willLog(LogLevel.Info)) {
+            logging.log(`Sound ${sfxId} stopped`, LogLevel.Info);
+        }
+    }
+
+    /**
+     * Fades the amplitude of a sound over time using a stepped interval.
+     * @param sfx - The `mod.SFX` object.
+     * @param options - Fade configuration options.
+     */
+    export function fade(sfx: mod.SFX, options: FadeOptions): void {
+        const sfxId = mod.GetObjId(sfx);
+
+        _fadeInternal(
+            sfx,
+            sfxId,
+            options.startAmplitude,
+            options.targetAmplitude,
+            options.delay,
+            options.duration,
+            options.steps,
+            options.stopOnComplete,
+            false
+        );
+    }
+
+    /**
+     * Cancels an active auto-stop timer on the sound.
+     * @param sfx - The `mod.SFX` object.
+     */
+    export function cancelStop(sfx: mod.SFX): void {
+        _cancelStop(mod.GetObjId(sfx));
+    }
+
+    /**
+     * Cancels an active fade timer on the sound.
+     * @param sfx - The `mod.SFX` object.
+     */
+    export function cancelFade(sfx: mod.SFX): void {
+        _cancelFade(mod.GetObjId(sfx));
+    }
+
+    /**
+     * Sets the amplitude of a sound immediately.
+     * @param sfx - The `mod.SFX` object.
+     * @param amplitude - The target amplitude.
+     */
+    export function setAmplitude(sfx: mod.SFX, amplitude: number): void {
+        const sfxId = mod.GetObjId(sfx);
+
+        if (!isValid(sfxId)) return;
+
+        mod.SetSoundAmplitude(sfx, amplitude);
+
+        if (logging.willLog(LogLevel.Info)) {
+            logging.log(`Sound ${sfxId} amplitude set to ${amplitude.toFixed(2)}`, LogLevel.Info);
+        }
+    }
+
+    /**
+     * Stops playback, clears timers, removes state, and unspawns the `mod.SFX` object.
+     * @param sfx - The `mod.SFX` object.
+     */
+    export function dispose(sfx: mod.SFX): void {
+        const sfxId = mod.GetObjId(sfx);
+
+        _cancelTimers(sfxId);
+
+        if (isValid(sfxId)) {
+            mod.StopSound(sfx);
+            mod.UnspawnObject(sfx);
+        }
+
+        if (logging.willLog(LogLevel.Debug)) {
+            logging.log(`Sound ${sfxId} disposed`, LogLevel.Debug);
+        }
+    }
+
+    /**
+     * Checks if the sound ID is currently valid and spawned in the engine.
+     * @param sfxId - The numeric object ID of the SFX.
+     * @returns True if the SFX object exists and is valid.
+     */
+    export function isValid(sfxId: number): boolean {
+        return mod.IsValid(mod.GetSFX(sfxId));
+    }
+}
+
+
+// --- SOURCE: src\uisound.ts ---
+// Button feedback: the game's own menu sounds, played to the clicking player.
+//
+// bf6-portal-utils/sounds' playOneShot spawns the 2D sound, plays it to one
+// player and unspawns it after CONFIG.uiSoundMs, so clicks never pile up SFX
+// objects. Every asset here is a RuntimeSpawn_Common member that the catalog
+// ships (none is in banlist.json).
+
+
+
+
+
+export const UI_SOUND = {
+    click: mod.RuntimeSpawn_Common.SFX_UI_MenuNavigation_Default_PrimarySelect_OneShot2D,
+    tab: mod.RuntimeSpawn_Common.SFX_UI_EOR_NavigationTab_OneShot2D,
+    step: mod.RuntimeSpawn_Common.SFX_UI_MenuNavigation_Default_SlidersClickDown_OneShot2D,
+    on: mod.RuntimeSpawn_Common.SFX_UI_MenuNavigation_Default_ToggleOn_OneShot2D,
+    off: mod.RuntimeSpawn_Common.SFX_UI_MenuNavigation_Default_ToggleOff_OneShot2D,
+    open: mod.RuntimeSpawn_Common.SFX_UI_Submenu_Open_2D,
+    close: mod.RuntimeSpawn_Common.SFX_UI_Submenu_Close_2D,
+    denied: mod.RuntimeSpawn_Common.SFX_UI_MenuNavigation_WeaponAttachment_NoPoints_OneShot2D,
+} as const;
+
+export function playUiSound(player: mod.Player, asset: mod.RuntimeSpawn_Common): void {
+    Sounds.playOneShot(asset, CONFIG.uiSoundMs, CONFIG.uiSoundAmp, { target: player });
+}
+
+const STEPPER = /^(btn(Amp|Rng|Scale)(Up|Down)|mtP\d(Up|Down)|mtVol(Up|Down))$/;
+
+/**
+ * The sound for a click on `action`, or undefined for none. PLAY buttons (the
+ * row's P and the tester's PLAY) are silent so the click never covers the sound
+ * being tested; the favourite toggle picks its own sound once it knows the new
+ * state.
+ */
+export function clickSound(action: string): mod.RuntimeSpawn_Common | undefined {
+    if (action === "mtPlay" || /^r\d+_(play|fav)$/.test(action)) return undefined;
+    if (action === "btnClose") return UI_SOUND.close;
+    if (action.slice(0, 3) === "tab") return UI_SOUND.tab;
+    if (STEPPER.test(action)) return UI_SOUND.step;
+    return UI_SOUND.click;
+}
+
+
 // --- SOURCE: src\index.ts ---
 // SFX / VFX Showcase - Battlefield 6 Portal
 //
@@ -14635,6 +15232,7 @@ export function testerFields(tab: TesterTab, st: TesterState): Scope {
 // and spawns what you armed at the hit point. Every row can also be played in place,
 // and + saves an asset to the shortlist on the SAVED tab, which exports the
 // index-file names to the log.
+
 
 
 
@@ -14838,6 +15436,18 @@ function handle(st: PlayerState, action: string): void {
             `selected=${labelOf(ui.selectedKey)} armed=${labelOf(ui.armedKey)} ` +
             `dim=${ui.fDim} kind=${ui.fKind} vfx=${ui.fVfx} amp=${ui.amp} rng=${ui.rng} scale=${ui.scale}`
     );
+
+    // MUSIC / RADIO buttons that need their package loaded are greyed out until
+    // it is; a click on one sends nothing and says what to load.
+    const unloaded = isTesterTab(ui.tab) && action.slice(0, 2) === "mt" ? needsLoad(ui.tab, ui.tester, action) : undefined;
+    if (unloaded !== undefined) {
+        playUiSound(ui.player, UI_SOUND.denied);
+        mod.DisplayNotificationMessage(mod.Message(TPL.mtLoadFirst, unloaded.key, unloaded.key), ui.player);
+        log(`music: ${action} ignored, ${unloaded.name} is not loaded`);
+        return;
+    }
+    const sound = clickSound(action);
+    if (sound !== undefined) playUiSound(ui.player, sound);
 
     if (action === "btnClose") {
         setOpen(ui, false);
@@ -15064,6 +15674,7 @@ function handle(st: PlayerState, action: string): void {
             const at = ui.favourites.indexOf(key);
             if (at >= 0) ui.favourites.splice(at, 1);
             else ui.favourites.push(key);
+            playUiSound(ui.player, at >= 0 ? UI_SOUND.off : UI_SOUND.on);
             defer(st);
             return;
         }
@@ -15284,6 +15895,7 @@ Events.OnPortalGadgetAimStart.subscribe((player: mod.Player) => {
     const st = ensure(player);
     if (st.ui.open) return;
     setOpen(st.ui, true);
+    playUiSound(player, UI_SOUND.open);
     defer(st);
     log(`gadget aim: opening menu, tab=${st.ui.tab}`);
 });

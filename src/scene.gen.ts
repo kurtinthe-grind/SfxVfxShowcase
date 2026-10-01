@@ -1085,7 +1085,7 @@ export const SCREEN: readonly SceneNode[] = [
         "k": "textbutton",
         "bgAlpha": 1,
         "align": "Center",
-        "textColor": "#FFFFFF",
+        "textColor": "{{f.mtSkipInk}}",
         "fill": "Solid",
         "parent": "tester",
         "id": "mtPrev",
@@ -1095,7 +1095,7 @@ export const SCREEN: readonly SceneNode[] = [
         "h": 60,
         "text": "{{f.mtPrevLabel}}",
         "textSize": 18,
-        "bg": "{{sh.row}}",
+        "bg": "{{f.mtSkipBg}}",
         "bind": {
             "text": "mtPrevLabel"
         }
@@ -1104,7 +1104,7 @@ export const SCREEN: readonly SceneNode[] = [
         "k": "textbutton",
         "bgAlpha": 1,
         "align": "Center",
-        "textColor": "#FFFFFF",
+        "textColor": "{{f.mtGateInk}}",
         "fill": "Solid",
         "parent": "tester",
         "id": "mtPlay",
@@ -1114,7 +1114,7 @@ export const SCREEN: readonly SceneNode[] = [
         "h": 60,
         "text": "{{f.mtPlayLabel}}",
         "textSize": 18,
-        "bg": "{{sh.green}}",
+        "bg": "{{f.mtPlayBg}}",
         "bind": {
             "text": "mtPlayLabel"
         }
@@ -1123,7 +1123,7 @@ export const SCREEN: readonly SceneNode[] = [
         "k": "textbutton",
         "bgAlpha": 1,
         "align": "Center",
-        "textColor": "#FFFFFF",
+        "textColor": "{{f.mtGateInk}}",
         "fill": "Solid",
         "parent": "tester",
         "id": "mtStop",
@@ -1133,7 +1133,7 @@ export const SCREEN: readonly SceneNode[] = [
         "h": 60,
         "text": "{{f.mtStopLabel}}",
         "textSize": 18,
-        "bg": "{{sh.redDim}}",
+        "bg": "{{f.mtStopBg}}",
         "bind": {
             "text": "mtStopLabel"
         }
@@ -1142,7 +1142,7 @@ export const SCREEN: readonly SceneNode[] = [
         "k": "textbutton",
         "bgAlpha": 1,
         "align": "Center",
-        "textColor": "#FFFFFF",
+        "textColor": "{{f.mtSkipInk}}",
         "fill": "Solid",
         "parent": "tester",
         "id": "mtNext",
@@ -1152,7 +1152,7 @@ export const SCREEN: readonly SceneNode[] = [
         "h": 60,
         "text": "{{f.mtNextLabel}}",
         "textSize": 18,
-        "bg": "{{sh.row}}",
+        "bg": "{{f.mtSkipBg}}",
         "bind": {
             "text": "mtNextLabel"
         }
@@ -1773,7 +1773,7 @@ export const SCREEN: readonly SceneNode[] = [
         "w": 260,
         "h": 48,
         "textSize": 15,
-        "textColor": "#FFFFFF",
+        "textColor": "{{f.mtGateInk}}",
         "bgAlpha": 1,
         "align": "Center",
         "fill": "Solid",
@@ -1781,7 +1781,7 @@ export const SCREEN: readonly SceneNode[] = [
         "id": "mtQueue",
         "x": 466,
         "text": "{{f.mtQueueLabel}}",
-        "bg": "{{sh.violet}}",
+        "bg": "{{f.mtQueueBg}}",
         "bind": {
             "text": "mtQueueLabel"
         }
