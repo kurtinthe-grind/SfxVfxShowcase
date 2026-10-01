@@ -26,6 +26,17 @@ function main() {
     const scene = JSON.parse(readFileSync(SCENE, "utf8"));
     const catalog = JSON.parse(readFileSync(CATALOG, "utf8"));
     const banned = JSON.parse(readFileSync(BANLIST, "utf8")).assets.map((a) => a.name);
+    // Tester descriptions and labels come from the generated files, so the
+    // preview shows the same wording as the game.
+    const musicDesc = JSON.parse(readFileSync(resolve(ROOT, "src", "musickeys.json"), "utf8")).desc;
+    const strings = JSON.parse(readFileSync(resolve(ROOT, "src", "strings.json"), "utf8"));
+    const textGen = readFileSync(resolve(ROOT, "src", "text.gen.ts"), "utf8");
+    const label = (field) => {
+        const m = new RegExp("\\b" + field + ': "(\\w+)"').exec(textGen);
+        if (m === null || strings[m[1]] === undefined) throw new Error("gen-sandbox: no label " + field);
+        return strings[m[1]];
+    };
+    const labels = { mtRadioHelp: label("mtRadioHelp"), mtNoteParams: label("mtNoteParams") };
 
     copyPreviewTool();
 
@@ -45,6 +56,8 @@ initViewport();
 const SCENE = ${JSON.stringify(scene)};
 const CATALOG = ${JSON.stringify(catalog)};
 const BANNED = ${JSON.stringify(banned)};
+const MUSIC_DESC = ${JSON.stringify(musicDesc)};
+const LABEL = ${JSON.stringify(labels)};
 
 // Player-wide effects registered by src/index.ts (not world objects).
 const SCREEN_FX = [
@@ -164,7 +177,8 @@ function testerSample(tab) {
     mtPlayLabel: "PLAY",
     mtStopLabel: "STOP",
     mtNextLabel: radio ? "NEXT TRACK" : ">|",
-    mtParamNote: "Sent to you only. Ranges are guesses - the engine does not report them.",
+    mtEventDesc: radio ? LABEL.mtRadioHelp : MUSIC_DESC["Core_PhaseEnded"],
+    mtParamNote: LABEL.mtNoteParams,
     mtVol: radio ? "1" : "1.3",
     mtLast: radio ? "SetMusicParam(Radio_QueueTrackNumber, 2)" : "PlayMusic(Core_PhaseEnded)",
     mtLoadLabel: radio ? "LOAD RADIO" : "CORE LOADED",
@@ -180,6 +194,7 @@ function testerSample(tab) {
     f["mtP" + i + "On"] = r === undefined ? "0" : "1";
     f["mtP" + i + "Label"] = r === undefined ? "" : r[0] + " :";
     f["mtP" + i + "Val"] = r === undefined ? "" : r[1];
+    f["mtP" + i + "Desc"] = r === undefined ? "" : MUSIC_DESC[r[0]];
   }
   return f;
 }

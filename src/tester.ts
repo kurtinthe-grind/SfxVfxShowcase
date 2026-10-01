@@ -303,6 +303,7 @@ export function testerFields(tab: TesterTab, st: TesterState): Scope {
         mtPkg: mod.Message(TPL.mtPackageOf, pkg.key),
         mtEvent: mod.Message(radio ? T.mtRadioLine : evt.key),
         mtEventIdx: radio ? mod.Message(T.logEmpty) : mod.Message(isLoaded ? TPL.mtTrackOf : TPL.mtTrackUnloaded, st.evt[st.pkg] + 1, pkg.events.length),
+        mtEventDesc: mod.Message(radio ? T.mtRadioHelp : evt.desc),
         mtPrevLabel: mod.Message(radio ? T.mtClearQueue : T.mtPrev),
         mtPlayLabel: mod.Message(T.mtPlay),
         mtStopLabel: mod.Message(T.mtStop),
@@ -322,6 +323,7 @@ export function testerFields(tab: TesterTab, st: TesterState): Scope {
         f["mtP" + i + "On"] = p === undefined ? "0" : "1";
         f["mtP" + i + "Label"] = p === undefined ? mod.Message(T.logEmpty) : mod.Message(TPL.mtParamLabel, p.key);
         f["mtP" + i + "Val"] = p === undefined ? mod.Message(T.logEmpty) : mod.Message(TPL.num1, st.values[p.name]);
+        f["mtP" + i + "Desc"] = p === undefined ? mod.Message(T.logEmpty) : mod.Message(p.desc);
     }
     return f;
 }

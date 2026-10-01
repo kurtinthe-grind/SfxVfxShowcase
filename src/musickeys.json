@@ -13,60 +13,120 @@
    "text": "BR_InsertionCinematic_Dropzone_Loop"
   },
   {
+   "key": "sxD00",
+   "text": "Drop zone loop. InsertionCinematic_Loop turns into it; play it to skip ahead."
+  },
+  {
    "key": "sxM03",
    "text": "BR_InsertionCinematic_Loop"
+  },
+  {
+   "key": "sxD01",
+   "text": "Insertion one-shot that turns into the drop zone loop after a few seconds."
   },
   {
    "key": "sxM04",
    "text": "BR_InsertionJump"
   },
   {
+   "key": "sxD02",
+   "text": "One-shot for jumping out at insertion."
+  },
+  {
    "key": "sxM05",
    "text": "BR_InsertionLanding"
+  },
+  {
+   "key": "sxD03",
+   "text": "One-shot for landing after insertion."
   },
   {
    "key": "sxM06",
    "text": "BR_LastTwoSquads"
   },
   {
+   "key": "sxD04",
+   "text": "One-shot, played when you are in the last two squads."
+  },
+  {
    "key": "sxM07",
    "text": "BR_Loss_Early_Loop"
+  },
+  {
+   "key": "sxD05",
+   "text": "Loop for being eliminated before the end of the round."
   },
   {
    "key": "sxM08",
    "text": "BR_Loss_EndOfRound_Loop"
   },
   {
+   "key": "sxD06",
+   "text": "Loop for losing at the end of the round in third place or worse."
+  },
+  {
    "key": "sxM09",
    "text": "BR_Loss_SecondPlace_Loop"
+  },
+  {
+   "key": "sxD07",
+   "text": "Loop for finishing the round in second place."
   },
   {
    "key": "sxM10",
    "text": "BR_Pause"
   },
   {
+   "key": "sxD08",
+   "text": "Pauses whatever BR music is playing."
+  },
+  {
    "key": "sxM11",
    "text": "BR_RespawnSecondChance"
+  },
+  {
+   "key": "sxD09",
+   "text": "One-shot for a second-chance respawn."
   },
   {
    "key": "sxM12",
    "text": "BR_RespawnTower"
   },
   {
+   "key": "sxD10",
+   "text": "One-shot for a respawn tower."
+  },
+  {
    "key": "sxM13",
    "text": "BR_Unpause"
+  },
+  {
+   "key": "sxD11",
+   "text": "Resumes paused BR music."
   },
   {
    "key": "sxM14",
    "text": "BR_WonRound_Loop"
   },
   {
+   "key": "sxD12",
+   "text": "Loop for winning the round."
+  },
+  {
    "key": "sxM15",
    "text": "BRGauntlet_LobbyFilled"
   },
   {
+   "key": "sxD13",
+   "text": "Plays when the lobby fills. Set BRGauntlet_LobbyTimerRemaining before playing it."
+  },
+  {
    "key": "sxM16",
    "text": "BRGauntlet_WaitingForPlayers_Loop"
+  },
+  {
+   "key": "sxD14",
+   "text": "Quiet loop while waiting for players in the lobby."
   },
   {
    "key": "sxM17",
@@ -75,6 +135,10 @@
   {
    "key": "sxM18",
    "text": "BRGauntlet_LobbyTimerRemaining"
+  },
+  {
+   "key": "sxD15",
+   "text": "Lobby countdown, 10 to 0, used by BRGauntlet_LobbyFilled. Set it once, then play that."
   },
   {
    "key": "sxM19",
@@ -89,40 +153,80 @@
    "text": "Core_Deploy_Loop"
   },
   {
+   "key": "sxD16",
+   "text": "Quiet, ambient loop, played while players are deploying."
+  },
+  {
    "key": "sxM22",
    "text": "Core_EndOfRound_Loop"
+  },
+  {
+   "key": "sxD17",
+   "text": "End-of-match loop. Core_IsWinning and Core_Sector pick the version."
   },
   {
    "key": "sxM23",
    "text": "Core_LastPhaseBegin"
   },
   {
+   "key": "sxD18",
+   "text": "One-shot track for the start of the last phase."
+  },
+  {
    "key": "sxM24",
    "text": "Core_Overtime_Loop"
+  },
+  {
+   "key": "sxD19",
+   "text": "Quiet, suspenseful loop for overtime, e.g. capturing a point in overtime."
   },
   {
    "key": "sxM25",
    "text": "Core_PauseMenu_Loop"
   },
   {
+   "key": "sxD20",
+   "text": "Quiet, ambient loop for the pause menu."
+  },
+  {
    "key": "sxM26",
    "text": "Core_PhaseBegin"
+  },
+  {
+   "key": "sxD21",
+   "text": "One-shot for the start of a phase. Core_IsWinning and Core_Sector pick the version."
   },
   {
    "key": "sxM27",
    "text": "Core_PhaseEnded"
   },
   {
+   "key": "sxD22",
+   "text": "One-shot for the end of a phase. Core_IsWinning and Core_Sector pick the version."
+  },
+  {
    "key": "sxM28",
    "text": "Core_Stinger_Negative"
+  },
+  {
+   "key": "sxD23",
+   "text": "Short negative sting, played mid-match."
   },
   {
    "key": "sxM29",
    "text": "Core_Stinger_Positive"
   },
   {
+   "key": "sxD24",
+   "text": "Short positive sting, played mid-match."
+  },
+  {
    "key": "sxM30",
    "text": "Core_Stinger_RankUp"
+  },
+  {
+   "key": "sxD25",
+   "text": "Sting played at the end of a match when you rank up."
   },
   {
    "key": "sxM31",
@@ -133,16 +237,32 @@
    "text": "Core_IsWinning"
   },
   {
+   "key": "sxD26",
+   "text": "0 = losing, 1 = winning. Picks the version of PhaseBegin, PhaseEnded and EndOfRound."
+  },
+  {
    "key": "sxM33",
    "text": "Core_PhaseUrgency"
+  },
+  {
+   "key": "sxD27",
+   "text": "Above 0, end-of-phase tension music starts at once. Each whole number adds a layer."
   },
   {
    "key": "sxM34",
    "text": "Core_Sector"
   },
   {
+   "key": "sxD28",
+   "text": "0 = no sectors (Conquest). 1 to 3 = that sector's music (Breakthrough)."
+  },
+  {
    "key": "sxM35",
    "text": "Core_Urgency"
+  },
+  {
+   "key": "sxD29",
+   "text": "Above 0, end-of-round tension music starts at once. Each whole number adds a layer."
   },
   {
    "key": "sxM36",
@@ -157,56 +277,112 @@
    "text": "Gauntlet_Deploy"
   },
   {
+   "key": "sxD30",
+   "text": "One-shot for deploying."
+  },
+  {
    "key": "sxM39",
    "text": "Gauntlet_Loss_FinalMission_Loop"
+  },
+  {
+   "key": "sxD31",
+   "text": "Loop for losing the final mission."
   },
   {
    "key": "sxM40",
    "text": "Gauntlet_Loss_Loop"
   },
   {
+   "key": "sxD32",
+   "text": "Loop for losing any mission except the final one."
+  },
+  {
    "key": "sxM41",
    "text": "Gauntlet_MissionBriefing_Final"
+  },
+  {
+   "key": "sxD33",
+   "text": "One-shot for the final mission briefing."
   },
   {
    "key": "sxM42",
    "text": "Gauntlet_MissionBriefing_One"
   },
   {
+   "key": "sxD34",
+   "text": "One-shot for the first mission briefing."
+  },
+  {
    "key": "sxM43",
    "text": "Gauntlet_MissionBriefing_Three"
+  },
+  {
+   "key": "sxD35",
+   "text": "One-shot for the third mission briefing."
   },
   {
    "key": "sxM44",
    "text": "Gauntlet_MissionBriefing_Two"
   },
   {
+   "key": "sxD36",
+   "text": "One-shot for the second mission briefing."
+  },
+  {
    "key": "sxM45",
    "text": "Gauntlet_Pause"
+  },
+  {
+   "key": "sxD37",
+   "text": "Pauses whatever Gauntlet music is playing."
   },
   {
    "key": "sxM46",
    "text": "Gauntlet_Qualified_Loop"
   },
   {
+   "key": "sxD38",
+   "text": "Loop for qualifying. Play Qualified_Outro next for a smooth ending."
+  },
+  {
    "key": "sxM47",
    "text": "Gauntlet_Qualified_Outro"
+  },
+  {
+   "key": "sxD39",
+   "text": "One-shot outro. Follows Qualified_Loop smoothly, or plays on its own."
   },
   {
    "key": "sxM48",
    "text": "Gauntlet_Unpause"
   },
   {
+   "key": "sxD40",
+   "text": "Resumes paused Gauntlet music."
+  },
+  {
    "key": "sxM49",
    "text": "Gauntlet_Urgency"
+  },
+  {
+   "key": "sxD41",
+   "text": "Long urgency one-shot, 35 seconds."
   },
   {
    "key": "sxM50",
    "text": "Gauntlet_Urgency_FinalMission"
   },
   {
+   "key": "sxD42",
+   "text": "Long urgency one-shot for the final mission, 35 seconds."
+  },
+  {
    "key": "sxM51",
    "text": "Gauntlet_WonOperation_Loop"
+  },
+  {
+   "key": "sxD43",
+   "text": "Loop for winning the operation."
   },
   {
    "key": "sxM52",
@@ -225,12 +401,24 @@
    "text": "Radio_ClearQueue"
   },
   {
+   "key": "sxD44",
+   "text": "Empties the queue. The only way to remove queued tracks."
+  },
+  {
    "key": "sxM56",
    "text": "Radio_NextQueuedTrack"
   },
   {
+   "key": "sxD45",
+   "text": "Skips to the next queued track."
+  },
+  {
    "key": "sxM57",
    "text": "Radio_Play"
+  },
+  {
+   "key": "sxD46",
+   "text": "Plays the queued tracks on the selected channel. An empty queue plays nothing."
   },
   {
    "key": "sxM58",
@@ -241,20 +429,94 @@
    "text": "Radio_Biome"
   },
   {
+   "key": "sxD47",
+   "text": "Which region's radio station. Only used on channel 4."
+  },
+  {
    "key": "sxM60",
    "text": "Radio_Channel"
+  },
+  {
+   "key": "sxD48",
+   "text": "Station: 0 Hip Hop, 1 Rock, 2 BF Themes, 3 Reggaeton, 4 by biome, 5 Classical, 6 Pop."
   },
   {
    "key": "sxM61",
    "text": "Radio_ContinueQueueOnTrackEnd"
   },
   {
+   "key": "sxD49",
+   "text": "1 = play the next queued track when one ends. 0 = stop after each track."
+  },
+  {
    "key": "sxM62",
    "text": "Radio_LoopQueuedTracks"
   },
   {
+   "key": "sxD50",
+   "text": "1 = start the queue over after the last track. 0 = stop at the end."
+  },
+  {
    "key": "sxM63",
    "text": "Radio_QueueTrackNumber"
+  },
+  {
+   "key": "sxD51",
+   "text": "Track number to add. QUEUE TRACK adds it; the queue starts empty."
   }
- ]
+ ],
+ "desc": {
+  "BR_InsertionCinematic_Dropzone_Loop": "Drop zone loop. InsertionCinematic_Loop turns into it; play it to skip ahead.",
+  "BR_InsertionCinematic_Loop": "Insertion one-shot that turns into the drop zone loop after a few seconds.",
+  "BR_InsertionJump": "One-shot for jumping out at insertion.",
+  "BR_InsertionLanding": "One-shot for landing after insertion.",
+  "BR_LastTwoSquads": "One-shot, played when you are in the last two squads.",
+  "BR_Loss_Early_Loop": "Loop for being eliminated before the end of the round.",
+  "BR_Loss_EndOfRound_Loop": "Loop for losing at the end of the round in third place or worse.",
+  "BR_Loss_SecondPlace_Loop": "Loop for finishing the round in second place.",
+  "BR_Pause": "Pauses whatever BR music is playing.",
+  "BR_RespawnSecondChance": "One-shot for a second-chance respawn.",
+  "BR_RespawnTower": "One-shot for a respawn tower.",
+  "BR_Unpause": "Resumes paused BR music.",
+  "BR_WonRound_Loop": "Loop for winning the round.",
+  "BRGauntlet_LobbyFilled": "Plays when the lobby fills. Set BRGauntlet_LobbyTimerRemaining before playing it.",
+  "BRGauntlet_WaitingForPlayers_Loop": "Quiet loop while waiting for players in the lobby.",
+  "BRGauntlet_LobbyTimerRemaining": "Lobby countdown, 10 to 0, used by BRGauntlet_LobbyFilled. Set it once, then play that.",
+  "Core_Deploy_Loop": "Quiet, ambient loop, played while players are deploying.",
+  "Core_EndOfRound_Loop": "End-of-match loop. Core_IsWinning and Core_Sector pick the version.",
+  "Core_LastPhaseBegin": "One-shot track for the start of the last phase.",
+  "Core_Overtime_Loop": "Quiet, suspenseful loop for overtime, e.g. capturing a point in overtime.",
+  "Core_PauseMenu_Loop": "Quiet, ambient loop for the pause menu.",
+  "Core_PhaseBegin": "One-shot for the start of a phase. Core_IsWinning and Core_Sector pick the version.",
+  "Core_PhaseEnded": "One-shot for the end of a phase. Core_IsWinning and Core_Sector pick the version.",
+  "Core_Stinger_Negative": "Short negative sting, played mid-match.",
+  "Core_Stinger_Positive": "Short positive sting, played mid-match.",
+  "Core_Stinger_RankUp": "Sting played at the end of a match when you rank up.",
+  "Core_IsWinning": "0 = losing, 1 = winning. Picks the version of PhaseBegin, PhaseEnded and EndOfRound.",
+  "Core_PhaseUrgency": "Above 0, end-of-phase tension music starts at once. Each whole number adds a layer.",
+  "Core_Sector": "0 = no sectors (Conquest). 1 to 3 = that sector's music (Breakthrough).",
+  "Core_Urgency": "Above 0, end-of-round tension music starts at once. Each whole number adds a layer.",
+  "Gauntlet_Deploy": "One-shot for deploying.",
+  "Gauntlet_Loss_FinalMission_Loop": "Loop for losing the final mission.",
+  "Gauntlet_Loss_Loop": "Loop for losing any mission except the final one.",
+  "Gauntlet_MissionBriefing_Final": "One-shot for the final mission briefing.",
+  "Gauntlet_MissionBriefing_One": "One-shot for the first mission briefing.",
+  "Gauntlet_MissionBriefing_Three": "One-shot for the third mission briefing.",
+  "Gauntlet_MissionBriefing_Two": "One-shot for the second mission briefing.",
+  "Gauntlet_Pause": "Pauses whatever Gauntlet music is playing.",
+  "Gauntlet_Qualified_Loop": "Loop for qualifying. Play Qualified_Outro next for a smooth ending.",
+  "Gauntlet_Qualified_Outro": "One-shot outro. Follows Qualified_Loop smoothly, or plays on its own.",
+  "Gauntlet_Unpause": "Resumes paused Gauntlet music.",
+  "Gauntlet_Urgency": "Long urgency one-shot, 35 seconds.",
+  "Gauntlet_Urgency_FinalMission": "Long urgency one-shot for the final mission, 35 seconds.",
+  "Gauntlet_WonOperation_Loop": "Loop for winning the operation.",
+  "Radio_ClearQueue": "Empties the queue. The only way to remove queued tracks.",
+  "Radio_NextQueuedTrack": "Skips to the next queued track.",
+  "Radio_Play": "Plays the queued tracks on the selected channel. An empty queue plays nothing.",
+  "Radio_Biome": "Which region's radio station. Only used on channel 4.",
+  "Radio_Channel": "Station: 0 Hip Hop, 1 Rock, 2 BF Themes, 3 Reggaeton, 4 by biome, 5 Classical, 6 Pop.",
+  "Radio_ContinueQueueOnTrackEnd": "1 = play the next queued track when one ends. 0 = stop after each track.",
+  "Radio_LoopQueuedTracks": "1 = start the queue over after the last track. 0 = stop at the end.",
+  "Radio_QueueTrackNumber": "Track number to add. QUEUE TRACK adds it; the queue starts empty."
+ }
 }

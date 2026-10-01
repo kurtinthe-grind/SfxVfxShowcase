@@ -124,12 +124,14 @@ const STATIC = {
     mtNextTrack: "NEXT TRACK",
     mtRadioLine: "RADIO STATION",
     mtNothingSent: "nothing sent yet",
-    mtNoteParams: "Sent to you only. Ranges are guesses - the engine does not report them.",
+    mtNoteParams: "Each change is sent as soon as you press - or +, and again on PLAY.",
     mtNoParams: "No params in this package besides VOLUME.",
     hintMusic: "LOAD the package first, then pick a track and PLAY. Params and VOLUME apply live; PLAY re-sends them first.",
     hintRadio: "LOAD RADIO, pick a channel, pick a track number and QUEUE TRACK it, then PLAY. The queue starts empty.",
     mtTargetMe: "FOR: ME",
     mtTargetAll: "FOR: EVERYONE",
+    // Under the radio transport, where the MUSIC tab shows the track description.
+    mtRadioHelp: "CLEAR QUEUE empties the queue. PLAY plays it. STOP stops (not a pause). NEXT TRACK skips.",
     // Radio_Channel / Radio_Biome values, from the MusicParams JSDoc.
     radioCh0: "Hip Hop",
     radioCh1: "Rock",

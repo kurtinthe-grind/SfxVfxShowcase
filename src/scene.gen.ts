@@ -968,9 +968,9 @@ export const SCREEN: readonly SceneNode[] = [
         "color": "{{sh.ink}}",
         "parent": "tester",
         "x": 156,
-        "y": 556,
+        "y": 554,
         "w": 790,
-        "h": 36,
+        "h": 30,
         "text": "VOLUME",
         "textSize": 18
     },
@@ -1007,9 +1007,9 @@ export const SCREEN: readonly SceneNode[] = [
         "parent": "mtPkgArrows",
         "id": "mtPkgPrev",
         "x": 196,
-        "y": 288,
+        "y": 284,
         "w": 80,
-        "h": 48,
+        "h": 44,
         "text": "<",
         "textSize": 20,
         "bg": "{{sh.orangeDim}}"
@@ -1023,9 +1023,9 @@ export const SCREEN: readonly SceneNode[] = [
         "parent": "mtPkgArrows",
         "id": "mtPkgNext",
         "x": 866,
-        "y": 288,
+        "y": 284,
         "w": 80,
-        "h": 48,
+        "h": 44,
         "text": ">",
         "textSize": 20,
         "bg": "{{sh.orangeDim}}"
@@ -1038,9 +1038,9 @@ export const SCREEN: readonly SceneNode[] = [
         "parent": "tester",
         "id": "mtPkg",
         "x": 286,
-        "y": 288,
+        "y": 284,
         "w": 570,
-        "h": 48,
+        "h": 44,
         "text": "{{f.mtPkg}}",
         "textSize": 20,
         "bind": {
@@ -1055,11 +1055,11 @@ export const SCREEN: readonly SceneNode[] = [
         "parent": "tester",
         "id": "mtEvent",
         "x": 196,
-        "y": 346,
+        "y": 334,
         "w": 750,
-        "h": 52,
+        "h": 44,
         "text": "{{f.mtEvent}}",
-        "textSize": 24,
+        "textSize": 22,
         "bind": {
             "text": "mtEvent"
         }
@@ -1072,9 +1072,9 @@ export const SCREEN: readonly SceneNode[] = [
         "parent": "tester",
         "id": "mtEventIdx",
         "x": 196,
-        "y": 398,
+        "y": 378,
         "w": 750,
-        "h": 26,
+        "h": 22,
         "text": "{{f.mtEventIdx}}",
         "textSize": 13,
         "bind": {
@@ -1090,9 +1090,9 @@ export const SCREEN: readonly SceneNode[] = [
         "parent": "tester",
         "id": "mtPrev",
         "x": 196,
-        "y": 440,
+        "y": 406,
         "w": 180,
-        "h": 72,
+        "h": 60,
         "text": "{{f.mtPrevLabel}}",
         "textSize": 18,
         "bg": "{{sh.row}}",
@@ -1109,9 +1109,9 @@ export const SCREEN: readonly SceneNode[] = [
         "parent": "tester",
         "id": "mtPlay",
         "x": 386,
-        "y": 440,
+        "y": 406,
         "w": 180,
-        "h": 72,
+        "h": 60,
         "text": "{{f.mtPlayLabel}}",
         "textSize": 18,
         "bg": "{{sh.green}}",
@@ -1128,9 +1128,9 @@ export const SCREEN: readonly SceneNode[] = [
         "parent": "tester",
         "id": "mtStop",
         "x": 576,
-        "y": 440,
+        "y": 406,
         "w": 180,
-        "h": 72,
+        "h": 60,
         "text": "{{f.mtStopLabel}}",
         "textSize": 18,
         "bg": "{{sh.redDim}}",
@@ -1147,14 +1147,31 @@ export const SCREEN: readonly SceneNode[] = [
         "parent": "tester",
         "id": "mtNext",
         "x": 766,
-        "y": 440,
+        "y": 406,
         "w": 180,
-        "h": 72,
+        "h": 60,
         "text": "{{f.mtNextLabel}}",
         "textSize": 18,
         "bg": "{{sh.row}}",
         "bind": {
             "text": "mtNextLabel"
+        }
+    },
+    {
+        "k": "text",
+        "textAlpha": 1,
+        "align": "Center",
+        "color": "{{sh.muted}}",
+        "parent": "tester",
+        "id": "mtEventDesc",
+        "x": 196,
+        "y": 474,
+        "w": 750,
+        "h": 44,
+        "text": "{{f.mtEventDesc}}",
+        "textSize": 14,
+        "bind": {
+            "text": "mtEventDesc"
         }
     },
     {
@@ -1176,9 +1193,9 @@ export const SCREEN: readonly SceneNode[] = [
         "parent": "mtP0",
         "id": "mtP0Label",
         "x": 978,
-        "y": 288,
+        "y": 282,
         "w": 330,
-        "h": 60,
+        "h": 44,
         "text": "{{f.mtP0Label}}",
         "textSize": 17,
         "bind": {
@@ -1193,9 +1210,9 @@ export const SCREEN: readonly SceneNode[] = [
         "parent": "mtP0",
         "id": "mtP0Val",
         "x": 1318,
-        "y": 288,
+        "y": 282,
         "w": 130,
-        "h": 60,
+        "h": 44,
         "text": "{{f.mtP0Val}}",
         "textSize": 20,
         "bind": {
@@ -1211,9 +1228,9 @@ export const SCREEN: readonly SceneNode[] = [
         "parent": "mtP0",
         "id": "mtP0Down",
         "x": 1458,
-        "y": 288,
+        "y": 282,
         "w": 140,
-        "h": 60,
+        "h": 44,
         "text": "-",
         "textSize": 20,
         "bg": "{{sh.orangeDim}}"
@@ -1227,12 +1244,29 @@ export const SCREEN: readonly SceneNode[] = [
         "parent": "mtP0",
         "id": "mtP0Up",
         "x": 1608,
-        "y": 288,
+        "y": 282,
         "w": 140,
-        "h": 60,
+        "h": 44,
         "text": "+",
         "textSize": 20,
         "bg": "{{sh.orangeDim}}"
+    },
+    {
+        "k": "text",
+        "textAlpha": 1,
+        "align": "Left",
+        "color": "{{sh.muted}}",
+        "parent": "mtP0",
+        "id": "mtP0Desc",
+        "x": 978,
+        "y": 328,
+        "w": 770,
+        "h": 26,
+        "text": "{{f.mtP0Desc}}",
+        "textSize": 13,
+        "bind": {
+            "text": "mtP0Desc"
+        }
     },
     {
         "k": "group",
@@ -1255,7 +1289,7 @@ export const SCREEN: readonly SceneNode[] = [
         "x": 978,
         "y": 360,
         "w": 330,
-        "h": 60,
+        "h": 44,
         "text": "{{f.mtP1Label}}",
         "textSize": 17,
         "bind": {
@@ -1272,7 +1306,7 @@ export const SCREEN: readonly SceneNode[] = [
         "x": 1318,
         "y": 360,
         "w": 130,
-        "h": 60,
+        "h": 44,
         "text": "{{f.mtP1Val}}",
         "textSize": 20,
         "bind": {
@@ -1290,7 +1324,7 @@ export const SCREEN: readonly SceneNode[] = [
         "x": 1458,
         "y": 360,
         "w": 140,
-        "h": 60,
+        "h": 44,
         "text": "-",
         "textSize": 20,
         "bg": "{{sh.orangeDim}}"
@@ -1306,10 +1340,27 @@ export const SCREEN: readonly SceneNode[] = [
         "x": 1608,
         "y": 360,
         "w": 140,
-        "h": 60,
+        "h": 44,
         "text": "+",
         "textSize": 20,
         "bg": "{{sh.orangeDim}}"
+    },
+    {
+        "k": "text",
+        "textAlpha": 1,
+        "align": "Left",
+        "color": "{{sh.muted}}",
+        "parent": "mtP1",
+        "id": "mtP1Desc",
+        "x": 978,
+        "y": 406,
+        "w": 770,
+        "h": 26,
+        "text": "{{f.mtP1Desc}}",
+        "textSize": 13,
+        "bind": {
+            "text": "mtP1Desc"
+        }
     },
     {
         "k": "group",
@@ -1330,9 +1381,9 @@ export const SCREEN: readonly SceneNode[] = [
         "parent": "mtP2",
         "id": "mtP2Label",
         "x": 978,
-        "y": 432,
+        "y": 438,
         "w": 330,
-        "h": 60,
+        "h": 44,
         "text": "{{f.mtP2Label}}",
         "textSize": 17,
         "bind": {
@@ -1347,9 +1398,9 @@ export const SCREEN: readonly SceneNode[] = [
         "parent": "mtP2",
         "id": "mtP2Val",
         "x": 1318,
-        "y": 432,
+        "y": 438,
         "w": 130,
-        "h": 60,
+        "h": 44,
         "text": "{{f.mtP2Val}}",
         "textSize": 20,
         "bind": {
@@ -1365,9 +1416,9 @@ export const SCREEN: readonly SceneNode[] = [
         "parent": "mtP2",
         "id": "mtP2Down",
         "x": 1458,
-        "y": 432,
+        "y": 438,
         "w": 140,
-        "h": 60,
+        "h": 44,
         "text": "-",
         "textSize": 20,
         "bg": "{{sh.orangeDim}}"
@@ -1381,12 +1432,29 @@ export const SCREEN: readonly SceneNode[] = [
         "parent": "mtP2",
         "id": "mtP2Up",
         "x": 1608,
-        "y": 432,
+        "y": 438,
         "w": 140,
-        "h": 60,
+        "h": 44,
         "text": "+",
         "textSize": 20,
         "bg": "{{sh.orangeDim}}"
+    },
+    {
+        "k": "text",
+        "textAlpha": 1,
+        "align": "Left",
+        "color": "{{sh.muted}}",
+        "parent": "mtP2",
+        "id": "mtP2Desc",
+        "x": 978,
+        "y": 484,
+        "w": 770,
+        "h": 26,
+        "text": "{{f.mtP2Desc}}",
+        "textSize": 13,
+        "bind": {
+            "text": "mtP2Desc"
+        }
     },
     {
         "k": "group",
@@ -1407,9 +1475,9 @@ export const SCREEN: readonly SceneNode[] = [
         "parent": "mtP3",
         "id": "mtP3Label",
         "x": 978,
-        "y": 504,
+        "y": 516,
         "w": 330,
-        "h": 60,
+        "h": 44,
         "text": "{{f.mtP3Label}}",
         "textSize": 17,
         "bind": {
@@ -1424,9 +1492,9 @@ export const SCREEN: readonly SceneNode[] = [
         "parent": "mtP3",
         "id": "mtP3Val",
         "x": 1318,
-        "y": 504,
+        "y": 516,
         "w": 130,
-        "h": 60,
+        "h": 44,
         "text": "{{f.mtP3Val}}",
         "textSize": 20,
         "bind": {
@@ -1442,9 +1510,9 @@ export const SCREEN: readonly SceneNode[] = [
         "parent": "mtP3",
         "id": "mtP3Down",
         "x": 1458,
-        "y": 504,
+        "y": 516,
         "w": 140,
-        "h": 60,
+        "h": 44,
         "text": "-",
         "textSize": 20,
         "bg": "{{sh.orangeDim}}"
@@ -1458,12 +1526,29 @@ export const SCREEN: readonly SceneNode[] = [
         "parent": "mtP3",
         "id": "mtP3Up",
         "x": 1608,
-        "y": 504,
+        "y": 516,
         "w": 140,
-        "h": 60,
+        "h": 44,
         "text": "+",
         "textSize": 20,
         "bg": "{{sh.orangeDim}}"
+    },
+    {
+        "k": "text",
+        "textAlpha": 1,
+        "align": "Left",
+        "color": "{{sh.muted}}",
+        "parent": "mtP3",
+        "id": "mtP3Desc",
+        "x": 978,
+        "y": 562,
+        "w": 770,
+        "h": 26,
+        "text": "{{f.mtP3Desc}}",
+        "textSize": 13,
+        "bind": {
+            "text": "mtP3Desc"
+        }
     },
     {
         "k": "group",
@@ -1484,9 +1569,9 @@ export const SCREEN: readonly SceneNode[] = [
         "parent": "mtP4",
         "id": "mtP4Label",
         "x": 978,
-        "y": 576,
+        "y": 594,
         "w": 330,
-        "h": 60,
+        "h": 44,
         "text": "{{f.mtP4Label}}",
         "textSize": 17,
         "bind": {
@@ -1501,9 +1586,9 @@ export const SCREEN: readonly SceneNode[] = [
         "parent": "mtP4",
         "id": "mtP4Val",
         "x": 1318,
-        "y": 576,
+        "y": 594,
         "w": 130,
-        "h": 60,
+        "h": 44,
         "text": "{{f.mtP4Val}}",
         "textSize": 20,
         "bind": {
@@ -1519,9 +1604,9 @@ export const SCREEN: readonly SceneNode[] = [
         "parent": "mtP4",
         "id": "mtP4Down",
         "x": 1458,
-        "y": 576,
+        "y": 594,
         "w": 140,
-        "h": 60,
+        "h": 44,
         "text": "-",
         "textSize": 20,
         "bg": "{{sh.orangeDim}}"
@@ -1535,12 +1620,29 @@ export const SCREEN: readonly SceneNode[] = [
         "parent": "mtP4",
         "id": "mtP4Up",
         "x": 1608,
-        "y": 576,
+        "y": 594,
         "w": 140,
-        "h": 60,
+        "h": 44,
         "text": "+",
         "textSize": 20,
         "bg": "{{sh.orangeDim}}"
+    },
+    {
+        "k": "text",
+        "textAlpha": 1,
+        "align": "Left",
+        "color": "{{sh.muted}}",
+        "parent": "mtP4",
+        "id": "mtP4Desc",
+        "x": 978,
+        "y": 640,
+        "w": 770,
+        "h": 26,
+        "text": "{{f.mtP4Desc}}",
+        "textSize": 13,
+        "bind": {
+            "text": "mtP4Desc"
+        }
     },
     {
         "k": "text",
@@ -1550,9 +1652,9 @@ export const SCREEN: readonly SceneNode[] = [
         "parent": "tester",
         "id": "mtParamNote",
         "x": 978,
-        "y": 648,
+        "y": 666,
         "w": 770,
-        "h": 32,
+        "h": 24,
         "text": "{{f.mtParamNote}}",
         "textSize": 12,
         "bind": {
@@ -1568,9 +1670,9 @@ export const SCREEN: readonly SceneNode[] = [
         "parent": "tester",
         "id": "mtVolDown",
         "x": 196,
-        "y": 604,
+        "y": 588,
         "w": 200,
-        "h": 64,
+        "h": 54,
         "text": "-",
         "textSize": 22,
         "bg": "{{sh.orangeDim}}"
@@ -1583,9 +1685,9 @@ export const SCREEN: readonly SceneNode[] = [
         "parent": "tester",
         "id": "mtVol",
         "x": 406,
-        "y": 604,
+        "y": 588,
         "w": 330,
-        "h": 64,
+        "h": 54,
         "text": "{{f.mtVol}}",
         "textSize": 26,
         "bind": {
@@ -1601,12 +1703,25 @@ export const SCREEN: readonly SceneNode[] = [
         "parent": "tester",
         "id": "mtVolUp",
         "x": 746,
-        "y": 604,
+        "y": 588,
         "w": 200,
-        "h": 64,
+        "h": 54,
         "text": "+",
         "textSize": 22,
         "bg": "{{sh.orangeDim}}"
+    },
+    {
+        "k": "text",
+        "textAlpha": 1,
+        "align": "Center",
+        "color": "{{sh.muted}}",
+        "parent": "tester",
+        "x": 156,
+        "y": 648,
+        "w": 790,
+        "h": 30,
+        "text": "Multiplier: 0 = silent, 1 = normal, 3 = triple volume.",
+        "textSize": 13
     },
     {
         "k": "textbutton",
@@ -1627,6 +1742,19 @@ export const SCREEN: readonly SceneNode[] = [
             "text": "mtLoadLabel",
             "bg": "mtLoadBg"
         }
+    },
+    {
+        "k": "text",
+        "textAlpha": 1,
+        "align": "Center",
+        "color": "{{sh.muted}}",
+        "parent": "tester",
+        "x": 196,
+        "y": 810,
+        "w": 260,
+        "h": 30,
+        "text": "Loads in about 5 s. One at a time.",
+        "textSize": 12
     },
     {
         "k": "group",
@@ -1659,6 +1787,19 @@ export const SCREEN: readonly SceneNode[] = [
         }
     },
     {
+        "k": "text",
+        "textAlpha": 1,
+        "align": "Center",
+        "color": "{{sh.muted}}",
+        "parent": "mtQueueGrp",
+        "x": 466,
+        "y": 810,
+        "w": 260,
+        "h": 30,
+        "text": "Adds the track number to the queue.",
+        "textSize": 12
+    },
+    {
         "k": "textbutton",
         "y": 756,
         "w": 260,
@@ -1677,6 +1818,19 @@ export const SCREEN: readonly SceneNode[] = [
             "text": "mtTargetLabel",
             "bg": "mtTargetBg"
         }
+    },
+    {
+        "k": "text",
+        "textAlpha": 1,
+        "align": "Center",
+        "color": "{{sh.muted}}",
+        "parent": "tester",
+        "x": 1464,
+        "y": 810,
+        "w": 260,
+        "h": 30,
+        "text": "ME: only you. EVERYONE: all players.",
+        "textSize": 12
     },
     {
         "k": "text",
@@ -1701,10 +1855,23 @@ export const SCREEN: readonly SceneNode[] = [
         "align": "Center",
         "color": "{{sh.muted}}",
         "parent": "tester",
+        "x": 736,
+        "y": 810,
+        "w": 718,
+        "h": 30,
+        "text": "The last call sent. The game cannot report what is playing.",
+        "textSize": 12
+    },
+    {
+        "k": "text",
+        "textAlpha": 1,
+        "align": "Center",
+        "color": "{{sh.muted}}",
+        "parent": "tester",
         "x": 196,
-        "y": 812,
+        "y": 846,
         "w": 1528,
-        "h": 56,
+        "h": 30,
         "text": "PLAY re-sends the package params and VOLUME before the event, so what you hear matches the numbers.",
         "textSize": 13
     }

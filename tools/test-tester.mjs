@@ -14,7 +14,8 @@
 //   - steppers send immediately and clamp to the range;
 //   - STOP sends the package's own stop event;
 //   - the radio transport maps to the four Radio_* events, and the queue param
-//     is only sent by QUEUE TRACK (sending it queues a track).
+//     is only sent by QUEUE TRACK (sending it queues a track);
+//   - the selected track and every visible param show their description.
 
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -52,6 +53,37 @@ async function wait(phase, ms) {
 // CONFIG.musicLoadMs: the SDK docs say to "allow a few seconds of time for the
 // music to load in"; calls for a package still loading are held until then.
 const LOAD_MS = 5000;
+
+// On-screen descriptions. Every track and param has one, written by
+// tools/gen-music.mjs from the SDK's Music System docs; the panel shows the
+// selected track's under the transport and each param's under its row.
+const MUSIC_GEN = readFileSync(resolve(ROOT, "src", "music.gen.ts"), "utf8");
+const TEXT_GEN = readFileSync(resolve(ROOT, "src", "text.gen.ts"), "utf8");
+/** The description key gen-music gave this event or param. */
+function descOf(name) {
+    const m = new RegExp(`name: "${name}",[^}]*desc: "(\\w+)"`).exec(MUSIC_GEN);
+    if (m === null) throw new Error(`music.gen.ts has no description for ${name}`);
+    return m[1];
+}
+/** The strings key of a curated label in text.gen.ts (T.<field>). */
+function labelKey(field) {
+    const m = new RegExp(`\\b${field}: "(\\w+)"`).exec(TEXT_GEN);
+    if (m === null) throw new Error(`text.gen.ts has no label ${field}`);
+    return m[1];
+}
+/** Checks the text node `id` shows `want()` (a key), recording any mismatch. */
+function shows(phase, id, want) {
+    try {
+        const w = want();
+        const got = s.textId(id);
+        if (got !== w) problems.push(`${phase}: ${id} shows ${got}, expected ${w}`);
+    } catch (e) {
+        problems.push(`${phase}: ${id}: ${e.message}`);
+    }
+}
+function showsParams(phase, names) {
+    names.forEach((n, i) => shows(phase, "mtP" + i + "Desc", () => descOf(n)));
+}
 async function step(phase, fn) {
     s.setPhase(phase);
     try {
@@ -87,10 +119,13 @@ try {
         pagerHidden = true;
     }
     if (!pagerHidden) problems.push("tab music: the browser's < PREV button is still visible behind the tester");
+    shows("tab music", "mtEventDesc", () => descOf("Core_LastPhaseBegin"));
+    showsParams("tab music", ["Core_IsWinning", "Core_PhaseUrgency", "Core_Sector", "Core_Urgency"]);
 
     // Core starts on Core_LastPhaseBegin (a loud one-shot), so >| is Overtime.
     await step("next", () => s.clickId("mtNext"));
     expect("next", []);
+    shows("next", "mtEventDesc", () => descOf("Core_Overtime_Loop"));
 
     const coreParams = [
         "SetMusicParam(MusicParams.Core_IsWinning, 0, player)",
@@ -130,6 +165,8 @@ try {
 
     await step("package next", () => s.clickId("mtPkgNext"));
     expect("package next", []);
+    shows("package next", "mtEventDesc", () => descOf("BR_InsertionJump"));
+    showsParams("package next", ["BRGauntlet_LobbyTimerRemaining"]);
     await step("load br", () => s.clickId("mtLoad"));
     expect("load br", ["UnloadMusic(MusicPackages.Core)", "LoadMusic(MusicPackages.BR)"]);
     // LOAD on a package that is already loaded must not reload it.
@@ -147,6 +184,9 @@ try {
 
     await step("tab radio", () => s.click("RADIO"));
     expect("tab radio", []);
+    // Radio has no track list: the line under the transport explains the buttons.
+    shows("tab radio", "mtEventDesc", () => labelKey("mtRadioHelp"));
+    showsParams("tab radio", ["Radio_Biome", "Radio_Channel", "Radio_ContinueQueueOnTrackEnd", "Radio_LoopQueuedTracks", "Radio_QueueTrackNumber"]);
     await step("load radio", () => s.clickId("mtLoad"));
     expect("load radio", ["UnloadMusic(MusicPackages.BR)", "LoadMusic(MusicPackages.Radio)"]);
     // Radio_QueueTrackNumber is row 4. Stepping it must NOT send: sending queues.

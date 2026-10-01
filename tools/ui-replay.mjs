@@ -165,6 +165,23 @@ export async function replay(source) {
             if (hit === undefined) throw new Error(`no visible button at ${want} for "${id}"`);
             M.OnPlayerUIButtonEvent(player, { widget: hit[0] + "_b" }, "UIButtonEvent.ButtonUp");
         },
+        /**
+         * The strings.json key the scene text node with this id shows now. Like
+         * clickId, it matches the node's scene position (top-level nodes only),
+         * and it throws unless exactly one visible text widget is there.
+         */
+        textId(id) {
+            const scene = JSON.parse(readFileSync(resolve(ROOT, "src", "scene.json"), "utf8"));
+            const node = scene.screen.find((n) => n.id === id);
+            if (node === undefined) throw new Error(`scene.json has no node "${id}"`);
+            const want = `${node.x},${node.y},0`;
+            // finalState rows: name|kind|parent|pos|size|vis|label (label is JSON, last).
+            const hits = finalState(calls)
+                .map((row) => row.split("|"))
+                .filter((f) => f[1] === "AddUIText" && f[3] === want && f[5] === "true");
+            if (hits.length !== 1) throw new Error(`${hits.length} visible text widgets at ${want} for "${id}", expected 1`);
+            return JSON.parse(hits[0].slice(6).join("|")).msg[0];
+        },
         dispose() {
             globalThis.mod = prevMod;
             globalThis.console = prevConsole;

@@ -13,12 +13,16 @@ export interface MusicParamSpec {
     readonly def: number;
     /** Sending this param queues a track: steppers must not send it. */
     readonly queues: boolean;
+    /** strings.json key of the one-line description (empty for amplitudes: VOLUME has its own). */
+    readonly desc: string;
 }
 
 export interface MusicEventSpec {
     readonly name: string;
     readonly event: mod.MusicEvents;
     readonly key: string;
+    /** strings.json key of the one-line description. */
+    readonly desc: string;
 }
 
 export interface MusicPackageSpec {
@@ -44,25 +48,25 @@ export const MUSIC_PACKAGES: readonly MusicPackageSpec[] = [
         stop: mod.MusicEvents.BR_Stop,
         stopKey: "sxM01",
         events: [
-            { name: "BR_InsertionCinematic_Dropzone_Loop", event: mod.MusicEvents.BR_InsertionCinematic_Dropzone_Loop, key: "sxM02" },
-            { name: "BR_InsertionCinematic_Loop", event: mod.MusicEvents.BR_InsertionCinematic_Loop, key: "sxM03" },
-            { name: "BR_InsertionJump", event: mod.MusicEvents.BR_InsertionJump, key: "sxM04" },
-            { name: "BR_InsertionLanding", event: mod.MusicEvents.BR_InsertionLanding, key: "sxM05" },
-            { name: "BR_LastTwoSquads", event: mod.MusicEvents.BR_LastTwoSquads, key: "sxM06" },
-            { name: "BR_Loss_Early_Loop", event: mod.MusicEvents.BR_Loss_Early_Loop, key: "sxM07" },
-            { name: "BR_Loss_EndOfRound_Loop", event: mod.MusicEvents.BR_Loss_EndOfRound_Loop, key: "sxM08" },
-            { name: "BR_Loss_SecondPlace_Loop", event: mod.MusicEvents.BR_Loss_SecondPlace_Loop, key: "sxM09" },
-            { name: "BR_Pause", event: mod.MusicEvents.BR_Pause, key: "sxM10" },
-            { name: "BR_RespawnSecondChance", event: mod.MusicEvents.BR_RespawnSecondChance, key: "sxM11" },
-            { name: "BR_RespawnTower", event: mod.MusicEvents.BR_RespawnTower, key: "sxM12" },
-            { name: "BR_Unpause", event: mod.MusicEvents.BR_Unpause, key: "sxM13" },
-            { name: "BR_WonRound_Loop", event: mod.MusicEvents.BR_WonRound_Loop, key: "sxM14" },
-            { name: "BRGauntlet_LobbyFilled", event: mod.MusicEvents.BRGauntlet_LobbyFilled, key: "sxM15" },
-            { name: "BRGauntlet_WaitingForPlayers_Loop", event: mod.MusicEvents.BRGauntlet_WaitingForPlayers_Loop, key: "sxM16" },
+            { name: "BR_InsertionCinematic_Dropzone_Loop", event: mod.MusicEvents.BR_InsertionCinematic_Dropzone_Loop, key: "sxM02", desc: "sxD00" },
+            { name: "BR_InsertionCinematic_Loop", event: mod.MusicEvents.BR_InsertionCinematic_Loop, key: "sxM03", desc: "sxD01" },
+            { name: "BR_InsertionJump", event: mod.MusicEvents.BR_InsertionJump, key: "sxM04", desc: "sxD02" },
+            { name: "BR_InsertionLanding", event: mod.MusicEvents.BR_InsertionLanding, key: "sxM05", desc: "sxD03" },
+            { name: "BR_LastTwoSquads", event: mod.MusicEvents.BR_LastTwoSquads, key: "sxM06", desc: "sxD04" },
+            { name: "BR_Loss_Early_Loop", event: mod.MusicEvents.BR_Loss_Early_Loop, key: "sxM07", desc: "sxD05" },
+            { name: "BR_Loss_EndOfRound_Loop", event: mod.MusicEvents.BR_Loss_EndOfRound_Loop, key: "sxM08", desc: "sxD06" },
+            { name: "BR_Loss_SecondPlace_Loop", event: mod.MusicEvents.BR_Loss_SecondPlace_Loop, key: "sxM09", desc: "sxD07" },
+            { name: "BR_Pause", event: mod.MusicEvents.BR_Pause, key: "sxM10", desc: "sxD08" },
+            { name: "BR_RespawnSecondChance", event: mod.MusicEvents.BR_RespawnSecondChance, key: "sxM11", desc: "sxD09" },
+            { name: "BR_RespawnTower", event: mod.MusicEvents.BR_RespawnTower, key: "sxM12", desc: "sxD10" },
+            { name: "BR_Unpause", event: mod.MusicEvents.BR_Unpause, key: "sxM13", desc: "sxD11" },
+            { name: "BR_WonRound_Loop", event: mod.MusicEvents.BR_WonRound_Loop, key: "sxM14", desc: "sxD12" },
+            { name: "BRGauntlet_LobbyFilled", event: mod.MusicEvents.BRGauntlet_LobbyFilled, key: "sxM15", desc: "sxD13" },
+            { name: "BRGauntlet_WaitingForPlayers_Loop", event: mod.MusicEvents.BRGauntlet_WaitingForPlayers_Loop, key: "sxM16", desc: "sxD14" },
         ],
-        amp: { name: "BR_Amplitude", param: mod.MusicParams.BR_Amplitude, key: "sxM17", min: 0, max: 3, step: 0.1, def: 1, queues: false },
+        amp: { name: "BR_Amplitude", param: mod.MusicParams.BR_Amplitude, key: "sxM17", min: 0, max: 3, step: 0.1, def: 1, queues: false, desc: "" },
         params: [
-            { name: "BRGauntlet_LobbyTimerRemaining", param: mod.MusicParams.BRGauntlet_LobbyTimerRemaining, key: "sxM18", min: 0, max: 10, step: 1, def: 10, queues: false },
+            { name: "BRGauntlet_LobbyTimerRemaining", param: mod.MusicParams.BRGauntlet_LobbyTimerRemaining, key: "sxM18", min: 0, max: 10, step: 1, def: 10, queues: false, desc: "sxD15" },
         ],
     },
     {
@@ -72,23 +76,23 @@ export const MUSIC_PACKAGES: readonly MusicPackageSpec[] = [
         stop: mod.MusicEvents.Core_Stop,
         stopKey: "sxM20",
         events: [
-            { name: "Core_Deploy_Loop", event: mod.MusicEvents.Core_Deploy_Loop, key: "sxM21" },
-            { name: "Core_EndOfRound_Loop", event: mod.MusicEvents.Core_EndOfRound_Loop, key: "sxM22" },
-            { name: "Core_LastPhaseBegin", event: mod.MusicEvents.Core_LastPhaseBegin, key: "sxM23" },
-            { name: "Core_Overtime_Loop", event: mod.MusicEvents.Core_Overtime_Loop, key: "sxM24" },
-            { name: "Core_PauseMenu_Loop", event: mod.MusicEvents.Core_PauseMenu_Loop, key: "sxM25" },
-            { name: "Core_PhaseBegin", event: mod.MusicEvents.Core_PhaseBegin, key: "sxM26" },
-            { name: "Core_PhaseEnded", event: mod.MusicEvents.Core_PhaseEnded, key: "sxM27" },
-            { name: "Core_Stinger_Negative", event: mod.MusicEvents.Core_Stinger_Negative, key: "sxM28" },
-            { name: "Core_Stinger_Positive", event: mod.MusicEvents.Core_Stinger_Positive, key: "sxM29" },
-            { name: "Core_Stinger_RankUp", event: mod.MusicEvents.Core_Stinger_RankUp, key: "sxM30" },
+            { name: "Core_Deploy_Loop", event: mod.MusicEvents.Core_Deploy_Loop, key: "sxM21", desc: "sxD16" },
+            { name: "Core_EndOfRound_Loop", event: mod.MusicEvents.Core_EndOfRound_Loop, key: "sxM22", desc: "sxD17" },
+            { name: "Core_LastPhaseBegin", event: mod.MusicEvents.Core_LastPhaseBegin, key: "sxM23", desc: "sxD18" },
+            { name: "Core_Overtime_Loop", event: mod.MusicEvents.Core_Overtime_Loop, key: "sxM24", desc: "sxD19" },
+            { name: "Core_PauseMenu_Loop", event: mod.MusicEvents.Core_PauseMenu_Loop, key: "sxM25", desc: "sxD20" },
+            { name: "Core_PhaseBegin", event: mod.MusicEvents.Core_PhaseBegin, key: "sxM26", desc: "sxD21" },
+            { name: "Core_PhaseEnded", event: mod.MusicEvents.Core_PhaseEnded, key: "sxM27", desc: "sxD22" },
+            { name: "Core_Stinger_Negative", event: mod.MusicEvents.Core_Stinger_Negative, key: "sxM28", desc: "sxD23" },
+            { name: "Core_Stinger_Positive", event: mod.MusicEvents.Core_Stinger_Positive, key: "sxM29", desc: "sxD24" },
+            { name: "Core_Stinger_RankUp", event: mod.MusicEvents.Core_Stinger_RankUp, key: "sxM30", desc: "sxD25" },
         ],
-        amp: { name: "Core_Amplitude", param: mod.MusicParams.Core_Amplitude, key: "sxM31", min: 0, max: 3, step: 0.1, def: 1, queues: false },
+        amp: { name: "Core_Amplitude", param: mod.MusicParams.Core_Amplitude, key: "sxM31", min: 0, max: 3, step: 0.1, def: 1, queues: false, desc: "" },
         params: [
-            { name: "Core_IsWinning", param: mod.MusicParams.Core_IsWinning, key: "sxM32", min: 0, max: 1, step: 1, def: 0, queues: false },
-            { name: "Core_PhaseUrgency", param: mod.MusicParams.Core_PhaseUrgency, key: "sxM33", min: 0, max: 3, step: 0.5, def: 0, queues: false },
-            { name: "Core_Sector", param: mod.MusicParams.Core_Sector, key: "sxM34", min: 0, max: 3, step: 1, def: 0, queues: false },
-            { name: "Core_Urgency", param: mod.MusicParams.Core_Urgency, key: "sxM35", min: 0, max: 4, step: 0.5, def: 0, queues: false },
+            { name: "Core_IsWinning", param: mod.MusicParams.Core_IsWinning, key: "sxM32", min: 0, max: 1, step: 1, def: 0, queues: false, desc: "sxD26" },
+            { name: "Core_PhaseUrgency", param: mod.MusicParams.Core_PhaseUrgency, key: "sxM33", min: 0, max: 3, step: 0.5, def: 0, queues: false, desc: "sxD27" },
+            { name: "Core_Sector", param: mod.MusicParams.Core_Sector, key: "sxM34", min: 0, max: 3, step: 1, def: 0, queues: false, desc: "sxD28" },
+            { name: "Core_Urgency", param: mod.MusicParams.Core_Urgency, key: "sxM35", min: 0, max: 4, step: 0.5, def: 0, queues: false, desc: "sxD29" },
         ],
     },
     {
@@ -98,22 +102,22 @@ export const MUSIC_PACKAGES: readonly MusicPackageSpec[] = [
         stop: mod.MusicEvents.Gauntlet_Stop,
         stopKey: "sxM37",
         events: [
-            { name: "Gauntlet_Deploy", event: mod.MusicEvents.Gauntlet_Deploy, key: "sxM38" },
-            { name: "Gauntlet_Loss_FinalMission_Loop", event: mod.MusicEvents.Gauntlet_Loss_FinalMission_Loop, key: "sxM39" },
-            { name: "Gauntlet_Loss_Loop", event: mod.MusicEvents.Gauntlet_Loss_Loop, key: "sxM40" },
-            { name: "Gauntlet_MissionBriefing_Final", event: mod.MusicEvents.Gauntlet_MissionBriefing_Final, key: "sxM41" },
-            { name: "Gauntlet_MissionBriefing_One", event: mod.MusicEvents.Gauntlet_MissionBriefing_One, key: "sxM42" },
-            { name: "Gauntlet_MissionBriefing_Three", event: mod.MusicEvents.Gauntlet_MissionBriefing_Three, key: "sxM43" },
-            { name: "Gauntlet_MissionBriefing_Two", event: mod.MusicEvents.Gauntlet_MissionBriefing_Two, key: "sxM44" },
-            { name: "Gauntlet_Pause", event: mod.MusicEvents.Gauntlet_Pause, key: "sxM45" },
-            { name: "Gauntlet_Qualified_Loop", event: mod.MusicEvents.Gauntlet_Qualified_Loop, key: "sxM46" },
-            { name: "Gauntlet_Qualified_Outro", event: mod.MusicEvents.Gauntlet_Qualified_Outro, key: "sxM47" },
-            { name: "Gauntlet_Unpause", event: mod.MusicEvents.Gauntlet_Unpause, key: "sxM48" },
-            { name: "Gauntlet_Urgency", event: mod.MusicEvents.Gauntlet_Urgency, key: "sxM49" },
-            { name: "Gauntlet_Urgency_FinalMission", event: mod.MusicEvents.Gauntlet_Urgency_FinalMission, key: "sxM50" },
-            { name: "Gauntlet_WonOperation_Loop", event: mod.MusicEvents.Gauntlet_WonOperation_Loop, key: "sxM51" },
+            { name: "Gauntlet_Deploy", event: mod.MusicEvents.Gauntlet_Deploy, key: "sxM38", desc: "sxD30" },
+            { name: "Gauntlet_Loss_FinalMission_Loop", event: mod.MusicEvents.Gauntlet_Loss_FinalMission_Loop, key: "sxM39", desc: "sxD31" },
+            { name: "Gauntlet_Loss_Loop", event: mod.MusicEvents.Gauntlet_Loss_Loop, key: "sxM40", desc: "sxD32" },
+            { name: "Gauntlet_MissionBriefing_Final", event: mod.MusicEvents.Gauntlet_MissionBriefing_Final, key: "sxM41", desc: "sxD33" },
+            { name: "Gauntlet_MissionBriefing_One", event: mod.MusicEvents.Gauntlet_MissionBriefing_One, key: "sxM42", desc: "sxD34" },
+            { name: "Gauntlet_MissionBriefing_Three", event: mod.MusicEvents.Gauntlet_MissionBriefing_Three, key: "sxM43", desc: "sxD35" },
+            { name: "Gauntlet_MissionBriefing_Two", event: mod.MusicEvents.Gauntlet_MissionBriefing_Two, key: "sxM44", desc: "sxD36" },
+            { name: "Gauntlet_Pause", event: mod.MusicEvents.Gauntlet_Pause, key: "sxM45", desc: "sxD37" },
+            { name: "Gauntlet_Qualified_Loop", event: mod.MusicEvents.Gauntlet_Qualified_Loop, key: "sxM46", desc: "sxD38" },
+            { name: "Gauntlet_Qualified_Outro", event: mod.MusicEvents.Gauntlet_Qualified_Outro, key: "sxM47", desc: "sxD39" },
+            { name: "Gauntlet_Unpause", event: mod.MusicEvents.Gauntlet_Unpause, key: "sxM48", desc: "sxD40" },
+            { name: "Gauntlet_Urgency", event: mod.MusicEvents.Gauntlet_Urgency, key: "sxM49", desc: "sxD41" },
+            { name: "Gauntlet_Urgency_FinalMission", event: mod.MusicEvents.Gauntlet_Urgency_FinalMission, key: "sxM50", desc: "sxD42" },
+            { name: "Gauntlet_WonOperation_Loop", event: mod.MusicEvents.Gauntlet_WonOperation_Loop, key: "sxM51", desc: "sxD43" },
         ],
-        amp: { name: "Gauntlet_Amplitude", param: mod.MusicParams.Gauntlet_Amplitude, key: "sxM52", min: 0, max: 3, step: 0.1, def: 1, queues: false },
+        amp: { name: "Gauntlet_Amplitude", param: mod.MusicParams.Gauntlet_Amplitude, key: "sxM52", min: 0, max: 3, step: 0.1, def: 1, queues: false, desc: "" },
         params: [
         ],
     },
@@ -124,17 +128,17 @@ export const MUSIC_PACKAGES: readonly MusicPackageSpec[] = [
         stop: mod.MusicEvents.Radio_Stop,
         stopKey: "sxM54",
         events: [
-            { name: "Radio_ClearQueue", event: mod.MusicEvents.Radio_ClearQueue, key: "sxM55" },
-            { name: "Radio_NextQueuedTrack", event: mod.MusicEvents.Radio_NextQueuedTrack, key: "sxM56" },
-            { name: "Radio_Play", event: mod.MusicEvents.Radio_Play, key: "sxM57" },
+            { name: "Radio_ClearQueue", event: mod.MusicEvents.Radio_ClearQueue, key: "sxM55", desc: "sxD44" },
+            { name: "Radio_NextQueuedTrack", event: mod.MusicEvents.Radio_NextQueuedTrack, key: "sxM56", desc: "sxD45" },
+            { name: "Radio_Play", event: mod.MusicEvents.Radio_Play, key: "sxM57", desc: "sxD46" },
         ],
-        amp: { name: "Radio_Amplitude", param: mod.MusicParams.Radio_Amplitude, key: "sxM58", min: 0, max: 3, step: 0.1, def: 1, queues: false },
+        amp: { name: "Radio_Amplitude", param: mod.MusicParams.Radio_Amplitude, key: "sxM58", min: 0, max: 3, step: 0.1, def: 1, queues: false, desc: "" },
         params: [
-            { name: "Radio_Biome", param: mod.MusicParams.Radio_Biome, key: "sxM59", min: 0, max: 6, step: 1, def: 0, queues: false },
-            { name: "Radio_Channel", param: mod.MusicParams.Radio_Channel, key: "sxM60", min: 0, max: 6, step: 1, def: 2, queues: false },
-            { name: "Radio_ContinueQueueOnTrackEnd", param: mod.MusicParams.Radio_ContinueQueueOnTrackEnd, key: "sxM61", min: 0, max: 1, step: 1, def: 1, queues: false },
-            { name: "Radio_LoopQueuedTracks", param: mod.MusicParams.Radio_LoopQueuedTracks, key: "sxM62", min: 0, max: 1, step: 1, def: 1, queues: false },
-            { name: "Radio_QueueTrackNumber", param: mod.MusicParams.Radio_QueueTrackNumber, key: "sxM63", min: 0, max: 31, step: 1, def: 0, queues: true },
+            { name: "Radio_Biome", param: mod.MusicParams.Radio_Biome, key: "sxM59", min: 0, max: 6, step: 1, def: 0, queues: false, desc: "sxD47" },
+            { name: "Radio_Channel", param: mod.MusicParams.Radio_Channel, key: "sxM60", min: 0, max: 6, step: 1, def: 2, queues: false, desc: "sxD48" },
+            { name: "Radio_ContinueQueueOnTrackEnd", param: mod.MusicParams.Radio_ContinueQueueOnTrackEnd, key: "sxM61", min: 0, max: 1, step: 1, def: 1, queues: false, desc: "sxD49" },
+            { name: "Radio_LoopQueuedTracks", param: mod.MusicParams.Radio_LoopQueuedTracks, key: "sxM62", min: 0, max: 1, step: 1, def: 1, queues: false, desc: "sxD50" },
+            { name: "Radio_QueueTrackNumber", param: mod.MusicParams.Radio_QueueTrackNumber, key: "sxM63", min: 0, max: 31, step: 1, def: 0, queues: true, desc: "sxD51" },
         ],
     },
 ];

@@ -233,5 +233,5 @@ Only Core is loaded when the mode starts. `LOAD` switches to the package on scre
 
 **LAST CALL** shows the exact call that was sent last, for example `PlayMusic(Core_PhaseEnded)`. The game cannot report what is actually playing or a param's real value, so the panel shows what was sent.
 
-The parameter ranges come from the SDK's Music System docs.
+Every track and parameter has a one-line description on the panel: the selected track's under the transport buttons, and each parameter's under its row. VOLUME and the bottom buttons have one too. The wording and the parameter ranges come from the SDK's Music System docs.
 
