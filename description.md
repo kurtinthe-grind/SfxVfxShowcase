@@ -12,8 +12,8 @@ An in-game asset browser for **Battlefield 6 Portal**. Every sound and visual ef
 
 You need **two** files:
 
-- `bundle.ts` — the mod
-- `bundle.strings.json` — the string table, **1720 keys**
+- `dist/bundle.ts` — the mod
+- `dist/bundle.strings.json` — the string table, **1817 keys**
 
 Add both to your experience in the Portal editor at **portal.battlefield.com**.
 
@@ -186,7 +186,7 @@ Worth reading so you're not surprised:
 
 - **Highlight is on press, not hover.** Every button goes bright orange (`#FF7A1A`) when you press it and settles when you release. The UI package this mod is built on routes no cursor-over event at all, and Portal's own hover colour is only reachable through a raw API the project rules forbid. Selected *tabs* stay lit permanently, since a tab has to look active after the click.
 - **Two known crashers are removed from the catalog.** `SFX_Levels_Brooklyn_Spots_EmergencyExit_SimpleLoop3D` and `SFX_Levels_Brooklyn_Shared_Spots_Water_Splash_Head_SimpleLoop3D` crash the Portal instance on play, so they are filtered out at build time. The build fails if a banlist entry isn't a real asset name, so the guard can't silently rot.
-- **The `F` keycap may render as a censor glyph.** Portal censors a standalone "f" used as a single-character token. If you see it, that's the engine's filter, not a missing label. There's a documented one-line fix in the README.
+- **The `F` keycap may render as a censor glyph.** Portal censors a standalone "f" used as a single-character token. If you see it, that's the engine's filter, not a missing label. There's a documented one-line fix in [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md).
 - **The SCALE range is a best guess.** 0.25x to 4.0x is what the SDK appears to accept; if an effect vanishes at the top of the range, the usable band is narrower and I'll tune it.
 - **Loop playback windows are estimates.** The SDK exposes no duration for a spawned SFX, so the length shown on a sound row is a playback window the mod applies so loops get bounded and one-shots get cleaned up. It's a starting guess and wants tuning by ear.
 

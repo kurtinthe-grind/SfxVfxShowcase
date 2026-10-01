@@ -4,3 +4,6 @@ node_modules/
 # dist/bundle.ts and dist/bundle.strings.json, which are tracked.
 /SfxVfxShowcase.ts
 /SfxVfxShowcase.strings.json
+
+# Local recovery leftover, not part of the project.
+/recovered-head.txt
