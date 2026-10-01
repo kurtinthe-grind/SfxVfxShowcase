@@ -14077,6 +14077,28 @@ const RADIO = pkgNamed("Radio");
 /** Loaded at game-mode start, as the official examples do. */
 const STARTUP = MUSIC_TAB[0];
 
+/**
+ * Where each MUSIC package's track selector starts: the loud one-shots the
+ * reference mods play (CustomConquest: Core_LastPhaseBegin, AcePursuit:
+ * BR_InsertionJump). Index 0 of Core is Core_Deploy_Loop, a "quiet and ambient"
+ * deploy-screen loop, which is what the first in-game run tried and heard nothing.
+ */
+const DEFAULT_EVENT: Readonly<Record<string, string>> = {
+    Core: "Core_LastPhaseBegin",
+    BR: "BR_InsertionJump",
+    Gauntlet: "Gauntlet_Deploy",
+};
+
+function defaultEventIndex(p: MusicPackageSpec): number {
+    const want = DEFAULT_EVENT[p.name];
+    for (let i = 0; i < p.events.length; i++) if (p.events[i].name === want) return i;
+    return 0;
+}
+
+/** The smoke test's event: CustomConquest's exact call after LoadMusic(Core). */
+const SMOKE_EVENT = MUSIC_TAB[0].events[defaultEventIndex(MUSIC_TAB[0])];
+let smokeDone = false;
+
 function radioEvent(name: string): MusicEventSpec {
     for (const e of RADIO.events) if (e.name === name) return e;
     throw new Error("radio event missing from music.gen.ts: " + name);
@@ -14110,7 +14132,7 @@ export function newTesterState(): TesterState {
         values[p.amp.name] = p.amp.def;
         for (const x of p.params) values[x.name] = x.def;
     }
-    return { pkg: 0, evt: MUSIC_TAB.map(() => 0), values: values, last: undefined, toAll: false };
+    return { pkg: 0, evt: MUSIC_TAB.map(defaultEventIndex), values: values, last: undefined, toAll: false };
 }
 
 /** Called once from OnGameModeStarted: the docs advise loading early. */
@@ -14118,6 +14140,20 @@ export function loadStartupMusic(): void {
     mod.LoadMusic(STARTUP.pkg);
     loaded = STARTUP;
     log("music: LoadMusic(" + STARTUP.name + ") at game-mode start");
+}
+
+/**
+ * Music smoke test, run on the first deploy only: PlayMusic(Core_LastPhaseBegin)
+ * to everyone, the exact call CustomConquest makes after LoadMusic(Core). If this
+ * is silent too, music is silent in the experience itself (game music volume,
+ * experience settings), not because of anything the tester panel does.
+ */
+export function musicSmokeTest(): void {
+    if (smokeDone) return;
+    smokeDone = true;
+    mod.PlayMusic(SMOKE_EVENT.event);
+    const pkgNote = loaded === undefined ? "nothing loaded" : "loaded=" + loaded.name;
+    log("music: PlayMusic(" + SMOKE_EVENT.name + ") for=everyone " + pkgNote + " [smoke test on first deploy]");
 }
 
 function current(tab: TesterTab, st: TesterState): MusicPackageSpec {
@@ -14379,6 +14415,8 @@ Events.OnPlayerDeployed.subscribe((player: mod.Player) => {
     mod.AddEquipment(player, mod.Gadgets.Misc_PortalGadget);
     ensure(player);
     log(`deploy: player ${mod.GetObjId(player)} granted the portal gadget`);
+    // Once per match: proves whether music can play in this experience at all.
+    musicSmokeTest();
 });
 
 Events.OnPlayerLeaveGame.subscribe((playerId: number) => {

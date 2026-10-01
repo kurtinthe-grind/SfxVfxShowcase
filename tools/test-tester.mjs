@@ -59,7 +59,11 @@ try {
     await s.ticks(5);
     expect("boot", ["LoadMusic(MusicPackages.Core)"]);
 
+    // Smoke test: the first deploy plays a loud one-shot to everyone, exactly as
+    // CustomConquest does after loading Core. It isolates "music is silent in this
+    // experience" from anything the tester UI does.
     await step("deploy", () => s.deploy());
+    expect("deploy", ["PlayMusic(MusicEvents.Core_LastPhaseBegin)"]);
     await step("open", () => s.aim());
     await step("tab music", () => s.click("MUSIC"));
     expect("tab music", []);
@@ -72,6 +76,7 @@ try {
     }
     if (!pagerHidden) problems.push("tab music: the browser's < PREV button is still visible behind the tester");
 
+    // Core starts on Core_LastPhaseBegin (a loud one-shot), so >| is Overtime.
     await step("next", () => s.clickId("mtNext"));
     expect("next", []);
 
@@ -83,7 +88,7 @@ try {
         "SetMusicParam(MusicParams.Core_Amplitude, 1, player)",
     ];
     await step("play", () => s.clickId("mtPlay"));
-    expect("play", [...coreParams, "PlayMusic(MusicEvents.Core_EndOfRound_Loop, player)"]);
+    expect("play", [...coreParams, "PlayMusic(MusicEvents.Core_Overtime_Loop, player)"]);
 
     await step("param up", () => s.clickId("mtP0Up"));
     expect("param up", ["SetMusicParam(MusicParams.Core_IsWinning, 1, player)"]);
@@ -107,7 +112,7 @@ try {
         "SetMusicParam(MusicParams.Core_Sector, 0)",
         "SetMusicParam(MusicParams.Core_Urgency, 0)",
         "SetMusicParam(MusicParams.Core_Amplitude, 1.1)",
-        "PlayMusic(MusicEvents.Core_EndOfRound_Loop)",
+        "PlayMusic(MusicEvents.Core_Overtime_Loop)",
     ]);
     await step("target me", () => s.clickId("mtTarget"));
 
@@ -119,7 +124,7 @@ try {
     expect("play br", [
         "SetMusicParam(MusicParams.BRGauntlet_LobbyTimerRemaining, 10, player)",
         "SetMusicParam(MusicParams.BR_Amplitude, 1, player)",
-        "PlayMusic(MusicEvents.BR_InsertionCinematic_Dropzone_Loop, player)",
+        "PlayMusic(MusicEvents.BR_InsertionJump, player)",
     ]);
 
     await step("tab radio", () => s.click("RADIO"));

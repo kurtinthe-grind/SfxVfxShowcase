@@ -11,7 +11,7 @@ import { Timers } from "bf6-portal-utils/timers";
 import { SFX_CATALOG, SFX_CATEGORIES, SFX_PREFIXES, type SfxEntry, VFX_CATALOG, VFX_CATEGORIES, VFX_PREFIXES } from "./catalog";
 import { CONFIG } from "./config";
 import { debugEnabled, initLog, log, logAlways, setDebug } from "./diag";
-import { handleTesterAction, loadStartupMusic, newTesterState } from "./tester";
+import { handleTesterAction, loadStartupMusic, musicSmokeTest, newTesterState } from "./tester";
 import { T, TPL } from "./text.gen";
 import {
     destroyUI,
@@ -112,6 +112,8 @@ Events.OnPlayerDeployed.subscribe((player: mod.Player) => {
     mod.AddEquipment(player, mod.Gadgets.Misc_PortalGadget);
     ensure(player);
     log(`deploy: player ${mod.GetObjId(player)} granted the portal gadget`);
+    // Once per match: proves whether music can play in this experience at all.
+    musicSmokeTest();
 });
 
 Events.OnPlayerLeaveGame.subscribe((playerId: number) => {
