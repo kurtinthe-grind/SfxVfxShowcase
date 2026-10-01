@@ -126,13 +126,11 @@ export interface TesterState {
     last: mod.Message | undefined;
     /** false = player overloads (ME), true = global overloads (EVERYONE). */
     toAll: boolean;
-    /** Tracks queued since the last CLEAR QUEUE. The engine cannot be asked. */
-    queued: number;
-    /** Station and number of the last track queued, until CLEAR QUEUE. */
-    lastQueued: RadioPick | undefined;
+    /** Tracks queued since the last CLEAR QUEUE, in order. The engine cannot be asked. */
+    queue: RadioPick[];
 }
 
-interface RadioPick {
+export interface RadioPick {
     ch: number;
     biome: number;
     track: number;
@@ -144,7 +142,7 @@ export function newTesterState(): TesterState {
         values[p.amp.name] = p.amp.def;
         for (const x of p.params) values[x.name] = x.def;
     }
-    return { pkg: 0, evt: MUSIC_TAB.map(defaultEventIndex), values: values, last: undefined, toAll: false, queued: 0, lastQueued: undefined };
+    return { pkg: 0, evt: MUSIC_TAB.map(defaultEventIndex), values: values, last: undefined, toAll: false, queue: [] };
 }
 
 /** Called once from OnGameModeStarted: the docs advise loading early. */
@@ -239,7 +237,7 @@ function stationKey(ch: number, biome: number): string {
  * would keep playing the queued station.
  */
 function queueIsStale(st: TesterState): boolean {
-    const q = st.lastQueued;
+    const q = st.queue[st.queue.length - 1];
     if (q === undefined) return false;
     const ch = radioChannel(st);
     return ch !== q.ch || (ch === 4 && radioBiome(st) !== q.biome);
@@ -254,16 +252,15 @@ function noteQueued(st: TesterState, q: MusicParamSpec): void {
     const ch = radioChannel(st);
     const biome = radioBiome(st);
     const track = st.values[q.name];
-    st.queued++;
-    st.lastQueued = { ch: ch, biome: biome, track: track };
+    st.queue.push({ ch: ch, biome: biome, track: track });
     const n = (ch === 4 ? RADIO_BIOME_TRACKS[biome] : RADIO_TRACKS[ch]) ?? q.max + 1;
     st.values[q.name] = track + 1 < n ? Math.min(q.max, track + 1) : q.min;
 }
 
 function queueLine(st: TesterState): mod.Message {
-    const q = st.lastQueued;
+    const q = st.queue[st.queue.length - 1];
     if (q === undefined) return mod.Message(T.mtQueueEmpty);
-    return mod.Message(TPL.mtQueueCount, st.queued, stationKey(q.ch, q.biome), q.track);
+    return mod.Message(TPL.mtQueueCount, st.queue.length, stationKey(q.ch, q.biome), q.track);
 }
 
 /**
@@ -319,10 +316,7 @@ export function handleTesterAction(tab: TesterTab, st: TesterState, player: mod.
             const e = action === "mtNext" ? RADIO_NEXT : RADIO_CLEAR;
             whenLoaded(() => {
                 sendEvent(player, st, e.event, e.name, e.key);
-                if (e === RADIO_CLEAR) {
-                    st.queued = 0;
-                    st.lastQueued = undefined;
-                }
+                if (e === RADIO_CLEAR) st.queue = [];
                 redraw();
             });
             return true;
