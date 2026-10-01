@@ -1,0 +1,50 @@
+];
+
+// ------------------------------------------------------------------ logging
+//
+// console.log is the sink. bf6-portal-utils/logging wraps it in try/catch so a
+// logging failure can never crash the mod, and tags every line so a pasted log is
+// unambiguous. Level is Debug: this is a build being debugged, not a shipped mode.
+
+/** Row name for a row key, for log lines. Never a UI string, so no strings.json entry. */
+function labelOf(key: string): string {
+    return key === "" ? "(none)" : key;
+}
+
+// ------------------------------------------------------------------ lifecycle
+
+Events.OnGameModeStarted.subscribe(() => {
+    initLog();
+    log(
+        `game mode started: ${SFX_CATALOG.length} sfx, ${VFX_CATALOG.length} vfx, ` +
+            `${SFX_PREFIXES.length + VFX_PREFIXES.length} prefixes, ` +
+            `${SCREEN_FX.length} player-wide, menu starts closed`
+    );
+    const screenRows: ScreenRow[] = [];
+    for (const f of SCREEN_FX) {
+        screenRows.push({ type: "screen", id: f.id, display: f.display, category: f.category, key: f.key, catKey: f.cat });
+    }
+    registerGroups(
+        SFX_CATEGORIES as unknown as string[],
+        VFX_CATEGORIES as unknown as string[],
+        screenRows
+    );
+    mod.SetSpawnMode(mod.SpawnModes.AutoSpawn);
+});
+
+// Grant the portal gadget at runtime on every deployment, so it survives death
+// and respawn. Tier 0: AddEquipment(player, gadget: Gadgets) with
+// Gadgets.Misc_PortalGadget; the SDK PortalGadgetExample does exactly this.
+Events.OnPlayerDeployed.subscribe((player: mod.Player) => {
+    mod.AddEquipment(player, mod.Gadgets.Misc_PortalGadget);
+    ensure(player);
+    log(`deploy: player ${mod.GetObjId(player)} granted the portal gadget`);
+});
+
+Events.OnPlayerLeaveGame.subscribe((playerId: number) => {
+    const st = states[playerId];
+    if (st === undefined) return;
+    clearAll(st);
+    destroyUI(st.ui);
+    delete states[playerId];
+});

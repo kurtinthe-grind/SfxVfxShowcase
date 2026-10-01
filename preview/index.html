@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BF6 Portal UI Preview</title>
+    <style>
+      @font-face {
+        font-family: "BF Text";
+        src: url("./assets/BF_TEXT_REGULAR.ttf") format("truetype");
+        font-style: normal;
+      }
+
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        background: #08080c;
+        overflow: auto;
+        font-family: "BF Text", "Segoe UI", sans-serif;
+      }
+
+      /* ---- Info bar ---- */
+      #info-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 32px;
+        background: rgba(20, 20, 30, 0.9);
+        color: #7a8a9a;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        z-index: 9999;
+        user-select: none;
+        border-bottom: 1px solid #1e2a36;
+        font-family: "Segoe UI", system-ui, sans-serif;
+      }
+      #info-bar span {
+        color: #ff8361;
+        font-weight: 600;
+      }
+
+      /* ---- Viewport ---- */
+      #viewport {
+        background: #111820;
+        background-image: url("./assets/ingame.jpg");
+        background-size: cover;
+        background-position: center;
+      }
+
+      /* ---- Debug mode (press D) ---- */
+      .debug .bf6-container {
+        outline: 1px dashed rgba(0, 255, 100, 0.45) !important;
+      }
+      .debug .bf6-text {
+        outline: 1px dashed rgba(60, 160, 255, 0.45) !important;
+      }
+      .debug .bf6-button {
+        outline: 1px dashed rgba(255, 60, 60, 0.45) !important;
+      }
+      .debug .bf6-text-button {
+        outline: 1px dashed rgba(255, 220, 40, 0.45) !important;
+      }
+      .debug .bf6-image {
+        outline: 1px dashed rgba(200, 60, 255, 0.45) !important;
+      }
+
+      /* ---- Drop zone overlay ---- */
+      #drop-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 99999;
+        align-items: center;
+        justify-content: center;
+        color: #ff8361;
+        font-size: 28px;
+        letter-spacing: 3px;
+        pointer-events: none;
+      }
+      #drop-overlay.active {
+        display: flex;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="info-bar">
+      BF6 Portal UI Preview &nbsp;|&nbsp;
+      <span id="resolution-info">1920 &times; 1080 (100%)</span> &nbsp;|&nbsp;
+      Press <span>Q</span>/<span>E</span> to change Zoom level,
+      <span>R</span> to reset &nbsp;|&nbsp; Press <span>D</span> debug outlines
+      &nbsp;|&nbsp; Drag &amp; drop a screenshot for background
+    </div>
+
+    <div id="drop-overlay">DROP IMAGE FOR BACKGROUND</div>
+    <div id="viewport"></div>
+
+    <!-- Drag-and-drop background image support -->
+    <script>
+      const overlay = document.getElementById("drop-overlay");
+      let dragCounter = 0;
+      document.addEventListener("dragenter", (e) => {
+        e.preventDefault();
+        dragCounter++;
+        overlay.classList.add("active");
+      });
+      document.addEventListener("dragleave", () => {
+        dragCounter--;
+        if (dragCounter <= 0) {
+          dragCounter = 0;
+          overlay.classList.remove("active");
+        }
+      });
+      document.addEventListener("dragover", (e) => e.preventDefault());
+      document.addEventListener("drop", (e) => {
+        e.preventDefault();
+        dragCounter = 0;
+        overlay.classList.remove("active");
+        const file = e.dataTransfer?.files?.[0];
+        if (file && file.type.startsWith("image/")) {
+          const url = URL.createObjectURL(file);
+          const vp = document.getElementById("viewport");
+          vp.style.backgroundImage = `url('${url}')`;
+          vp.style.backgroundSize = "cover";
+          vp.style.backgroundPosition = "center";
+        }
+      });
+    </script>
+
+    <!-- Load the demo UI -->
+    <script type="module" src="src/sandbox.js"></script>
+
+    <!-- Hot-reload via SSE (requires server.mjs) -->
+    <script>
+      (function () {
+        if (new URLSearchParams(location.search).get("nohot") === "1") return;
+        const sse = new EventSource("/__reload");
+        sse.onmessage = (e) => {
+          if (e.data === "reload") {
+            console.log("[hot-reload] reloading…");
+            location.reload();
+          }
+        };
+      })();
+    </script>
+  </body>
+</html>

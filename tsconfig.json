@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "target": "ES2020",
+        "module": "ES2020",
+        "moduleResolution": "bundler",
+        "lib": ["ES2020", "DOM"],
+        "strict": true,
+        "noEmit": true,
+        "noUnusedLocals": true,
+        // OFF on purpose: bf6-portal-utils resolves to .ts source (a symlinked
+        // package with no "exports" map), so its overrides are checked with these
+        // flags. A method that must match a base signature is not required to use
+        // every argument. skipLibCheck cannot help - these are .ts, not .d.ts.
+        "noUnusedParameters": false,
+        "noImplicitAny": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "allowImportingTsExtensions": true,
+        "isolatedModules": true,
+        "types": []
+    },
+    "include": ["src/**/*.ts", "banlist.ts", "../main_resources/types_original/mod/index.d.ts"]
+}

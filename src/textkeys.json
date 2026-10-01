@@ -1,0 +1,5692 @@
+{
+ "pairs": [
+  {
+   "key": "sxa0",
+   "text": "Alarm"
+  },
+  {
+   "key": "sxa1",
+   "text": "Buildings CrowsNest Collapse All OneShot3D"
+  },
+  {
+   "key": "sxa2",
+   "text": "Buildings CrowsNest Collapse Close OneShot3D"
+  },
+  {
+   "key": "sxa3",
+   "text": "Buildings CrowsNest Collapse Distant OneShot3D"
+  },
+  {
+   "key": "sxa4",
+   "text": "Buildings CrowsNest Collapse LFE OneShot3D"
+  },
+  {
+   "key": "sxa5",
+   "text": "Buildings CrowsNest Preamble Distant OneShot3D"
+  },
+  {
+   "key": "sxa6",
+   "text": "Buildings CrowsNest Preamble LFE OneShot3D"
+  },
+  {
+   "key": "sxa7",
+   "text": "Buildings CrowsNest Preamble OneShot3D"
+  },
+  {
+   "key": "sxa8",
+   "text": "Buildings GasStation Collapse Distant OneShot3D"
+  },
+  {
+   "key": "sxa9",
+   "text": "Buildings GasStation Collapse LFE OneShot3D"
+  },
+  {
+   "key": "sxa10",
+   "text": "Buildings GasStation Collapse OneShot3D"
+  },
+  {
+   "key": "sxa11",
+   "text": "Buildings HouseCollapse OneShot3D"
+  },
+  {
+   "key": "sxa12",
+   "text": "Buildings SolarArray Large Distant OneShot3D"
+  },
+  {
+   "key": "sxa13",
+   "text": "Buildings SolarArray Large LFE OneShot3D"
+  },
+  {
+   "key": "sxa14",
+   "text": "Buildings SolarArray Large OneShot3D"
+  },
+  {
+   "key": "sxa15",
+   "text": "Buildings SolarArray Medium Distant OneShot3D"
+  },
+  {
+   "key": "sxa16",
+   "text": "Buildings SolarArray Medium LFE OneShot3D"
+  },
+  {
+   "key": "sxa17",
+   "text": "Buildings SolarArray Medium OneShot3D"
+  },
+  {
+   "key": "sxa18",
+   "text": "Fuse Loop EngineCrackle SimpleLoop3D"
+  },
+  {
+   "key": "sxa19",
+   "text": "Fuse Loop GasFire SimpleLoop3D"
+  },
+  {
+   "key": "sxa20",
+   "text": "Fuse Loop LingeringWreckFire SimpleLoop3D"
+  },
+  {
+   "key": "sxa21",
+   "text": "Fuse Loop WreckFire SimpleLoop3D"
+  },
+  {
+   "key": "sxa22",
+   "text": "Fuse OneShot GasFireIgnition OneShot3D"
+  },
+  {
+   "key": "sxa23",
+   "text": "Fuse OneShot OilSpill OneShot3D"
+  },
+  {
+   "key": "sxa24",
+   "text": "Fuse OneShot VehicleIgnition OneShot3D"
+  },
+  {
+   "key": "sxa25",
+   "text": "Impacts Brick Small OneShot3D"
+  },
+  {
+   "key": "sxa26",
+   "text": "Impacts BrickWall OneShot3D"
+  },
+  {
+   "key": "sxa27",
+   "text": "Impacts Concrete Prop OneShot3D"
+  },
+  {
+   "key": "sxa28",
+   "text": "Impacts Metal Prop OneShot3D"
+  },
+  {
+   "key": "sxa29",
+   "text": "Impacts Metal Structural Medium OneShot3D"
+  },
+  {
+   "key": "sxa30",
+   "text": "Impacts Plaster Structural OneShot3D"
+  },
+  {
+   "key": "sxa31",
+   "text": "Impacts Plastic Prop OneShot3D"
+  },
+  {
+   "key": "sxa32",
+   "text": "Impacts Tile Large OneShot3D"
+  },
+  {
+   "key": "sxa33",
+   "text": "Impacts Vehicle Car OneShot3D"
+  },
+  {
+   "key": "sxa34",
+   "text": "Old Ceramic Generic OneShot3D"
+  },
+  {
+   "key": "sxa35",
+   "text": "PreAmble Brick OneShot3D"
+  },
+  {
+   "key": "sxa36",
+   "text": "Props FX Electric PropExplosionPowerline Medium OneShot3D"
+  },
+  {
+   "key": "sxa37",
+   "text": "Props Liquids WaterTank Large OneShot3D"
+  },
+  {
+   "key": "sxa38",
+   "text": "Props Paper OneShot3D"
+  },
+  {
+   "key": "sxa39",
+   "text": "Props Special Piano DestroyedState OneShot3D"
+  },
+  {
+   "key": "sxa40",
+   "text": "Props Special Piano OneShot3D"
+  },
+  {
+   "key": "sxa41",
+   "text": "Props Wood Generic Small OneShot3D"
+  },
+  {
+   "key": "sxa42",
+   "text": "Structural CloseDebris Generic OneShot3D"
+  },
+  {
+   "key": "sxa43",
+   "text": "Structural CloseDebris Wood OneShot3D"
+  },
+  {
+   "key": "sxa44",
+   "text": "Structural Debrispile OneShot3D"
+  },
+  {
+   "key": "sxa45",
+   "text": "Structural Metal GasStation OneShot3D"
+  },
+  {
+   "key": "sxa46",
+   "text": "Structures BrickWall Small Close OneShot3D"
+  },
+  {
+   "key": "sxa47",
+   "text": "Tree Dead Collision Large OneShot3D"
+  },
+  {
+   "key": "sxa48",
+   "text": "Tree Leafy Collision Large OneShot3D"
+  },
+  {
+   "key": "sxa49",
+   "text": "Tree Leafy Collision Medium OneShot3D"
+  },
+  {
+   "key": "sxa50",
+   "text": "Tree Leafy Falling Medium SimpleLoop3D"
+  },
+  {
+   "key": "sxa51",
+   "text": "Tree Leafy Start Large OneShot3D"
+  },
+  {
+   "key": "sxa52",
+   "text": "Tree Leafy Start Medium OneShot3D"
+  },
+  {
+   "key": "sxa53",
+   "text": "Tree Palm Collision Large OneShot3D"
+  },
+  {
+   "key": "sxa54",
+   "text": "Tree Palm Falling Large SimpleLoop3D"
+  },
+  {
+   "key": "sxa55",
+   "text": "Tree Palm Falling Medium SimpleLoop3D"
+  },
+  {
+   "key": "sxa56",
+   "text": "Tree Palm Start Large SimpleLoop3D"
+  },
+  {
+   "key": "sxa57",
+   "text": "Tree PineLoblolly Collision Large OneShot3D"
+  },
+  {
+   "key": "sxa58",
+   "text": "Tree PineLoblolly Collision Medium OneShot3D"
+  },
+  {
+   "key": "sxa59",
+   "text": "Tree PineLoblolly Collision Small OneShot3D"
+  },
+  {
+   "key": "sxa60",
+   "text": "Tree PineLoblolly Falling Large SimpleLoop3D"
+  },
+  {
+   "key": "sxa61",
+   "text": "Tree PineLoblolly Falling Small SimpleLoop3D"
+  },
+  {
+   "key": "sxa62",
+   "text": "Tree PineLoblolly Start Large OneShot3D"
+  },
+  {
+   "key": "sxa63",
+   "text": "Tree PineLoblolly Start Small OneShot3D"
+  },
+  {
+   "key": "sxa64",
+   "text": "Tree Poplar Falling Small SimpleLoop3D"
+  },
+  {
+   "key": "sxa65",
+   "text": "Tree Poplar Start Medium OneShot3D"
+  },
+  {
+   "key": "sxa66",
+   "text": "Tree Walnut Start Small OneShot3D"
+  },
+  {
+   "key": "sxa67",
+   "text": "Tree Whoosh Large SimpleLoop3D"
+  },
+  {
+   "key": "sxa68",
+   "text": "Tree WhooshTest SimpleLoop3D"
+  },
+  {
+   "key": "sxa69",
+   "text": "AdrenalineShot 1pExperience OneShot2D"
+  },
+  {
+   "key": "sxa70",
+   "text": "AdrenalineShot 1pExperience SimpleLoop2D"
+  },
+  {
+   "key": "sxa71",
+   "text": "AdrenalineShot 1pRiser OneShot2D"
+  },
+  {
+   "key": "sxa72",
+   "text": "AdrenalineShot 1pStop OneShot2D"
+  },
+  {
+   "key": "sxa73",
+   "text": "AdrenalineShot Commando 1pExperience OneShot2D"
+  },
+  {
+   "key": "sxa74",
+   "text": "AdrenalineShot Effort Female OneShot2D"
+  },
+  {
+   "key": "sxa75",
+   "text": "AdrenalineShot Effort Male OneShot2D"
+  },
+  {
+   "key": "sxa76",
+   "text": "AdrenalineShot Start OneShot2D"
+  },
+  {
+   "key": "sxa77",
+   "text": "AdrenalineShot Start OneShot3D"
+  },
+  {
+   "key": "sxa78",
+   "text": "AdrenalineShot Stop Early OneShot2D"
+  },
+  {
+   "key": "sxa79",
+   "text": "AdrenalineShot Stop Early OneShot3D"
+  },
+  {
+   "key": "sxa80",
+   "text": "AdrenalineShot Stop OneShot2D"
+  },
+  {
+   "key": "sxa81",
+   "text": "AdrenalineShot Stop OneShot3D"
+  },
+  {
+   "key": "sxa82",
+   "text": "ATMine Bounce Soft OneShot3D"
+  },
+  {
+   "key": "sxa83",
+   "text": "ATMine Equip OneShot2D"
+  },
+  {
+   "key": "sxa84",
+   "text": "ATMine Equip OneShot3D"
+  },
+  {
+   "key": "sxa85",
+   "text": "ATMine Pickup OneShot2D"
+  },
+  {
+   "key": "sxa86",
+   "text": "ATMine Pickup OneShot3D"
+  },
+  {
+   "key": "sxa87",
+   "text": "ATMine UnEquip OneShot2D"
+  },
+  {
+   "key": "sxa88",
+   "text": "ATMine UnEquip OneShot3D"
+  },
+  {
+   "key": "sxa89",
+   "text": "C4 Activate OneShot2D"
+  },
+  {
+   "key": "sxa90",
+   "text": "C4 Activate OneShot3D"
+  },
+  {
+   "key": "sxa91",
+   "text": "C4 Deploy OneShot2D"
+  },
+  {
+   "key": "sxa92",
+   "text": "C4 Deploy OneShot3D"
+  },
+  {
+   "key": "sxa93",
+   "text": "C4 Spawnable Pickup OneShot3D"
+  },
+  {
+   "key": "sxa94",
+   "text": "C4 Spawnable Spawn OneShot3D"
+  },
+  {
+   "key": "sxa95",
+   "text": "C4 Throw OneShot2D"
+  },
+  {
+   "key": "sxa96",
+   "text": "C4 Throw OneShot3D"
+  },
+  {
+   "key": "sxa97",
+   "text": "C4 Undeploy OneShot2D"
+  },
+  {
+   "key": "sxa98",
+   "text": "C4 Undeploy OneShot3D"
+  },
+  {
+   "key": "sxa99",
+   "text": "ConcussionGrenade ConcussionLoop SimpleLoop2D"
+  },
+  {
+   "key": "sxa100",
+   "text": "ConcussionGrenade ConcussionStart OneShot2D"
+  },
+  {
+   "key": "sxa101",
+   "text": "Decoy WeaponFireVar01 OneShot3D"
+  },
+  {
+   "key": "sxa102",
+   "text": "Decoy WeaponFireVar02 OneShot3D"
+  },
+  {
+   "key": "sxa103",
+   "text": "Decoy WeaponFireVar03 OneShot3D"
+  },
+  {
+   "key": "sxa104",
+   "text": "Decoy WeaponFireVar04 OneShot3D"
+  },
+  {
+   "key": "sxa105",
+   "text": "Decoy WeaponFireVar05 OneShot3D"
+  },
+  {
+   "key": "sxa106",
+   "text": "Defibrillator Equipped Charge OneShot2D"
+  },
+  {
+   "key": "sxa107",
+   "text": "Defibrillator Equipped Charge OneShot3D"
+  },
+  {
+   "key": "sxa108",
+   "text": "Defibrillator Equipped Charged OneShot2D"
+  },
+  {
+   "key": "sxa109",
+   "text": "Defibrillator Equipped Charged OneShot3D"
+  },
+  {
+   "key": "sxa110",
+   "text": "Defibrillator Equipped ChargeHum OneShot2D"
+  },
+  {
+   "key": "sxa111",
+   "text": "Defibrillator Equipped ChargeHum OneShot3D"
+  },
+  {
+   "key": "sxa112",
+   "text": "Defibrillator Equipped ChargeRub OneShot2D"
+  },
+  {
+   "key": "sxa113",
+   "text": "Defibrillator Equipped ChargeRub OneShot3D"
+  },
+  {
+   "key": "sxa114",
+   "text": "Defibrillator Equipped Deploy OneShot2D"
+  },
+  {
+   "key": "sxa115",
+   "text": "Defibrillator Equipped Deploy OneShot3D"
+  },
+  {
+   "key": "sxa116",
+   "text": "Defibrillator Equipped Fire Miss OneShot2D"
+  },
+  {
+   "key": "sxa117",
+   "text": "Defibrillator Equipped Fire Miss OneShot3D"
+  },
+  {
+   "key": "sxa118",
+   "text": "Defibrillator Equipped Fire OneShot2D"
+  },
+  {
+   "key": "sxa119",
+   "text": "Defibrillator Equipped Fire OneShot3D"
+  },
+  {
+   "key": "sxa120",
+   "text": "Defibrillator Equipped Revive Hit OneShot3D"
+  },
+  {
+   "key": "sxa121",
+   "text": "Defibrillator Equipped Undeploy OneShot2D"
+  },
+  {
+   "key": "sxa122",
+   "text": "Defibrillator Equipped Undeploy OneShot3D"
+  },
+  {
+   "key": "sxa123",
+   "text": "DeployableCover Damage OneShot3D"
+  },
+  {
+   "key": "sxa124",
+   "text": "DeployableCover Deploy OneShot2D"
+  },
+  {
+   "key": "sxa125",
+   "text": "DeployableCover Deploy OneShot3D"
+  },
+  {
+   "key": "sxa126",
+   "text": "DeployableCover Destruction OneShot3D"
+  },
+  {
+   "key": "sxa127",
+   "text": "DeployableCover Pickup OneShot3D"
+  },
+  {
+   "key": "sxa128",
+   "text": "DeployableCover Place OneShot3D"
+  },
+  {
+   "key": "sxa129",
+   "text": "DeployableCover Throw OneShot2D"
+  },
+  {
+   "key": "sxa130",
+   "text": "DeployableCover Throw OneShot3D"
+  },
+  {
+   "key": "sxa131",
+   "text": "DeployableCover Undeploy OneShot2D"
+  },
+  {
+   "key": "sxa132",
+   "text": "DeployableCover Undeploy OneShot3D"
+  },
+  {
+   "key": "sxa133",
+   "text": "Drone Spawnable Fire OneShot3D"
+  },
+  {
+   "key": "sxa134",
+   "text": "Drone Spawnable TargetLockInProgress OneShot2D"
+  },
+  {
+   "key": "sxa135",
+   "text": "Drone Spawnable TargetLockReady OneShot2D"
+  },
+  {
+   "key": "sxa136",
+   "text": "Drone Switchblade Engine Propellar OneShot3D"
+  },
+  {
+   "key": "sxa137",
+   "text": "Drone Switchblade HiFi Fire Wings OneShot2D"
+  },
+  {
+   "key": "sxa138",
+   "text": "Drone Switchblade HiFi Fire Wings OneShot3D"
+  },
+  {
+   "key": "sxa139",
+   "text": "EIDOS Disabled OneShot3D"
+  },
+  {
+   "key": "sxa140",
+   "text": "EIDOS Enable OneShot3D"
+  },
+  {
+   "key": "sxa141",
+   "text": "EIDOS Equip OneShot2D"
+  },
+  {
+   "key": "sxa142",
+   "text": "EIDOS Equip OneShot3D"
+  },
+  {
+   "key": "sxa143",
+   "text": "EIDOS Fire OneShot3D"
+  },
+  {
+   "key": "sxa144",
+   "text": "EIDOS Idle SimpleLoop3D"
+  },
+  {
+   "key": "sxa145",
+   "text": "EIDOS Pickup OneShot3D"
+  },
+  {
+   "key": "sxa146",
+   "text": "EIDOS Place OneShot2D"
+  },
+  {
+   "key": "sxa147",
+   "text": "EIDOS Place OneShot3D"
+  },
+  {
+   "key": "sxa148",
+   "text": "EoDBot Spawnable Arm Horizontal OneShot3D"
+  },
+  {
+   "key": "sxa149",
+   "text": "EoDBot Spawnable Arm Vertical OneShot3D"
+  },
+  {
+   "key": "sxa150",
+   "text": "EoDBot Spawnable Chassis Rattle OneShot3D"
+  },
+  {
+   "key": "sxa151",
+   "text": "EoDBot Spawnable Deploy OneShot2D"
+  },
+  {
+   "key": "sxa152",
+   "text": "EoDBot Spawnable Deploy OneShot3D"
+  },
+  {
+   "key": "sxa153",
+   "text": "EoDBot Spawnable Engine OneShot3D"
+  },
+  {
+   "key": "sxa154",
+   "text": "EoDBot Spawnable Idle OneShot3D"
+  },
+  {
+   "key": "sxa155",
+   "text": "EoDBot Spawnable MineFire OneShot3D"
+  },
+  {
+   "key": "sxa156",
+   "text": "EoDBot Spawnable Start Idle OneShot3D"
+  },
+  {
+   "key": "sxa157",
+   "text": "EoDBot Spawnable Stop Idle OneShot3D"
+  },
+  {
+   "key": "sxa158",
+   "text": "EpiPen Charge OneShot2D"
+  },
+  {
+   "key": "sxa159",
+   "text": "EpiPen Charge OneShot3D"
+  },
+  {
+   "key": "sxa160",
+   "text": "EpiPen Flip OneShot2D"
+  },
+  {
+   "key": "sxa161",
+   "text": "EpiPen Flip OneShot3D"
+  },
+  {
+   "key": "sxa162",
+   "text": "EpiPen HalfWay OneShot2D"
+  },
+  {
+   "key": "sxa163",
+   "text": "EpiPen HalfWay OneShot3D"
+  },
+  {
+   "key": "sxa164",
+   "text": "EpiPen Injection OneShot2D"
+  },
+  {
+   "key": "sxa165",
+   "text": "EpiPen Injection OneShot3D"
+  },
+  {
+   "key": "sxa166",
+   "text": "EpiPen ReviveDone 1p OneShot2D"
+  },
+  {
+   "key": "sxa167",
+   "text": "EpiPen Undeploy OneShot2D"
+  },
+  {
+   "key": "sxa168",
+   "text": "EpiPen Undeploy OneShot3D"
+  },
+  {
+   "key": "sxa169",
+   "text": "Flashbang FlashbangLoop OneShot2D"
+  },
+  {
+   "key": "sxa170",
+   "text": "Flashbang FlashbangStart OneShot2D"
+  },
+  {
+   "key": "sxa171",
+   "text": "SupplyDrop CrateExplode 3D"
+  },
+  {
+   "key": "sxa172",
+   "text": "BR Circle Appear OneShot2D"
+  },
+  {
+   "key": "sxa173",
+   "text": "BR Circle Boundary SimpleLoop2D"
+  },
+  {
+   "key": "sxa174",
+   "text": "BR Circle Damage OneShot2D"
+  },
+  {
+   "key": "sxa175",
+   "text": "BR Circle Damage OneShot3D"
+  },
+  {
+   "key": "sxa176",
+   "text": "BR Circle DamageStart Loop2D"
+  },
+  {
+   "key": "sxa177",
+   "text": "BR Circle DamageStart Loop3D"
+  },
+  {
+   "key": "sxa178",
+   "text": "BR Circle DamageStop Loop2D"
+  },
+  {
+   "key": "sxa179",
+   "text": "BR Circle DamageStop Loop3D"
+  },
+  {
+   "key": "sxa180",
+   "text": "BR Circle DeathWarning SimpleLoop2D"
+  },
+  {
+   "key": "sxa181",
+   "text": "BR Circle DeathWarning SimpleLoop3D"
+  },
+  {
+   "key": "sxa182",
+   "text": "BR Circle Debris OneShot3D"
+  },
+  {
+   "key": "sxa183",
+   "text": "BR Circle Fire Close SimpleLoop3D"
+  },
+  {
+   "key": "sxa184",
+   "text": "BR Circle Fire Distant High SimpleLoop3D"
+  },
+  {
+   "key": "sxa185",
+   "text": "BR Circle Fire Distant SimpleLoop3D"
+  },
+  {
+   "key": "sxa186",
+   "text": "BR Circle Fire Embers SimpleLoop3D"
+  },
+  {
+   "key": "sxa187",
+   "text": "BR Circle Fire High SimpleLoop3D"
+  },
+  {
+   "key": "sxa188",
+   "text": "BR Circle Fire Mid Distant SimpleLoop3D"
+  },
+  {
+   "key": "sxa189",
+   "text": "BR Circle Fire Perimeter SimpleLoop3D"
+  },
+  {
+   "key": "sxa190",
+   "text": "BR Circle Fire Phase SimpleLoop3D"
+  },
+  {
+   "key": "sxa191",
+   "text": "BR Circle Fire VeryHigh SimpleLoop3D"
+  },
+  {
+   "key": "sxa192",
+   "text": "BR Circle Fire Wide SimpleLoop3D"
+  },
+  {
+   "key": "sxa193",
+   "text": "BR Circle FlareUp OneShot3D"
+  },
+  {
+   "key": "sxa194",
+   "text": "BR Circle Wind OneShot3D"
+  },
+  {
+   "key": "sxa195",
+   "text": "BR MidroundRespawn RespawnTower Capture OneShot2D"
+  },
+  {
+   "key": "sxa196",
+   "text": "BR MidroundRespawn RespawnTower PanelReset OneShot2D"
+  },
+  {
+   "key": "sxa197",
+   "text": "BR MidroundRespawn RespawnTower Stow OneShot2D"
+  },
+  {
+   "key": "sxa198",
+   "text": "BR Mission CTF DataDrive Insert OneShot3D"
+  },
+  {
+   "key": "sxa199",
+   "text": "BR Mission CTF Download OneShot3D"
+  },
+  {
+   "key": "sxa200",
+   "text": "BR Mission CTF DriveCarrierTracking OneShot3D"
+  },
+  {
+   "key": "sxa201",
+   "text": "BR Mission DataExtraction DataCase PickUp OneShot3D"
+  },
+  {
+   "key": "sxa202",
+   "text": "BR Mission DemoCrew Alarm Close SimpleLoop3D"
+  },
+  {
+   "key": "sxa203",
+   "text": "BR Mission DemoCrew Alarm Distant SimpleLoop3D"
+  },
+  {
+   "key": "sxa204",
+   "text": "BR Mission DemoCrew BombPickUp OneShot3D"
+  },
+  {
+   "key": "sxa205",
+   "text": "BR Mission DemoCrew BombPlace OneShot3D"
+  },
+  {
+   "key": "sxa206",
+   "text": "BR Mission DemoCrewAlarmClose SimpleLoop 3D"
+  },
+  {
+   "key": "sxa207",
+   "text": "BR Mission RetrievalBeaconBeep OneShot3D"
+  },
+  {
+   "key": "sxa208",
+   "text": "BR Mission WeaponCache BoltCutter Pickup OneShot3D"
+  },
+  {
+   "key": "sxa209",
+   "text": "BR Mission WeaponCache Open OneShot3D"
+  },
+  {
+   "key": "sxa210",
+   "text": "BR Mission Wreckage BombBeeping Loop SimpleLoop3D"
+  },
+  {
+   "key": "sxa211",
+   "text": "BR Mission Wreckage BombBeeping OneShot3D"
+  },
+  {
+   "key": "sxa212",
+   "text": "BR Mission Wreckage ComputerAlarm SimpleLoop3D"
+  },
+  {
+   "key": "sxa213",
+   "text": "BR RespawnTower Activate Alarm SimpleLoop3D"
+  },
+  {
+   "key": "sxa214",
+   "text": "BR RespawnTower Activate Close OneShot3D"
+  },
+  {
+   "key": "sxa215",
+   "text": "BR RespawnTower Activate Distant SimpleLoop3D"
+  },
+  {
+   "key": "sxa216",
+   "text": "BR UXUI CircleShrink Start OneShot2D"
+  },
+  {
+   "key": "sxa217",
+   "text": "BR UXUI CIrcleShrink Stop OneShot2D"
+  },
+  {
+   "key": "sxa218",
+   "text": "Gauntlet Mission Beacons Beeping SimpleLoop3D"
+  },
+  {
+   "key": "sxa219",
+   "text": "Gauntlet Mission Circuit TerminalSpotLoop SimpleLoop3D"
+  },
+  {
+   "key": "sxa220",
+   "text": "Gauntlet Mission Heist AltCacheCarrierBeep SimpleLoop3D"
+  },
+  {
+   "key": "sxa221",
+   "text": "Gauntlet Mission Heist CacheBeep SimpleLoop3D"
+  },
+  {
+   "key": "sxa222",
+   "text": "Gauntlet Mission Heist PlayerPickupCache OneShot3D"
+  },
+  {
+   "key": "sxa223",
+   "text": "Gauntlet Mission Wreckage ActiveBombNearby OneShot3D"
+  },
+  {
+   "key": "sxa224",
+   "text": "Gauntlet Mission Wreckage BombPickup3D OneShot3D"
+  },
+  {
+   "key": "sxa225",
+   "text": "Gauntlet Mission Wreckage KeyboardTyping SimpleLoop3D"
+  },
+  {
+   "key": "sxa226",
+   "text": "Payload Breacher Decel OneShot3D"
+  },
+  {
+   "key": "sxa227",
+   "text": "Payload Breacher Exterior Accel SimpleLoop3D"
+  },
+  {
+   "key": "sxa228",
+   "text": "Payload Breacher Idle SimpleLoop3D"
+  },
+  {
+   "key": "sxa229",
+   "text": "Payload Breacher Tracks SimpleLoop3D"
+  },
+  {
+   "key": "sxa230",
+   "text": "Rush Alarm Leadout SimpleLoop3D"
+  },
+  {
+   "key": "sxa231",
+   "text": "Rush Alarm SimpleLoop3D"
+  },
+  {
+   "key": "sxa232",
+   "text": "Rush Arm SimpleLoop3D"
+  },
+  {
+   "key": "sxa233",
+   "text": "Rush Armed OneShot3D"
+  },
+  {
+   "key": "sxa234",
+   "text": "Rush Defused OneShot3D"
+  },
+  {
+   "key": "sxa235",
+   "text": "Rush Defusing SimpleLoop3D"
+  },
+  {
+   "key": "sxa236",
+   "text": "Rush Telemetry SimpleLoop3D"
+  },
+  {
+   "key": "sxa237",
+   "text": "Brooklyn Shared BigWorld Birds Falcons OneShot3D"
+  },
+  {
+   "key": "sxa238",
+   "text": "Brooklyn Shared BigWorld Birds Finches OneShot3D"
+  },
+  {
+   "key": "sxa239",
+   "text": "Brooklyn Shared BigWorld Birds Grebs OneShot3D"
+  },
+  {
+   "key": "sxa240",
+   "text": "Brooklyn Shared BigWorld Birds Pigeons OneShot3D"
+  },
+  {
+   "key": "sxa241",
+   "text": "Brooklyn Shared BigWorld Birds Swallows OneShot3D"
+  },
+  {
+   "key": "sxa242",
+   "text": "Brooklyn Shared BigWorld BuildingGroan OneShot3D"
+  },
+  {
+   "key": "sxa243",
+   "text": "Brooklyn Shared BigWorld CarHorn Angry OneShot3D"
+  },
+  {
+   "key": "sxa244",
+   "text": "Brooklyn Shared BigWorld EmergSirensMisc Far OneShot3D"
+  },
+  {
+   "key": "sxa245",
+   "text": "Brooklyn Shared BigWorld EmergSirensMisc Near OneShot3D"
+  },
+  {
+   "key": "sxa246",
+   "text": "Brooklyn Shared BigWorld InteriorWoodCreak OneShot3D"
+  },
+  {
+   "key": "sxa247",
+   "text": "Brooklyn Shared BigWorld MouseSqueak Urban OneShot3D"
+  },
+  {
+   "key": "sxa248",
+   "text": "Brooklyn Shared BigWorld WoodDoorOpen Distant OneShot3D"
+  },
+  {
+   "key": "sxa249",
+   "text": "Brooklyn Shared BigWorld WoodDoorShut Distant OneShot3D"
+  },
+  {
+   "key": "sxa250",
+   "text": "Brooklyn Shared Spots AirDuct SimpleLoop3D"
+  },
+  {
+   "key": "sxa251",
+   "text": "Brooklyn Shared Spots CarAlarm SimpleLoop3D"
+  },
+  {
+   "key": "sxa252",
+   "text": "Brooklyn Shared Spots Fountain Water Head SimpleLoop3D"
+  },
+  {
+   "key": "sxa253",
+   "text": "Brooklyn Shared Spots Fountain Water SimpleLoop3D"
+  },
+  {
+   "key": "sxa254",
+   "text": "Brooklyn Shared Spots GarbageFlies SimpleLoop3D"
+  },
+  {
+   "key": "sxa255",
+   "text": "Brooklyn Shared Spots HeavyMetalStress SimpleLoop3D"
+  },
+  {
+   "key": "sxa256",
+   "text": "Brooklyn Shared Spots Hydrant Burst OneShot3D"
+  },
+  {
+   "key": "sxa257",
+   "text": "Brooklyn Shared Spots Hydrant Ground SimpleLoop3D"
+  },
+  {
+   "key": "sxa258",
+   "text": "Brooklyn Shared Spots Hydrant Splatter SimpleLoop3D"
+  },
+  {
+   "key": "sxa259",
+   "text": "Brooklyn Shared Spots Hydrant Spray SimpleLoop3D"
+  },
+  {
+   "key": "sxa260",
+   "text": "Brooklyn Shared Spots MetalStress OneShot3D"
+  },
+  {
+   "key": "sxa261",
+   "text": "Brooklyn Shared Spots MiceFighting SimpleLoop3D"
+  },
+  {
+   "key": "sxa262",
+   "text": "Brooklyn Shared Spots PaperSwirls SimpleLoop3D"
+  },
+  {
+   "key": "sxa263",
+   "text": "Brooklyn Shared Spots PipeStress SimpleLoop3D"
+  },
+  {
+   "key": "sxa264",
+   "text": "Brooklyn Shared Spots VariousBirds SimpleLoop3D"
+  },
+  {
+   "key": "sxa265",
+   "text": "Brooklyn Shared Spots Water Splash SimpleLoop3D"
+  },
+  {
+   "key": "sxa266",
+   "text": "Brooklyn Shared Spots WaterTrickle Stone SimpleLoop3D"
+  },
+  {
+   "key": "sxa267",
+   "text": "Brooklyn Shared Spots WaterTrickle Wood SimpleLoop3D"
+  },
+  {
+   "key": "sxa268",
+   "text": "Brooklyn Shared Spots WindChime SimpleLoop3D"
+  },
+  {
+   "key": "sxa269",
+   "text": "Brooklyn SP Attack FX SteamManhole SimpleLoop3D"
+  },
+  {
+   "key": "sxa270",
+   "text": "Brooklyn Spots ACUnit SimpleLoop3D"
+  },
+  {
+   "key": "sxa271",
+   "text": "Brooklyn Spots BridgeFire L SimpleLoop3D"
+  },
+  {
+   "key": "sxa272",
+   "text": "Brooklyn Spots BridgeMovement SimpleLoop3D"
+  },
+  {
+   "key": "sxa273",
+   "text": "Brooklyn Spots BridgeOverpass SimpleLoop3D"
+  },
+  {
+   "key": "sxa274",
+   "text": "Brooklyn Spots FireAlarm SimpleLoop3D"
+  },
+  {
+   "key": "sxa275",
+   "text": "Brooklyn Spots FoodTrailer SimpleLoop3D"
+  },
+  {
+   "key": "sxa276",
+   "text": "Brooklyn Spots Fridge SimpleLoop3D"
+  },
+  {
+   "key": "sxa277",
+   "text": "Brooklyn Spots GarbageCluster SimpleLoop3D"
+  },
+  {
+   "key": "sxa278",
+   "text": "Brooklyn Spots MonitorStatic SimpleLoop3D"
+  },
+  {
+   "key": "sxa279",
+   "text": "Brooklyn Spots PoliceChatter OneShot OneShot3D"
+  },
+  {
+   "key": "sxa280",
+   "text": "Brooklyn Spots PoliceChatter SimpleLoop3D"
+  },
+  {
+   "key": "sxa281",
+   "text": "Brooklyn Spots RadioChatter OneShot3D"
+  },
+  {
+   "key": "sxa282",
+   "text": "Brooklyn Spots Riverside Calm SimpleLoop3D"
+  },
+  {
+   "key": "sxa283",
+   "text": "Brooklyn Spots Riverside SimpleLoop3D"
+  },
+  {
+   "key": "sxa284",
+   "text": "Brooklyn Spots SaxophoneInWall OneShot3D"
+  },
+  {
+   "key": "sxa285",
+   "text": "Brooklyn Spots SmallRadio SimpleLoop3D"
+  },
+  {
+   "key": "sxa286",
+   "text": "Brooklyn Spots Vista Riverside SimpleLoop3D"
+  },
+  {
+   "key": "sxa287",
+   "text": "Brooklyn Spots WelcomeSign SimpleLoop3D"
+  },
+  {
+   "key": "sxa288",
+   "text": "Cairo MP Abbasid BigWorld TheklaLarkSong OneShot2D"
+  },
+  {
+   "key": "sxa289",
+   "text": "Cairo MP Abbasid Spots Birds Palace SimpleLoop3D"
+  },
+  {
+   "key": "sxa290",
+   "text": "Cairo MP Abbasid Spots BusWreck OneShot3D"
+  },
+  {
+   "key": "sxa291",
+   "text": "Cairo MP Abbasid Spots Firealarm SimpleLoop3D"
+  },
+  {
+   "key": "sxa292",
+   "text": "Cairo MP Abbasid Spots Fountain SimpleLoop3D"
+  },
+  {
+   "key": "sxa293",
+   "text": "Cairo MP Abbasid Spots HangingLamp OneShot3D"
+  },
+  {
+   "key": "sxa294",
+   "text": "Cairo MP Abbasid Spots HighwayTraffic SimpleLoop3D"
+  },
+  {
+   "key": "sxa295",
+   "text": "Cairo MP Abbasid Spots HighwayWreckFire SimpleLoop3D"
+  },
+  {
+   "key": "sxa296",
+   "text": "Cairo MP Abbasid Spots Intercom SimpleLoop3D"
+  },
+  {
+   "key": "sxa297",
+   "text": "Cairo MP Abbasid Spots RatsInVent SimpleLoop3D"
+  },
+  {
+   "key": "sxa298",
+   "text": "Cairo MP Abbasid Spots Waterpipe SimpleLoop3D"
+  },
+  {
+   "key": "sxa299",
+   "text": "Cairo MP Outskirts Spots ExcavatorEngine SimpleLoop3D"
+  },
+  {
+   "key": "sxa300",
+   "text": "Cairo MP Outskirts Spots PigeonTowerCreak SimpleLoop3D"
+  },
+  {
+   "key": "sxa301",
+   "text": "Cairo MP Outskirts Spots RatsEating SimpleLoop3D"
+  },
+  {
+   "key": "sxa302",
+   "text": "Cairo MP Outskirts Spots TrashPile SimpleLoop3D"
+  },
+  {
+   "key": "sxa303",
+   "text": "Cairo MP Outskirts Spots Wind ClothFlaps SimpleLoop3D"
+  },
+  {
+   "key": "sxa304",
+   "text": "Cairo MP Outskirts Spots Wind DesertWindGusts SimpleLoop3D"
+  },
+  {
+   "key": "sxa305",
+   "text": "Cairo MP Outskirts Spots Wind HeavyGusts SimpleLoop3D"
+  },
+  {
+   "key": "sxa306",
+   "text": "Cairo MP Outskirts Spots Wind HowlingHollow High SimpleLoop3D"
+  },
+  {
+   "key": "sxa307",
+   "text": "Cairo MP Outskirts Spots Wind HowlingWarm SimpleLoop3D"
+  },
+  {
+   "key": "sxa308",
+   "text": "Cairo MP Outskirts Spots Wind MetalWindGusts SimpleLoop3D"
+  },
+  {
+   "key": "sxa309",
+   "text": "Cairo MP Outskirts Spots Wind RoadWind SimpleLoop3D"
+  },
+  {
+   "key": "sxa310",
+   "text": "Cairo MP Outskirts Spots Wind Whistling SimpleLoop3D"
+  },
+  {
+   "key": "sxa311",
+   "text": "Cairo MP Shared Bigworld AmbWar Weapons OneShot3D"
+  },
+  {
+   "key": "sxa312",
+   "text": "Cairo MP Shared Bigworld Animals EgyptianGoose OneShot3D"
+  },
+  {
+   "key": "sxa313",
+   "text": "Cairo MP Shared Bigworld Traffic Carhorn OneShot3D"
+  },
+  {
+   "key": "sxa314",
+   "text": "Cairo MP Shared Bigworld Winds CItySandMist SimpleLoop3D"
+  },
+  {
+   "key": "sxa315",
+   "text": "Cairo MP Shared Bigworld Winds SandMist SimpleLoop3D"
+  },
+  {
+   "key": "sxa316",
+   "text": "Cairo Shared BigWorld SirenBy OneShot3D"
+  },
+  {
+   "key": "sxa317",
+   "text": "Cairo Shared Spots Banner SimpleLoop3D"
+  },
+  {
+   "key": "sxa318",
+   "text": "Cairo Shared Spots BirdsAlley OneShot3D"
+  },
+  {
+   "key": "sxa319",
+   "text": "Cairo Shared Spots CommonMynah OneShot3D"
+  },
+  {
+   "key": "sxa320",
+   "text": "Cairo Shared Spots DistantChants OneShot3D"
+  },
+  {
+   "key": "sxa321",
+   "text": "Cairo Shared Spots Highway SimpleLoop3D"
+  },
+  {
+   "key": "sxa322",
+   "text": "Cairo Shared Spots Insects OneShot3D"
+  },
+  {
+   "key": "sxa323",
+   "text": "Cairo Shared Spots Locusts OneShot3D"
+  },
+  {
+   "key": "sxa324",
+   "text": "Cairo Shared Spots OliveTree Crickets SimpleLoop3D"
+  },
+  {
+   "key": "sxa325",
+   "text": "Cairo Shared Spots VehicleStress SimpleLoop3D"
+  },
+  {
+   "key": "sxa326",
+   "text": "Cairo SP NightRaid BigWorld AluminiumCanDrop OneShot3D"
+  },
+  {
+   "key": "sxa327",
+   "text": "Cairo SP NightRaid BigWorld BullhornSiren OneShot3D"
+  },
+  {
+   "key": "sxa328",
+   "text": "Cairo SP NightRaid BigWorld Glass BottleDrop OneShot3D"
+  },
+  {
+   "key": "sxa329",
+   "text": "Cairo SP NightRaid BigWorld Glass WindowSmash OneShot3D"
+  },
+  {
+   "key": "sxa330",
+   "text": "Cairo SP NightRaid BigWorld Object ClotheslineRustle OneShot3D"
+  },
+  {
+   "key": "sxa331",
+   "text": "Cairo SP NightRaid BigWorld Object RugFlap OneShot3D"
+  },
+  {
+   "key": "sxa332",
+   "text": "Cairo SP NightRaid Spots Fire FireDrippingLow OneShot3D"
+  },
+  {
+   "key": "sxa333",
+   "text": "Cairo SP NightRaid Spots Fire Flare SimpleLoop3D"
+  },
+  {
+   "key": "sxa334",
+   "text": "Cairo SP NightRaid Spots Fire FlareShot OneShot3D"
+  },
+  {
+   "key": "sxa335",
+   "text": "Cairo SP NightRaid Spots Fire FlareShotExplode OneShot3D"
+  },
+  {
+   "key": "sxa336",
+   "text": "Cairo SP NightRaid Spots Fire IvyXS SimpleLoop3D"
+  },
+  {
+   "key": "sxa337",
+   "text": "Cairo SP NightRaid Spots Fire PalaceFabric SimpleLoop3D"
+  },
+  {
+   "key": "sxa338",
+   "text": "Cairo SP NightRaid Spots Fire PalaceFurniture SimpleLoop3D"
+  },
+  {
+   "key": "sxa339",
+   "text": "Cairo SP NightRaid Spots Fire PalaceSmall SimpleLoop3D"
+  },
+  {
+   "key": "sxa340",
+   "text": "Cairo SP NightRaid Spots Fire PalaceSmoke SimpleLoop3D"
+  },
+  {
+   "key": "sxa341",
+   "text": "Cairo SP NightRaid Spots Fire PalaceTiny SimpleLoop3D"
+  },
+  {
+   "key": "sxa342",
+   "text": "Cairo SP NightRaid Spots Fire PalaceVegetation SimpleLoop3D"
+  },
+  {
+   "key": "sxa343",
+   "text": "Cairo SP NightRaid Spots Fire ProjectileMolotovLand OneShot3D"
+  },
+  {
+   "key": "sxa344",
+   "text": "Cairo SP NightRaid Spots Fire ProjectileMolotovThrow OneShot3D"
+  },
+  {
+   "key": "sxa345",
+   "text": "Cairo SP NightRaid Spots Fire RiotMolotovLand OneShot3D"
+  },
+  {
+   "key": "sxa346",
+   "text": "Cairo SP NightRaid Spots Fire SparksGround SimpleLoop3D"
+  },
+  {
+   "key": "sxa347",
+   "text": "Cairo SP NightRaid Spots HelicopterWind SimpleLoop3D"
+  },
+  {
+   "key": "sxa348",
+   "text": "Cairo SP NightRaid Spots HighwayUnderneath SimpleLoop3D"
+  },
+  {
+   "key": "sxa349",
+   "text": "Cairo SP NightRaid Spots LightbulbMoths SimpleLoop3D"
+  },
+  {
+   "key": "sxa350",
+   "text": "Cairo SP NightRaid Spots Molotov OneShot3D"
+  },
+  {
+   "key": "sxa351",
+   "text": "Cairo SP NightRaid Spots MotorScooterIdle SimpleLoop3D"
+  },
+  {
+   "key": "sxa352",
+   "text": "Cairo SP NightRaid Spots PalaceFireAlarm SimpleLoop3D"
+  },
+  {
+   "key": "sxa353",
+   "text": "Cairo SP NightRaid Spots Riot Activity SimpleLoop3D"
+  },
+  {
+   "key": "sxa354",
+   "text": "Cairo SP NightRaid Spots Riot CrowdRumble SimpleLoop3D"
+  },
+  {
+   "key": "sxa355",
+   "text": "Cairo SP NightRaid Spots Riot FenceShake SimpleLoop3D"
+  },
+  {
+   "key": "sxa356",
+   "text": "Cairo SP NightRaid Spots Riot MetalDestruction SimpleLoop3D"
+  },
+  {
+   "key": "sxa357",
+   "text": "Cairo SP NightRaid Spots Riot TearGas SimpleLoop3D"
+  },
+  {
+   "key": "sxa358",
+   "text": "Cairo SP NightRaid Spots RockHit OneShot3D"
+  },
+  {
+   "key": "sxa359",
+   "text": "Cairo SP NightRaid Spots RopeStress OneShot3D"
+  },
+  {
+   "key": "sxa360",
+   "text": "Cairo SP NightRaid Spots ScaffoldingTarp SimpleLoop3D"
+  },
+  {
+   "key": "sxa361",
+   "text": "Cairo SP NightRaid Spots Sewers WaterDrippingLarge SimpleLoop3D"
+  },
+  {
+   "key": "sxa362",
+   "text": "Cairo SP NightRaid Spots Sewers WaterDrippingMedium SimpleLoop3D"
+  },
+  {
+   "key": "sxa363",
+   "text": "Cairo SP NightRaid Spots Sewers WaterDrippingSmall SimpleLoop3D"
+  },
+  {
+   "key": "sxa364",
+   "text": "Cairo SP NightRaid Spots Sewers WaterDrips SimpleLoop3D"
+  },
+  {
+   "key": "sxa365",
+   "text": "Cairo SP NightRaid Spots Sewers WaterSquirt SimpleLoop3D"
+  },
+  {
+   "key": "sxa366",
+   "text": "Cairo SP NightRaid Spots SwingSet SimpleLoop3D"
+  },
+  {
+   "key": "sxa367",
+   "text": "Cairo SP NightRaid Spots Walla Riot SimpleLoop3D"
+  },
+  {
+   "key": "sxa368",
+   "text": "Cairo SP NightRaid Spots Walla RiotBullhorn OneShot3D"
+  },
+  {
+   "key": "sxa369",
+   "text": "Cairo SP NightRaid Spots Walla RiotCrowd SimpleLoop3D"
+  },
+  {
+   "key": "sxa370",
+   "text": "Cairo SP NightRaid Spots Walla RiotCrowdCheer SimpleLoop3D"
+  },
+  {
+   "key": "sxa371",
+   "text": "Cairo SP NightRaid Spots WashingMachine SimpleLoop3D"
+  },
+  {
+   "key": "sxa372",
+   "text": "Cairo SP NightRaid Spots Whistle OneShot3D"
+  },
+  {
+   "key": "sxa373",
+   "text": "Flybys Bullet Crack DMR Distant OneShot3D"
+  },
+  {
+   "key": "sxa374",
+   "text": "Flybys Bullet Crack Intermediate Close Indoor OneShot3D"
+  },
+  {
+   "key": "sxa375",
+   "text": "Flybys Bullet Crack Intermediate Close OneShot3D"
+  },
+  {
+   "key": "sxa376",
+   "text": "Flybys Bullet Crack Intermediate Distant OneShot3D"
+  },
+  {
+   "key": "sxa377",
+   "text": "Flybys Bullet Crack Rifle Close OneShot3D"
+  },
+  {
+   "key": "sxa378",
+   "text": "Flybys Bullet Crack Rifle Distant OneShot3D"
+  },
+  {
+   "key": "sxa379",
+   "text": "Flybys Bullet Crack Sniper Close OneShot3D"
+  },
+  {
+   "key": "sxa380",
+   "text": "Flybys Bullet Crack Sniper Distant OneShot3D"
+  },
+  {
+   "key": "sxa381",
+   "text": "Flybys Bullet Whizby Intermediate Main Distant OneShot3D"
+  },
+  {
+   "key": "sxa382",
+   "text": "Flybys Bullet Whizby Intermediate Main OneShot3D"
+  },
+  {
+   "key": "sxa383",
+   "text": "Flybys Bullet Whizby Intermediate Main Underwater OneShot3D"
+  },
+  {
+   "key": "sxa384",
+   "text": "Flybys Bullet Whizby Intermediate Sweetener Buckshot OneShot3D"
+  },
+  {
+   "key": "sxa385",
+   "text": "Flybys Bullet Whizby Intermediate Sweetener OneShot3D"
+  },
+  {
+   "key": "sxa386",
+   "text": "Flybys Bullet Whizby Sniper Main OneShot3D"
+  },
+  {
+   "key": "sxa387",
+   "text": "Flybys Large AutoCannon 40mm FlyBy OneShot3D"
+  },
+  {
+   "key": "sxa388",
+   "text": "Flybys Large Cannon Shell 120mm Distant SimpleLoop3D"
+  },
+  {
+   "key": "sxa389",
+   "text": "Flybys Large Cannon Shell 120mm FlyBy Close OneShot3D"
+  },
+  {
+   "key": "sxa390",
+   "text": "Flybys Large Cannon Shell 120mm FlyBy Distant OneShot3D"
+  },
+  {
+   "key": "sxa391",
+   "text": "Flybys Large Rocket Missile FlyBy OneShot3D"
+  },
+  {
+   "key": "sxa392",
+   "text": "Flybys Large Rocket Missile Ignite OneShot3D"
+  },
+  {
+   "key": "sxa393",
+   "text": "Flybys Large Rocket Missile Trail SimpleLoop3D"
+  },
+  {
+   "key": "sxa394",
+   "text": "Flybys Large Rocket RocketPod Trail Distant SimpleLoop3D"
+  },
+  {
+   "key": "sxa395",
+   "text": "Flybys Large Rocket RPG FlyBy Distant OneShot3D"
+  },
+  {
+   "key": "sxa396",
+   "text": "Flybys Shared Projectile Flyby OneShot3D"
+  },
+  {
+   "key": "sxa397",
+   "text": "Flybys Shared Projectile MissileTrail SimpleLoop3D"
+  },
+  {
+   "key": "sxa398",
+   "text": "Flybys Shared RocketStart OneShot3D"
+  },
+  {
+   "key": "sxa399",
+   "text": "Flybys Shared SmallAntiTank SimpleLoop3D"
+  },
+  {
+   "key": "sxa400",
+   "text": "Flybys Shared SmallAntiTank Starter OneShot3D"
+  },
+  {
+   "key": "sxa401",
+   "text": "FlyBys Large GrenadeLauncher 40mm Close SimpleLoop3D"
+  },
+  {
+   "key": "sxa402",
+   "text": "FlyBys Large GrenadeLauncher 40mm OneShot3D"
+  },
+  {
+   "key": "sxa403",
+   "text": "FlyBys Shells Artillery Incoming OneShot3D"
+  },
+  {
+   "key": "sxa404",
+   "text": "Damage ArmorBreakSelf OneShot2D"
+  },
+  {
+   "key": "sxa405",
+   "text": "Damage ArmorDamage Enemy OneShot2D"
+  },
+  {
+   "key": "sxa406",
+   "text": "Damage ArmorDamage Hard Self OneShot2D"
+  },
+  {
+   "key": "sxa407",
+   "text": "Damage ArmorDamage Soft Self OneShot2D"
+  },
+  {
+   "key": "sxa408",
+   "text": "Damage BarbedWire Death OneShot2D"
+  },
+  {
+   "key": "sxa409",
+   "text": "Damage BarbedWire OneShot2D"
+  },
+  {
+   "key": "sxa410",
+   "text": "Damage Bullet Death NoRevive OneShot2D"
+  },
+  {
+   "key": "sxa411",
+   "text": "Damage Bullet Headshot OneShot2D"
+  },
+  {
+   "key": "sxa412",
+   "text": "Damage Bullet HeadshotAdd OneShot2D"
+  },
+  {
+   "key": "sxa413",
+   "text": "Damage Bullet OneShot2D"
+  },
+  {
+   "key": "sxa414",
+   "text": "Damage BulletThump OneShot2D"
+  },
+  {
+   "key": "sxa415",
+   "text": "Damage Defibs Death OneShot2D"
+  },
+  {
+   "key": "sxa416",
+   "text": "Damage Defibs OneShot2D"
+  },
+  {
+   "key": "sxa417",
+   "text": "Damage Destruction Death OneShot2D"
+  },
+  {
+   "key": "sxa418",
+   "text": "Damage Destruction OneShot2D"
+  },
+  {
+   "key": "sxa419",
+   "text": "Damage Drowning OneShot2D"
+  },
+  {
+   "key": "sxa420",
+   "text": "Damage Explosion Crack OneShot2D"
+  },
+  {
+   "key": "sxa421",
+   "text": "Damage Explosion Death OneShot2D"
+  },
+  {
+   "key": "sxa422",
+   "text": "Damage Explosion Ring SimpleLoop2D"
+  },
+  {
+   "key": "sxa423",
+   "text": "Damage ExplosionDebris OneShot2D"
+  },
+  {
+   "key": "sxa424",
+   "text": "Damage Fall Death OneShot2D"
+  },
+  {
+   "key": "sxa425",
+   "text": "Damage Fall Low OneShot2D"
+  },
+  {
+   "key": "sxa426",
+   "text": "Damage Fall Medium OneShot2D"
+  },
+  {
+   "key": "sxa427",
+   "text": "Damage Fire Death OneShot2D"
+  },
+  {
+   "key": "sxa428",
+   "text": "Damage Fire Normal SimpleLoop2D"
+  },
+  {
+   "key": "sxa429",
+   "text": "Damage Fire Small SimpleLoop2D"
+  },
+  {
+   "key": "sxa430",
+   "text": "Damage Fire Start OneShot2D"
+  },
+  {
+   "key": "sxa431",
+   "text": "Damage Melee Death OneShot2D"
+  },
+  {
+   "key": "sxa432",
+   "text": "Damage MeleeBlunt OneShot2D"
+  },
+  {
+   "key": "sxa433",
+   "text": "Damage MeleeKnife Death OneShot2D"
+  },
+  {
+   "key": "sxa434",
+   "text": "Damage MeleeKnife OneShot2D"
+  },
+  {
+   "key": "sxa435",
+   "text": "Damage Ring Death OneShot2D"
+  },
+  {
+   "key": "sxa436",
+   "text": "Damage Ring Normal OneShot2D"
+  },
+  {
+   "key": "sxa437",
+   "text": "Damage Ring Start OneShot2D"
+  },
+  {
+   "key": "sxa438",
+   "text": "Damage Sabotage Death OneShot2D"
+  },
+  {
+   "key": "sxa439",
+   "text": "Damage Sabotage OneShot2D"
+  },
+  {
+   "key": "sxa440",
+   "text": "Damage Throwable OneShot2D"
+  },
+  {
+   "key": "sxa441",
+   "text": "Damage ThrowingKnife OneShot2D"
+  },
+  {
+   "key": "sxa442",
+   "text": "Events Damage BreathFemale SimpleLoop2D"
+  },
+  {
+   "key": "sxa443",
+   "text": "Events Damage BreathMale SimpleLoop2D"
+  },
+  {
+   "key": "sxa444",
+   "text": "Events SoldierDown BreathFemale OneShot2D"
+  },
+  {
+   "key": "sxa445",
+   "text": "Events SoldierDown BreathFemale SimpleLoop2D"
+  },
+  {
+   "key": "sxa446",
+   "text": "Events SoldierDown BreathMale OneShot2D"
+  },
+  {
+   "key": "sxa447",
+   "text": "Events SoldierDown BreathMale SimpleLoop2D"
+  },
+  {
+   "key": "sxa448",
+   "text": "Events SoldierDown DeathSigh OneShot2D"
+  },
+  {
+   "key": "sxa449",
+   "text": "Events SoldierDown DeathStinger OneShot2D"
+  },
+  {
+   "key": "sxa450",
+   "text": "Events SoldierDown DeathStingerSkipRevive OneShot2D"
+  },
+  {
+   "key": "sxa451",
+   "text": "Events SoldierDown Drone BleedOut SimpleLoop2D"
+  },
+  {
+   "key": "sxa452",
+   "text": "Events SoldierDown Drone HighIntensity SimpleLoop2D"
+  },
+  {
+   "key": "sxa453",
+   "text": "Events SoldierDown Enter OneShot2D"
+  },
+  {
+   "key": "sxa454",
+   "text": "Events SoldierDown EnterNoDeployScreen OneShot2D"
+  },
+  {
+   "key": "sxa455",
+   "text": "Events SoldierDown Foley FoleyOnGroundStart OneShot2D"
+  },
+  {
+   "key": "sxa456",
+   "text": "Events SoldierDown Foley MovementLoop SimpleLoop2D"
+  },
+  {
+   "key": "sxa457",
+   "text": "Events SoldierDown Foley OnGround OneShot2D"
+  },
+  {
+   "key": "sxa458",
+   "text": "Events SoldierDown Foley SkipReviveStart OneShot2D"
+  },
+  {
+   "key": "sxa459",
+   "text": "Events SoldierDown Foley SkipReviveStop OneShot2D"
+  },
+  {
+   "key": "sxa460",
+   "text": "Events SoldierDown GeneralDrone SimpleLoop2D"
+  },
+  {
+   "key": "sxa461",
+   "text": "Events SoldierDown HeartBeat EKG OneShot2D"
+  },
+  {
+   "key": "sxa462",
+   "text": "Events SoldierDown HeartBeat OneShot2D"
+  },
+  {
+   "key": "sxa463",
+   "text": "Events SoldierDown LandOnGround EffortFemale OneShot2D"
+  },
+  {
+   "key": "sxa464",
+   "text": "Events SoldierDown LandOnGround EffortMale OneShot2D"
+  },
+  {
+   "key": "sxa465",
+   "text": "Events SoldierDown LowHealth Drone SimpleLoop2D"
+  },
+  {
+   "key": "sxa466",
+   "text": "Events SoldierDown LowHealth Enter OneShot2D"
+  },
+  {
+   "key": "sxa467",
+   "text": "Events SoldierDown ReviveSickness Drone SimpleLoop2D"
+  },
+  {
+   "key": "sxa468",
+   "text": "Events SoldierDown Skip SimpleLoop2D"
+  },
+  {
+   "key": "sxa469",
+   "text": "Events SoldierDown Skip Start OneShot2D"
+  },
+  {
+   "key": "sxa470",
+   "text": "FieldUpgrade Engineer Repairtool Start OneShot3D"
+  },
+  {
+   "key": "sxa471",
+   "text": "FieldUpgrade Engineer Repairtool Stop OneShot3D"
+  },
+  {
+   "key": "sxa472",
+   "text": "FieldUpgrade Support ActiveMedic Start OneShot3D"
+  },
+  {
+   "key": "sxa473",
+   "text": "FieldUpgrade Support ActiveMedic Stop OneShot3D"
+  },
+  {
+   "key": "sxa474",
+   "text": "Health FullHealth OneShot2D"
+  },
+  {
+   "key": "sxa475",
+   "text": "Health Start Regenerate OneShot2D"
+  },
+  {
+   "key": "sxa476",
+   "text": "Interact KeycardPickup OneShot3D"
+  },
+  {
+   "key": "sxa477",
+   "text": "Interact Pickup OneShot3D"
+  },
+  {
+   "key": "sxa478",
+   "text": "Interact UpgradeKitPickup OneShot3D"
+  },
+  {
+   "key": "sxa479",
+   "text": "Interact WeaponPickup OneShot3D"
+  },
+  {
+   "key": "sxa480",
+   "text": "Melee AttackFoley OneShot2D"
+  },
+  {
+   "key": "sxa481",
+   "text": "Melee AttackFoley OneShot3D"
+  },
+  {
+   "key": "sxa482",
+   "text": "Melee Hit OneShot2D"
+  },
+  {
+   "key": "sxa483",
+   "text": "Melee Hit OneShot3D"
+  },
+  {
+   "key": "sxa484",
+   "text": "Melee Takedown Attacker ArmFoley Stab OneShot2D"
+  },
+  {
+   "key": "sxa485",
+   "text": "Melee Takedown Attacker ArmFoley Stab OneShot3D"
+  },
+  {
+   "key": "sxa486",
+   "text": "Melee Takedown Attacker CollectDogtag OneShot2D"
+  },
+  {
+   "key": "sxa487",
+   "text": "Melee Takedown Attacker CollectDogtag OneShot3D"
+  },
+  {
+   "key": "sxa488",
+   "text": "Melee Takedown Attacker EndKnife OneShot2D"
+  },
+  {
+   "key": "sxa489",
+   "text": "Melee Takedown Attacker EndKnife OneShot3D"
+  },
+  {
+   "key": "sxa490",
+   "text": "Melee Takedown Attacker Equip Knife OneShot2D"
+  },
+  {
+   "key": "sxa491",
+   "text": "Melee Takedown Attacker Equip Knife OneShot3D"
+  },
+  {
+   "key": "sxa492",
+   "text": "Melee Takedown Attacker Equip Sledgehammer OneShot2D"
+  },
+  {
+   "key": "sxa493",
+   "text": "Melee Takedown Attacker Equip Sledgehammer OneShot3D"
+  },
+  {
+   "key": "sxa494",
+   "text": "Melee Takedown Attacker Female OneShot2D"
+  },
+  {
+   "key": "sxa495",
+   "text": "Melee Takedown Attacker Female OneShot3D"
+  },
+  {
+   "key": "sxa496",
+   "text": "Melee Takedown Attacker GrabShoulder OneShot2D"
+  },
+  {
+   "key": "sxa497",
+   "text": "Melee Takedown Attacker GrabShoulder OneShot3D"
+  },
+  {
+   "key": "sxa498",
+   "text": "Melee Takedown Attacker KnifePullOutFrontBody Fast OneShot2D"
+  },
+  {
+   "key": "sxa499",
+   "text": "Melee Takedown Attacker KnifePullOutFrontBody Fast OneShot3D"
+  },
+  {
+   "key": "sxa500",
+   "text": "Melee Takedown Attacker KnifeStabFrontBody Fast OneShot2D"
+  },
+  {
+   "key": "sxa501",
+   "text": "Melee Takedown Attacker KnifeStabFrontBody Fast OneShot3D"
+  },
+  {
+   "key": "sxa502",
+   "text": "Melee Takedown Attacker Male OneShot2D"
+  },
+  {
+   "key": "sxa503",
+   "text": "Melee Takedown Attacker Male OneShot3D"
+  },
+  {
+   "key": "sxa504",
+   "text": "Melee Takedown Attacker SledgehammerHit OneShot2D"
+  },
+  {
+   "key": "sxa505",
+   "text": "Melee Takedown Attacker SledgehammerHit OneShot3D"
+  },
+  {
+   "key": "sxa506",
+   "text": "Melee Takedown Attacker SledgehammerSwing OneShot2D"
+  },
+  {
+   "key": "sxa507",
+   "text": "Melee Takedown Attacker SledgehammerSwing OneShot3D"
+  },
+  {
+   "key": "sxa508",
+   "text": "Melee Takedown Attacker StartKnifeGrabShoulder OneShot2D"
+  },
+  {
+   "key": "sxa509",
+   "text": "Melee Takedown Attacker StartKnifeGrabShoulder OneShot3D"
+  },
+  {
+   "key": "sxa510",
+   "text": "Melee Takedown Attacker StartSledgehammerGrabShoulder OneShot2D"
+  },
+  {
+   "key": "sxa511",
+   "text": "Melee Takedown Attacker StartSledgehammerGrabShoulder OneShot3D"
+  },
+  {
+   "key": "sxa512",
+   "text": "Melee Takedown HurtHigh Female OneShot2D"
+  },
+  {
+   "key": "sxa513",
+   "text": "Melee Takedown HurtHigh Female OneShot3D"
+  },
+  {
+   "key": "sxa514",
+   "text": "Melee Takedown HurtHigh Male OneShot2D"
+  },
+  {
+   "key": "sxa515",
+   "text": "Melee Takedown HurtHigh Male OneShot3D"
+  },
+  {
+   "key": "sxa516",
+   "text": "Melee Takedown PanicScream Female OneShot2D"
+  },
+  {
+   "key": "sxa517",
+   "text": "Melee Takedown PanicScream Female OneShot3D"
+  },
+  {
+   "key": "sxa518",
+   "text": "Melee Takedown PanicScream Male OneShot2D"
+  },
+  {
+   "key": "sxa519",
+   "text": "Melee Takedown PanicScream Male OneShot3D"
+  },
+  {
+   "key": "sxa520",
+   "text": "Melee Takedown Struggle Female OneShot2D"
+  },
+  {
+   "key": "sxa521",
+   "text": "Melee Takedown Struggle Female OneShot3D"
+  },
+  {
+   "key": "sxa522",
+   "text": "Melee Takedown Struggle Male OneShot2D"
+  },
+  {
+   "key": "sxa523",
+   "text": "Melee Takedown Struggle Male OneShot3D"
+  },
+  {
+   "key": "sxa524",
+   "text": "Melee Takedown ThroatSlice Female OneShot2D"
+  },
+  {
+   "key": "sxa525",
+   "text": "Melee Takedown ThroatSlice Female OneShot3D"
+  },
+  {
+   "key": "sxa526",
+   "text": "Melee Takedown ThroatSlice Male OneShot2D"
+  },
+  {
+   "key": "sxa527",
+   "text": "Melee Takedown ThroatSlice Male OneShot3D"
+  },
+  {
+   "key": "sxa528",
+   "text": "Melee Takedown Victim FallToGround OneShot2D"
+  },
+  {
+   "key": "sxa529",
+   "text": "Melee Takedown Victim FallToGround OneShot3D"
+  },
+  {
+   "key": "sxa530",
+   "text": "Melee Takedown Victim TurnAround SlowShort OneShot2D"
+  },
+  {
+   "key": "sxa531",
+   "text": "Melee Takedown Victim TurnAround SlowShort OneShot3D"
+  },
+  {
+   "key": "sxa532",
+   "text": "Melee WorldHit OneShot2D"
+  },
+  {
+   "key": "sxa533",
+   "text": "Melee WorldHit OneShot3D"
+  },
+  {
+   "key": "sxa534",
+   "text": "Movement CameraNoise OneShot2D"
+  },
+  {
+   "key": "sxa535",
+   "text": "Movement Drag Grab OneShot3D"
+  },
+  {
+   "key": "sxa536",
+   "text": "Movement Drag Release OneShot2D"
+  },
+  {
+   "key": "sxa537",
+   "text": "Movement Drag Release OneShot3D"
+  },
+  {
+   "key": "sxa538",
+   "text": "Movement Efforts Breathing Soldier SimpleLoop2D"
+  },
+  {
+   "key": "sxa539",
+   "text": "Movement Efforts Breathing Soldier SimpleLoop3D"
+  },
+  {
+   "key": "sxa540",
+   "text": "Movement Efforts Breathing SoldierFemale SimpleLoop2D"
+  },
+  {
+   "key": "sxa541",
+   "text": "Movement Efforts Breathing SoldierFemale SimpleLoop3D"
+  },
+  {
+   "key": "sxa542",
+   "text": "Movement Efforts Breathing SoldierMale LoopStop Loop2D"
+  },
+  {
+   "key": "sxa543",
+   "text": "Movement Efforts Breathing SoldierMale LoopStop Loop3D"
+  },
+  {
+   "key": "sxa544",
+   "text": "Movement Efforts Breathing SoldierMale SimpleLoop2D"
+  },
+  {
+   "key": "sxa545",
+   "text": "Movement Efforts Breathing SoldierMale SimpleLoop3D"
+  },
+  {
+   "key": "sxa546",
+   "text": "Movement Efforts CockpitEject OneShot3D"
+  },
+  {
+   "key": "sxa547",
+   "text": "Movement Efforts Crouch Female OneShot2D"
+  },
+  {
+   "key": "sxa548",
+   "text": "Movement Efforts Crouch Female OneShot3D"
+  },
+  {
+   "key": "sxa549",
+   "text": "Movement Efforts Crouch Male OneShot2D"
+  },
+  {
+   "key": "sxa550",
+   "text": "Movement Efforts Crouch Male OneShot3D"
+  },
+  {
+   "key": "sxa551",
+   "text": "Movement Foley ProneMovement OneShot3D"
+  },
+  {
+   "key": "sxa552",
+   "text": "Movement Foley WeaponAdd AR Mount OneShot3D"
+  },
+  {
+   "key": "sxa553",
+   "text": "Movement Foley WeaponAdd LMGMag Mount OneShot3D"
+  },
+  {
+   "key": "sxa554",
+   "text": "Movement Foley WeaponAdd Shotgun Mount OneShot3D"
+  },
+  {
+   "key": "sxa555",
+   "text": "Movement Foley WeaponAdd SMG Mount OneShot3D"
+  },
+  {
+   "key": "sxa556",
+   "text": "Movement Foley WeaponAdd Sniper Mount OneShot3D"
+  },
+  {
+   "key": "sxa557",
+   "text": "Movement Slide FoleyEnd OneShot3D"
+  },
+  {
+   "key": "sxa558",
+   "text": "Movement Slide FoleyStart OneShot3D"
+  },
+  {
+   "key": "sxa559",
+   "text": "Movement Water Splash OneShot3D"
+  },
+  {
+   "key": "sxa560",
+   "text": "Movement Water Swim ArmStroke OneShot3D"
+  },
+  {
+   "key": "sxa561",
+   "text": "Movement Water Swim FootStroke Surface SimpleLoop2D"
+  },
+  {
+   "key": "sxa562",
+   "text": "Movement Water Swim FootStroke Surface SimpleLoop3D"
+  },
+  {
+   "key": "sxa563",
+   "text": "Movement Water Swim FootStroke Underwater SimpleLoop2D"
+  },
+  {
+   "key": "sxa564",
+   "text": "Movement Water Swim FootStroke Underwater SimpleLoop3D"
+  },
+  {
+   "key": "sxa565",
+   "text": "Movement Water Wade Sprint SimpleLoop3D"
+  },
+  {
+   "key": "sxa566",
+   "text": "Movement Water Wade Walk SimpleLoop3D"
+  },
+  {
+   "key": "sxa567",
+   "text": "Movement Wind SimpleLoop3D"
+  },
+  {
+   "key": "sxa568",
+   "text": "Parachute Cut OneShot3D"
+  },
+  {
+   "key": "sxa569",
+   "text": "Parachute Deploy Effort Female OneShot2D"
+  },
+  {
+   "key": "sxa570",
+   "text": "Parachute Deploy Effort Female OneShot3D"
+  },
+  {
+   "key": "sxa571",
+   "text": "Parachute Deploy Effort Male OneShot2D"
+  },
+  {
+   "key": "sxa572",
+   "text": "Parachute Deploy Effort Male OneShot3D"
+  },
+  {
+   "key": "sxa573",
+   "text": "Parachute Deploy OneShot3D"
+  },
+  {
+   "key": "sxa574",
+   "text": "Parachute Glide SimpleLoop3D"
+  },
+  {
+   "key": "sxa575",
+   "text": "Parachute Land OneShot3D"
+  },
+  {
+   "key": "sxa576",
+   "text": "Parachute Rain SimpleLoop3D"
+  },
+  {
+   "key": "sxa577",
+   "text": "Parachute ToggleGrab OneShot3D"
+  },
+  {
+   "key": "sxa578",
+   "text": "Parachute TogglePull OneShot3D"
+  },
+  {
+   "key": "sxa579",
+   "text": "Parachute ToggleRelease OneShot3D"
+  },
+  {
+   "key": "sxa580",
+   "text": "Ragdoll OnDeath OneShot3D"
+  },
+  {
+   "key": "sxa581",
+   "text": "Revive BeingRevived OneShot2D"
+  },
+  {
+   "key": "sxa582",
+   "text": "Revive BeingRevived OneShot3D"
+  },
+  {
+   "key": "sxa583",
+   "text": "Revive Effort FemaleHurt OneShot2D"
+  },
+  {
+   "key": "sxa584",
+   "text": "Revive Effort FemaleHurt OneShot3D"
+  },
+  {
+   "key": "sxa585",
+   "text": "Revive Effort MaleEpipenStab OneShot3D"
+  },
+  {
+   "key": "sxa586",
+   "text": "Revive Effort MaleHurt OneShot3D"
+  },
+  {
+   "key": "sxa587",
+   "text": "Revive Effort MaleNoseBreathing End OneShot3D"
+  },
+  {
+   "key": "sxa588",
+   "text": "Revive Epipen Prepare Distant OneShot3D"
+  },
+  {
+   "key": "sxa589",
+   "text": "Revive Epipen Prepare OneShot3D"
+  },
+  {
+   "key": "sxa590",
+   "text": "Revive FemaleNoseBreathingLoop SimpleLoop2D"
+  },
+  {
+   "key": "sxa591",
+   "text": "Revive FemaleNoseBreathingLoop SimpleLoop3D"
+  },
+  {
+   "key": "sxa592",
+   "text": "Revive GettingRevived BreathFemale SimpleLoop2D"
+  },
+  {
+   "key": "sxa593",
+   "text": "Revive GettingRevived BreathFemale SimpleLoop3D"
+  },
+  {
+   "key": "sxa594",
+   "text": "Revive GettingRevived SimpleLoop3D"
+  },
+  {
+   "key": "sxa595",
+   "text": "Revive MaleNoseBreathingLoop SimpleLoop2D"
+  },
+  {
+   "key": "sxa596",
+   "text": "Revive MaleNoseBreathingLoop SimpleLoop3D"
+  },
+  {
+   "key": "sxa597",
+   "text": "Revive Revived Foley OneShot3D"
+  },
+  {
+   "key": "sxa598",
+   "text": "Revive Revived SimpleLoop3D"
+  },
+  {
+   "key": "sxa599",
+   "text": "Revive RevivedBreath OneShot3D"
+  },
+  {
+   "key": "sxa600",
+   "text": "Revive Start OneShot3D"
+  },
+  {
+   "key": "sxa601",
+   "text": "States Local Underwater SimpleLoop2D"
+  },
+  {
+   "key": "sxa602",
+   "text": "States Local UnderwaterTransition In OneShot2D"
+  },
+  {
+   "key": "sxa603",
+   "text": "States Local UnderwaterTransition Out OneShot2D"
+  },
+  {
+   "key": "sxa604",
+   "text": "Commorose OnClose OneShot2D"
+  },
+  {
+   "key": "sxa605",
+   "text": "Commorose OnOpen OneShot2D"
+  },
+  {
+   "key": "sxa606",
+   "text": "Deploy Screen ActionSuccess OneShot2D"
+  },
+  {
+   "key": "sxa607",
+   "text": "Deploy Screen FadeIn OneShot2D"
+  },
+  {
+   "key": "sxa608",
+   "text": "Deploy Screen VehicleAvailable OneShot2D"
+  },
+  {
+   "key": "sxa609",
+   "text": "EOR Counting SimpleLoop2D"
+  },
+  {
+   "key": "sxa610",
+   "text": "EOR MasteryRankUp OneShot2D"
+  },
+  {
+   "key": "sxa611",
+   "text": "EOR NavigationTab OneShot2D"
+  },
+  {
+   "key": "sxa612",
+   "text": "EOR RankUp Extra OneShot2D"
+  },
+  {
+   "key": "sxa613",
+   "text": "EOR RankUp Normal OneShot2D"
+  },
+  {
+   "key": "sxa614",
+   "text": "EOR RoundOutcome OneShot2D"
+  },
+  {
+   "key": "sxa615",
+   "text": "EOR Vehicles Abrams OneShot OneShot2D"
+  },
+  {
+   "key": "sxa616",
+   "text": "EOR Vehicles JetFlyBy OneShot2D"
+  },
+  {
+   "key": "sxa617",
+   "text": "EOR XP OneShot2D"
+  },
+  {
+   "key": "sxa618",
+   "text": "Gamemode Shared CaptureObjectives AreaUnlock OneShot2D"
+  },
+  {
+   "key": "sxa619",
+   "text": "Gamemode Shared CaptureObjectives CaptureLeadinEnemy OneShot2D"
+  },
+  {
+   "key": "sxa620",
+   "text": "Gamemode Shared CaptureObjectives CaptureLeadinFriendly OneShot2D"
+  },
+  {
+   "key": "sxa621",
+   "text": "Gamemode Shared CaptureObjectives CaptureLeadinNeutral OneShot2D"
+  },
+  {
+   "key": "sxa622",
+   "text": "Gamemode Shared CaptureObjectives CaptureLeadinThump OneShot2D"
+  },
+  {
+   "key": "sxa623",
+   "text": "Gamemode Shared CaptureObjectives CaptureNeutralize OneShot2D"
+  },
+  {
+   "key": "sxa624",
+   "text": "Gamemode Shared CaptureObjectives CaptureStartedByEnemy OneShot2D"
+  },
+  {
+   "key": "sxa625",
+   "text": "Gamemode Shared CaptureObjectives CaptureStartedByFriendly OneShot2D"
+  },
+  {
+   "key": "sxa626",
+   "text": "Gamemode Shared CaptureObjectives CapturingDroneEnemy SimpleLoop2D"
+  },
+  {
+   "key": "sxa627",
+   "text": "Gamemode Shared CaptureObjectives CapturingDroneFriendly SimpleLoop2D"
+  },
+  {
+   "key": "sxa628",
+   "text": "Gamemode Shared CaptureObjectives CapturingThumpEnemy OneShot2D"
+  },
+  {
+   "key": "sxa629",
+   "text": "Gamemode Shared CaptureObjectives CapturingThumpFriendly OneShot2D"
+  },
+  {
+   "key": "sxa630",
+   "text": "Gamemode Shared CaptureObjectives CapturingTick IsEnemy SimpleLoop2D"
+  },
+  {
+   "key": "sxa631",
+   "text": "Gamemode Shared CaptureObjectives CapturingTick IsFriendly SimpleLoop2D"
+  },
+  {
+   "key": "sxa632",
+   "text": "Gamemode Shared CaptureObjectives CapturingTickEnemy OneShot2D"
+  },
+  {
+   "key": "sxa633",
+   "text": "Gamemode Shared CaptureObjectives CapturingTickFriendly OneShot2D"
+  },
+  {
+   "key": "sxa634",
+   "text": "Gamemode Shared CaptureObjectives CapturingTickIcon IsFriendly OneShot2D"
+  },
+  {
+   "key": "sxa635",
+   "text": "Gamemode Shared CaptureObjectives CapturingTickInBetweenEnemy OneShot2D"
+  },
+  {
+   "key": "sxa636",
+   "text": "Gamemode Shared CaptureObjectives CapturingTickInBetweenFriendly OneShot2D"
+  },
+  {
+   "key": "sxa637",
+   "text": "Gamemode Shared CaptureObjectives ObjectiveOnEnter OneShot2D"
+  },
+  {
+   "key": "sxa638",
+   "text": "Gamemode Shared CaptureObjectives ObjectiveOnExit OneShot2D"
+  },
+  {
+   "key": "sxa639",
+   "text": "Gamemode Shared CaptureObjectives ObjetiveUnlockCountdownRiser OneShot2D"
+  },
+  {
+   "key": "sxa640",
+   "text": "Gamemode Shared CaptureObjectives ObjetiveUnlockCountdownTick OneShot2D"
+  },
+  {
+   "key": "sxa641",
+   "text": "Gamemode Shared CaptureObjectives ObjetiveUnlockReveal OneShot2D"
+  },
+  {
+   "key": "sxa642",
+   "text": "Gamemode Shared CaptureObjectives OnCapturedByFriendly OneShot2D"
+  },
+  {
+   "key": "sxa643",
+   "text": "Gamemode Shared CaptureObjectives OnContested OneShot2D"
+  },
+  {
+   "key": "sxa644",
+   "text": "Gamemode Shared CaptureObjectives OnContested SimpleLoop2D"
+  },
+  {
+   "key": "sxa645",
+   "text": "Gamemode Shared Intro Countdown Final OneShot2D"
+  },
+  {
+   "key": "sxa646",
+   "text": "Gamemode Shared Intro Countdown OneShot2D"
+  },
+  {
+   "key": "sxa647",
+   "text": "Gamemode Shared Intro FinalImpact OneShot2D"
+  },
+  {
+   "key": "sxa648",
+   "text": "Gamemode Shared Intro Reveal OneShot2D"
+  },
+  {
+   "key": "sxa649",
+   "text": "Gamemode Shared Intro TransitionToCountdown OneShot2D"
+  },
+  {
+   "key": "sxa650",
+   "text": "Gamemode Shared LeadChange Negative OneShot2D"
+  },
+  {
+   "key": "sxa651",
+   "text": "Gamemode Shared LeadChange Positive OneShot2D"
+  },
+  {
+   "key": "sxa652",
+   "text": "Gamemode Shared OutOfBounds Countdown OneShot2D"
+  },
+  {
+   "key": "sxa653",
+   "text": "Gamemode Shared OutOfBounds ReturnAreaEcho OneShot2D"
+  },
+  {
+   "key": "sxa654",
+   "text": "Gamemode Shared OutOfBounds SFXLoop SimpleLoop2D"
+  },
+  {
+   "key": "sxa655",
+   "text": "Gauntlet Beacons BeaconPickup OneShot2D"
+  },
+  {
+   "key": "sxa656",
+   "text": "Gauntlet Beacons CalibrationBegin OneShot2D"
+  },
+  {
+   "key": "sxa657",
+   "text": "Gauntlet Beacons CalibrationComplete OneShot2D"
+  },
+  {
+   "key": "sxa658",
+   "text": "Gauntlet Beacons CalibrationTick OneShot2D"
+  },
+  {
+   "key": "sxa659",
+   "text": "Gauntlet Beacons CalibrationTickUrgency OneShot2D"
+  },
+  {
+   "key": "sxa660",
+   "text": "Gauntlet Beacons Drop OneShot2D"
+  },
+  {
+   "key": "sxa661",
+   "text": "Gauntlet Beacons EnemyCalibrationBeeping OneShot2D"
+  },
+  {
+   "key": "sxa662",
+   "text": "Gauntlet Beacons SignalLost OneShot2D"
+  },
+  {
+   "key": "sxa663",
+   "text": "Gauntlet Circuit ChainStateChange OneShot2D"
+  },
+  {
+   "key": "sxa664",
+   "text": "Gauntlet Circuit TerminalCaptured OneShot2D"
+  },
+  {
+   "key": "sxa665",
+   "text": "Gauntlet Circuit TerminalCaptureLoop SimpleLoop2D"
+  },
+  {
+   "key": "sxa666",
+   "text": "Gauntlet Circuit TerminalCaptureStart OneShot2D"
+  },
+  {
+   "key": "sxa667",
+   "text": "Gauntlet Circuit TerminalCaptureStop OneShot2D"
+  },
+  {
+   "key": "sxa668",
+   "text": "Gauntlet Circuit TerminalEnemyCapturing OneShot2D"
+  },
+  {
+   "key": "sxa669",
+   "text": "Gauntlet Circuit TerminalFriendlyCapturing OneShot2D"
+  },
+  {
+   "key": "sxa670",
+   "text": "Gauntlet Circuit TerminalLost OneShot2D"
+  },
+  {
+   "key": "sxa671",
+   "text": "Gauntlet Contract SquadWipe OneShot2D"
+  },
+  {
+   "key": "sxa672",
+   "text": "Gauntlet DataUpload DataDeposit OneShot2D"
+  },
+  {
+   "key": "sxa673",
+   "text": "Gauntlet DataUpload DataDepositLoop SimpleLoop2D"
+  },
+  {
+   "key": "sxa674",
+   "text": "Gauntlet DataUpload DataDepositPointDisable OneShot2D"
+  },
+  {
+   "key": "sxa675",
+   "text": "Gauntlet DataUpload DataDepositPointEnable OneShot2D"
+  },
+  {
+   "key": "sxa676",
+   "text": "Gauntlet DataUpload DataDepositStart OneShot2D"
+  },
+  {
+   "key": "sxa677",
+   "text": "Gauntlet DataUpload DataDepositStop OneShot2D"
+  },
+  {
+   "key": "sxa678",
+   "text": "Gauntlet DataUpload DataLost OneShot2D"
+  },
+  {
+   "key": "sxa679",
+   "text": "Gauntlet DataUpload DataPickup OneShot2D"
+  },
+  {
+   "key": "sxa680",
+   "text": "Gauntlet Dogtags OneShot2D"
+  },
+  {
+   "key": "sxa681",
+   "text": "Gauntlet EOM AdvanceCardArrive OneShot2D"
+  },
+  {
+   "key": "sxa682",
+   "text": "Gauntlet EOM AdvanceCardReveal OneShot2D"
+  },
+  {
+   "key": "sxa683",
+   "text": "Gauntlet EOM AdvanceScreen In OneShot2D"
+  },
+  {
+   "key": "sxa684",
+   "text": "Gauntlet EOM CountdownTick OneShot2D"
+  },
+  {
+   "key": "sxa685",
+   "text": "Gauntlet EOM Defeat OneShot2D"
+  },
+  {
+   "key": "sxa686",
+   "text": "Gauntlet EOM DefeatCardReveal OneShot2D"
+  },
+  {
+   "key": "sxa687",
+   "text": "Gauntlet EOM DefeatScreen Arrive OneShot2D"
+  },
+  {
+   "key": "sxa688",
+   "text": "Gauntlet EOM DefeatScreen Out LeadIn OneShot2D"
+  },
+  {
+   "key": "sxa689",
+   "text": "Gauntlet EOM PlayerSquadCardDetails OneShot2D"
+  },
+  {
+   "key": "sxa690",
+   "text": "Gauntlet EOM Qualified OneShot2D"
+  },
+  {
+   "key": "sxa691",
+   "text": "Gauntlet EOM Qualified ReceiveReinforcement OneShot2D"
+  },
+  {
+   "key": "sxa692",
+   "text": "Gauntlet EOM Reassigned OneShot2D"
+  },
+  {
+   "key": "sxa693",
+   "text": "Gauntlet EOM ReinforcementCardReveal OneShot2D"
+  },
+  {
+   "key": "sxa694",
+   "text": "Gauntlet EOM ReinforcementsGiven OneShot2D"
+  },
+  {
+   "key": "sxa695",
+   "text": "Gauntlet EOM ReinforcementsReceived OneShot2D"
+  },
+  {
+   "key": "sxa696",
+   "text": "Gauntlet EOM TopAdvanceCardReveal OneShot2D"
+  },
+  {
+   "key": "sxa697",
+   "text": "Gauntlet Heist AltCacheStolen OneShot2D"
+  },
+  {
+   "key": "sxa698",
+   "text": "Gauntlet Heist AltEnemyCapturedCache OneShot2D"
+  },
+  {
+   "key": "sxa699",
+   "text": "Gauntlet Heist AltFriendlyRecoveredCache OneShot2D"
+  },
+  {
+   "key": "sxa700",
+   "text": "Gauntlet Heist AltRecoveringCacheStart OneShot2D"
+  },
+  {
+   "key": "sxa701",
+   "text": "Gauntlet Heist AltRecoveringCacheStop OneShot2D"
+  },
+  {
+   "key": "sxa702",
+   "text": "Gauntlet Heist AltRecoveringCacheTimer OneShot2D"
+  },
+  {
+   "key": "sxa703",
+   "text": "Gauntlet Heist EnemyCapturedCache OneShot2D"
+  },
+  {
+   "key": "sxa704",
+   "text": "Gauntlet Heist EnemyPickedUpCache OneShot2D"
+  },
+  {
+   "key": "sxa705",
+   "text": "Gauntlet Heist FriendlyCapturedCache OneShot2D"
+  },
+  {
+   "key": "sxa706",
+   "text": "Gauntlet Heist FriendlyPickedUpCache OneShot2D"
+  },
+  {
+   "key": "sxa707",
+   "text": "Gauntlet MissionBriefing Base OneShot2D"
+  },
+  {
+   "key": "sxa708",
+   "text": "Gauntlet MissionBriefing Circuit OneShot2D"
+  },
+  {
+   "key": "sxa709",
+   "text": "Gauntlet MissionBriefing Contract OneShot2D"
+  },
+  {
+   "key": "sxa710",
+   "text": "Gauntlet MissionBriefing Decryption OneShot2D"
+  },
+  {
+   "key": "sxa711",
+   "text": "Gauntlet MissionBriefing Extraction OneShot2D"
+  },
+  {
+   "key": "sxa712",
+   "text": "Gauntlet MissionBriefing Heist OneShot2D"
+  },
+  {
+   "key": "sxa713",
+   "text": "Gauntlet MissionBriefing Rodeo OneShot2D"
+  },
+  {
+   "key": "sxa714",
+   "text": "Gauntlet MissionBriefing Standoff OneShot2D"
+  },
+  {
+   "key": "sxa715",
+   "text": "Gauntlet MissionBriefing Vendetta OneShot2D"
+  },
+  {
+   "key": "sxa716",
+   "text": "Gauntlet MissionBriefing Wreckage OneShot2D"
+  },
+  {
+   "key": "sxa717",
+   "text": "Gauntlet Qualifier Disqualified OneShot2D"
+  },
+  {
+   "key": "sxa718",
+   "text": "Gauntlet Qualifier PositionGained OneShot2D"
+  },
+  {
+   "key": "sxa719",
+   "text": "Gauntlet Qualifier PositionLost OneShot2D"
+  },
+  {
+   "key": "sxa720",
+   "text": "Gauntlet Qualifier Qualified OneShot2D"
+  },
+  {
+   "key": "sxa721",
+   "text": "Gauntlet Rodeo TankAcquired OneShot2D"
+  },
+  {
+   "key": "sxa722",
+   "text": "Gauntlet Rodeo TankKillPoint OneShot2D"
+  },
+  {
+   "key": "sxa723",
+   "text": "Gauntlet Rodeo TanksAvailable OneShot2D"
+  },
+  {
+   "key": "sxa724",
+   "text": "Gauntlet Rodeo TanksLockerUnlocking OneShot2D"
+  },
+  {
+   "key": "sxa725",
+   "text": "Gauntlet Standoff ZoneAlmostDepleted OneShot2D"
+  },
+  {
+   "key": "sxa726",
+   "text": "Gauntlet Standoff ZoneCaptured OneShot2D"
+  },
+  {
+   "key": "sxa727",
+   "text": "Gauntlet Standoff ZoneCaptureTick OneShot2D"
+  },
+  {
+   "key": "sxa728",
+   "text": "Gauntlet Standoff ZoneContested OneShot2D"
+  },
+  {
+   "key": "sxa729",
+   "text": "Gauntlet Standoff ZoneEnter OneShot2D"
+  },
+  {
+   "key": "sxa730",
+   "text": "Gauntlet Standoff ZoneExit OneShot2D"
+  },
+  {
+   "key": "sxa731",
+   "text": "Gauntlet Vendetta FriendlyHVTKilled OneShot2D"
+  },
+  {
+   "key": "sxa732",
+   "text": "Gauntlet Vendetta IncomingHVTSelection OneShot2D"
+  },
+  {
+   "key": "sxa733",
+   "text": "Gauntlet Vendetta NewHVT OneShot2D"
+  },
+  {
+   "key": "sxa734",
+   "text": "Gauntlet Vendetta PlayerKilledHVT OneShot2D"
+  },
+  {
+   "key": "sxa735",
+   "text": "Gauntlet Vendetta YouAreTheTarget OneShot2D"
+  },
+  {
+   "key": "sxa736",
+   "text": "Gauntlet Wreckage BombBeeping OneShot2D"
+  },
+  {
+   "key": "sxa737",
+   "text": "Gauntlet Wreckage BombCarrier OneShot2D"
+  },
+  {
+   "key": "sxa738",
+   "text": "Gauntlet Wreckage BombKilledSelf OneShot2D"
+  },
+  {
+   "key": "sxa739",
+   "text": "Gauntlet Wreckage BombPickup OneShot2D"
+  },
+  {
+   "key": "sxa740",
+   "text": "Gauntlet Wreckage BombPlanted OneShot2D"
+  },
+  {
+   "key": "sxa741",
+   "text": "Gauntlet Wreckage BombPlantLoop SimpleLoop2D"
+  },
+  {
+   "key": "sxa742",
+   "text": "Gauntlet Wreckage BombPlantStart OneShot2D"
+  },
+  {
+   "key": "sxa743",
+   "text": "Gauntlet Wreckage BombPlantStop OneShot2D"
+  },
+  {
+   "key": "sxa744",
+   "text": "Gauntlet Wreckage BompDropped OneShot2D"
+  },
+  {
+   "key": "sxa745",
+   "text": "Gauntlet Wreckage EnemyCarrierKilled OneShot2D"
+  },
+  {
+   "key": "sxa746",
+   "text": "Gauntlet Wreckage FriendlyBombPlanted OneShot2D"
+  },
+  {
+   "key": "sxa747",
+   "text": "Gauntlet Wreckage FuseLow OneShot2D"
+  },
+  {
+   "key": "sxa748",
+   "text": "Gauntlet Wreckage MCOMDestroyed OneShot2D"
+  },
+  {
+   "key": "sxa749",
+   "text": "Highlight A 2D"
+  },
+  {
+   "key": "sxa750",
+   "text": "Highlight B 2D"
+  },
+  {
+   "key": "sxa751",
+   "text": "MainMenu PressPlay OneShot2D"
+  },
+  {
+   "key": "sxa752",
+   "text": "Map Close OneShot2D"
+  },
+  {
+   "key": "sxa753",
+   "text": "Map MapMovement IsZooming SimpleLoop2D"
+  },
+  {
+   "key": "sxa754",
+   "text": "Map MapMovement PanSpeed SimpleLoop2D"
+  },
+  {
+   "key": "sxa755",
+   "text": "Map MapMovement PanStart OneShot2D"
+  },
+  {
+   "key": "sxa756",
+   "text": "Map MapMovement PanStop OneShot2D"
+  },
+  {
+   "key": "sxa757",
+   "text": "Map MapMovement ResetZoom OneShot2D"
+  },
+  {
+   "key": "sxa758",
+   "text": "Map MapMovement ZoomBlocked OneShot2D"
+  },
+  {
+   "key": "sxa759",
+   "text": "Map MapMovement ZoomIn OneShot2D"
+  },
+  {
+   "key": "sxa760",
+   "text": "Map MapMovement ZoomOut OneShot2D"
+  },
+  {
+   "key": "sxa761",
+   "text": "Map Open OneShot2D"
+  },
+  {
+   "key": "sxa762",
+   "text": "Matchmaking FoundMatch OneShot2D"
+  },
+  {
+   "key": "sxa763",
+   "text": "Matchmaking Start OneShot2D"
+  },
+  {
+   "key": "sxa764",
+   "text": "MenuNavigatin Profile Playercard Background OneShot2D"
+  },
+  {
+   "key": "sxa765",
+   "text": "MenuNavigatin Profile Playercard Badge OneShot2D"
+  },
+  {
+   "key": "sxa766",
+   "text": "MenuNavigatin Profile Playercard DogTag OneShot2D"
+  },
+  {
+   "key": "sxa767",
+   "text": "MenuNavigatin Profile Playercard Equip OneShot2D"
+  },
+  {
+   "key": "sxa768",
+   "text": "MenuNavigatin Profile Playercard Focus OneShot2D"
+  },
+  {
+   "key": "sxa769",
+   "text": "MenuNavigatin Profile Playercard Loading OneShot2D"
+  },
+  {
+   "key": "sxa770",
+   "text": "MenuNavigatin Profile Playercard Pin OneShot2D"
+  },
+  {
+   "key": "sxa771",
+   "text": "MenuNavigatin Profile Playercard Remove Button OneShot2D"
+  },
+  {
+   "key": "sxa772",
+   "text": "MenuNavigatin Profile Playercard Remove OneShot2D"
+  },
+  {
+   "key": "sxa773",
+   "text": "MenuNavigatin Profile Playercard Tag OneShot2D"
+  },
+  {
+   "key": "sxa774",
+   "text": "MenuNavigatin Profile Playercard Title OneShot2D"
+  },
+  {
+   "key": "sxa775",
+   "text": "MenuNavigation Challenges DateMenuSelect OneShot2D"
+  },
+  {
+   "key": "sxa776",
+   "text": "MenuNavigation Challenges HoverChallenge OneShot2D"
+  },
+  {
+   "key": "sxa777",
+   "text": "MenuNavigation Challenges HoverChallengeCategory OneShot2D"
+  },
+  {
+   "key": "sxa778",
+   "text": "MenuNavigation Challenges MultiTierChallengeSelections OneShot2D"
+  },
+  {
+   "key": "sxa779",
+   "text": "MenuNavigation Challenges RerollConfirm OneShot2D"
+  },
+  {
+   "key": "sxa780",
+   "text": "MenuNavigation Challenges RerollMenu OneShot2D"
+  },
+  {
+   "key": "sxa781",
+   "text": "MenuNavigation Challenges RerollMenuCancel OneShot2D"
+  },
+  {
+   "key": "sxa782",
+   "text": "MenuNavigation Challenges ScreenArrive OneShot2D"
+  },
+  {
+   "key": "sxa783",
+   "text": "MenuNavigation Challenges SelectChallenge OneShot2D"
+  },
+  {
+   "key": "sxa784",
+   "text": "MenuNavigation Challenges SelectChallengeCategory OneShot2D"
+  },
+  {
+   "key": "sxa785",
+   "text": "MenuNavigation Challenges Track OneShot2D"
+  },
+  {
+   "key": "sxa786",
+   "text": "MenuNavigation Challenges Untrack OneShot2D"
+  },
+  {
+   "key": "sxa787",
+   "text": "MenuNavigation Default EnumSelection OneShot2D"
+  },
+  {
+   "key": "sxa788",
+   "text": "MenuNavigation Default Focus OneShot2D"
+  },
+  {
+   "key": "sxa789",
+   "text": "MenuNavigation Default GoBack OneShot2D"
+  },
+  {
+   "key": "sxa790",
+   "text": "MenuNavigation Default Highlight OneShot2D"
+  },
+  {
+   "key": "sxa791",
+   "text": "MenuNavigation Default HoverIn OneShot2D"
+  },
+  {
+   "key": "sxa792",
+   "text": "MenuNavigation Default PrimaryActivation OneShot2D"
+  },
+  {
+   "key": "sxa793",
+   "text": "MenuNavigation Default PrimarySelect OneShot2D"
+  },
+  {
+   "key": "sxa794",
+   "text": "MenuNavigation Default SecondaryActivation OneShot2D"
+  },
+  {
+   "key": "sxa795",
+   "text": "MenuNavigation Default SecondarySelect OneShot2D"
+  },
+  {
+   "key": "sxa796",
+   "text": "MenuNavigation Default SlidersClickDown OneShot2D"
+  },
+  {
+   "key": "sxa797",
+   "text": "MenuNavigation Default ToggleOff OneShot2D"
+  },
+  {
+   "key": "sxa798",
+   "text": "MenuNavigation Default ToggleOn OneShot2D"
+  },
+  {
+   "key": "sxa799",
+   "text": "MenuNavigation Equip AddLayer OneShot2D"
+  },
+  {
+   "key": "sxa800",
+   "text": "MenuNavigation Haptics ResetpackageLoading OneShot2D"
+  },
+  {
+   "key": "sxa801",
+   "text": "MenuNavigation Haptics Shared Select OneShot2D"
+  },
+  {
+   "key": "sxa802",
+   "text": "MenuNavigation Home ActivateXPBooster OneShot2D"
+  },
+  {
+   "key": "sxa803",
+   "text": "MenuNavigation Home ExitPartyMenu OneShot2D"
+  },
+  {
+   "key": "sxa804",
+   "text": "MenuNavigation Home OpenPartyMenu OneShot2D"
+  },
+  {
+   "key": "sxa805",
+   "text": "MenuNavigation Home OpenXPBoosterWindow OneShot2D"
+  },
+  {
+   "key": "sxa806",
+   "text": "MenuNavigation Home PlayCategoryActivation OneShot2D"
+  },
+  {
+   "key": "sxa807",
+   "text": "MenuNavigation Home PlayerTabActivation OneShot2D"
+  },
+  {
+   "key": "sxa808",
+   "text": "MenuNavigation Home PlayItemHover OneShot2D"
+  },
+  {
+   "key": "sxa809",
+   "text": "MenuNavigation Home PlayItemScroll OneShot2D"
+  },
+  {
+   "key": "sxa810",
+   "text": "MenuNavigation Home ScreenArrive OneShot2D"
+  },
+  {
+   "key": "sxa811",
+   "text": "MenuNavigation Home SelectPlayCategory OneShot2D"
+  },
+  {
+   "key": "sxa812",
+   "text": "MenuNavigation Home SquadfillPrivate OneShot2D"
+  },
+  {
+   "key": "sxa813",
+   "text": "MenuNavigation Home SquadfillPublic OneShot2D"
+  },
+  {
+   "key": "sxa814",
+   "text": "MenuNavigation Home StartGame OneShot2D"
+  },
+  {
+   "key": "sxa815",
+   "text": "MenuNavigation Loadout ClickSelectLoadout OneShot2D"
+  },
+  {
+   "key": "sxa816",
+   "text": "MenuNavigation Loadout CollapseWeaponStats OneShot2D"
+  },
+  {
+   "key": "sxa817",
+   "text": "MenuNavigation Loadout EquipCharacterSkin OneShot2D"
+  },
+  {
+   "key": "sxa818",
+   "text": "MenuNavigation Loadout EquipFieldSpecCloth OneShot2D"
+  },
+  {
+   "key": "sxa819",
+   "text": "MenuNavigation Loadout EquipFieldSpecfull OneShot2D"
+  },
+  {
+   "key": "sxa820",
+   "text": "MenuNavigation Loadout EquipFieldSpecUIHit OneShot2D"
+  },
+  {
+   "key": "sxa821",
+   "text": "MenuNavigation Loadout EquipGadget OneShot2D"
+  },
+  {
+   "key": "sxa822",
+   "text": "MenuNavigation Loadout EquipKnifeMeleeKnife OneShot2D"
+  },
+  {
+   "key": "sxa823",
+   "text": "MenuNavigation Loadout EquipKnifeMeleeSledgehammer OneShot2D"
+  },
+  {
+   "key": "sxa824",
+   "text": "MenuNavigation Loadout EquippedClassProficiency OneShot2D"
+  },
+  {
+   "key": "sxa825",
+   "text": "MenuNavigation Loadout EquipPrimaryWeapon OneShot2D"
+  },
+  {
+   "key": "sxa826",
+   "text": "MenuNavigation Loadout EquipSecondaryWeapon OneShot2D"
+  },
+  {
+   "key": "sxa827",
+   "text": "MenuNavigation Loadout EquipThrowableGranade OneShot2D"
+  },
+  {
+   "key": "sxa828",
+   "text": "MenuNavigation Loadout EquipThrowableKnife OneShot2D"
+  },
+  {
+   "key": "sxa829",
+   "text": "MenuNavigation Loadout ExpandWeaponStats OneShot2D"
+  },
+  {
+   "key": "sxa830",
+   "text": "MenuNavigation Loadout Inspectactivation OneShot2D"
+  },
+  {
+   "key": "sxa831",
+   "text": "MenuNavigation Loadout ModifyWeapon OneShot2D"
+  },
+  {
+   "key": "sxa832",
+   "text": "MenuNavigation Loadout ResetPackage OneShot2D"
+  },
+  {
+   "key": "sxa833",
+   "text": "MenuNavigation Loadout ResetPackageEnd OneShot2D"
+  },
+  {
+   "key": "sxa834",
+   "text": "MenuNavigation Loadout ResetpackageLoading OneShot2D"
+  },
+  {
+   "key": "sxa835",
+   "text": "MenuNavigation Loadout ResetPackageStart OneShot2D"
+  },
+  {
+   "key": "sxa836",
+   "text": "MenuNavigation Loadout ScreenArrive OneShot2D"
+  },
+  {
+   "key": "sxa837",
+   "text": "MenuNavigation Loadout SelectCharacterSkin OneShot2D"
+  },
+  {
+   "key": "sxa838",
+   "text": "MenuNavigation Loadout Swapfaction OneShot2D"
+  },
+  {
+   "key": "sxa839",
+   "text": "MenuNavigation Loadout Testweaponactivation OneShot2D"
+  },
+  {
+   "key": "sxa840",
+   "text": "MenuNavigation Notification ToasterPopUp OneShot2D"
+  },
+  {
+   "key": "sxa841",
+   "text": "MenuNavigation Options ScreenArrive OneShot2D"
+  },
+  {
+   "key": "sxa842",
+   "text": "MenuNavigation VehicleLoadout EquipGunnerEquipment OneShot2D"
+  },
+  {
+   "key": "sxa843",
+   "text": "MenuNavigation VehicleLoadout EquipGunnerWeapon OneShot2D"
+  },
+  {
+   "key": "sxa844",
+   "text": "MenuNavigation VehicleLoadout EquipVehicleDecal OneShot2D"
+  },
+  {
+   "key": "sxa845",
+   "text": "MenuNavigation VehicleLoadout EquipVehicleEquipment OneShot2D"
+  },
+  {
+   "key": "sxa846",
+   "text": "MenuNavigation VehicleLoadout EquipVehiclePassive OneShot2D"
+  },
+  {
+   "key": "sxa847",
+   "text": "MenuNavigation VehicleLoadout EquipVehicleSkin OneShot2D"
+  },
+  {
+   "key": "sxa848",
+   "text": "MenuNavigation VehicleLoadout EquipVehicleWeapon OneShot2D"
+  },
+  {
+   "key": "sxa849",
+   "text": "MenuNavigation VehicleLoadout SelectGunnerEquipment OneShot2D"
+  },
+  {
+   "key": "sxa850",
+   "text": "MenuNavigation VehicleLoadout SelectGunnerWeapon OneShot2D"
+  },
+  {
+   "key": "sxa851",
+   "text": "MenuNavigation VehicleLoadout SelectVehicleAA OneShot2D"
+  },
+  {
+   "key": "sxa852",
+   "text": "MenuNavigation VehicleLoadout SelectVehicleArmoredCarrier OneShot2D"
+  },
+  {
+   "key": "sxa853",
+   "text": "MenuNavigation VehicleLoadout SelectVehicleAttackPlane OneShot2D"
+  },
+  {
+   "key": "sxa854",
+   "text": "MenuNavigation VehicleLoadout SelectVehicleDecal OneShot2D"
+  },
+  {
+   "key": "sxa855",
+   "text": "MenuNavigation VehicleLoadout SelectVehicleEquipment OneShot2D"
+  },
+  {
+   "key": "sxa856",
+   "text": "MenuNavigation VehicleLoadout SelectVehicleFighterPlane OneShot2D"
+  },
+  {
+   "key": "sxa857",
+   "text": "MenuNavigation VehicleLoadout SelectVehicleHelicopter OneShot2D"
+  },
+  {
+   "key": "sxa858",
+   "text": "MenuNavigation VehicleLoadout SelectVehicleIFV OneShot2D"
+  },
+  {
+   "key": "sxa859",
+   "text": "MenuNavigation VehicleLoadout SelectVehiclePassive OneShot2D"
+  },
+  {
+   "key": "sxa860",
+   "text": "MenuNavigation VehicleLoadout SelectVehicleSkin OneShot2D"
+  },
+  {
+   "key": "sxa861",
+   "text": "MenuNavigation VehicleLoadout SelectVehicleTank OneShot2D"
+  },
+  {
+   "key": "sxa862",
+   "text": "MenuNavigation VehicleLoadout SelectVehicleWeapon OneShot2D"
+  },
+  {
+   "key": "sxa863",
+   "text": "MenuNavigation VehicleLoadout VehiclePresetActivation OneShot2D"
+  },
+  {
+   "key": "sxa864",
+   "text": "MenuNavigation WeaponAttachment AlreadyEquipped OneShot2D"
+  },
+  {
+   "key": "sxa865",
+   "text": "MenuNavigation WeaponAttachment AttachmentSlot OneShot2D"
+  },
+  {
+   "key": "sxa866",
+   "text": "MenuNavigation WeaponAttachment EquipAttachment OneShot2D"
+  },
+  {
+   "key": "sxa867",
+   "text": "MenuNavigation WeaponAttachment Focus OneShot2D"
+  },
+  {
+   "key": "sxa868",
+   "text": "MenuNavigation WeaponAttachment NoPoints OneShot2D"
+  },
+  {
+   "key": "sxa869",
+   "text": "Notification FieldUpgrade Main OneShot2D"
+  },
+  {
+   "key": "sxa870",
+   "text": "Notification FieldUpgrade OnTrait OneShot2D"
+  },
+  {
+   "key": "sxa871",
+   "text": "Notification FieldUpgrade RankFinal OneShot2D"
+  },
+  {
+   "key": "sxa872",
+   "text": "Notification FieldUpgrade RankOne OneShot2D"
+  },
+  {
+   "key": "sxa873",
+   "text": "Notification FieldUpgrade RankTwo OneShot2D"
+  },
+  {
+   "key": "sxa874",
+   "text": "Notification FieldUpgrade RankUnlock OneShot2D"
+  },
+  {
+   "key": "sxa875",
+   "text": "Notification ObjectiveSecured FadeIn OneShot2D"
+  },
+  {
+   "key": "sxa876",
+   "text": "Notification ObjectiveSecured FillIn Negative OneShot2D"
+  },
+  {
+   "key": "sxa877",
+   "text": "Notification ObjectiveSecured FillIn Neutral OneShot2D"
+  },
+  {
+   "key": "sxa878",
+   "text": "Notification ObjectiveSecured FillIn Positive OneShot2D"
+  },
+  {
+   "key": "sxa879",
+   "text": "Notification Primary A 2D"
+  },
+  {
+   "key": "sxa880",
+   "text": "Notification Primary B 2D"
+  },
+  {
+   "key": "sxa881",
+   "text": "Notification Primary C 2D"
+  },
+  {
+   "key": "sxa882",
+   "text": "Notification Primary D 2D"
+  },
+  {
+   "key": "sxa883",
+   "text": "Notification Primary E 2D"
+  },
+  {
+   "key": "sxa884",
+   "text": "Notification Primary F 2D"
+  },
+  {
+   "key": "sxa885",
+   "text": "Notification Primary G 2D"
+  },
+  {
+   "key": "sxa886",
+   "text": "Notification Primary H 2D"
+  },
+  {
+   "key": "sxa887",
+   "text": "Notification Primary I 2D"
+  },
+  {
+   "key": "sxa888",
+   "text": "Notification Primary J 2D"
+  },
+  {
+   "key": "sxa889",
+   "text": "Notification SectorBonus NumberChange OneShot2D"
+  },
+  {
+   "key": "sxa890",
+   "text": "Notification SectorBonus ProgressBarFillingUp OneShot2D"
+  },
+  {
+   "key": "sxa891",
+   "text": "Notification SectorBonus ProgressBarFinished OneShot2D"
+  },
+  {
+   "key": "sxa892",
+   "text": "Notification SectorNext FadeIn OneShot2D"
+  },
+  {
+   "key": "sxa893",
+   "text": "Notification SectorNext FlyOut OneShot2D"
+  },
+  {
+   "key": "sxa894",
+   "text": "Notification SectorPerformance Start OneShot2D"
+  },
+  {
+   "key": "sxa895",
+   "text": "Notification SectorTaken Counter Negative OneShot2D"
+  },
+  {
+   "key": "sxa896",
+   "text": "Notification SectorTaken Counter Positive OneShot2D"
+  },
+  {
+   "key": "sxa897",
+   "text": "Notification SectorTaken Reveal OneShot2D"
+  },
+  {
+   "key": "sxa898",
+   "text": "Notification SharedGamemode GameModeArrows OneShot2D"
+  },
+  {
+   "key": "sxa899",
+   "text": "Notification SharedGamemode GameModeArrowsFirst OneShot2D"
+  },
+  {
+   "key": "sxa900",
+   "text": "Notification SharedGamemode GameModeArrowsSubsequent OneShot2D"
+  },
+  {
+   "key": "sxa901",
+   "text": "Notification SharedGamemode GameModeCritical OneShot2D"
+  },
+  {
+   "key": "sxa902",
+   "text": "Notification SidePanel CenterSwipeOut OneShot2D"
+  },
+  {
+   "key": "sxa903",
+   "text": "Notification SidePanel ChallengeComplete OneShot2D"
+  },
+  {
+   "key": "sxa904",
+   "text": "Notification SidePanel ChallengeCriteriaComplete OneShot2D"
+  },
+  {
+   "key": "sxa905",
+   "text": "Notification SidePanel ChallengeCriteriaProgressed Loop2D"
+  },
+  {
+   "key": "sxa906",
+   "text": "Notification SidePanel ChallengeCriteriaProgressed OneShot2D"
+  },
+  {
+   "key": "sxa907",
+   "text": "Notification SidePanel ChallengeProgressed OneShot2D"
+  },
+  {
+   "key": "sxa908",
+   "text": "Notification SidePanel Mastery OneShot2D"
+  },
+  {
+   "key": "sxa909",
+   "text": "PreRoundLobby SquadMateAdded OneShot2D"
+  },
+  {
+   "key": "sxa910",
+   "text": "PreRoundLobby SquadMateRemoved OneShot2D"
+  },
+  {
+   "key": "sxa911",
+   "text": "Scorelog AccoladeCareerBest OneShot2D"
+  },
+  {
+   "key": "sxa912",
+   "text": "Scorelog Accolades AccoladeTypes CareerBest OneShot2D"
+  },
+  {
+   "key": "sxa913",
+   "text": "Scorelog Accolades CareerBest OneShot2D"
+  },
+  {
+   "key": "sxa914",
+   "text": "Scorelog Hide OneShot2D"
+  },
+  {
+   "key": "sxa915",
+   "text": "Scorelog Show OneShot2D"
+  },
+  {
+   "key": "sxa916",
+   "text": "Select A 2D"
+  },
+  {
+   "key": "sxa917",
+   "text": "Select B 2D"
+  },
+  {
+   "key": "sxa918",
+   "text": "Select Gear A 2D"
+  },
+  {
+   "key": "sxa919",
+   "text": "Select Gear B 2D"
+  },
+  {
+   "key": "sxa920",
+   "text": "Select Gear C 2D"
+  },
+  {
+   "key": "sxa921",
+   "text": "Select Gear D 2D"
+  },
+  {
+   "key": "sxa922",
+   "text": "Select Gear E 2D"
+  },
+  {
+   "key": "sxa923",
+   "text": "Select Gear F 2D"
+  },
+  {
+   "key": "sxa924",
+   "text": "Shared Button Moist OneShot2D"
+  },
+  {
+   "key": "sxa925",
+   "text": "Shared Countdown Appear OneShot2D"
+  },
+  {
+   "key": "sxa926",
+   "text": "Shared Countdown Tick Final OneShot2D"
+  },
+  {
+   "key": "sxa927",
+   "text": "Shared Countdown Tick OneShot2D"
+  },
+  {
+   "key": "sxa928",
+   "text": "Shared Countdown Tick Urgent OneShot2D"
+  },
+  {
+   "key": "sxa929",
+   "text": "Shared Tutorial Prompt OneShot2D"
+  },
+  {
+   "key": "sxa930",
+   "text": "SP Collectibles Dogtag OneShot2D"
+  },
+  {
+   "key": "sxa931",
+   "text": "SP ObjectiveReceived In OneShot2D"
+  },
+  {
+   "key": "sxa932",
+   "text": "SP ObjectiveReceived Out OneShot2D"
+  },
+  {
+   "key": "sxa933",
+   "text": "Submenu Close 2D"
+  },
+  {
+   "key": "sxa934",
+   "text": "Submenu Open 2D"
+  },
+  {
+   "key": "sxa935",
+   "text": "OneShot2D"
+  },
+  {
+   "key": "sxv0",
+   "text": "Airburst Incendiary Detonation"
+  },
+  {
+   "key": "sxv1",
+   "text": "Airburst Incendiary Detonation Friendly"
+  },
+  {
+   "key": "sxv2",
+   "text": "Airplane Jetwash Dirt"
+  },
+  {
+   "key": "sxv3",
+   "text": "Airplane Jetwash Grass"
+  },
+  {
+   "key": "sxv4",
+   "text": "Airplane Jetwash Sand"
+  },
+  {
+   "key": "sxv5",
+   "text": "Airplane Jetwash Snow"
+  },
+  {
+   "key": "sxv6",
+   "text": "Airplane Jetwash Water"
+  },
+  {
+   "key": "sxv7",
+   "text": "AmbWar UAV Circling"
+  },
+  {
+   "key": "sxv8",
+   "text": "ArtilleryStrike Explosion"
+  },
+  {
+   "key": "sxv9",
+   "text": "ArtilleryStrike Explosion"
+  },
+  {
+   "key": "sxv10",
+   "text": "ArtilleryStrike Explosion GS SP Beach"
+  },
+  {
+   "key": "sxv11",
+   "text": "Autocannon 30mm AP Hit"
+  },
+  {
+   "key": "sxv12",
+   "text": "Autocannon 30mm AP Hit Metal"
+  },
+  {
+   "key": "sxv13",
+   "text": "AW Distant Cluster Bomb Line Outskirts"
+  },
+  {
+   "key": "sxv14",
+   "text": "BASE Birds Black Circulating"
+  },
+  {
+   "key": "sxv15",
+   "text": "BASE Fire L"
+  },
+  {
+   "key": "sxv16",
+   "text": "BASE Fire M"
+  },
+  {
+   "key": "sxv17",
+   "text": "BASE Fire M NoSmoke"
+  },
+  {
+   "key": "sxv18",
+   "text": "BASE Fire Oil Medium"
+  },
+  {
+   "key": "sxv19",
+   "text": "BASE Fire S"
+  },
+  {
+   "key": "sxv20",
+   "text": "BASE Fire S NoSmoke"
+  },
+  {
+   "key": "sxv21",
+   "text": "BASE Flies Small"
+  },
+  {
+   "key": "sxv22",
+   "text": "BASE Seagull Flock"
+  },
+  {
+   "key": "sxv23",
+   "text": "BASE Smoke Column XXL"
+  },
+  {
+   "key": "sxv24",
+   "text": "BASE Smoke Pillar Black L"
+  },
+  {
+   "key": "sxv25",
+   "text": "BASE Smoke Pillar Black L Dist"
+  },
+  {
+   "key": "sxv26",
+   "text": "BASE Smoke Pillar White L"
+  },
+  {
+   "key": "sxv27",
+   "text": "BASE Smoke Soft S"
+  },
+  {
+   "key": "sxv28",
+   "text": "BASE Sparks Pulse L"
+  },
+  {
+   "key": "sxv29",
+   "text": "BD Huge Horizon Exp"
+  },
+  {
+   "key": "sxv30",
+   "text": "BD Med Horizon Exp"
+  },
+  {
+   "key": "sxv31",
+   "text": "BD Med Horizon Exp Multi"
+  },
+  {
+   "key": "sxv32",
+   "text": "Blackhawk Rotor HaloGlow"
+  },
+  {
+   "key": "sxv33",
+   "text": "Blackhawk Rotor Vortex Vapor"
+  },
+  {
+   "key": "sxv34",
+   "text": "BlackLocust Tree Branch L"
+  },
+  {
+   "key": "sxv35",
+   "text": "Bomb Mk82 AIR Detonation"
+  },
+  {
+   "key": "sxv36",
+   "text": "Bomb Mk82 AIR Trail Ballute AirStrike"
+  },
+  {
+   "key": "sxv37",
+   "text": "BreachingDart Breach Detonation"
+  },
+  {
+   "key": "sxv38",
+   "text": "BreachingDart Generic BreachthroughSmoke"
+  },
+  {
+   "key": "sxv39",
+   "text": "BreachingDart NoBreach Detonation"
+  },
+  {
+   "key": "sxv40",
+   "text": "Building FallingDustSand"
+  },
+  {
+   "key": "sxv41",
+   "text": "Bullet L Vegetation DeadLeaves PropDest"
+  },
+  {
+   "key": "sxv42",
+   "text": "CAP AmbWar Rocket Strike"
+  },
+  {
+   "key": "sxv43",
+   "text": "Car Fire M"
+  },
+  {
+   "key": "sxv44",
+   "text": "CarFire Bumper"
+  },
+  {
+   "key": "sxv45",
+   "text": "CarFire FrameCrawl"
+  },
+  {
+   "key": "sxv46",
+   "text": "CarlGustaf MK4 Impact"
+  },
+  {
+   "key": "sxv47",
+   "text": "Carrier Explosion Dist"
+  },
+  {
+   "key": "sxv48",
+   "text": "Chaingun 30mm HEDP Hit"
+  },
+  {
+   "key": "sxv49",
+   "text": "CIN MF Large Static Fire"
+  },
+  {
+   "key": "sxv50",
+   "text": "CIN MF Large Static VortexFire"
+  },
+  {
+   "key": "sxv51",
+   "text": "CIN MF Medium Static Fire"
+  },
+  {
+   "key": "sxv52",
+   "text": "CIN MF Medium Static Smoke"
+  },
+  {
+   "key": "sxv53",
+   "text": "CIN MF Small Static Fire"
+  },
+  {
+   "key": "sxv54",
+   "text": "CIN MF Small Static Smoke"
+  },
+  {
+   "key": "sxv55",
+   "text": "CivCar SUV Explosion"
+  },
+  {
+   "key": "sxv56",
+   "text": "CivCar Tire fire S"
+  },
+  {
+   "key": "sxv57",
+   "text": "Cloud Cluster"
+  },
+  {
+   "key": "sxv58",
+   "text": "Cloud Cluster Storm"
+  },
+  {
+   "key": "sxv59",
+   "text": "Cloud Cluster Towering"
+  },
+  {
+   "key": "sxv60",
+   "text": "Cloud DistantBank"
+  },
+  {
+   "key": "sxv61",
+   "text": "Cloud Fractus Medium"
+  },
+  {
+   "key": "sxv62",
+   "text": "Cloud Fractus Small"
+  },
+  {
+   "key": "sxv63",
+   "text": "Decoy Destruction"
+  },
+  {
+   "key": "sxv64",
+   "text": "Defib Shock Heal Full"
+  },
+  {
+   "key": "sxv65",
+   "text": "Defib Shock Heal Half"
+  },
+  {
+   "key": "sxv66",
+   "text": "Defib Shock Hurt Full"
+  },
+  {
+   "key": "sxv67",
+   "text": "Defib Shock Hurt Half"
+  },
+  {
+   "key": "sxv68",
+   "text": "DeployableCover Deploy Dirt"
+  },
+  {
+   "key": "sxv69",
+   "text": "DeployableCover Destruction"
+  },
+  {
+   "key": "sxv70",
+   "text": "EODBot Active Enemy"
+  },
+  {
+   "key": "sxv71",
+   "text": "EODBot Active Friendly"
+  },
+  {
+   "key": "sxv72",
+   "text": "EODBot RepairTool Torch 1P"
+  },
+  {
+   "key": "sxv73",
+   "text": "EODBot RepairTool Torch 3P"
+  },
+  {
+   "key": "sxv74",
+   "text": "Gadget AdrenalineShot"
+  },
+  {
+   "key": "sxv75",
+   "text": "Gadget AirburstLauncher Detonation"
+  },
+  {
+   "key": "sxv76",
+   "text": "Gadget AirburstLauncher Predicted Line"
+  },
+  {
+   "key": "sxv77",
+   "text": "Gadget AirburstLauncher Predicted Point"
+  },
+  {
+   "key": "sxv78",
+   "text": "Gadget AirburstLauncher Predicted Point GroundConnect"
+  },
+  {
+   "key": "sxv79",
+   "text": "Gadget AmmoCrate Area"
+  },
+  {
+   "key": "sxv80",
+   "text": "Gadget AT Mine Detonation"
+  },
+  {
+   "key": "sxv81",
+   "text": "Gadget AT4 Launch 1P"
+  },
+  {
+   "key": "sxv82",
+   "text": "Gadget AT4 Launch 3P"
+  },
+  {
+   "key": "sxv83",
+   "text": "Gadget AT4 Projectile Trail"
+  },
+  {
+   "key": "sxv84",
+   "text": "Gadget Binoculars ScopeGlint"
+  },
+  {
+   "key": "sxv85",
+   "text": "Gadget C4 Explosives Detonation"
+  },
+  {
+   "key": "sxv86",
+   "text": "Gadget C4 Explosives Detonation Underwater"
+  },
+  {
+   "key": "sxv87",
+   "text": "Gadget Defib LED"
+  },
+  {
+   "key": "sxv88",
+   "text": "Gadget Defib Recharge LED"
+  },
+  {
+   "key": "sxv89",
+   "text": "Gadget DeployableMortar Destruction"
+  },
+  {
+   "key": "sxv90",
+   "text": "Gadget DeployableMortar Detonation"
+  },
+  {
+   "key": "sxv91",
+   "text": "Gadget DeployableMortar Detonation Underwater"
+  },
+  {
+   "key": "sxv92",
+   "text": "Gadget DeployableMortar FireEffect 1P"
+  },
+  {
+   "key": "sxv93",
+   "text": "Gadget DeployableMortar FireEffect 3P"
+  },
+  {
+   "key": "sxv94",
+   "text": "Gadget DeployableMortar Projectile Trail"
+  },
+  {
+   "key": "sxv95",
+   "text": "Gadget DeployableMortar Target Area"
+  },
+  {
+   "key": "sxv96",
+   "text": "Gadget Drone Destruction"
+  },
+  {
+   "key": "sxv97",
+   "text": "Gadget Drone NavLights"
+  },
+  {
+   "key": "sxv98",
+   "text": "Gadget Drone OutOfRange Distortion"
+  },
+  {
+   "key": "sxv99",
+   "text": "Gadget Drone ThermalVE"
+  },
+  {
+   "key": "sxv100",
+   "text": "Gadget EIDOS Active"
+  },
+  {
+   "key": "sxv101",
+   "text": "Gadget EIDOS Destruction"
+  },
+  {
+   "key": "sxv102",
+   "text": "Gadget EIDOS Intercept Detonation"
+  },
+  {
+   "key": "sxv103",
+   "text": "Gadget EIDOS Lights Active"
+  },
+  {
+   "key": "sxv104",
+   "text": "Gadget EIDOS Lights Standby"
+  },
+  {
+   "key": "sxv105",
+   "text": "Gadget EIDOS Projectile Launch"
+  },
+  {
+   "key": "sxv106",
+   "text": "Gadget EIDOS Standby"
+  },
+  {
+   "key": "sxv107",
+   "text": "Gadget EODBot Clusterbomb Separation"
+  },
+  {
+   "key": "sxv108",
+   "text": "Gadget EODBot ClusterFragmentCharge Detonation"
+  },
+  {
+   "key": "sxv109",
+   "text": "Gadget EODBot Destruction"
+  },
+  {
+   "key": "sxv110",
+   "text": "Gadget EODBot ObjectiveInteraction"
+  },
+  {
+   "key": "sxv111",
+   "text": "Gadget Generic Destruction"
+  },
+  {
+   "key": "sxv112",
+   "text": "Gadget Generic Destruction Electronic"
+  },
+  {
+   "key": "sxv113",
+   "text": "Gadget Generic Tripod Destruction"
+  },
+  {
+   "key": "sxv114",
+   "text": "Gadget IGLA Launch 1P"
+  },
+  {
+   "key": "sxv115",
+   "text": "Gadget IGLA Launch 3P"
+  },
+  {
+   "key": "sxv116",
+   "text": "Gadget InterativeSpectator Camera Light Green"
+  },
+  {
+   "key": "sxv117",
+   "text": "Gadget InterativeSpectator Camera Light Red"
+  },
+  {
+   "key": "sxv118",
+   "text": "Gadget InterativeSpectator Camera Light Yellow"
+  },
+  {
+   "key": "sxv119",
+   "text": "Gadget IntSpec Drone Damage Heavy"
+  },
+  {
+   "key": "sxv120",
+   "text": "Gadget IntSpec Drone Damage Light"
+  },
+  {
+   "key": "sxv121",
+   "text": "Gadget Javelin Launch 1P"
+  },
+  {
+   "key": "sxv122",
+   "text": "Gadget Javelin Launch 3P"
+  },
+  {
+   "key": "sxv123",
+   "text": "Gadget M320 Reload ShellCasing"
+  },
+  {
+   "key": "sxv124",
+   "text": "Gadget M320 Reload Smoke"
+  },
+  {
+   "key": "sxv125",
+   "text": "Gadget M4 SLAM Detonation"
+  },
+  {
+   "key": "sxv126",
+   "text": "Gadget MBTLAW Launch 1P"
+  },
+  {
+   "key": "sxv127",
+   "text": "Gadget MBTLAW Launch 3P"
+  },
+  {
+   "key": "sxv128",
+   "text": "Gadget Mine AT Warning Light"
+  },
+  {
+   "key": "sxv129",
+   "text": "Gadget MobileRespawn Damaged"
+  },
+  {
+   "key": "sxv130",
+   "text": "Gadget MPAPS Active"
+  },
+  {
+   "key": "sxv131",
+   "text": "Gadget MPAPS Destruction"
+  },
+  {
+   "key": "sxv132",
+   "text": "Gadget MPAPS Intercept Detonation"
+  },
+  {
+   "key": "sxv133",
+   "text": "Gadget MPAPS Lights Active"
+  },
+  {
+   "key": "sxv134",
+   "text": "Gadget MPAPS Lights Standby"
+  },
+  {
+   "key": "sxv135",
+   "text": "Gadget MPAPS Projectile Launch"
+  },
+  {
+   "key": "sxv136",
+   "text": "Gadget MPAPS Standby"
+  },
+  {
+   "key": "sxv137",
+   "text": "Gadget PTKM EFP Hit"
+  },
+  {
+   "key": "sxv138",
+   "text": "Gadget PTKM EFP Trail"
+  },
+  {
+   "key": "sxv139",
+   "text": "Gadget PTKM Mine Launch"
+  },
+  {
+   "key": "sxv140",
+   "text": "Gadget PTKM Submunition Detonation"
+  },
+  {
+   "key": "sxv141",
+   "text": "Gadget PTKM Submunition Trail"
+  },
+  {
+   "key": "sxv142",
+   "text": "Gadget ReconDrone EMP Hit"
+  },
+  {
+   "key": "sxv143",
+   "text": "Gadget ReconDrone EMP Weapon Fire"
+  },
+  {
+   "key": "sxv144",
+   "text": "Gadget RemoteTurret Box Damage"
+  },
+  {
+   "key": "sxv145",
+   "text": "Gadget RemoteTurret Box Damage Top"
+  },
+  {
+   "key": "sxv146",
+   "text": "Gadget RemoteTurret Box WreckState"
+  },
+  {
+   "key": "sxv147",
+   "text": "Gadget RemoteTurret Damage Light"
+  },
+  {
+   "key": "sxv148",
+   "text": "Gadget RemoteTurret ScreenEffect Damage"
+  },
+  {
+   "key": "sxv149",
+   "text": "Gadget RemoteTurret Smoke Open"
+  },
+  {
+   "key": "sxv150",
+   "text": "Gadget RPG7V2 Launch 1P"
+  },
+  {
+   "key": "sxv151",
+   "text": "Gadget RPG7V2 Launch 3P"
+  },
+  {
+   "key": "sxv152",
+   "text": "Gadget Sabotage 01 StartSparks"
+  },
+  {
+   "key": "sxv153",
+   "text": "Gadget Sabotage 02 SparkLoop"
+  },
+  {
+   "key": "sxv154",
+   "text": "Gadget Sabotage 02 SparkLoop SidePannel"
+  },
+  {
+   "key": "sxv155",
+   "text": "Gadget Sabotage 03 Fizzle"
+  },
+  {
+   "key": "sxv156",
+   "text": "Gadget ScreenEffect Thermal BHOT"
+  },
+  {
+   "key": "sxv157",
+   "text": "Gadget ScreenEffect Thermal WHOT"
+  },
+  {
+   "key": "sxv158",
+   "text": "Gadget SmokeBarrage AirBurst Det"
+  },
+  {
+   "key": "sxv159",
+   "text": "Gadget SmokeBarrage Cluster Det"
+  },
+  {
+   "key": "sxv160",
+   "text": "Gadget SmokeBarrage Cluster Light1"
+  },
+  {
+   "key": "sxv161",
+   "text": "Gadget SmokeBarrage Cluster Trail"
+  },
+  {
+   "key": "sxv162",
+   "text": "Gadget SmokeBarrage Cluster VE"
+  },
+  {
+   "key": "sxv163",
+   "text": "Gadget SniperDecoy Destruction"
+  },
+  {
+   "key": "sxv164",
+   "text": "Gadget SniperDecoy LensFlare"
+  },
+  {
+   "key": "sxv165",
+   "text": "Gadget SpawnBeacon Active"
+  },
+  {
+   "key": "sxv166",
+   "text": "Gadget SpawnBeacon Destruction"
+  },
+  {
+   "key": "sxv167",
+   "text": "Gadget StickyGrenade Detonation"
+  },
+  {
+   "key": "sxv168",
+   "text": "Gadget Stinger Launch 1P"
+  },
+  {
+   "key": "sxv169",
+   "text": "Gadget Stinger Launch 3P"
+  },
+  {
+   "key": "sxv170",
+   "text": "Gadget SupplyCrate Destruction"
+  },
+  {
+   "key": "sxv171",
+   "text": "Gadget SupplyCrate Range Indicator"
+  },
+  {
+   "key": "sxv172",
+   "text": "Gadget SupplyCrate Range Indicator Upgraded"
+  },
+  {
+   "key": "sxv173",
+   "text": "Gadget SupplyDrop Destruction"
+  },
+  {
+   "key": "sxv174",
+   "text": "Gadget Trophy Range Indicator"
+  },
+  {
+   "key": "sxv175",
+   "text": "Gadget TUGS Active"
+  },
+  {
+   "key": "sxv176",
+   "text": "Gadget TUGS Destruction"
+  },
+  {
+   "key": "sxv177",
+   "text": "Gadget VehicleRessuplyCrate Destruction"
+  },
+  {
+   "key": "sxv178",
+   "text": "Gadget VehicleSupplyCrate Range Indicator"
+  },
+  {
+   "key": "sxv179",
+   "text": "Gadget VehicleSupplyCrate Range Indicator Upgraded"
+  },
+  {
+   "key": "sxv180",
+   "text": "Granite Strike Smoke Marker Green"
+  },
+  {
+   "key": "sxv181",
+   "text": "Granite Strike Smoke Marker Red"
+  },
+  {
+   "key": "sxv182",
+   "text": "Granite Strike Smoke Marker Violet"
+  },
+  {
+   "key": "sxv183",
+   "text": "Granite Strike Smoke Marker Yellow"
+  },
+  {
+   "key": "sxv184",
+   "text": "Grenade 40mm AT Detonation"
+  },
+  {
+   "key": "sxv185",
+   "text": "Grenade 40mm HE Detonation"
+  },
+  {
+   "key": "sxv186",
+   "text": "Grenade 40mm HE Detonation Underwater"
+  },
+  {
+   "key": "sxv187",
+   "text": "Grenade 40mm Thermobaric Detonation"
+  },
+  {
+   "key": "sxv188",
+   "text": "Grenade AntiTank Detonation"
+  },
+  {
+   "key": "sxv189",
+   "text": "Grenade AntiTank Trail"
+  },
+  {
+   "key": "sxv190",
+   "text": "Grenade BreachingDart Stuck"
+  },
+  {
+   "key": "sxv191",
+   "text": "Grenade BreachingDart Trail Flashbang"
+  },
+  {
+   "key": "sxv192",
+   "text": "Grenade BreachingDartFlashbang BurnIn ScreenEffect"
+  },
+  {
+   "key": "sxv193",
+   "text": "Grenade BreachingDartFlashbang Detonation"
+  },
+  {
+   "key": "sxv194",
+   "text": "Grenade Concussion Detonation"
+  },
+  {
+   "key": "sxv195",
+   "text": "Grenade Concussion ScreenEffect"
+  },
+  {
+   "key": "sxv196",
+   "text": "Grenade Flashbang BurnIn ScreenEffect"
+  },
+  {
+   "key": "sxv197",
+   "text": "Grenade Flashbang Detonation"
+  },
+  {
+   "key": "sxv198",
+   "text": "Grenade Flashbang ScreenEffect"
+  },
+  {
+   "key": "sxv199",
+   "text": "Grenade Fragmentation Detonation"
+  },
+  {
+   "key": "sxv200",
+   "text": "Grenade Fragmentation Detonation Underwater"
+  },
+  {
+   "key": "sxv201",
+   "text": "Grenade Fragmentation ImpactGrenade Detonation"
+  },
+  {
+   "key": "sxv202",
+   "text": "Grenade Fragmentation MiniV40 Detonation"
+  },
+  {
+   "key": "sxv203",
+   "text": "Grenade Fragmentation Trail"
+  },
+  {
+   "key": "sxv204",
+   "text": "Grenade Incendiary Detonation"
+  },
+  {
+   "key": "sxv205",
+   "text": "Grenade Incendiary Trail"
+  },
+  {
+   "key": "sxv206",
+   "text": "Grenade M67 Fragmentation Trail"
+  },
+  {
+   "key": "sxv207",
+   "text": "Grenade M84 Flashbang Trail"
+  },
+  {
+   "key": "sxv208",
+   "text": "Grenade MK32A Concussion Trail"
+  },
+  {
+   "key": "sxv209",
+   "text": "Grenade RGO Impact Trail"
+  },
+  {
+   "key": "sxv210",
+   "text": "Grenade SignalSmoke"
+  },
+  {
+   "key": "sxv211",
+   "text": "Grenade SignalSmoke INV"
+  },
+  {
+   "key": "sxv212",
+   "text": "Grenade Smoke Detonation"
+  },
+  {
+   "key": "sxv213",
+   "text": "Grenade Smoke Detonation Upgraded"
+  },
+  {
+   "key": "sxv214",
+   "text": "Grenade Smoke Trail"
+  },
+  {
+   "key": "sxv215",
+   "text": "Impact LoadoutCrate Bricks"
+  },
+  {
+   "key": "sxv216",
+   "text": "Impact LoadoutCrate Dirt"
+  },
+  {
+   "key": "sxv217",
+   "text": "Impact LoadoutCrate Generic"
+  },
+  {
+   "key": "sxv218",
+   "text": "Impact LoadoutCrate Metal"
+  },
+  {
+   "key": "sxv219",
+   "text": "Impact LoadoutCrate Mud"
+  },
+  {
+   "key": "sxv220",
+   "text": "Impact LoadoutCrate Sand"
+  },
+  {
+   "key": "sxv221",
+   "text": "Impact LoadoutCrate Stone"
+  },
+  {
+   "key": "sxv222",
+   "text": "Impact LoadoutCrate Wood"
+  },
+  {
+   "key": "sxv223",
+   "text": "Impact LootCrate Dirt"
+  },
+  {
+   "key": "sxv224",
+   "text": "Impact LootCrate Generic"
+  },
+  {
+   "key": "sxv225",
+   "text": "Impact SafeImpact Brick"
+  },
+  {
+   "key": "sxv226",
+   "text": "Impact SafeImpact Dirt"
+  },
+  {
+   "key": "sxv227",
+   "text": "Impact SafeImpact Generic"
+  },
+  {
+   "key": "sxv228",
+   "text": "Impact SafeImpact Gravel"
+  },
+  {
+   "key": "sxv229",
+   "text": "Impact SafeImpact Metal"
+  },
+  {
+   "key": "sxv230",
+   "text": "Impact SafeImpact Mud"
+  },
+  {
+   "key": "sxv231",
+   "text": "Impact SafeImpact Sand"
+  },
+  {
+   "key": "sxv232",
+   "text": "Impact SafeImpact Water"
+  },
+  {
+   "key": "sxv233",
+   "text": "Impact SafeImpact Wood"
+  },
+  {
+   "key": "sxv234",
+   "text": "Impact SupplyDrop Brick"
+  },
+  {
+   "key": "sxv235",
+   "text": "Impact SupplyDrop Dirt"
+  },
+  {
+   "key": "sxv236",
+   "text": "Impact SupplyDrop Gravel"
+  },
+  {
+   "key": "sxv237",
+   "text": "Impact Supplydrop Metal"
+  },
+  {
+   "key": "sxv238",
+   "text": "Impact SupplyDrop Mud"
+  },
+  {
+   "key": "sxv239",
+   "text": "Impact SupplyDrop Sand"
+  },
+  {
+   "key": "sxv240",
+   "text": "Impact SupplyDrop Water"
+  },
+  {
+   "key": "sxv241",
+   "text": "Impact SupplyDrop Wood"
+  },
+  {
+   "key": "sxv242",
+   "text": "LoadoutCrate AirSpawn"
+  },
+  {
+   "key": "sxv243",
+   "text": "LoadoutCrate Drop Trails"
+  },
+  {
+   "key": "sxv244",
+   "text": "MF M320 1P"
+  },
+  {
+   "key": "sxv245",
+   "text": "MF M320 3P"
+  },
+  {
+   "key": "sxv246",
+   "text": "MF TRR8 1P"
+  },
+  {
+   "key": "sxv247",
+   "text": "MF TRR8 3P"
+  },
+  {
+   "key": "sxv248",
+   "text": "Mine M18 Claymore Detonation"
+  },
+  {
+   "key": "sxv249",
+   "text": "Mine M18 Claymore Laser Tripwire"
+  },
+  {
+   "key": "sxv250",
+   "text": "Missile IGLA Trail"
+  },
+  {
+   "key": "sxv251",
+   "text": "Missile Javelin"
+  },
+  {
+   "key": "sxv252",
+   "text": "Missile Javelin Detonation"
+  },
+  {
+   "key": "sxv253",
+   "text": "Missile Javelin Detonation Underwater"
+  },
+  {
+   "key": "sxv254",
+   "text": "Missile Javelin Launch SmokeTrail"
+  },
+  {
+   "key": "sxv255",
+   "text": "Missile MBTLAW Hit"
+  },
+  {
+   "key": "sxv256",
+   "text": "Missile MBTLAW Hit Critical"
+  },
+  {
+   "key": "sxv257",
+   "text": "Missile MBTLAW Hit Glancing"
+  },
+  {
+   "key": "sxv258",
+   "text": "Missile MBTLAW Trail"
+  },
+  {
+   "key": "sxv259",
+   "text": "Missile Stinger Trail"
+  },
+  {
+   "key": "sxv260",
+   "text": "Panzerfaust Projectile Stabilizers"
+  },
+  {
+   "key": "sxv261",
+   "text": "ProjectileTrail BreachingDart"
+  },
+  {
+   "key": "sxv262",
+   "text": "ProjectileTrail M320 Incendiary"
+  },
+  {
+   "key": "sxv263",
+   "text": "ProjectileTrail M320 Lethal"
+  },
+  {
+   "key": "sxv264",
+   "text": "ProjectileTrail M320 NonLethal"
+  },
+  {
+   "key": "sxv265",
+   "text": "ProximityGrenade Ping Flash"
+  },
+  {
+   "key": "sxv266",
+   "text": "ProximityGrenade Trail"
+  },
+  {
+   "key": "sxv267",
+   "text": "RepairTool FullyHealed"
+  },
+  {
+   "key": "sxv268",
+   "text": "RepairTool Overheat 1P"
+  },
+  {
+   "key": "sxv269",
+   "text": "RepairTool Overheat 3P"
+  },
+  {
+   "key": "sxv270",
+   "text": "RepairTool Sparks 1P"
+  },
+  {
+   "key": "sxv271",
+   "text": "RepairTool Sparks 3P"
+  },
+  {
+   "key": "sxv272",
+   "text": "RepairTool Sparks Damage"
+  },
+  {
+   "key": "sxv273",
+   "text": "RepairTool Torch 1P"
+  },
+  {
+   "key": "sxv274",
+   "text": "RepairTool Torch 3P"
+  },
+  {
+   "key": "sxv275",
+   "text": "Rocket ArmorPiercing Hit Metal"
+  },
+  {
+   "key": "sxv276",
+   "text": "Rocket RPG7V2 Dud"
+  },
+  {
+   "key": "sxv277",
+   "text": "Rocket RPG7V2 Hit"
+  },
+  {
+   "key": "sxv278",
+   "text": "Rocket RPG7V2 Hit Critical"
+  },
+  {
+   "key": "sxv279",
+   "text": "Rocket RPG7V2 Hit Glancing"
+  },
+  {
+   "key": "sxv280",
+   "text": "Rocket RPG7V2 Trail"
+  },
+  {
+   "key": "sxv281",
+   "text": "Rocket RPG7V2 Trail SP"
+  },
+  {
+   "key": "sxv282",
+   "text": "ShellEjection DP12 12g Buckshot"
+  },
+  {
+   "key": "sxv283",
+   "text": "Smoke Marker Custom"
+  },
+  {
+   "key": "sxv284",
+   "text": "Snow BlowingSnow L"
+  },
+  {
+   "key": "sxv285",
+   "text": "Snow BlowingSnow M"
+  },
+  {
+   "key": "sxv286",
+   "text": "Snow BlowingSnow S"
+  },
+  {
+   "key": "sxv287",
+   "text": "Snow BlowingSnow S 01 inShadow"
+  },
+  {
+   "key": "sxv288",
+   "text": "Snow BlowingSnow XS"
+  },
+  {
+   "key": "sxv289",
+   "text": "Snow DriftingSnow Rooftop Bridge"
+  },
+  {
+   "key": "sxv290",
+   "text": "Snow DriftingSnow Rooftop S"
+  },
+  {
+   "key": "sxv291",
+   "text": "Snow WhiteLeaves"
+  },
+  {
+   "key": "sxv292",
+   "text": "SoldierScreen HealingStarted"
+  },
+  {
+   "key": "sxv293",
+   "text": "SP Glint Collectable"
+  },
+  {
+   "key": "sxv294",
+   "text": "Sparks"
+  },
+  {
+   "key": "sxv295",
+   "text": "SupplyVehicleStation Range Indicator"
+  },
+  {
+   "key": "sxv296",
+   "text": "ThrowingKnife Trail"
+  },
+  {
+   "key": "sxv297",
+   "text": "ThrowingKnife Trail Friendly"
+  },
+  {
+   "key": "sxv298",
+   "text": "TracerDart Projectile Glow"
+  },
+  {
+   "key": "sxv299",
+   "text": "Vehicle Car Destruction Death Explosion PTV"
+  },
+  {
+   "key": "sxv300",
+   "text": "Vehicle CriticalState PTV"
+  },
+  {
+   "key": "sxv301",
+   "text": "Vehicle Damage PTV Critical"
+  },
+  {
+   "key": "sxv302",
+   "text": "Vehicle Damage PTV Heavy"
+  },
+  {
+   "key": "sxv303",
+   "text": "Vehicle Damage PTV Light"
+  },
+  {
+   "key": "sxv304",
+   "text": "Vehicle InstSpec Drone Explosion"
+  },
+  {
+   "key": "sxv305",
+   "text": "Vehicle PTV WheelTracks GroundDecal"
+  },
+  {
+   "key": "sxv306",
+   "text": "Vehicle Sabotage Sequence"
+  },
+  {
+   "key": "sxv307",
+   "text": "Vehicle Wreck PTV"
+  },
+  {
+   "key": "sxv308",
+   "text": "Vehicle Wreck PTV Calm"
+  },
+  {
+   "key": "sxv309",
+   "text": "Launchers GroundShockwave Dirt"
+  },
+  {
+   "key": "sxv310",
+   "text": "Launchers GroundShockwave Grass"
+  },
+  {
+   "key": "sxv311",
+   "text": "WireGuidedMissile SpooledWire"
+  },
+  {
+   "key": "sxg0",
+   "text": "Alarm"
+  },
+  {
+   "key": "sxg1",
+   "text": "Destruction_Buildings"
+  },
+  {
+   "key": "sxg2",
+   "text": "Destruction_Fuse"
+  },
+  {
+   "key": "sxg3",
+   "text": "Destruction_Impacts"
+  },
+  {
+   "key": "sxg4",
+   "text": "Destruction_Old"
+  },
+  {
+   "key": "sxg5",
+   "text": "Destruction_PreAmble"
+  },
+  {
+   "key": "sxg6",
+   "text": "Destruction_Props"
+  },
+  {
+   "key": "sxg7",
+   "text": "Destruction_Structural"
+  },
+  {
+   "key": "sxg8",
+   "text": "Destruction_Structures"
+  },
+  {
+   "key": "sxg9",
+   "text": "Destruction_Tree"
+  },
+  {
+   "key": "sxg10",
+   "text": "Gadgets_AdrenalineShot"
+  },
+  {
+   "key": "sxg11",
+   "text": "Gadgets_ATMine"
+  },
+  {
+   "key": "sxg12",
+   "text": "Gadgets_C4"
+  },
+  {
+   "key": "sxg13",
+   "text": "Gadgets_ConcussionGrenade"
+  },
+  {
+   "key": "sxg14",
+   "text": "Gadgets_Decoy"
+  },
+  {
+   "key": "sxg15",
+   "text": "Gadgets_Defibrillator"
+  },
+  {
+   "key": "sxg16",
+   "text": "Gadgets_DeployableCover"
+  },
+  {
+   "key": "sxg17",
+   "text": "Gadgets_Drone"
+  },
+  {
+   "key": "sxg18",
+   "text": "Gadgets_EIDOS"
+  },
+  {
+   "key": "sxg19",
+   "text": "Gadgets_EoDBot"
+  },
+  {
+   "key": "sxg20",
+   "text": "Gadgets_EpiPen"
+  },
+  {
+   "key": "sxg21",
+   "text": "Gadgets_Flashbang"
+  },
+  {
+   "key": "sxg22",
+   "text": "Gadgets_SupplyDrop"
+  },
+  {
+   "key": "sxg23",
+   "text": "GameModes_BR"
+  },
+  {
+   "key": "sxg24",
+   "text": "GameModes_Gauntlet"
+  },
+  {
+   "key": "sxg25",
+   "text": "Gamemodes_Payload"
+  },
+  {
+   "key": "sxg26",
+   "text": "GameModes_Rush"
+  },
+  {
+   "key": "sxg27",
+   "text": "Levels_Brooklyn"
+  },
+  {
+   "key": "sxg28",
+   "text": "Levels_Cairo"
+  },
+  {
+   "key": "sxg29",
+   "text": "Projectiles_Flybys"
+  },
+  {
+   "key": "sxg30",
+   "text": "Projectiles_FlyBys"
+  },
+  {
+   "key": "sxg31",
+   "text": "Soldier_Damage"
+  },
+  {
+   "key": "sxg32",
+   "text": "Soldier_Events"
+  },
+  {
+   "key": "sxg33",
+   "text": "Soldier_FieldUpgrade"
+  },
+  {
+   "key": "sxg34",
+   "text": "Soldier_Health"
+  },
+  {
+   "key": "sxg35",
+   "text": "Soldier_Interact"
+  },
+  {
+   "key": "sxg36",
+   "text": "Soldier_Melee"
+  },
+  {
+   "key": "sxg37",
+   "text": "Soldier_Movement"
+  },
+  {
+   "key": "sxg38",
+   "text": "Soldier_Parachute"
+  },
+  {
+   "key": "sxg39",
+   "text": "Soldier_Ragdoll"
+  },
+  {
+   "key": "sxg40",
+   "text": "Soldier_Revive"
+  },
+  {
+   "key": "sxg41",
+   "text": "Soldier_States"
+  },
+  {
+   "key": "sxg42",
+   "text": "UI_Commorose"
+  },
+  {
+   "key": "sxg43",
+   "text": "UI_Deploy"
+  },
+  {
+   "key": "sxg44",
+   "text": "UI_EOR"
+  },
+  {
+   "key": "sxg45",
+   "text": "UI_Gamemode"
+  },
+  {
+   "key": "sxg46",
+   "text": "UI_Gauntlet"
+  },
+  {
+   "key": "sxg47",
+   "text": "UI_Highlight"
+  },
+  {
+   "key": "sxg48",
+   "text": "UI_MainMenu"
+  },
+  {
+   "key": "sxg49",
+   "text": "UI_Map"
+  },
+  {
+   "key": "sxg50",
+   "text": "UI_Matchmaking"
+  },
+  {
+   "key": "sxg51",
+   "text": "UI_MenuNavigatin"
+  },
+  {
+   "key": "sxg52",
+   "text": "UI_MenuNavigation"
+  },
+  {
+   "key": "sxg53",
+   "text": "UI_Notification"
+  },
+  {
+   "key": "sxg54",
+   "text": "UI_PreRoundLobby"
+  },
+  {
+   "key": "sxg55",
+   "text": "UI_Scorelog"
+  },
+  {
+   "key": "sxg56",
+   "text": "UI_Select"
+  },
+  {
+   "key": "sxg57",
+   "text": "UI_Shared"
+  },
+  {
+   "key": "sxg58",
+   "text": "UI_SP"
+  },
+  {
+   "key": "sxg59",
+   "text": "UI_Submenu"
+  },
+  {
+   "key": "sxg60",
+   "text": "VOModule_OneShot2D"
+  },
+  {
+   "key": "sxg61",
+   "text": "Airburst"
+  },
+  {
+   "key": "sxg62",
+   "text": "Airplane"
+  },
+  {
+   "key": "sxg63",
+   "text": "AmbWar"
+  },
+  {
+   "key": "sxg64",
+   "text": "ArtilleryStrike"
+  },
+  {
+   "key": "sxg65",
+   "text": "Autocannon"
+  },
+  {
+   "key": "sxg66",
+   "text": "AW"
+  },
+  {
+   "key": "sxg67",
+   "text": "BASE"
+  },
+  {
+   "key": "sxg68",
+   "text": "BD"
+  },
+  {
+   "key": "sxg69",
+   "text": "Blackhawk"
+  },
+  {
+   "key": "sxg70",
+   "text": "BlackLocust"
+  },
+  {
+   "key": "sxg71",
+   "text": "Bomb"
+  },
+  {
+   "key": "sxg72",
+   "text": "BreachingDart"
+  },
+  {
+   "key": "sxg73",
+   "text": "Building"
+  },
+  {
+   "key": "sxg74",
+   "text": "Bullet"
+  },
+  {
+   "key": "sxg75",
+   "text": "CAP"
+  },
+  {
+   "key": "sxg76",
+   "text": "Car"
+  },
+  {
+   "key": "sxg77",
+   "text": "CarFire"
+  },
+  {
+   "key": "sxg78",
+   "text": "CarlGustaf"
+  },
+  {
+   "key": "sxg79",
+   "text": "Carrier"
+  },
+  {
+   "key": "sxg80",
+   "text": "Chaingun"
+  },
+  {
+   "key": "sxg81",
+   "text": "CIN"
+  },
+  {
+   "key": "sxg82",
+   "text": "CivCar"
+  },
+  {
+   "key": "sxg83",
+   "text": "Cloud"
+  },
+  {
+   "key": "sxg84",
+   "text": "Decoy"
+  },
+  {
+   "key": "sxg85",
+   "text": "Defib"
+  },
+  {
+   "key": "sxg86",
+   "text": "DeployableCover"
+  },
+  {
+   "key": "sxg87",
+   "text": "EODBot"
+  },
+  {
+   "key": "sxg88",
+   "text": "Gadget"
+  },
+  {
+   "key": "sxg89",
+   "text": "Granite"
+  },
+  {
+   "key": "sxg90",
+   "text": "Grenade"
+  },
+  {
+   "key": "sxg91",
+   "text": "Impact"
+  },
+  {
+   "key": "sxg92",
+   "text": "LoadoutCrate"
+  },
+  {
+   "key": "sxg93",
+   "text": "MF"
+  },
+  {
+   "key": "sxg94",
+   "text": "Mine"
+  },
+  {
+   "key": "sxg95",
+   "text": "Missile"
+  },
+  {
+   "key": "sxg96",
+   "text": "Panzerfaust"
+  },
+  {
+   "key": "sxg97",
+   "text": "ProjectileTrail"
+  },
+  {
+   "key": "sxg98",
+   "text": "ProximityGrenade"
+  },
+  {
+   "key": "sxg99",
+   "text": "RepairTool"
+  },
+  {
+   "key": "sxg100",
+   "text": "Rocket"
+  },
+  {
+   "key": "sxg101",
+   "text": "ShellEjection"
+  },
+  {
+   "key": "sxg102",
+   "text": "Smoke"
+  },
+  {
+   "key": "sxg103",
+   "text": "Snow"
+  },
+  {
+   "key": "sxg104",
+   "text": "SoldierScreen"
+  },
+  {
+   "key": "sxg105",
+   "text": "SP"
+  },
+  {
+   "key": "sxg106",
+   "text": "Sparks"
+  },
+  {
+   "key": "sxg107",
+   "text": "SupplyVehicleStation"
+  },
+  {
+   "key": "sxg108",
+   "text": "ThrowingKnife"
+  },
+  {
+   "key": "sxg109",
+   "text": "TracerDart"
+  },
+  {
+   "key": "sxg110",
+   "text": "Vehicle"
+  },
+  {
+   "key": "sxg111",
+   "text": "VFX"
+  },
+  {
+   "key": "sxg112",
+   "text": "WireGuidedMissile"
+  },
+  {
+   "key": "sxp0",
+   "text": "UI"
+  },
+  {
+   "key": "sxp1",
+   "text": "Soldier"
+  },
+  {
+   "key": "sxp2",
+   "text": "Levels"
+  },
+  {
+   "key": "sxp3",
+   "text": "Gadgets"
+  },
+  {
+   "key": "sxp4",
+   "text": "Destruction"
+  },
+  {
+   "key": "sxp5",
+   "text": "GameModes"
+  },
+  {
+   "key": "sxp6",
+   "text": "Projectiles"
+  },
+  {
+   "key": "sxp7",
+   "text": "Alarm"
+  },
+  {
+   "key": "sxp8",
+   "text": "VOModule"
+  },
+  {
+   "key": "sxp9",
+   "text": "Gadget"
+  },
+  {
+   "key": "sxp10",
+   "text": "Grenade"
+  },
+  {
+   "key": "sxp11",
+   "text": "Impact"
+  },
+  {
+   "key": "sxp12",
+   "text": "BASE"
+  },
+  {
+   "key": "sxp13",
+   "text": "Missile"
+  },
+  {
+   "key": "sxp14",
+   "text": "Vehicle"
+  },
+  {
+   "key": "sxp15",
+   "text": "RepairTool"
+  },
+  {
+   "key": "sxp16",
+   "text": "Snow"
+  },
+  {
+   "key": "sxp17",
+   "text": "Rocket"
+  },
+  {
+   "key": "sxp18",
+   "text": "CIN"
+  },
+  {
+   "key": "sxp19",
+   "text": "Cloud"
+  },
+  {
+   "key": "sxp20",
+   "text": "Airplane"
+  },
+  {
+   "key": "sxp21",
+   "text": "Defib"
+  },
+  {
+   "key": "sxp22",
+   "text": "EODBot"
+  },
+  {
+   "key": "sxp23",
+   "text": "Granite"
+  },
+  {
+   "key": "sxp24",
+   "text": "MF"
+  },
+  {
+   "key": "sxp25",
+   "text": "ProjectileTrail"
+  },
+  {
+   "key": "sxp26",
+   "text": "ArtilleryStrike"
+  },
+  {
+   "key": "sxp27",
+   "text": "BD"
+  },
+  {
+   "key": "sxp28",
+   "text": "BreachingDart"
+  },
+  {
+   "key": "sxp29",
+   "text": "Airburst"
+  },
+  {
+   "key": "sxp30",
+   "text": "Autocannon"
+  },
+  {
+   "key": "sxp31",
+   "text": "Blackhawk"
+  },
+  {
+   "key": "sxp32",
+   "text": "Bomb"
+  },
+  {
+   "key": "sxp33",
+   "text": "CarFire"
+  },
+  {
+   "key": "sxp34",
+   "text": "CivCar"
+  },
+  {
+   "key": "sxp35",
+   "text": "DeployableCover"
+  },
+  {
+   "key": "sxp36",
+   "text": "Launchers"
+  },
+  {
+   "key": "sxp37",
+   "text": "LoadoutCrate"
+  },
+  {
+   "key": "sxp38",
+   "text": "Mine"
+  },
+  {
+   "key": "sxp39",
+   "text": "ProximityGrenade"
+  },
+  {
+   "key": "sxp40",
+   "text": "ThrowingKnife"
+  },
+  {
+   "key": "sxp41",
+   "text": "AmbWar"
+  },
+  {
+   "key": "sxp42",
+   "text": "AW"
+  },
+  {
+   "key": "sxp43",
+   "text": "BlackLocust"
+  },
+  {
+   "key": "sxp44",
+   "text": "Building"
+  },
+  {
+   "key": "sxp45",
+   "text": "Bullet"
+  },
+  {
+   "key": "sxp46",
+   "text": "CAP"
+  },
+  {
+   "key": "sxp47",
+   "text": "Car"
+  },
+  {
+   "key": "sxp48",
+   "text": "CarlGustaf"
+  },
+  {
+   "key": "sxp49",
+   "text": "Carrier"
+  },
+  {
+   "key": "sxp50",
+   "text": "Chaingun"
+  },
+  {
+   "key": "sxp51",
+   "text": "Decoy"
+  },
+  {
+   "key": "sxp52",
+   "text": "Panzerfaust"
+  },
+  {
+   "key": "sxp53",
+   "text": "ShellEjection"
+  },
+  {
+   "key": "sxp54",
+   "text": "Smoke"
+  },
+  {
+   "key": "sxp55",
+   "text": "SoldierScreen"
+  },
+  {
+   "key": "sxp56",
+   "text": "SP"
+  },
+  {
+   "key": "sxp57",
+   "text": "Sparks"
+  },
+  {
+   "key": "sxp58",
+   "text": "SupplyVehicleStation"
+  },
+  {
+   "key": "sxp59",
+   "text": "TracerDart"
+  },
+  {
+   "key": "sxp60",
+   "text": "WireGuidedMissile"
+  }
+ ]
+}

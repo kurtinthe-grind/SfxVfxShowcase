@@ -1,0 +1,6 @@
+node_modules/
+*.7z
+# Upload copies of dist/, written by `npm run release`. Byte-identical to
+# dist/bundle.ts and dist/bundle.strings.json, which are tracked.
+/SfxVfxShowcase.ts
+/SfxVfxShowcase.strings.json

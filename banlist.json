@@ -1,0 +1,13 @@
+{
+    "$comment": "SOURCE OF TRUTH for known game-crashing SFX assets. Read by tools/gen-catalog.mjs. Add one entry per crasher, then run `npm run gen`. Banned assets are excluded from catalog.ts entirely, so no runtime reference to them ever exists - the spawn path is therefore unreachable by construction, not just by UI disabling. Each name is still emitted into catalog.ts as a tsc-verified symbolic ref so typos fail the build.",
+    "assets": [
+        {
+            "name": "SFX_Levels_Brooklyn_Spots_EmergencyExit_SimpleLoop3D",
+            "reason": "Crashes the Battlefield 6 Portal instance on play"
+        },
+        {
+            "name": "SFX_Levels_Brooklyn_Shared_Spots_Water_Splash_Head_SimpleLoop3D",
+            "reason": "Crashes the Battlefield 6 Portal instance on play"
+        }
+    ]
+}
