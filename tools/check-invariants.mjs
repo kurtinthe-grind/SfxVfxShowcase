@@ -259,6 +259,26 @@ if (unfilled.length > 0) {
     problems.push(`buttons without fill "Solid" (no visible controller highlight): ${unfilled.join(", ")}`);
 }
 
+// ---- F. no button sits on the highlight's own colour
+// The focused colour is sh.hot (orange). On a red or orange button it barely
+// changes, so a controller user cannot see the selection (CLOSE X, 2026-10-01).
+const HOTLIKE = ["{{sh.red}}", "{{sh.hot}}", "{{sh.orange}}", sceneJson.palette.red, sceneJson.palette.hot];
+const hotBg = [];
+(function walk(o) {
+    if (Array.isArray(o)) return o.forEach(walk);
+    if (o === null || typeof o !== "object") return;
+    if ((o.k === "textbutton" || o.k === "button") && HOTLIKE.includes(o.bg)) hotBg.push(o.id ?? o.text);
+    for (const v of Object.values(o)) walk(v);
+})(sceneJson);
+if (hotBg.length > 0) problems.push(`buttons on a red/orange base hide the orange controller highlight: ${hotBg.join(", ")}`);
+
+// ---- G. row buttons are centred in the row
+// Every button in a list row sits on the row's middle line, like SELECT; + and
+// STOP hugged the top edge (2026-10-01).
+const rowMid = sceneJson.grid.rowH / 2;
+const offCentre = sceneJson.row.filter((n) => n.k === "textbutton" && n.y + n.h / 2 !== rowMid).map((n) => `${n.id} (middle ${n.y + n.h / 2}, row middle ${rowMid})`);
+if (offCentre.length > 0) problems.push(`row buttons not centred in the row: ${offCentre.join(", ")}`);
+
 if (problems.length > 0) {
     console.error("  INVARIANT BUGS:");
     for (const p of problems) console.error("    - " + p);
@@ -267,5 +287,6 @@ if (problems.length > 0) {
 console.log(
     "  invariants: input mode owned by the root's uiInputModeWhenVisible (0 manual calls), " +
         "one click path (closures + setActionHandler, 0 event subscriptions), " +
-        "field Messages not stringified, group visibility cascades, every button solid-filled"
+        "field Messages not stringified, group visibility cascades, every button solid-filled, " +
+        "none on a red/orange base, row buttons centred"
 );

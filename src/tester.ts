@@ -81,9 +81,14 @@ const RADIO_BIOMES = [T.radioBiome0, T.radioBiome1, T.radioBiome2, T.radioBiome3
 
 // Tracks per station, numbered from 0. SDK docs (gameplay_logic.html,
 // QueueTrackNumber), "as of Season 3". Index = Radio_Channel; channel 4 is
-// per biome. Used to wrap the track number after QUEUE TRACK.
+// per biome. The track number stays below the selected station's count, and
+// wraps there after QUEUE TRACK.
 const RADIO_TRACKS = [17, 18, 10, 2, 0, 32, 15];
 const RADIO_BIOME_TRACKS = [18, 16, 16, 19, 18, 2, 18];
+
+function stationTracks(ch: number, biome: number): number | undefined {
+    return ch === 4 ? RADIO_BIOME_TRACKS[biome] : RADIO_TRACKS[ch];
+}
 
 /** The one package currently loaded. Music loading is global, so this is too. */
 let loaded: MusicPackageSpec | undefined;
@@ -132,6 +137,12 @@ export interface TesterState {
     templates: Template[];
     /** Number for the next template; never reused within a match. */
     nextTemplate: number;
+    /**
+     * The MUSIC package this player last pressed PLAY on and has not stopped, or
+     * "". Its params are sent live; any other package's only change the panel,
+     * because some params start music by themselves (Core_Urgency above 0).
+     */
+    playing: string;
 }
 
 export interface RadioPick {
@@ -146,7 +157,7 @@ export function newTesterState(): TesterState {
         values[p.amp.name] = p.amp.def;
         for (const x of p.params) values[x.name] = x.def;
     }
-    return { pkg: 0, evt: MUSIC_TAB.map(defaultEventIndex), values: values, last: undefined, toAll: false, queue: [], templates: [], nextTemplate: 1 };
+    return { pkg: 0, evt: MUSIC_TAB.map(defaultEventIndex), values: values, last: undefined, toAll: false, queue: [], templates: [], nextTemplate: 1, playing: "" };
 }
 
 /** Called once from OnGameModeStarted: the docs advise loading early. */
@@ -189,8 +200,13 @@ function load(st: TesterState, pkg: MusicPackageSpec, redraw: () => void): void 
     loadedAt = Date.now();
     st.last = mod.Message(TPL.mtCallLoad, pkg.key);
     log("music: LoadMusic(" + pkg.name + ")");
-    // Repaint when loading ends, so the button turns from LOADING to LOADED.
+    // Repaint when loading ends, so the track line drops its LOADING note.
     whenLoaded(redraw);
+}
+
+/** There is no LOAD button: whatever needs a package loads it first. */
+function ensureLoaded(st: TesterState, pkg: MusicPackageSpec, redraw: () => void): void {
+    if (loaded !== pkg) load(st, pkg, redraw);
 }
 
 function sendParam(player: mod.Player, st: TesterState, p: MusicParamSpec): void {
@@ -209,12 +225,33 @@ function sendEvent(player: mod.Player, st: TesterState, event: mod.MusicEvents, 
     log("music: PlayMusic(" + name + ") for=" + who(st) + " " + pkgNote);
 }
 
-function stepParam(player: mod.Player, st: TesterState, p: MusicParamSpec, dir: number): void {
+/** Highest value `p` may take now: the queue number stops at the station's last track. */
+function maxOf(st: TesterState, p: MusicParamSpec): number {
+    if (!p.queues) return p.max;
+    const n = stationTracks(radioChannel(st), radioBiome(st));
+    return n === undefined ? p.max : Math.min(p.max, n - 1);
+}
+
+/** Keeps the queue number inside the selected station after the station changes. */
+function clampQueueNumber(st: TesterState): void {
+    const q = queueParam(RADIO);
+    if (q !== undefined && st.values[q.name] > maxOf(st, q)) st.values[q.name] = maxOf(st, q);
+}
+
+/**
+ * A stepper press. The value always changes on the panel; it reaches the engine
+ * now only when that can be heard: a MUSIC package while its track plays, the
+ * radio while Radio is loaded. PLAY sends everything anyway.
+ */
+function stepParam(player: mod.Player, st: TesterState, pkg: MusicPackageSpec, p: MusicParamSpec, dir: number): void {
     const v = st.values[p.name] + dir * p.step;
-    st.values[p.name] = round2(Math.min(p.max, Math.max(p.min, v)));
+    st.values[p.name] = round2(Math.min(maxOf(st, p), Math.max(p.min, v)));
+    if (pkg === RADIO) clampQueueNumber(st);
     // Sending the queue param queues a track: the stepper only picks the number,
     // QUEUE TRACK sends it.
-    if (!p.queues) whenLoaded(() => sendParam(player, st, p));
+    if (p.queues || loaded !== pkg) return;
+    if (pkg !== RADIO && st.playing !== pkg.name) return;
+    whenLoaded(() => sendParam(player, st, p));
 }
 
 function queueParam(pkg: MusicPackageSpec): MusicParamSpec | undefined {
@@ -257,8 +294,19 @@ function noteQueued(st: TesterState, q: MusicParamSpec): void {
     const biome = radioBiome(st);
     const track = st.values[q.name];
     st.queue.push({ ch: ch, biome: biome, track: track });
-    const n = (ch === 4 ? RADIO_BIOME_TRACKS[biome] : RADIO_TRACKS[ch]) ?? q.max + 1;
-    st.values[q.name] = track + 1 < n ? Math.min(q.max, track + 1) : q.min;
+    st.values[q.name] = track + 1 <= maxOf(st, q) ? track + 1 : q.min;
+}
+
+/**
+ * QUEUE TRACK: the station on screen, then the number. The channel is sent first
+ * because it only applies to tracks queued after it, and one picked while Radio
+ * was not loaded may never have reached the engine.
+ */
+function sendQueue(player: mod.Player, st: TesterState, q: MusicParamSpec): void {
+    sendParam(player, st, paramNamed(RADIO, "Radio_Channel"));
+    sendParam(player, st, paramNamed(RADIO, "Radio_Biome"));
+    sendParam(player, st, q);
+    noteQueued(st, q);
 }
 
 function queueLine(st: TesterState): mod.Message {
@@ -395,7 +443,7 @@ export function applyTemplate(st: TesterState, t: Template): TesterTab {
 export function playTemplate(st: TesterState, player: mod.Player, t: Template, redraw: () => void): void {
     const tab = applyTemplate(st, t);
     const pkg = templatePkg(t);
-    if (loaded !== pkg) load(st, pkg, redraw);
+    ensureLoaded(st, pkg, redraw);
     whenLoaded(() => {
         if (t.kind === "radio") requeue(st, player, t);
         sendPlay(tab, st, player);
@@ -436,12 +484,16 @@ function paramNamed(pkg: MusicPackageSpec, name: string): MusicParamSpec {
     throw new Error("param missing from music.gen.ts: " + name);
 }
 
-/** STOP on a template row. Returns the package when it is not loaded (nothing is sent). */
-export function stopTemplate(st: TesterState, player: mod.Player, t: Template): MusicPackageSpec | undefined {
-    const pkg = templatePkg(t);
-    if (loaded !== pkg) return pkg;
+/** STOP on a template row: the same as STOP on its tab. */
+export function stopTemplate(st: TesterState, player: mod.Player, t: Template): void {
+    sendStop(st, player, templatePkg(t));
+}
+
+/** STOP. A package that is not loaded is not playing: nothing to send. */
+function sendStop(st: TesterState, player: mod.Player, pkg: MusicPackageSpec): void {
+    if (loaded !== pkg) return;
+    if (st.playing === pkg.name) st.playing = "";
     whenLoaded(() => sendEvent(player, st, pkg.stop, pkg.name + "_Stop", pkg.stopKey));
-    return undefined;
 }
 
 export function removeTemplate(st: TesterState, key: string): void {
@@ -474,22 +526,6 @@ export function templateExportLine(t: Template): string {
 }
 
 /**
- * The package `action` needs loaded, when it is not: PLAY and STOP, and on the
- * radio tab the queue buttons, which only drive the loaded package. undefined
- * when the click may go ahead. A package still loading counts as loaded: its
- * calls are held until it has had time to load (whenLoaded).
- */
-export function needsLoad(tab: TesterTab, st: TesterState, action: string): MusicPackageSpec | undefined {
-    const pkg = current(tab, st);
-    return loaded !== pkg && gated(tab, action) ? pkg : undefined;
-}
-
-function gated(tab: TesterTab, action: string): boolean {
-    if (action === "mtPlay" || action === "mtStop") return true;
-    return tab === "radio" && (action === "mtPrev" || action === "mtNext" || action === "mtQueue");
-}
-
-/**
  * What PLAY sends. Re-send everything first, so what plays always matches the
  * panel. The queue param is the exception: re-sending it would queue another track.
  */
@@ -499,6 +535,7 @@ function sendPlay(tab: TesterTab, st: TesterState, player: mod.Player): void {
     for (const p of pkg.params) if (!p.queues) sendParam(player, st, p);
     sendParam(player, st, pkg.amp);
     sendEvent(player, st, e.event, e.name, e.key);
+    st.playing = pkg.name;
 }
 
 /**
@@ -515,10 +552,6 @@ export function handleTesterAction(tab: TesterTab, st: TesterState, player: mod.
         st.pkg = (st.pkg + (action === "mtPkgNext" ? 1 : n - 1)) % n;
         return true;
     }
-    if (action === "mtLoad") {
-        load(st, pkg, redraw);
-        return true;
-    }
     if (action === "mtTarget") {
         st.toAll = !st.toAll;
         return true;
@@ -526,9 +559,9 @@ export function handleTesterAction(tab: TesterTab, st: TesterState, player: mod.
     if (action === "mtQueue") {
         const q = queueParam(pkg);
         if (q === undefined) return false;
+        ensureLoaded(st, pkg, redraw);
         whenLoaded(() => {
-            sendParam(player, st, q);
-            noteQueued(st, q);
+            sendQueue(player, st, q);
             redraw();
         });
         return true;
@@ -536,6 +569,10 @@ export function handleTesterAction(tab: TesterTab, st: TesterState, player: mod.
     if (action === "mtPrev" || action === "mtNext") {
         if (radio) {
             const e = action === "mtNext" ? RADIO_NEXT : RADIO_CLEAR;
+            // NEXT TRACK skips within what is playing: with Radio not loaded,
+            // nothing is. CLEAR QUEUE loads Radio, so the queue really is empty.
+            if (e === RADIO_NEXT && loaded !== pkg) return true;
+            ensureLoaded(st, pkg, redraw);
             whenLoaded(() => {
                 sendEvent(player, st, e.event, e.name, e.key);
                 if (e === RADIO_CLEAR) st.queue = [];
@@ -548,6 +585,7 @@ export function handleTesterAction(tab: TesterTab, st: TesterState, player: mod.
         return true;
     }
     if (action === "mtPlay") {
+        ensureLoaded(st, pkg, redraw);
         whenLoaded(() => {
             sendPlay(tab, st, player);
             redraw();
@@ -555,14 +593,12 @@ export function handleTesterAction(tab: TesterTab, st: TesterState, player: mod.
         return true;
     }
     if (action === "mtStop") {
-        whenLoaded(() => {
-            sendEvent(player, st, pkg.stop, pkg.name + "_Stop", pkg.stopKey);
-            redraw();
-        });
+        sendStop(st, player, pkg);
+        whenLoaded(redraw);
         return true;
     }
     if (action === "mtVolDown" || action === "mtVolUp") {
-        stepParam(player, st, pkg.amp, action === "mtVolUp" ? 1 : -1);
+        stepParam(player, st, pkg, pkg.amp, action === "mtVolUp" ? 1 : -1);
         return true;
     }
     // mtP<slot>Down / mtP<slot>Up
@@ -571,7 +607,7 @@ export function handleTesterAction(tab: TesterTab, st: TesterState, player: mod.
         const p = pkg.params[parseInt(m[1], 10)];
         // A hidden row cannot be clicked; reaching here means a stale widget.
         if (p === undefined) return false;
-        stepParam(player, st, p, m[2] === "Up" ? 1 : -1);
+        stepParam(player, st, pkg, p, m[2] === "Up" ? 1 : -1);
         return true;
     }
     return false;
@@ -582,6 +618,14 @@ function pickKey(keys: readonly string[], v: number): string {
     return k === undefined ? T.logEmpty : k;
 }
 
+/** The line under the radio params: the station on screen and its track numbers. */
+function radioNote(st: TesterState, ch: number, biome: number): mod.Message {
+    const q = queueParam(RADIO);
+    const last = q === undefined ? 0 : maxOf(st, q);
+    if (ch === 4) return mod.Message(TPL.mtRadioNoteBiome, pickKey(RADIO_BIOMES, biome), last);
+    return mod.Message(TPL.mtRadioNote, ch, pickKey(RADIO_CHANNELS, ch), last);
+}
+
 /** Field values for the tester nodes in scene.json (the `f` scope). */
 export function testerFields(tab: TesterTab, st: TesterState): Scope {
     const pkg = current(tab, st);
@@ -589,35 +633,27 @@ export function testerFields(tab: TesterTab, st: TesterState): Scope {
     const isLoaded = loaded === pkg;
     const evt = pkg.events[st.evt[st.pkg]];
     const q = queueParam(pkg);
-    const ch = st.values["Radio_Channel"] ?? 0;
-    const biome = st.values["Radio_Biome"] ?? 0;
+    const ch = radioChannel(st);
+    const biome = radioBiome(st);
+    const trackLine = !isLoaded ? TPL.mtTrackUnloaded : loading() ? TPL.mtTrackLoading : TPL.mtTrackOf;
     const f: Scope = {
         mtTitle: mod.Message(radio ? T.mtCardRadio : T.mtCardTrack),
         mtPkgArrows: radio ? "0" : "1",
         mtPkg: mod.Message(TPL.mtPackageOf, pkg.key),
         mtEvent: mod.Message(radio ? T.mtRadioLine : evt.key),
-        mtEventIdx: radio ? queueLine(st) : mod.Message(isLoaded ? TPL.mtTrackOf : TPL.mtTrackUnloaded, st.evt[st.pkg] + 1, pkg.events.length),
+        mtEventIdx: radio ? queueLine(st) : mod.Message(trackLine, st.evt[st.pkg] + 1, pkg.events.length),
         mtEventDesc: mod.Message(radio ? (queueIsStale(st) ? T.mtQueueStale : T.mtRadioHelp) : evt.desc),
         mtPrevLabel: mod.Message(radio ? T.mtClearQueue : T.mtPrev),
         mtPlayLabel: mod.Message(T.mtPlay),
         mtStopLabel: mod.Message(T.mtStop),
         mtNextLabel: mod.Message(radio ? T.mtNextTrack : T.mtNext),
-        mtParamNote: radio ? mod.Message(TPL.mtRadioNote, ch, pickKey(RADIO_CHANNELS, ch), pickKey(RADIO_BIOMES, biome)) : mod.Message(pkg.params.length === 0 ? T.mtNoParams : T.mtNoteParams),
+        mtParamNote: radio ? radioNote(st, ch, biome) : mod.Message(pkg.params.length === 0 ? T.mtNoParams : T.mtNoteParams),
         mtVol: mod.Message(TPL.num1, st.values[pkg.amp.name]),
         mtLast: st.last ?? mod.Message(T.mtNothingSent),
-        mtLoadLabel: mod.Message(isLoaded ? (loading() ? TPL.mtLoadingOf : TPL.mtLoadedOf) : TPL.mtLoadOf, pkg.key),
-        mtLoadBg: isLoaded ? PALETTE.green : PALETTE.amber,
         mtTargetLabel: mod.Message(st.toAll ? T.mtTargetAll : T.mtTargetMe),
         mtTargetBg: st.toAll ? PALETTE.hot : PALETTE.row,
         mtQueueOn: q === undefined ? "0" : "1",
         mtQueueLabel: q === undefined ? mod.Message(T.logEmpty) : mod.Message(TPL.mtQueueOf, st.values[q.name]),
-        // Greyed out while the package on screen is not loaded (see needsLoad).
-        mtPlayBg: isLoaded ? PALETTE.green : PALETTE.line,
-        mtStopBg: isLoaded ? PALETTE.redDim : PALETTE.line,
-        mtSkipBg: radio && !isLoaded ? PALETTE.line : PALETTE.row,
-        mtQueueBg: isLoaded ? PALETTE.violet : PALETTE.line,
-        mtGateInk: isLoaded ? "#FFFFFF" : PALETTE.faint,
-        mtSkipInk: radio && !isLoaded ? PALETTE.faint : "#FFFFFF",
     };
     for (let i = 0; i < PARAM_SLOTS; i++) {
         const p = pkg.params[i];

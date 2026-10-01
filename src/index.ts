@@ -11,7 +11,7 @@ import { Timers } from "bf6-portal-utils/timers";
 import { SFX_CATALOG, SFX_CATEGORIES, SFX_PREFIXES, type SfxEntry, VFX_CATALOG, VFX_CATEGORIES, VFX_PREFIXES } from "./catalog";
 import { CONFIG } from "./config";
 import { debugEnabled, initLog, log, logAlways, setDebug } from "./diag";
-import { applyTemplate, findTemplate, handleTesterAction, loadStartupMusic, needsLoad, newTesterState, playTemplate, removeTemplate, saveTemplate, stopTemplate, templateExportLine, templateKey, templateKindKey } from "./tester";
+import { applyTemplate, findTemplate, handleTesterAction, loadStartupMusic, newTesterState, playTemplate, removeTemplate, saveTemplate, stopTemplate, templateExportLine, templateKey } from "./tester";
 import { T, TPL } from "./text.gen";
 import { clickSound, playUiSound, UI_SOUND } from "./uisound";
 import {
@@ -229,23 +229,13 @@ function handle(st: PlayerState, action: string): void {
             `dim=${ui.fDim} kind=${ui.fKind} vfx=${ui.fVfx} amp=${ui.amp} rng=${ui.rng} scale=${ui.scale}`
     );
 
-    // SAVE TEMPLATE: the tab's setup into FAVOURITES. Never greyed out -- saving
-    // sends nothing to the engine, so the package does not need to be loaded.
+    // SAVE TEMPLATE: the tab's setup into FAVOURITES. The sound is the only
+    // feedback: no notification (asked for on 2026-10-01).
     if (action === "mtSave" && isTesterTab(ui.tab)) {
         const r = saveTemplate(ui.tab, ui.tester);
         if (r.added) ui.favourites.push(templateKey(r.tpl));
         playUiSound(ui.player, UI_SOUND.on);
-        mod.DisplayNotificationMessage(mod.Message(r.added ? TPL.tplSaved : TPL.tplExists, templateKindKey(r.tpl), r.tpl.n), ui.player);
         defer(st);
-        return;
-    }
-    // MUSIC / RADIO buttons that need their package loaded are greyed out until
-    // it is; a click on one sends nothing and says what to load.
-    const unloaded = isTesterTab(ui.tab) && action.slice(0, 2) === "mt" ? needsLoad(ui.tab, ui.tester, action) : undefined;
-    if (unloaded !== undefined) {
-        playUiSound(ui.player, UI_SOUND.denied);
-        mod.DisplayNotificationMessage(mod.Message(TPL.mtLoadFirst, unloaded.key, unloaded.key), ui.player);
-        log(`music: ${action} ignored, ${unloaded.name} is not loaded`);
         return;
     }
     const sound = clickSound(action);
@@ -471,11 +461,7 @@ function handle(st: PlayerState, action: string): void {
                 return;
             }
             if (tag === "stop") {
-                const unloaded = stopTemplate(ui.tester, ui.player, t);
-                if (unloaded !== undefined) {
-                    playUiSound(ui.player, UI_SOUND.denied);
-                    mod.DisplayNotificationMessage(mod.Message(TPL.mtLoadFirst, unloaded.key, unloaded.key), ui.player);
-                }
+                stopTemplate(ui.tester, ui.player, t);
                 defer(st);
                 return;
             }

@@ -8260,8 +8260,8 @@ export const SCREEN: readonly SceneNode[] = [
         "h": 56,
         "text": "CLOSE X",
         "textSize": 18,
-        "textColor": "#FFFFFF",
-        "bg": "{{sh.red}}",
+        "textColor": "{{sh.red}}",
+        "bg": "{{sh.line}}",
         "bgAlpha": 1,
         "align": "Center",
         "parent": "menu",
@@ -8938,7 +8938,7 @@ export const SCREEN: readonly SceneNode[] = [
         "k": "textbutton",
         "bgAlpha": 1,
         "align": "Center",
-        "textColor": "{{f.mtSkipInk}}",
+        "textColor": "#FFFFFF",
         "fill": "Solid",
         "parent": "tester",
         "id": "mtPrev",
@@ -8948,7 +8948,7 @@ export const SCREEN: readonly SceneNode[] = [
         "h": 60,
         "text": "{{f.mtPrevLabel}}",
         "textSize": 18,
-        "bg": "{{f.mtSkipBg}}",
+        "bg": "{{sh.row}}",
         "bind": {
             "text": "mtPrevLabel"
         }
@@ -8957,7 +8957,7 @@ export const SCREEN: readonly SceneNode[] = [
         "k": "textbutton",
         "bgAlpha": 1,
         "align": "Center",
-        "textColor": "{{f.mtGateInk}}",
+        "textColor": "#FFFFFF",
         "fill": "Solid",
         "parent": "tester",
         "id": "mtPlay",
@@ -8967,7 +8967,7 @@ export const SCREEN: readonly SceneNode[] = [
         "h": 60,
         "text": "{{f.mtPlayLabel}}",
         "textSize": 18,
-        "bg": "{{f.mtPlayBg}}",
+        "bg": "{{sh.green}}",
         "bind": {
             "text": "mtPlayLabel"
         }
@@ -8976,7 +8976,7 @@ export const SCREEN: readonly SceneNode[] = [
         "k": "textbutton",
         "bgAlpha": 1,
         "align": "Center",
-        "textColor": "{{f.mtGateInk}}",
+        "textColor": "#FFFFFF",
         "fill": "Solid",
         "parent": "tester",
         "id": "mtStop",
@@ -8986,7 +8986,7 @@ export const SCREEN: readonly SceneNode[] = [
         "h": 60,
         "text": "{{f.mtStopLabel}}",
         "textSize": 18,
-        "bg": "{{f.mtStopBg}}",
+        "bg": "{{sh.redDim}}",
         "bind": {
             "text": "mtStopLabel"
         }
@@ -8995,7 +8995,7 @@ export const SCREEN: readonly SceneNode[] = [
         "k": "textbutton",
         "bgAlpha": 1,
         "align": "Center",
-        "textColor": "{{f.mtSkipInk}}",
+        "textColor": "#FFFFFF",
         "fill": "Solid",
         "parent": "tester",
         "id": "mtNext",
@@ -9005,7 +9005,7 @@ export const SCREEN: readonly SceneNode[] = [
         "h": 60,
         "text": "{{f.mtNextLabel}}",
         "textSize": 18,
-        "bg": "{{f.mtSkipBg}}",
+        "bg": "{{sh.row}}",
         "bind": {
             "text": "mtNextLabel"
         }
@@ -9577,39 +9577,6 @@ export const SCREEN: readonly SceneNode[] = [
         "textSize": 13
     },
     {
-        "k": "textbutton",
-        "y": 756,
-        "w": 260,
-        "h": 48,
-        "textSize": 15,
-        "textColor": "#FFFFFF",
-        "bgAlpha": 1,
-        "align": "Center",
-        "fill": "Solid",
-        "parent": "tester",
-        "id": "mtLoad",
-        "x": 196,
-        "text": "{{f.mtLoadLabel}}",
-        "bg": "{{f.mtLoadBg}}",
-        "bind": {
-            "text": "mtLoadLabel",
-            "bg": "mtLoadBg"
-        }
-    },
-    {
-        "k": "text",
-        "textAlpha": 1,
-        "align": "Center",
-        "color": "{{sh.muted}}",
-        "parent": "tester",
-        "x": 196,
-        "y": 810,
-        "w": 260,
-        "h": 30,
-        "text": "Loads in about 5 s. One at a time.",
-        "textSize": 12
-    },
-    {
         "k": "group",
         "id": "mtQueueGrp",
         "x": 0,
@@ -9626,7 +9593,7 @@ export const SCREEN: readonly SceneNode[] = [
         "w": 260,
         "h": 48,
         "textSize": 15,
-        "textColor": "{{f.mtGateInk}}",
+        "textColor": "#FFFFFF",
         "bgAlpha": 1,
         "align": "Center",
         "fill": "Solid",
@@ -9634,7 +9601,7 @@ export const SCREEN: readonly SceneNode[] = [
         "id": "mtQueue",
         "x": 466,
         "text": "{{f.mtQueueLabel}}",
-        "bg": "{{f.mtQueueBg}}",
+        "bg": "{{sh.violet}}",
         "bind": {
             "text": "mtQueueLabel"
         }
@@ -9694,10 +9661,10 @@ export const SCREEN: readonly SceneNode[] = [
         "id": "mtLast",
         "x": 736,
         "y": 756,
-        "w": 448,
+        "w": 718,
         "h": 48,
         "text": "{{f.mtLast}}",
-        "textSize": 16,
+        "textSize": 20,
         "bind": {
             "text": "mtLast"
         }
@@ -9714,7 +9681,7 @@ export const SCREEN: readonly SceneNode[] = [
         "fill": "Solid",
         "parent": "tester",
         "id": "mtSave",
-        "x": 1194,
+        "x": 196,
         "text": "SAVE TEMPLATE",
         "bg": "{{sh.blue}}"
     },
@@ -9724,7 +9691,7 @@ export const SCREEN: readonly SceneNode[] = [
         "align": "Center",
         "color": "{{sh.muted}}",
         "parent": "tester",
-        "x": 1194,
+        "x": 196,
         "y": 810,
         "w": 260,
         "h": 30,
@@ -9739,7 +9706,7 @@ export const SCREEN: readonly SceneNode[] = [
         "parent": "tester",
         "x": 736,
         "y": 810,
-        "w": 448,
+        "w": 718,
         "h": 30,
         "text": "The last call sent. The game cannot report what is playing.",
         "textSize": 12
@@ -9788,7 +9755,7 @@ export const ROW: readonly SceneNode[] = [
         "k": "textbutton",
         "id": "fav",
         "x": 14,
-        "y": 0,
+        "y": 13,
         "w": 56,
         "h": 32,
         "text": "{{r.favLabel}}",
@@ -9823,7 +9790,7 @@ export const ROW: readonly SceneNode[] = [
         "k": "textbutton",
         "id": "stop",
         "x": 176,
-        "y": 0,
+        "y": 13,
         "w": 56,
         "h": 32,
         "text": "{{r.stopLabel}}",
@@ -10083,7 +10050,6 @@ export const NODE_ACTIONS: readonly string[] = [
     "btnUndo",
     "clr",
     "done",
-    "mtLoad",
     "mtNext",
     "mtP0Down",
     "mtP0Up",
@@ -10274,158 +10240,152 @@ export const TPL = {
     mtCallPlay: "sxT138",
     mtCallParam: "sxT139",
     mtCallLoad: "sxT140",
-    mtLoadOf: "sxT141",
-    mtLoadedOf: "sxT142",
-    mtLoadingOf: "sxT143",
-    mtQueueOf: "sxT144",
-    mtTrackUnloaded: "sxT145",
-    mtRadioNote: "sxT146",
-    mtLoadFirst: "sxT147",
-    tplMusicOf: "sxT148",
-    tplRadioOf: "sxT149",
-    tplSaved: "sxT150",
-    tplExists: "sxT151",
-    mtQueueCount: "sxT152",
+    mtQueueOf: "sxT141",
+    mtTrackUnloaded: "sxT142",
+    mtTrackLoading: "sxT143",
+    mtRadioNote: "sxT144",
+    mtRadioNoteBiome: "sxT145",
+    tplMusicOf: "sxT146",
+    tplRadioOf: "sxT147",
+    mtQueueCount: "sxT148",
 } as const;
 
 /** key for a single keyboard character */
 export const CHAR_KEY: Readonly<Record<string, string>> = {
-    "0": "sxC157",
-    "1": "sxC158",
-    "2": "sxC159",
-    "3": "sxC160",
-    "4": "sxC161",
-    "5": "sxC162",
-    "6": "sxC163",
-    "7": "sxC164",
-    "8": "sxC165",
-    "9": "sxC166",
-    " ": "sxC153",
-    ",": "sxC154",
-    "-": "sxC155",
-    ".": "sxC156",
-    "A": "sxC167",
-    "B": "sxC168",
-    "C": "sxC169",
-    "D": "sxC170",
-    "E": "sxC171",
-    "F": "sxC172",
-    "G": "sxC173",
-    "H": "sxC174",
-    "I": "sxC175",
-    "J": "sxC176",
-    "K": "sxC177",
-    "L": "sxC178",
-    "M": "sxC179",
-    "N": "sxC180",
-    "O": "sxC181",
-    "P": "sxC182",
-    "Q": "sxC183",
-    "R": "sxC184",
-    "S": "sxC185",
-    "T": "sxC186",
-    "U": "sxC187",
-    "V": "sxC188",
-    "W": "sxC189",
-    "X": "sxC190",
-    "Y": "sxC191",
-    "Z": "sxC192",
-    "_": "sxC193",
+    "0": "sxC153",
+    "1": "sxC154",
+    "2": "sxC155",
+    "3": "sxC156",
+    "4": "sxC157",
+    "5": "sxC158",
+    "6": "sxC159",
+    "7": "sxC160",
+    "8": "sxC161",
+    "9": "sxC162",
+    " ": "sxC149",
+    ",": "sxC150",
+    "-": "sxC151",
+    ".": "sxC152",
+    "A": "sxC163",
+    "B": "sxC164",
+    "C": "sxC165",
+    "D": "sxC166",
+    "E": "sxC167",
+    "F": "sxC168",
+    "G": "sxC169",
+    "H": "sxC170",
+    "I": "sxC171",
+    "J": "sxC172",
+    "K": "sxC173",
+    "L": "sxC174",
+    "M": "sxC175",
+    "N": "sxC176",
+    "O": "sxC177",
+    "P": "sxC178",
+    "Q": "sxC179",
+    "R": "sxC180",
+    "S": "sxC181",
+    "T": "sxC182",
+    "U": "sxC183",
+    "V": "sxC184",
+    "W": "sxC185",
+    "X": "sxC186",
+    "Y": "sxC187",
+    "Z": "sxC188",
+    "_": "sxC189",
 };
 
 /** key for a literal that comes straight out of scene.json */
 export const SCENE_TEXT: Readonly<Record<string, string>> = {
-    "+": "sxN194",
-    "-": "sxN195",
-    "2D": "sxN196",
-    "3D": "sxN197",
-    "<": "sxN198",
-    "< GROUPS": "sxN199",
-    "< PREV": "sxN200",
-    ">": "sxN201",
-    "ACTION": "sxN202",
-    "ALL": "sxN203",
-    "AMPLITUDE": "sxN204",
-    "Adds the track number to the queue.": "sxN205",
-    "BACK": "sxN206",
-    "CLEAR": "sxN207",
-    "CLOSE X": "sxN208",
-    "DELETE ALL": "sxN209",
-    "DONE": "sxN210",
-    "FAV": "sxN211",
-    "FAVOURITES": "sxN212",
-    "GROUP": "sxN213",
-    "GROUPS >": "sxN214",
-    "LAST CALL": "sxN215",
-    "LOOP": "sxN216",
-    "Loads in about 5 s. One at a time.": "sxN217",
-    "ME: only you. EVERYONE: all players.": "sxN218",
-    "MUSIC": "sxN219",
-    "Multiplier: 0 = silent, 1 = normal, 3 = triple volume.": "sxN220",
-    "NAME": "sxN221",
-    "NEXT >": "sxN222",
-    "ONE": "sxN223",
-    "PARAMS": "sxN224",
-    "PLAY re-sends the package params and VOLUME before the event, so what you hear matches the numbers.": "sxN225",
-    "PLAYER": "sxN226",
-    "PREFIXES": "sxN227",
-    "RADIO": "sxN228",
-    "RANGE m": "sxN229",
-    "SAVE TEMPLATE": "sxN230",
-    "SCALE": "sxN231",
-    "SFX / VFX SHOWCASE": "sxN232",
-    "SOUND": "sxN233",
-    "SPACE": "sxN234",
-    "STOP ALL": "sxN235",
-    "Saves to FAVOURITES.": "sxN236",
-    "The last call sent. The game cannot report what is playing.": "sxN237",
-    "UNDO": "sxN238",
-    "VISUAL": "sxN239",
-    "VOLUME": "sxN240",
-    "WORLD": "sxN241",
-    "amp": "sxN242",
-    "applies to the selected effect": "sxN243",
-    "armed": "sxN244",
-    "headBadge": "sxN245",
-    "hint": "sxN246",
-    "mtEvent": "sxN247",
-    "mtEventDesc": "sxN248",
-    "mtEventIdx": "sxN249",
-    "mtLast": "sxN250",
-    "mtLoadLabel": "sxN251",
-    "mtNextLabel": "sxN252",
-    "mtP0Desc": "sxN253",
-    "mtP0Label": "sxN254",
-    "mtP0Val": "sxN255",
-    "mtP1Desc": "sxN256",
-    "mtP1Label": "sxN257",
-    "mtP1Val": "sxN258",
-    "mtP2Desc": "sxN259",
-    "mtP2Label": "sxN260",
-    "mtP2Val": "sxN261",
-    "mtP3Desc": "sxN262",
-    "mtP3Label": "sxN263",
-    "mtP3Val": "sxN264",
-    "mtP4Desc": "sxN265",
-    "mtP4Label": "sxN266",
-    "mtP4Val": "sxN267",
-    "mtParamNote": "sxN268",
-    "mtPkg": "sxN269",
-    "mtPlayLabel": "sxN270",
-    "mtPrevLabel": "sxN271",
-    "mtQueueLabel": "sxN272",
-    "mtStopLabel": "sxN273",
-    "mtTargetLabel": "sxN274",
-    "mtTitle": "sxN275",
-    "mtVol": "sxN276",
-    "page": "sxN277",
-    "playLabel": "sxN278",
-    "railSummary": "sxN279",
-    "rng": "sxN280",
-    "scale": "sxN281",
-    "selLabel": "sxN282",
-    "selectLabel": "sxN283",
-    "spawned": "sxN284",
+    "+": "sxN190",
+    "-": "sxN191",
+    "2D": "sxN192",
+    "3D": "sxN193",
+    "<": "sxN194",
+    "< GROUPS": "sxN195",
+    "< PREV": "sxN196",
+    ">": "sxN197",
+    "ACTION": "sxN198",
+    "ALL": "sxN199",
+    "AMPLITUDE": "sxN200",
+    "Adds the track number to the queue.": "sxN201",
+    "BACK": "sxN202",
+    "CLEAR": "sxN203",
+    "CLOSE X": "sxN204",
+    "DELETE ALL": "sxN205",
+    "DONE": "sxN206",
+    "FAV": "sxN207",
+    "FAVOURITES": "sxN208",
+    "GROUP": "sxN209",
+    "GROUPS >": "sxN210",
+    "LAST CALL": "sxN211",
+    "LOOP": "sxN212",
+    "ME: only you. EVERYONE: all players.": "sxN213",
+    "MUSIC": "sxN214",
+    "Multiplier: 0 = silent, 1 = normal, 3 = triple volume.": "sxN215",
+    "NAME": "sxN216",
+    "NEXT >": "sxN217",
+    "ONE": "sxN218",
+    "PARAMS": "sxN219",
+    "PLAY re-sends the package params and VOLUME before the event, so what you hear matches the numbers.": "sxN220",
+    "PLAYER": "sxN221",
+    "PREFIXES": "sxN222",
+    "RADIO": "sxN223",
+    "RANGE m": "sxN224",
+    "SAVE TEMPLATE": "sxN225",
+    "SCALE": "sxN226",
+    "SFX / VFX SHOWCASE": "sxN227",
+    "SOUND": "sxN228",
+    "SPACE": "sxN229",
+    "STOP ALL": "sxN230",
+    "Saves to FAVOURITES.": "sxN231",
+    "The last call sent. The game cannot report what is playing.": "sxN232",
+    "UNDO": "sxN233",
+    "VISUAL": "sxN234",
+    "VOLUME": "sxN235",
+    "WORLD": "sxN236",
+    "amp": "sxN237",
+    "applies to the selected effect": "sxN238",
+    "armed": "sxN239",
+    "headBadge": "sxN240",
+    "hint": "sxN241",
+    "mtEvent": "sxN242",
+    "mtEventDesc": "sxN243",
+    "mtEventIdx": "sxN244",
+    "mtLast": "sxN245",
+    "mtNextLabel": "sxN246",
+    "mtP0Desc": "sxN247",
+    "mtP0Label": "sxN248",
+    "mtP0Val": "sxN249",
+    "mtP1Desc": "sxN250",
+    "mtP1Label": "sxN251",
+    "mtP1Val": "sxN252",
+    "mtP2Desc": "sxN253",
+    "mtP2Label": "sxN254",
+    "mtP2Val": "sxN255",
+    "mtP3Desc": "sxN256",
+    "mtP3Label": "sxN257",
+    "mtP3Val": "sxN258",
+    "mtP4Desc": "sxN259",
+    "mtP4Label": "sxN260",
+    "mtP4Val": "sxN261",
+    "mtParamNote": "sxN262",
+    "mtPkg": "sxN263",
+    "mtPlayLabel": "sxN264",
+    "mtPrevLabel": "sxN265",
+    "mtQueueLabel": "sxN266",
+    "mtStopLabel": "sxN267",
+    "mtTargetLabel": "sxN268",
+    "mtTitle": "sxN269",
+    "mtVol": "sxN270",
+    "page": "sxN271",
+    "playLabel": "sxN272",
+    "railSummary": "sxN273",
+    "rng": "sxN274",
+    "scale": "sxN275",
+    "selLabel": "sxN276",
+    "selectLabel": "sxN277",
+    "spawned": "sxN278",
 };
 
 export type StaticLabel = keyof typeof T;
@@ -14433,9 +14393,14 @@ const RADIO_BIOMES = [T.radioBiome0, T.radioBiome1, T.radioBiome2, T.radioBiome3
 
 // Tracks per station, numbered from 0. SDK docs (gameplay_logic.html,
 // QueueTrackNumber), "as of Season 3". Index = Radio_Channel; channel 4 is
-// per biome. Used to wrap the track number after QUEUE TRACK.
+// per biome. The track number stays below the selected station's count, and
+// wraps there after QUEUE TRACK.
 const RADIO_TRACKS = [17, 18, 10, 2, 0, 32, 15];
 const RADIO_BIOME_TRACKS = [18, 16, 16, 19, 18, 2, 18];
+
+function stationTracks(ch: number, biome: number): number | undefined {
+    return ch === 4 ? RADIO_BIOME_TRACKS[biome] : RADIO_TRACKS[ch];
+}
 
 /** The one package currently loaded. Music loading is global, so this is too. */
 let loaded: MusicPackageSpec | undefined;
@@ -14484,6 +14449,12 @@ export interface TesterState {
     templates: Template[];
     /** Number for the next template; never reused within a match. */
     nextTemplate: number;
+    /**
+     * The MUSIC package this player last pressed PLAY on and has not stopped, or
+     * "". Its params are sent live; any other package's only change the panel,
+     * because some params start music by themselves (Core_Urgency above 0).
+     */
+    playing: string;
 }
 
 export interface RadioPick {
@@ -14498,7 +14469,7 @@ export function newTesterState(): TesterState {
         values[p.amp.name] = p.amp.def;
         for (const x of p.params) values[x.name] = x.def;
     }
-    return { pkg: 0, evt: MUSIC_TAB.map(defaultEventIndex), values: values, last: undefined, toAll: false, queue: [], templates: [], nextTemplate: 1 };
+    return { pkg: 0, evt: MUSIC_TAB.map(defaultEventIndex), values: values, last: undefined, toAll: false, queue: [], templates: [], nextTemplate: 1, playing: "" };
 }
 
 /** Called once from OnGameModeStarted: the docs advise loading early. */
@@ -14541,8 +14512,13 @@ function load(st: TesterState, pkg: MusicPackageSpec, redraw: () => void): void 
     loadedAt = Date.now();
     st.last = mod.Message(TPL.mtCallLoad, pkg.key);
     log("music: LoadMusic(" + pkg.name + ")");
-    // Repaint when loading ends, so the button turns from LOADING to LOADED.
+    // Repaint when loading ends, so the track line drops its LOADING note.
     whenLoaded(redraw);
+}
+
+/** There is no LOAD button: whatever needs a package loads it first. */
+function ensureLoaded(st: TesterState, pkg: MusicPackageSpec, redraw: () => void): void {
+    if (loaded !== pkg) load(st, pkg, redraw);
 }
 
 function sendParam(player: mod.Player, st: TesterState, p: MusicParamSpec): void {
@@ -14561,12 +14537,33 @@ function sendEvent(player: mod.Player, st: TesterState, event: mod.MusicEvents, 
     log("music: PlayMusic(" + name + ") for=" + who(st) + " " + pkgNote);
 }
 
-function stepParam(player: mod.Player, st: TesterState, p: MusicParamSpec, dir: number): void {
+/** Highest value `p` may take now: the queue number stops at the station's last track. */
+function maxOf(st: TesterState, p: MusicParamSpec): number {
+    if (!p.queues) return p.max;
+    const n = stationTracks(radioChannel(st), radioBiome(st));
+    return n === undefined ? p.max : Math.min(p.max, n - 1);
+}
+
+/** Keeps the queue number inside the selected station after the station changes. */
+function clampQueueNumber(st: TesterState): void {
+    const q = queueParam(RADIO);
+    if (q !== undefined && st.values[q.name] > maxOf(st, q)) st.values[q.name] = maxOf(st, q);
+}
+
+/**
+ * A stepper press. The value always changes on the panel; it reaches the engine
+ * now only when that can be heard: a MUSIC package while its track plays, the
+ * radio while Radio is loaded. PLAY sends everything anyway.
+ */
+function stepParam(player: mod.Player, st: TesterState, pkg: MusicPackageSpec, p: MusicParamSpec, dir: number): void {
     const v = st.values[p.name] + dir * p.step;
-    st.values[p.name] = round2(Math.min(p.max, Math.max(p.min, v)));
+    st.values[p.name] = round2(Math.min(maxOf(st, p), Math.max(p.min, v)));
+    if (pkg === RADIO) clampQueueNumber(st);
     // Sending the queue param queues a track: the stepper only picks the number,
     // QUEUE TRACK sends it.
-    if (!p.queues) whenLoaded(() => sendParam(player, st, p));
+    if (p.queues || loaded !== pkg) return;
+    if (pkg !== RADIO && st.playing !== pkg.name) return;
+    whenLoaded(() => sendParam(player, st, p));
 }
 
 function queueParam(pkg: MusicPackageSpec): MusicParamSpec | undefined {
@@ -14609,8 +14606,19 @@ function noteQueued(st: TesterState, q: MusicParamSpec): void {
     const biome = radioBiome(st);
     const track = st.values[q.name];
     st.queue.push({ ch: ch, biome: biome, track: track });
-    const n = (ch === 4 ? RADIO_BIOME_TRACKS[biome] : RADIO_TRACKS[ch]) ?? q.max + 1;
-    st.values[q.name] = track + 1 < n ? Math.min(q.max, track + 1) : q.min;
+    st.values[q.name] = track + 1 <= maxOf(st, q) ? track + 1 : q.min;
+}
+
+/**
+ * QUEUE TRACK: the station on screen, then the number. The channel is sent first
+ * because it only applies to tracks queued after it, and one picked while Radio
+ * was not loaded may never have reached the engine.
+ */
+function sendQueue(player: mod.Player, st: TesterState, q: MusicParamSpec): void {
+    sendParam(player, st, paramNamed(RADIO, "Radio_Channel"));
+    sendParam(player, st, paramNamed(RADIO, "Radio_Biome"));
+    sendParam(player, st, q);
+    noteQueued(st, q);
 }
 
 function queueLine(st: TesterState): mod.Message {
@@ -14747,7 +14755,7 @@ export function applyTemplate(st: TesterState, t: Template): TesterTab {
 export function playTemplate(st: TesterState, player: mod.Player, t: Template, redraw: () => void): void {
     const tab = applyTemplate(st, t);
     const pkg = templatePkg(t);
-    if (loaded !== pkg) load(st, pkg, redraw);
+    ensureLoaded(st, pkg, redraw);
     whenLoaded(() => {
         if (t.kind === "radio") requeue(st, player, t);
         sendPlay(tab, st, player);
@@ -14788,12 +14796,16 @@ function paramNamed(pkg: MusicPackageSpec, name: string): MusicParamSpec {
     throw new Error("param missing from music.gen.ts: " + name);
 }
 
-/** STOP on a template row. Returns the package when it is not loaded (nothing is sent). */
-export function stopTemplate(st: TesterState, player: mod.Player, t: Template): MusicPackageSpec | undefined {
-    const pkg = templatePkg(t);
-    if (loaded !== pkg) return pkg;
+/** STOP on a template row: the same as STOP on its tab. */
+export function stopTemplate(st: TesterState, player: mod.Player, t: Template): void {
+    sendStop(st, player, templatePkg(t));
+}
+
+/** STOP. A package that is not loaded is not playing: nothing to send. */
+function sendStop(st: TesterState, player: mod.Player, pkg: MusicPackageSpec): void {
+    if (loaded !== pkg) return;
+    if (st.playing === pkg.name) st.playing = "";
     whenLoaded(() => sendEvent(player, st, pkg.stop, pkg.name + "_Stop", pkg.stopKey));
-    return undefined;
 }
 
 export function removeTemplate(st: TesterState, key: string): void {
@@ -14826,22 +14838,6 @@ export function templateExportLine(t: Template): string {
 }
 
 /**
- * The package `action` needs loaded, when it is not: PLAY and STOP, and on the
- * radio tab the queue buttons, which only drive the loaded package. undefined
- * when the click may go ahead. A package still loading counts as loaded: its
- * calls are held until it has had time to load (whenLoaded).
- */
-export function needsLoad(tab: TesterTab, st: TesterState, action: string): MusicPackageSpec | undefined {
-    const pkg = current(tab, st);
-    return loaded !== pkg && gated(tab, action) ? pkg : undefined;
-}
-
-function gated(tab: TesterTab, action: string): boolean {
-    if (action === "mtPlay" || action === "mtStop") return true;
-    return tab === "radio" && (action === "mtPrev" || action === "mtNext" || action === "mtQueue");
-}
-
-/**
  * What PLAY sends. Re-send everything first, so what plays always matches the
  * panel. The queue param is the exception: re-sending it would queue another track.
  */
@@ -14851,6 +14847,7 @@ function sendPlay(tab: TesterTab, st: TesterState, player: mod.Player): void {
     for (const p of pkg.params) if (!p.queues) sendParam(player, st, p);
     sendParam(player, st, pkg.amp);
     sendEvent(player, st, e.event, e.name, e.key);
+    st.playing = pkg.name;
 }
 
 /**
@@ -14867,10 +14864,6 @@ export function handleTesterAction(tab: TesterTab, st: TesterState, player: mod.
         st.pkg = (st.pkg + (action === "mtPkgNext" ? 1 : n - 1)) % n;
         return true;
     }
-    if (action === "mtLoad") {
-        load(st, pkg, redraw);
-        return true;
-    }
     if (action === "mtTarget") {
         st.toAll = !st.toAll;
         return true;
@@ -14878,9 +14871,9 @@ export function handleTesterAction(tab: TesterTab, st: TesterState, player: mod.
     if (action === "mtQueue") {
         const q = queueParam(pkg);
         if (q === undefined) return false;
+        ensureLoaded(st, pkg, redraw);
         whenLoaded(() => {
-            sendParam(player, st, q);
-            noteQueued(st, q);
+            sendQueue(player, st, q);
             redraw();
         });
         return true;
@@ -14888,6 +14881,10 @@ export function handleTesterAction(tab: TesterTab, st: TesterState, player: mod.
     if (action === "mtPrev" || action === "mtNext") {
         if (radio) {
             const e = action === "mtNext" ? RADIO_NEXT : RADIO_CLEAR;
+            // NEXT TRACK skips within what is playing: with Radio not loaded,
+            // nothing is. CLEAR QUEUE loads Radio, so the queue really is empty.
+            if (e === RADIO_NEXT && loaded !== pkg) return true;
+            ensureLoaded(st, pkg, redraw);
             whenLoaded(() => {
                 sendEvent(player, st, e.event, e.name, e.key);
                 if (e === RADIO_CLEAR) st.queue = [];
@@ -14900,6 +14897,7 @@ export function handleTesterAction(tab: TesterTab, st: TesterState, player: mod.
         return true;
     }
     if (action === "mtPlay") {
+        ensureLoaded(st, pkg, redraw);
         whenLoaded(() => {
             sendPlay(tab, st, player);
             redraw();
@@ -14907,14 +14905,12 @@ export function handleTesterAction(tab: TesterTab, st: TesterState, player: mod.
         return true;
     }
     if (action === "mtStop") {
-        whenLoaded(() => {
-            sendEvent(player, st, pkg.stop, pkg.name + "_Stop", pkg.stopKey);
-            redraw();
-        });
+        sendStop(st, player, pkg);
+        whenLoaded(redraw);
         return true;
     }
     if (action === "mtVolDown" || action === "mtVolUp") {
-        stepParam(player, st, pkg.amp, action === "mtVolUp" ? 1 : -1);
+        stepParam(player, st, pkg, pkg.amp, action === "mtVolUp" ? 1 : -1);
         return true;
     }
     // mtP<slot>Down / mtP<slot>Up
@@ -14923,7 +14919,7 @@ export function handleTesterAction(tab: TesterTab, st: TesterState, player: mod.
         const p = pkg.params[parseInt(m[1], 10)];
         // A hidden row cannot be clicked; reaching here means a stale widget.
         if (p === undefined) return false;
-        stepParam(player, st, p, m[2] === "Up" ? 1 : -1);
+        stepParam(player, st, pkg, p, m[2] === "Up" ? 1 : -1);
         return true;
     }
     return false;
@@ -14934,6 +14930,14 @@ function pickKey(keys: readonly string[], v: number): string {
     return k === undefined ? T.logEmpty : k;
 }
 
+/** The line under the radio params: the station on screen and its track numbers. */
+function radioNote(st: TesterState, ch: number, biome: number): mod.Message {
+    const q = queueParam(RADIO);
+    const last = q === undefined ? 0 : maxOf(st, q);
+    if (ch === 4) return mod.Message(TPL.mtRadioNoteBiome, pickKey(RADIO_BIOMES, biome), last);
+    return mod.Message(TPL.mtRadioNote, ch, pickKey(RADIO_CHANNELS, ch), last);
+}
+
 /** Field values for the tester nodes in scene.json (the `f` scope). */
 export function testerFields(tab: TesterTab, st: TesterState): Scope {
     const pkg = current(tab, st);
@@ -14941,35 +14945,27 @@ export function testerFields(tab: TesterTab, st: TesterState): Scope {
     const isLoaded = loaded === pkg;
     const evt = pkg.events[st.evt[st.pkg]];
     const q = queueParam(pkg);
-    const ch = st.values["Radio_Channel"] ?? 0;
-    const biome = st.values["Radio_Biome"] ?? 0;
+    const ch = radioChannel(st);
+    const biome = radioBiome(st);
+    const trackLine = !isLoaded ? TPL.mtTrackUnloaded : loading() ? TPL.mtTrackLoading : TPL.mtTrackOf;
     const f: Scope = {
         mtTitle: mod.Message(radio ? T.mtCardRadio : T.mtCardTrack),
         mtPkgArrows: radio ? "0" : "1",
         mtPkg: mod.Message(TPL.mtPackageOf, pkg.key),
         mtEvent: mod.Message(radio ? T.mtRadioLine : evt.key),
-        mtEventIdx: radio ? queueLine(st) : mod.Message(isLoaded ? TPL.mtTrackOf : TPL.mtTrackUnloaded, st.evt[st.pkg] + 1, pkg.events.length),
+        mtEventIdx: radio ? queueLine(st) : mod.Message(trackLine, st.evt[st.pkg] + 1, pkg.events.length),
         mtEventDesc: mod.Message(radio ? (queueIsStale(st) ? T.mtQueueStale : T.mtRadioHelp) : evt.desc),
         mtPrevLabel: mod.Message(radio ? T.mtClearQueue : T.mtPrev),
         mtPlayLabel: mod.Message(T.mtPlay),
         mtStopLabel: mod.Message(T.mtStop),
         mtNextLabel: mod.Message(radio ? T.mtNextTrack : T.mtNext),
-        mtParamNote: radio ? mod.Message(TPL.mtRadioNote, ch, pickKey(RADIO_CHANNELS, ch), pickKey(RADIO_BIOMES, biome)) : mod.Message(pkg.params.length === 0 ? T.mtNoParams : T.mtNoteParams),
+        mtParamNote: radio ? radioNote(st, ch, biome) : mod.Message(pkg.params.length === 0 ? T.mtNoParams : T.mtNoteParams),
         mtVol: mod.Message(TPL.num1, st.values[pkg.amp.name]),
         mtLast: st.last ?? mod.Message(T.mtNothingSent),
-        mtLoadLabel: mod.Message(isLoaded ? (loading() ? TPL.mtLoadingOf : TPL.mtLoadedOf) : TPL.mtLoadOf, pkg.key),
-        mtLoadBg: isLoaded ? PALETTE.green : PALETTE.amber,
         mtTargetLabel: mod.Message(st.toAll ? T.mtTargetAll : T.mtTargetMe),
         mtTargetBg: st.toAll ? PALETTE.hot : PALETTE.row,
         mtQueueOn: q === undefined ? "0" : "1",
         mtQueueLabel: q === undefined ? mod.Message(T.logEmpty) : mod.Message(TPL.mtQueueOf, st.values[q.name]),
-        // Greyed out while the package on screen is not loaded (see needsLoad).
-        mtPlayBg: isLoaded ? PALETTE.green : PALETTE.line,
-        mtStopBg: isLoaded ? PALETTE.redDim : PALETTE.line,
-        mtSkipBg: radio && !isLoaded ? PALETTE.line : PALETTE.row,
-        mtQueueBg: isLoaded ? PALETTE.violet : PALETTE.line,
-        mtGateInk: isLoaded ? "#FFFFFF" : PALETTE.faint,
-        mtSkipInk: radio && !isLoaded ? PALETTE.faint : "#FFFFFF",
     };
     for (let i = 0; i < PARAM_SLOTS; i++) {
         const p = pkg.params[i];
@@ -15526,7 +15522,6 @@ export const UI_SOUND = {
     off: mod.RuntimeSpawn_Common.SFX_UI_MenuNavigation_Default_ToggleOff_OneShot2D,
     open: mod.RuntimeSpawn_Common.SFX_UI_Submenu_Open_2D,
     close: mod.RuntimeSpawn_Common.SFX_UI_Submenu_Close_2D,
-    denied: mod.RuntimeSpawn_Common.SFX_UI_MenuNavigation_WeaponAttachment_NoPoints_OneShot2D,
 } as const;
 
 export function playUiSound(player: mod.Player, asset: mod.RuntimeSpawn_Common): void {
@@ -15763,23 +15758,13 @@ function handle(st: PlayerState, action: string): void {
             `dim=${ui.fDim} kind=${ui.fKind} vfx=${ui.fVfx} amp=${ui.amp} rng=${ui.rng} scale=${ui.scale}`
     );
 
-    // SAVE TEMPLATE: the tab's setup into FAVOURITES. Never greyed out -- saving
-    // sends nothing to the engine, so the package does not need to be loaded.
+    // SAVE TEMPLATE: the tab's setup into FAVOURITES. The sound is the only
+    // feedback: no notification (asked for on 2026-10-01).
     if (action === "mtSave" && isTesterTab(ui.tab)) {
         const r = saveTemplate(ui.tab, ui.tester);
         if (r.added) ui.favourites.push(templateKey(r.tpl));
         playUiSound(ui.player, UI_SOUND.on);
-        mod.DisplayNotificationMessage(mod.Message(r.added ? TPL.tplSaved : TPL.tplExists, templateKindKey(r.tpl), r.tpl.n), ui.player);
         defer(st);
-        return;
-    }
-    // MUSIC / RADIO buttons that need their package loaded are greyed out until
-    // it is; a click on one sends nothing and says what to load.
-    const unloaded = isTesterTab(ui.tab) && action.slice(0, 2) === "mt" ? needsLoad(ui.tab, ui.tester, action) : undefined;
-    if (unloaded !== undefined) {
-        playUiSound(ui.player, UI_SOUND.denied);
-        mod.DisplayNotificationMessage(mod.Message(TPL.mtLoadFirst, unloaded.key, unloaded.key), ui.player);
-        log(`music: ${action} ignored, ${unloaded.name} is not loaded`);
         return;
     }
     const sound = clickSound(action);
@@ -16005,11 +15990,7 @@ function handle(st: PlayerState, action: string): void {
                 return;
             }
             if (tag === "stop") {
-                const unloaded = stopTemplate(ui.tester, ui.player, t);
-                if (unloaded !== undefined) {
-                    playUiSound(ui.player, UI_SOUND.denied);
-                    mod.DisplayNotificationMessage(mod.Message(TPL.mtLoadFirst, unloaded.key, unloaded.key), ui.player);
-                }
+                stopTemplate(ui.tester, ui.player, t);
                 defer(st);
                 return;
             }

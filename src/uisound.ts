@@ -17,7 +17,6 @@ export const UI_SOUND = {
     off: mod.RuntimeSpawn_Common.SFX_UI_MenuNavigation_Default_ToggleOff_OneShot2D,
     open: mod.RuntimeSpawn_Common.SFX_UI_Submenu_Open_2D,
     close: mod.RuntimeSpawn_Common.SFX_UI_Submenu_Close_2D,
-    denied: mod.RuntimeSpawn_Common.SFX_UI_MenuNavigation_WeaponAttachment_NoPoints_OneShot2D,
 } as const;
 
 export function playUiSound(player: mod.Player, asset: mod.RuntimeSpawn_Common): void {

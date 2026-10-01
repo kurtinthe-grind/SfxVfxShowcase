@@ -181,21 +181,12 @@ function testerSample(tab) {
     mtParamNote: LABEL.mtNoteParams,
     mtVol: radio ? "1" : "1.3",
     mtLast: radio ? "SetMusicParam(Radio_ContinueQueueOnTrackEnd, 1)" : "PlayMusic(Core_PhaseEnded)",
-    mtLoadLabel: radio ? "LOAD RADIO" : "CORE LOADED",
-    mtLoadBg: radio ? P.amber : P.green,
     mtTargetLabel: "FOR: ME",
     mtTargetBg: P.row,
     mtQueueOn: radio ? "1" : "0",
     mtQueueLabel: "QUEUE TRACK 2",
-    // The radio view shows RADIO not loaded, so its transport is greyed out.
-    mtPlayBg: radio ? P.line : P.green,
-    mtStopBg: radio ? P.line : P.redDim,
-    mtSkipBg: radio ? P.line : P.row,
-    mtQueueBg: radio ? P.line : P.violet,
-    mtGateInk: radio ? P.faint : "#FFFFFF",
-    mtSkipInk: radio ? P.faint : "#FFFFFF",
   };
-  if (radio) f.mtParamNote = "CHANNEL 3 = Reggaeton    BIOME = Gibraltar (channel 4 only)";
+  if (radio) f.mtParamNote = "CHANNEL 3 = Reggaeton    TRACKS 0 to 1";
   for (let i = 0; i < 5; i++) {
     const r = rows[i];
     f["mtP" + i + "On"] = r === undefined ? "0" : "1";

@@ -124,10 +124,10 @@ const STATIC = {
     mtNextTrack: "NEXT TRACK",
     mtRadioLine: "RADIO STATION",
     mtNothingSent: "nothing sent yet",
-    mtNoteParams: "Each change is sent as soon as you press - or +, and again on PLAY.",
+    mtNoteParams: "Changes are sent live while the track plays. PLAY sends them all first.",
     mtNoParams: "No params in this package besides VOLUME.",
-    hintMusic: "LOAD the package first, then pick a track and PLAY. Params and VOLUME apply live; PLAY re-sends them first.",
-    hintRadio: "LOAD RADIO, pick a channel, pick a track number and QUEUE TRACK it, then PLAY. The queue starts empty.",
+    hintMusic: "Pick a package and a track, set the params, then PLAY. PLAY loads the package first when needed (about 5 s).",
+    hintRadio: "Pick a channel and a track number, QUEUE TRACK it, then PLAY. The first QUEUE TRACK loads the radio (about 5 s).",
     mtTargetMe: "FOR: ME",
     mtTargetAll: "FOR: EVERYONE",
     // Under the radio transport, where the MUSIC tab shows the track description.
@@ -206,20 +206,16 @@ const TEMPLATES = {
     mtCallPlay: "PlayMusic({})",
     mtCallParam: "SetMusicParam({}, {})",
     mtCallLoad: "LoadMusic({})",
-    mtLoadOf: "LOAD {}",
-    mtLoadedOf: "{} LOADED",
-    mtLoadingOf: "LOADING {}...",
     mtQueueOf: "QUEUE TRACK {}",
-    mtTrackUnloaded: "TRACK {} / {}  -  NOT LOADED, press LOAD",
-    mtRadioNote: "CHANNEL {} = {}    BIOME = {} (channel 4 only)",
-    // Notification for a greyed-out button: package, package.
-    mtLoadFirst: "{} is not loaded. Press LOAD {} first.",
-    // Template rows' second line, and the SAVE TEMPLATE notifications.
+    mtTrackUnloaded: "TRACK {} / {}  -  PLAY loads this package",
+    mtTrackLoading: "TRACK {} / {}  -  LOADING...",
+    // channel, station, last track number of that station.
+    mtRadioNote: "CHANNEL {} = {}    TRACKS 0 to {}",
+    // biome, last track number (channel 4 plays by biome).
+    mtRadioNoteBiome: "CHANNEL 4 = {} (by biome)    TRACKS 0 to {}",
+    // Template rows' second line.
     tplMusicOf: "MUSIC TEMPLATE {}",
     tplRadioOf: "RADIO TEMPLATE {} - {} tracks",
-    // kind (MUSIC / RADIO), number.
-    tplSaved: "Saved as {} TEMPLATE {}",
-    tplExists: "Already saved as {} TEMPLATE {}",
     // count, station, track number of the last track queued.
     mtQueueCount: "QUEUE: {} track(s). Last added: {} #{}",
 };

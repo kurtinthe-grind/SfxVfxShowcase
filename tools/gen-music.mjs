@@ -106,7 +106,7 @@ const DESC = {
     Radio_Channel: "Station: 0 Hip Hop, 1 Rock, 2 BF Themes, 3 Reggaeton, 4 by biome, 5 Classical, 6 Pop.",
     Radio_ContinueQueueOnTrackEnd: "1 = play the next queued track when one ends. 0 = stop after each track.",
     Radio_LoopQueuedTracks: "1 = start the queue over after the last track. 0 = stop at the end.",
-    Radio_QueueTrackNumber: "Track to add, from 0. QUEUE TRACK adds it, then moves on to the next track.",
+    Radio_QueueTrackNumber: "Track to add, from 0 up to the station's last (below). QUEUE TRACK adds it, then moves on.",
 };
 
 // "0 is silent, 1 is the full default volume ... clamped from 0 to 3"

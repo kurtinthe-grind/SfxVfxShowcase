@@ -4,23 +4,30 @@
 // calls that reach the engine. The engine cannot be asked what is playing, so
 // the calls ARE the behaviour:
 //
-//   - only Core is loaded at start, and LOAD switches packages exclusively
-//     (official modes load exactly one package; loading all four at once
-//     played nothing in game on 2026-10-01);
+//   - only Core is loaded at start. There is no LOAD button: PLAY (and on the
+//     radio QUEUE TRACK and CLEAR QUEUE) loads the package when another one is
+//     loaded, exclusively (official modes load exactly one package; loading all
+//     four at once played nothing in game on 2026-10-01), and holds the calls
+//     until it has loaded;
 //   - PlayMusic / SetMusicParam target the clicking player, or everyone when
 //     the target toggle says so (the global overloads);
 //   - every music call is written to the log, so a silent run is diagnosable;
 //   - PLAY re-sends the package's params and volume, then the event;
-//   - steppers send immediately and clamp to the range;
-//   - STOP sends the package's own stop event;
+//   - steppers clamp to the range. A MUSIC param is sent live only while its
+//     track is playing (PLAY until STOP): Core_Urgency above 0 starts music by
+//     itself, and in game on 2026-10-01 music started without PLAY. RADIO
+//     params are sent live while Radio is loaded;
+//   - STOP sends the package's own stop event, and nothing when that package
+//     is not loaded;
 //   - the radio transport maps to the four Radio_* events, and the queue param
-//     is only sent by QUEUE TRACK (sending it queues a track);
-//   - QUEUE TRACK then moves the number on, wrapping at the station's last
-//     track, and the panel shows what was queued since the last CLEAR QUEUE,
-//     with a hint when the selected station is not the queued one;
+//     is only sent by QUEUE TRACK (sending it queues a track), after the
+//     channel and biome, so the track comes from the station on screen;
+//   - the track number stays within the selected station's tracks, and QUEUE
+//     TRACK then moves it on, wrapping at the station's last track; the panel
+//     shows what was queued since the last CLEAR QUEUE, with a hint when the
+//     selected station is not the queued one;
 //   - the selected track and every visible param show their description;
-//   - PLAY / STOP (and the radio's queue buttons) send nothing while their
-//     package is not loaded: a notification says to LOAD it;
+//   - no notifications: not for loading, not for saving a template;
 //   - buttons click with the game's own menu sounds, played to the clicking
 //     player only, except PLAY, which must not cover what is being tested.
 
@@ -202,8 +209,14 @@ try {
     await step("stop", () => s.clickId("mtStop"));
     expect("stop", ["PlayMusic(MusicEvents.Core_Stop, player)"]);
 
+    // Stopped: the steppers only change the panel. Core_Urgency above 0 would
+    // start tension music by itself.
+    await step("urgency up stopped", () => s.clickId("mtP3Up"));
+    expect("urgency up stopped", []);
+    await step("urgency down stopped", () => s.clickId("mtP3Down"));
+    expect("urgency down stopped", []);
     await step("volume up", () => s.clickId("mtVolUp"));
-    expect("volume up", ["SetMusicParam(MusicParams.Core_Amplitude, 1.1, player)"]);
+    expect("volume up", []);
 
     // EVERYONE: the same PLAY through the global overloads.
     await step("target all", () => s.clickId("mtTarget"));
@@ -223,29 +236,27 @@ try {
     expect("package next", []);
     shows("package next", "mtEventDesc", () => descOf("BR_InsertionJump"));
     showsParams("package next", ["BRGauntlet_LobbyTimerRemaining"]);
-    // BR is on screen but Core is loaded: PLAY and STOP are greyed out and send
-    // nothing; a notification says to load BR.
-    await step("play br unloaded", () => s.clickId("mtPlay"));
-    expect("play br unloaded", []);
-    expectSounds("play br unloaded", ["MenuNavigation_WeaponAttachment_NoPoints"]);
-    if (notified("play br unloaded").join() !== labelKey("mtLoadFirst")) problems.push(`play br unloaded: notifications ${JSON.stringify(notified("play br unloaded"))}, expected one mtLoadFirst`);
+    // There is no LOAD button.
+    check("package next", !JSON.parse(readFileSync(resolve(ROOT, "src", "scene.json"), "utf8")).screen.some((n) => n.id === "mtLoad"), "scene.json still has a LOAD button (mtLoad)");
+    // BR is on screen but Core is loaded: STOP has nothing to stop.
     await step("stop br unloaded", () => s.clickId("mtStop"));
     expect("stop br unloaded", []);
-    if (notified("stop br unloaded").length !== 1) problems.push("stop br unloaded: expected one notification");
-    await step("load br", () => s.clickId("mtLoad"));
-    expect("load br", ["UnloadMusic(MusicPackages.Core)", "LoadMusic(MusicPackages.BR)"]);
-    // LOAD on a package that is already loaded must not reload it.
-    await step("load br again", () => s.clickId("mtLoad"));
-    expect("load br again", []);
-    // PLAY while BR is still loading is held, then sent once it has had time.
+    check("stop br unloaded", notified("stop br unloaded").length === 0, "a notification was shown");
+    // PLAY loads BR (unloading Core), holds, then sends once it has had time.
     await step("play br early", () => s.clickId("mtPlay"));
-    expect("play br early", []);
+    expect("play br early", ["UnloadMusic(MusicPackages.Core)", "LoadMusic(MusicPackages.BR)"]);
+    check("play br early", notified("play br early").length === 0, "a notification was shown");
+    // A second PLAY while BR loads does not reload it.
+    await step("play br again", () => s.clickId("mtPlay"));
+    expect("play br again", []);
     await wait("play br", LOAD_MS + 600);
-    expect("play br", [
+    const brPlay = [
         "SetMusicParam(MusicParams.BRGauntlet_LobbyTimerRemaining, 10, player)",
         "SetMusicParam(MusicParams.BR_Amplitude, 1, player)",
         "PlayMusic(MusicEvents.BR_InsertionJump, player)",
-    ]);
+    ];
+    // Both PLAYs, in click order.
+    expect("play br", [...brPlay, ...brPlay]);
 
     await step("tab radio", () => s.click("RADIO"));
     expect("tab radio", []);
@@ -254,24 +265,25 @@ try {
     showsParams("tab radio", ["Radio_Biome", "Radio_Channel", "Radio_ContinueQueueOnTrackEnd", "Radio_LoopQueuedTracks", "Radio_QueueTrackNumber"]);
     // The engine cannot be asked what is queued, so the panel counts it.
     shows("tab radio", "mtEventIdx", () => labelKey("mtQueueEmpty"));
-    // Radio is not loaded yet: the queue buttons send nothing either.
-    await step("queue radio unloaded", () => s.clickId("mtQueue"));
-    expect("queue radio unloaded", []);
-    if (notified("queue radio unloaded").length !== 1) problems.push("queue radio unloaded: expected one notification");
+    // Radio is not loaded yet: NEXT TRACK has nothing to skip.
     await step("next radio unloaded", () => s.clickId("mtNext"));
     expect("next radio unloaded", []);
-    await step("load radio", () => s.clickId("mtLoad"));
-    expect("load radio", ["UnloadMusic(MusicPackages.BR)", "LoadMusic(MusicPackages.Radio)"]);
     // Radio_QueueTrackNumber is row 4. Stepping it must NOT send: sending queues.
     await step("queue number up", () => s.clickId("mtP4Up"));
     expect("queue number up", []);
+    // QUEUE TRACK loads Radio (unloading BR) and holds the queue call.
     await step("queue", () => s.clickId("mtQueue"));
-    expect("queue", []);
+    expect("queue", ["UnloadMusic(MusicPackages.BR)", "LoadMusic(MusicPackages.Radio)"]);
+    check("queue", notified("queue").length === 0, "a notification was shown");
     await step("radio play early", () => s.clickId("mtPlay"));
     expect("radio play early", []);
-    // Both held calls go out in click order once Radio has loaded.
+    // Both held calls go out in click order once Radio has loaded. QUEUE TRACK
+    // sends the station first: a channel set while Radio was not loaded may not
+    // have reached the engine.
     await wait("radio play", LOAD_MS + 600);
     expect("radio play", [
+        "SetMusicParam(MusicParams.Radio_Channel, 2, player)",
+        "SetMusicParam(MusicParams.Radio_Biome, 0, player)",
         "SetMusicParam(MusicParams.Radio_QueueTrackNumber, 1, player)",
         "SetMusicParam(MusicParams.Radio_Biome, 0, player)",
         "SetMusicParam(MusicParams.Radio_Channel, 2, player)",
@@ -284,7 +296,7 @@ try {
     // on to 2, so QUEUE TRACK again queues a different song.
     showsMsg("radio play", "mtEventIdx", () => [labelKey("mtQueueCount"), 1, labelKey("radioCh2"), 1]);
     await step("queue again", () => s.clickId("mtQueue"));
-    expect("queue again", ["SetMusicParam(MusicParams.Radio_QueueTrackNumber, 2, player)"]);
+    expect("queue again", ["SetMusicParam(MusicParams.Radio_Channel, 2, player)", "SetMusicParam(MusicParams.Radio_Biome, 0, player)", "SetMusicParam(MusicParams.Radio_QueueTrackNumber, 2, player)"]);
     showsMsg("queue again", "mtEventIdx", () => [labelKey("mtQueueCount"), 2, labelKey("radioCh2"), 2]);
     await step("radio next", () => s.clickId("mtNext"));
     expect("radio next", ["PlayMusic(MusicEvents.Radio_NextQueuedTrack, player)"]);
@@ -298,15 +310,16 @@ try {
     expect("radio clear", ["PlayMusic(MusicEvents.Radio_ClearQueue, player)"]);
     shows("radio clear", "mtEventIdx", () => labelKey("mtQueueEmpty"));
     shows("radio clear", "mtEventDesc", () => labelKey("mtRadioHelp"));
-    // Channel 3 (Reggaeton) has 2 tracks, 0 and 1: after queueing 1 the number
-    // wraps to 0.
-    await step("queue number down", () => s.clickId("mtP4Down"));
-    await step("queue number down", () => s.clickId("mtP4Down"));
-    expect("queue number down", []);
+    // Channel 3 (Reggaeton) has 2 tracks, 0 and 1. The number was 3 (BF Themes
+    // has 10): switching to channel 3 brought it down to 1, and + stays there.
+    await step("queue number up at max", () => s.clickId("mtP4Up"));
+    expect("queue number up at max", []);
+    const reggaeton = (n) => ["SetMusicParam(MusicParams.Radio_Channel, 3, player)", "SetMusicParam(MusicParams.Radio_Biome, 0, player)", `SetMusicParam(MusicParams.Radio_QueueTrackNumber, ${n}, player)`];
     await step("queue last", () => s.clickId("mtQueue"));
-    expect("queue last", ["SetMusicParam(MusicParams.Radio_QueueTrackNumber, 1, player)"]);
+    expect("queue last", reggaeton(1));
+    // After the last track the number wraps to 0.
     await step("queue wraps", () => s.clickId("mtQueue"));
-    expect("queue wraps", ["SetMusicParam(MusicParams.Radio_QueueTrackNumber, 0, player)"]);
+    expect("queue wraps", reggaeton(0));
     showsMsg("queue wraps", "mtEventIdx", () => [labelKey("mtQueueCount"), 2, labelKey("radioCh3"), 0]);
     await step("radio stop", () => s.clickId("mtStop"));
     expect("radio stop", ["PlayMusic(MusicEvents.Radio_Stop, player)"]);
@@ -316,15 +329,15 @@ try {
     await step("save radio", () => s.clickId("mtSave"));
     expect("save radio", []);
     expectSounds("save radio", ["MenuNavigation_Default_ToggleOn"]);
-    check("save radio", notified("save radio").join() === labelKey("tplSaved"), `notifications ${JSON.stringify(notified("save radio"))}`);
-    // The same setup again adds nothing and names the existing template.
+    check("save radio", notified("save radio").length === 0, `notifications ${JSON.stringify(notified("save radio"))}`);
+    // The same setup again adds nothing (checked on the FAVOURITES tab below).
     await step("save radio again", () => s.clickId("mtSave"));
-    check("save radio again", notified("save radio again").join() === labelKey("tplExists"), `notifications ${JSON.stringify(notified("save radio again"))}`);
+    check("save radio again", notified("save radio again").length === 0, `notifications ${JSON.stringify(notified("save radio again"))}`);
 
     // MUSIC still shows BR / BR_InsertionJump, lobby timer 10, volume 1.
     await step("tab music again", () => s.click("MUSIC"));
     await step("save music", () => s.clickId("mtSave"));
-    check("save music", notified("save music").join() === labelKey("tplSaved"), "expected one tplSaved");
+    check("save music", notified("save music").length === 0, "a notification was shown");
 
     await step("tab fav", () => s.click("FAVOURITES"));
     const radioRows = rowsWith(labelKey("tplRadioOf"));
@@ -376,10 +389,10 @@ try {
         "PlayMusic(MusicEvents.BR_InsertionJump, player)",
     ]);
 
-    // STOP on the radio template while BR is loaded: nothing sent, notification.
+    // STOP on the radio template while BR is loaded: nothing to stop, nothing shown.
     await step("stop radio tpl unloaded", () => s.clickText(labelKey("stop"), 0));
     expect("stop radio tpl unloaded", []);
-    check("stop radio tpl unloaded", notified("stop radio tpl unloaded").join() === labelKey("mtLoadFirst"), "expected one mtLoadFirst");
+    check("stop radio tpl unloaded", notified("stop radio tpl unloaded").length === 0, "a notification was shown");
 
     // P on the radio template: load Radio, then clear, re-queue, settings, play.
     await step("play radio tpl", () => s.clickText(labelKey("play"), 0));
@@ -412,9 +425,9 @@ try {
     await step("tab radio mix", () => s.click("RADIO"));
     await step("channel down", () => s.clickId("mtP1Down"));
     await step("queue mixed", () => s.clickId("mtQueue"));
-    expect("queue mixed", ["SetMusicParam(MusicParams.Radio_QueueTrackNumber, 1, player)"]);
+    expect("queue mixed", ["SetMusicParam(MusicParams.Radio_Channel, 2, player)", "SetMusicParam(MusicParams.Radio_Biome, 0, player)", "SetMusicParam(MusicParams.Radio_QueueTrackNumber, 1, player)"]);
     await step("save mixed", () => s.clickId("mtSave"));
-    check("save mixed", notified("save mixed").join() === labelKey("tplSaved"), "expected tplSaved");
+    check("save mixed", notified("save mixed").length === 0, "a notification was shown");
 
     await step("tab fav export", () => s.click("FAVOURITES"));
     await step("export", () => s.clickText(labelKey("exportFavs")));
@@ -431,6 +444,15 @@ try {
     await step("tab fav export 2", () => s.click("FAVOURITES"));
     await step("export 2", () => s.clickText(labelKey("exportFavs")));
     check("export 2", s.logs.some((x) => x.endsWith("MUSIC TEMPLATE 4 | Gauntlet | Gauntlet_Deploy | no params | volume 1")), "missing Gauntlet export line");
+
+    // Channel 4 plays by biome, and the biome sets the track count: biome 5 has
+    // 2 tracks, so the number (2 after the mixed queue) comes down to 1.
+    await step("tab radio biome", () => s.click("RADIO"));
+    await step("channel 4", () => s.clickId("mtP1Up"));
+    await step("channel 4", () => s.clickId("mtP1Up"));
+    for (let i = 0; i < 5; i++) await step("biome 5", () => s.clickId("mtP0Up"));
+    await step("queue biome", () => s.clickId("mtQueue"));
+    expect("queue biome", ["SetMusicParam(MusicParams.Radio_Channel, 4, player)", "SetMusicParam(MusicParams.Radio_Biome, 5, player)", "SetMusicParam(MusicParams.Radio_QueueTrackNumber, 1, player)"]);
 
     // Back on a browser tab the tester must be gone and the browser back.
     await step("tab sound", () => s.click("SOUND"));
@@ -462,4 +484,4 @@ if (problems.length > 0) {
     for (const p of problems) console.error("    - " + p);
     process.exit(1);
 }
-console.log("  tester  : Core loaded at start, calls held until loaded, LOAD switches exclusively, ME/EVERYONE overloads, PLAY re-sends params, clamping, stop, radio queue + transport, queue read-out and auto-advance, greyed until loaded, UI sounds, every call logged");
+console.log("  tester  : Core loaded at start, PLAY / QUEUE TRACK load the package exclusively and hold, music params live only while playing, ME/EVERYONE overloads, PLAY re-sends params, clamping, track number within the station, stop, radio queue + transport, queue read-out and auto-advance, no notifications, UI sounds, every call logged");

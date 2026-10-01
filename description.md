@@ -74,7 +74,9 @@ For player-wide effects (gas mask, night vision, saturated, stealth) the PLAY bu
 
 Down the left: `ALL`, then the groups for the current tab, paged 18 rows at a time with `< GROUPS` / `GROUPS >` buttons. 61 groups of sounds and 52 of effects both fit comfortably across four pages.
 
-`ALL` is a label, not a button — it's the absence of a filter, and the menu already starts there.
+`ALL` is a button too: it clears the group you picked and shows everything again.
+
+A few group and asset names are spelled differently on screen because the game masks those words with `#`: the `MF` group shows as `MuzzleFlash`, `MF` in a name as `MFX`, and `Smoke` as `SmokeFX`. The asset names you export are unchanged.
 
 The rail header shows live counts, like `202 / 936 MATCH`, so you can see a search narrow the list before you commit to it.
 
@@ -231,20 +233,20 @@ Two tester tabs for Portal's music system.
 
 `FOR: ME` (the default) plays everything for you only, so testing never blares music at the rest of the lobby. `FOR: EVERYONE` uses the global calls instead.
 
-Only Core is loaded when the mode starts. `LOAD` switches to the package on screen and unloads the previous one; the button reads `LOADING...` for 5 seconds, and anything you press meanwhile is sent once loading is done.
-
-While the package on screen is not loaded, `PLAY` and `STOP` (and on RADIO also `CLEAR QUEUE`, `NEXT TRACK` and `QUEUE TRACK`) are greyed out. Pressing one sends nothing and shows a notification telling you which package to load.
+Only Core is loaded when the mode starts. There is no LOAD button: `PLAY` loads the package on screen when another one is loaded (and on RADIO, so do `QUEUE TRACK` and `CLEAR QUEUE`). Only one package is loaded at a time. Loading takes about 5 seconds; the track line says `LOADING...`, and anything you press meanwhile is sent once loading is done. `STOP` on a package that is not loaded does nothing, because it is not playing.
 
 **MUSIC**
 - `<` / `>` picks the package: CORE, BR or GAUNTLET.
 - `|<` / `>|` steps through that package's events, and `PLAY` plays the selected one. `STOP` sends the package's own stop event.
-- **PARAMS** lists the package's parameters (for example `Core_IsWinning`, `Core_Sector` and `Core_Urgency`), each with `-` / `+`. A change is sent immediately.
+- **PARAMS** lists the package's parameters (for example `Core_IsWinning`, `Core_Sector` and `Core_Urgency`), each with `-` / `+`. While the track plays (after `PLAY`, until `STOP`) a change is sent at once. Otherwise it only changes the panel: some params start music by themselves (`Core_Urgency` above 0 starts tension music), and music should only start on `PLAY`.
 - **VOLUME** is the package's amplitude.
 - `PLAY` re-sends every param and the volume before the event, so what you hear always matches the numbers on screen.
 
 **RADIO**
 - The radio queue starts empty, and `PLAY` on an empty queue plays nothing. Pick a channel, choose a track number, press `QUEUE TRACK`, then `PLAY`.
 - `CLEAR QUEUE`, `PLAY`, `STOP` and `NEXT TRACK` send the four `Radio_*` events.
+- The track number only goes up to the selected station's last track (the line under PARAMS shows the range, for example `TRACKS 0 to 9` for BF Themes). Channel 4 plays by biome, and the biome sets the range. Changing the station brings the number back inside its range.
+- `QUEUE TRACK` sends the channel and biome, then the track number, so the track always comes from the station on screen.
 - After `QUEUE TRACK` the track number moves on by one, so pressing it again queues the next song. Under RADIO STATION the panel shows how many tracks you have queued since the last `CLEAR QUEUE`, and the last one added.
 - The channel only applies to tracks queued after you set it. To switch stations, press `CLEAR QUEUE`, set the channel, then queue new tracks. The panel says so if the channel changes while tracks are queued.
 - **PARAMS** covers channel, biome, queue track number, loop queue, and continue on track end. Biome only matters on channel 4.

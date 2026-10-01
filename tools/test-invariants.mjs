@@ -146,7 +146,8 @@ const CASES = [
         name: "the shortlist is unreachable",
         file: IDX,
         original: idxOriginal,
-        broken: idxOriginal.replace('action === "tabFav"', 'action === "tabFavXX"'),
+        // Every copy: the tab handler tests the name twice.
+        broken: idxOriginal.split('action === "tabFav"').join('action === "tabFavXX"'),
         expect: /does not handle tabFav/,
     },
     {
