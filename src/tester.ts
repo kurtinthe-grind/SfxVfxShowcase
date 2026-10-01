@@ -68,10 +68,6 @@ function defaultEventIndex(p: MusicPackageSpec): number {
     return 0;
 }
 
-/** The smoke test's event: CustomConquest's exact call after LoadMusic(Core). */
-const SMOKE_EVENT = MUSIC_TAB[0].events[defaultEventIndex(MUSIC_TAB[0])];
-let smokeDone = false;
-
 function radioEvent(name: string): MusicEventSpec {
     for (const e of RADIO.events) if (e.name === name) return e;
     throw new Error("radio event missing from music.gen.ts: " + name);
@@ -145,22 +141,6 @@ export function loadStartupMusic(): void {
     log("music: LoadMusic(" + STARTUP.name + ") at game-mode start");
     mod.SetMusicParam(STARTUP.amp.param, STARTUP.amp.def);
     log("music: SetMusicParam(" + STARTUP.amp.name + ", " + STARTUP.amp.def + ") for=everyone at game-mode start");
-}
-
-/**
- * Music smoke test, run on the first deploy only: PlayMusic(Core_LastPhaseBegin)
- * to everyone, the exact call CustomConquest makes after LoadMusic(Core). If this
- * is silent too, music is silent on this map (Portal Sandbox plays none), not
- * because of anything the tester panel does.
- */
-export function musicSmokeTest(): void {
-    if (smokeDone) return;
-    smokeDone = true;
-    whenLoaded(() => {
-        mod.PlayMusic(SMOKE_EVENT.event);
-        const pkgNote = loaded === undefined ? "nothing loaded" : "loaded=" + loaded.name;
-        log("music: PlayMusic(" + SMOKE_EVENT.name + ") for=everyone " + pkgNote + " [smoke test on first deploy]");
-    });
 }
 
 function current(tab: TesterTab, st: TesterState): MusicPackageSpec {

@@ -68,14 +68,14 @@ try {
     // The SDK doc's OnGameModeStarted example, call for call: load, then volume.
     expect("boot", ["LoadMusic(MusicPackages.Core)", "SetMusicParam(MusicParams.Core_Amplitude, 1)"]);
 
-    // Smoke test: the first deploy plays a loud one-shot to everyone, exactly as
-    // CustomConquest does after loading Core. It isolates "music is silent in this
-    // experience" from anything the tester UI does.
+    // Deploying plays nothing, even once Core has loaded. A first-deploy smoke
+    // test used to play Core_LastPhaseBegin to everyone; it found that Portal
+    // Sandbox plays no scripted music (2026-10-01), and on any other map it would
+    // only blare music at every player. Music plays only when someone presses PLAY.
     await step("deploy", () => s.deploy());
-    // Held: Core was loaded at game-mode start, moments ago.
     expect("deploy", []);
-    await wait("smoke", LOAD_MS + 600);
-    expect("smoke", ["PlayMusic(MusicEvents.Core_LastPhaseBegin)"]);
+    await wait("after load", LOAD_MS + 600);
+    expect("after load", []);
     await step("open", () => s.aim());
     await step("tab music", () => s.click("MUSIC"));
     expect("tab music", []);
