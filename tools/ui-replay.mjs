@@ -51,6 +51,7 @@ export async function replay(source) {
     const calls = [];
     const logs = [];
     let phase = "boot";
+    let spawned = 0;
 
     const special = {
         CreateVector: (x, y, z) => ({ v: [x, y, z] }),
@@ -67,6 +68,10 @@ export async function replay(source) {
         CountOf: () => 0,
         IsPlayerValid: () => true,
         IsType: (o, t) => o !== null && typeof o === "object" && o.kind === "player" && t === "Types.Player",
+        // Each spawned object is distinct, so a test can follow one sound from
+        // SpawnObject to its StopSound. `asset` is the enum token, e.g.
+        // "RuntimeSpawn_Common.SFX_Alarm".
+        SpawnObject: (asset) => ({ spawn: ++spawned, asset }),
     };
     const fnProxy = (name) => {
         const f = (...args) => {
@@ -80,6 +85,7 @@ export async function replay(source) {
     const prevConsole = globalThis.console;
     const realNow = Date.now;
     let virtualNow = realNow();
+    const startNow = virtualNow;
     Date.now = () => virtualNow;
     globalThis.mod = new Proxy({}, { get: (_t, p) => fnProxy(String(p)) });
     globalThis.console = {
@@ -116,9 +122,9 @@ export async function replay(source) {
                 M.OnTickStart?.();
                 M.OngoingGlobal?.();
                 virtualNow += TICK_MS;
-                await new Promise((r) => setTimeout(r, 0));
+                await new Promise((r) => setImmediate(r));
                 M.OnTickEnd?.();
-                await new Promise((r) => setTimeout(r, 0));
+                await new Promise((r) => setImmediate(r));
             }
         },
         start() {
@@ -129,6 +135,15 @@ export async function replay(source) {
         },
         aim() {
             M.OnPortalGadgetAimStart(player);
+        },
+        /** Calls the bundle's exported event handler `name`, e.g. emit("OnRayCastHit", player, point, normal). */
+        emit(name, ...args) {
+            if (typeof M[name] !== "function") throw new Error(`the bundle exports no ${name}`);
+            M[name](...args);
+        },
+        /** Virtual time in ms since the replay started. */
+        now() {
+            return virtualNow - startNow;
         },
         /** Clicks the text button whose label is `text` (the strings.json value). */
         click(text) {
