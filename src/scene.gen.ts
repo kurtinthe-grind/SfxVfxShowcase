@@ -94,7 +94,8 @@ export const RAIL_ROW: SceneNode = {
     "textColor": "{{rail.color}}",
     "bg": "{{rail.bg}}",
     "bgAlpha": 1,
-    "align": "Left"
+    "align": "Left",
+    "fill": "Solid"
 };
 
 export const RAIL_PAGER: readonly SceneNode[] = [
@@ -111,7 +112,8 @@ export const RAIL_PAGER: readonly SceneNode[] = [
         "bg": "{{sh.orangeDim}}",
         "bgAlpha": 1,
         "align": "Center",
-        "parent": "menu"
+        "parent": "menu",
+        "fill": "Solid"
     },
     {
         "k": "text",
@@ -139,7 +141,8 @@ export const RAIL_PAGER: readonly SceneNode[] = [
         "bg": "{{sh.orangeDim}}",
         "bgAlpha": 1,
         "align": "Center",
-        "parent": "menu"
+        "parent": "menu",
+        "fill": "Solid"
     }
 ];
 
@@ -312,7 +315,8 @@ export const SCREEN: readonly SceneNode[] = [
         "bg": "{{f.tabSfxBg}}",
         "bgAlpha": 1,
         "align": "Center",
-        "parent": "menu"
+        "parent": "menu",
+        "fill": "Solid"
     },
     {
         "k": "textbutton",
@@ -327,7 +331,8 @@ export const SCREEN: readonly SceneNode[] = [
         "bg": "{{f.tabVfxBg}}",
         "bgAlpha": 1,
         "align": "Center",
-        "parent": "menu"
+        "parent": "menu",
+        "fill": "Solid"
     },
     {
         "k": "textbutton",
@@ -342,7 +347,8 @@ export const SCREEN: readonly SceneNode[] = [
         "bg": "{{f.tabFavBg}}",
         "bgAlpha": 1,
         "align": "Center",
-        "parent": "menu"
+        "parent": "menu",
+        "fill": "Solid"
     },
     {
         "k": "textbutton",
@@ -357,7 +363,8 @@ export const SCREEN: readonly SceneNode[] = [
         "bg": "{{f.tabMusicBg}}",
         "bgAlpha": 1,
         "align": "Center",
-        "parent": "menu"
+        "parent": "menu",
+        "fill": "Solid"
     },
     {
         "k": "textbutton",
@@ -372,7 +379,8 @@ export const SCREEN: readonly SceneNode[] = [
         "bg": "{{f.tabRadioBg}}",
         "bgAlpha": 1,
         "align": "Center",
-        "parent": "menu"
+        "parent": "menu",
+        "fill": "Solid"
     },
     {
         "k": "textbutton",
@@ -391,7 +399,8 @@ export const SCREEN: readonly SceneNode[] = [
         "bind": {
             "text": "selectLabel",
             "bg": "selectBg"
-        }
+        },
+        "fill": "Solid"
     },
     {
         "k": "text",
@@ -424,7 +433,8 @@ export const SCREEN: readonly SceneNode[] = [
         "bg": "{{sh.red}}",
         "bgAlpha": 1,
         "align": "Center",
-        "parent": "menu"
+        "parent": "menu",
+        "fill": "Solid"
     },
     {
         "k": "text",
@@ -529,7 +539,8 @@ export const SCREEN: readonly SceneNode[] = [
         "bg": "{{sh.orangeDim}}",
         "bgAlpha": 1,
         "align": "Center",
-        "parent": "browser"
+        "parent": "browser",
+        "fill": "Solid"
     },
     {
         "k": "text",
@@ -560,7 +571,8 @@ export const SCREEN: readonly SceneNode[] = [
         "bg": "{{sh.orangeDim}}",
         "bgAlpha": 1,
         "align": "Center",
-        "parent": "browser"
+        "parent": "browser",
+        "fill": "Solid"
     },
     {
         "k": "group",
@@ -598,7 +610,8 @@ export const SCREEN: readonly SceneNode[] = [
         "bg": "{{sh.orangeDim}}",
         "bgAlpha": 1,
         "align": "Center",
-        "parent": "sfxParams"
+        "parent": "sfxParams",
+        "fill": "Solid"
     },
     {
         "k": "text",
@@ -629,7 +642,8 @@ export const SCREEN: readonly SceneNode[] = [
         "bg": "{{sh.orangeDim}}",
         "bgAlpha": 1,
         "align": "Center",
-        "parent": "sfxParams"
+        "parent": "sfxParams",
+        "fill": "Solid"
     },
     {
         "k": "text",
@@ -656,7 +670,8 @@ export const SCREEN: readonly SceneNode[] = [
         "bg": "{{sh.orangeDim}}",
         "bgAlpha": 1,
         "align": "Center",
-        "parent": "sfxParams"
+        "parent": "sfxParams",
+        "fill": "Solid"
     },
     {
         "k": "text",
@@ -687,7 +702,8 @@ export const SCREEN: readonly SceneNode[] = [
         "bg": "{{sh.orangeDim}}",
         "bgAlpha": 1,
         "align": "Center",
-        "parent": "sfxParams"
+        "parent": "sfxParams",
+        "fill": "Solid"
     },
     {
         "k": "group",
@@ -725,7 +741,8 @@ export const SCREEN: readonly SceneNode[] = [
         "bg": "{{sh.orangeDim}}",
         "bgAlpha": 1,
         "align": "Center",
-        "parent": "vfxParams"
+        "parent": "vfxParams",
+        "fill": "Solid"
     },
     {
         "k": "text",
@@ -756,7 +773,8 @@ export const SCREEN: readonly SceneNode[] = [
         "bg": "{{sh.orangeDim}}",
         "bgAlpha": 1,
         "align": "Center",
-        "parent": "vfxParams"
+        "parent": "vfxParams",
+        "fill": "Solid"
     },
     {
         "k": "text",
@@ -801,7 +819,8 @@ export const SCREEN: readonly SceneNode[] = [
         "bg": "{{f.debugBg}}",
         "bgAlpha": 1,
         "align": "Center",
-        "parent": "menu"
+        "parent": "menu",
+        "fill": "Solid"
     },
     {
         "k": "textbutton",
@@ -816,7 +835,8 @@ export const SCREEN: readonly SceneNode[] = [
         "bg": "{{sh.orangeDim}}",
         "bgAlpha": 1,
         "align": "Center",
-        "parent": "browser"
+        "parent": "browser",
+        "fill": "Solid"
     },
     {
         "k": "textbutton",
@@ -831,7 +851,8 @@ export const SCREEN: readonly SceneNode[] = [
         "bg": "{{sh.orangeDim}}",
         "bgAlpha": 1,
         "align": "Center",
-        "parent": "browser"
+        "parent": "browser",
+        "fill": "Solid"
     },
     {
         "k": "textbutton",
@@ -846,7 +867,8 @@ export const SCREEN: readonly SceneNode[] = [
         "bg": "{{sh.redDeep}}",
         "bgAlpha": 1,
         "align": "Center",
-        "parent": "browser"
+        "parent": "browser",
+        "fill": "Solid"
     },
     {
         "k": "text",
@@ -1914,7 +1936,8 @@ export const ROW: readonly SceneNode[] = [
         "textColor": "{{r.favColor}}",
         "bg": "{{r.favBg}}",
         "bgAlpha": 1,
-        "align": "Center"
+        "align": "Center",
+        "fill": "Solid"
     },
     {
         "k": "textbutton",
@@ -1933,7 +1956,8 @@ export const ROW: readonly SceneNode[] = [
             "text": "playLabel",
             "textColor": "playColor",
             "bg": "playBg"
-        }
+        },
+        "fill": "Solid"
     },
     {
         "k": "textbutton",
@@ -1947,7 +1971,8 @@ export const ROW: readonly SceneNode[] = [
         "textColor": "{{r.stopColor}}",
         "bg": "{{r.stopBg}}",
         "bgAlpha": 1,
-        "align": "Center"
+        "align": "Center",
+        "fill": "Solid"
     },
     {
         "k": "text",
@@ -1988,7 +2013,8 @@ export const ROW: readonly SceneNode[] = [
             "text": "selLabel",
             "textColor": "selColor",
             "bg": "selBg"
-        }
+        },
+        "fill": "Solid"
     },
     {
         "k": "container",

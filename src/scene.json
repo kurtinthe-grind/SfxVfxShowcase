@@ -96,7 +96,8 @@
     "textColor": "{{rail.color}}",
     "bg": "{{rail.bg}}",
     "bgAlpha": 1,
-    "align": "Left"
+    "align": "Left",
+    "fill": "Solid"
   },
   "filterBarSpec": {
     "chipX": 460,
@@ -393,7 +394,8 @@
       "bg": "{{f.tabSfxBg}}",
       "bgAlpha": 1,
       "align": "Center",
-      "parent": "menu"
+      "parent": "menu",
+      "fill": "Solid"
     },
     {
       "k": "textbutton",
@@ -408,7 +410,8 @@
       "bg": "{{f.tabVfxBg}}",
       "bgAlpha": 1,
       "align": "Center",
-      "parent": "menu"
+      "parent": "menu",
+      "fill": "Solid"
     },
     {
       "k": "textbutton",
@@ -423,7 +426,8 @@
       "bg": "{{f.tabFavBg}}",
       "bgAlpha": 1,
       "align": "Center",
-      "parent": "menu"
+      "parent": "menu",
+      "fill": "Solid"
     },
     {
       "k": "textbutton",
@@ -438,7 +442,8 @@
       "bg": "{{f.tabMusicBg}}",
       "bgAlpha": 1,
       "align": "Center",
-      "parent": "menu"
+      "parent": "menu",
+      "fill": "Solid"
     },
     {
       "k": "textbutton",
@@ -453,7 +458,8 @@
       "bg": "{{f.tabRadioBg}}",
       "bgAlpha": 1,
       "align": "Center",
-      "parent": "menu"
+      "parent": "menu",
+      "fill": "Solid"
     },
     {
       "k": "textbutton",
@@ -472,7 +478,8 @@
       "bind": {
         "text": "selectLabel",
         "bg": "selectBg"
-      }
+      },
+      "fill": "Solid"
     },
     {
       "k": "text",
@@ -505,7 +512,8 @@
       "bg": "{{sh.red}}",
       "bgAlpha": 1,
       "align": "Center",
-      "parent": "menu"
+      "parent": "menu",
+      "fill": "Solid"
     },
     {
       "k": "text",
@@ -610,7 +618,8 @@
       "bg": "{{sh.orangeDim}}",
       "bgAlpha": 1,
       "align": "Center",
-      "parent": "browser"
+      "parent": "browser",
+      "fill": "Solid"
     },
     {
       "k": "text",
@@ -641,7 +650,8 @@
       "bg": "{{sh.orangeDim}}",
       "bgAlpha": 1,
       "align": "Center",
-      "parent": "browser"
+      "parent": "browser",
+      "fill": "Solid"
     },
     {
       "k": "group",
@@ -679,7 +689,8 @@
       "bg": "{{sh.orangeDim}}",
       "bgAlpha": 1,
       "align": "Center",
-      "parent": "sfxParams"
+      "parent": "sfxParams",
+      "fill": "Solid"
     },
     {
       "k": "text",
@@ -710,7 +721,8 @@
       "bg": "{{sh.orangeDim}}",
       "bgAlpha": 1,
       "align": "Center",
-      "parent": "sfxParams"
+      "parent": "sfxParams",
+      "fill": "Solid"
     },
     {
       "k": "text",
@@ -737,7 +749,8 @@
       "bg": "{{sh.orangeDim}}",
       "bgAlpha": 1,
       "align": "Center",
-      "parent": "sfxParams"
+      "parent": "sfxParams",
+      "fill": "Solid"
     },
     {
       "k": "text",
@@ -768,7 +781,8 @@
       "bg": "{{sh.orangeDim}}",
       "bgAlpha": 1,
       "align": "Center",
-      "parent": "sfxParams"
+      "parent": "sfxParams",
+      "fill": "Solid"
     },
     {
       "k": "group",
@@ -806,7 +820,8 @@
       "bg": "{{sh.orangeDim}}",
       "bgAlpha": 1,
       "align": "Center",
-      "parent": "vfxParams"
+      "parent": "vfxParams",
+      "fill": "Solid"
     },
     {
       "k": "text",
@@ -837,7 +852,8 @@
       "bg": "{{sh.orangeDim}}",
       "bgAlpha": 1,
       "align": "Center",
-      "parent": "vfxParams"
+      "parent": "vfxParams",
+      "fill": "Solid"
     },
     {
       "k": "text",
@@ -882,7 +898,8 @@
       "bg": "{{f.debugBg}}",
       "bgAlpha": 1,
       "align": "Center",
-      "parent": "menu"
+      "parent": "menu",
+      "fill": "Solid"
     },
     {
       "k": "textbutton",
@@ -897,7 +914,8 @@
       "bg": "{{sh.orangeDim}}",
       "bgAlpha": 1,
       "align": "Center",
-      "parent": "browser"
+      "parent": "browser",
+      "fill": "Solid"
     },
     {
       "k": "textbutton",
@@ -912,7 +930,8 @@
       "bg": "{{sh.orangeDim}}",
       "bgAlpha": 1,
       "align": "Center",
-      "parent": "browser"
+      "parent": "browser",
+      "fill": "Solid"
     },
     {
       "k": "textbutton",
@@ -927,7 +946,8 @@
       "bg": "{{sh.redDeep}}",
       "bgAlpha": 1,
       "align": "Center",
-      "parent": "browser"
+      "parent": "browser",
+      "fill": "Solid"
     },
     {
       "k": "text",
@@ -1994,7 +2014,8 @@
       "textColor": "{{r.favColor}}",
       "bg": "{{r.favBg}}",
       "bgAlpha": 1,
-      "align": "Center"
+      "align": "Center",
+      "fill": "Solid"
     },
     {
       "k": "textbutton",
@@ -2013,7 +2034,8 @@
         "text": "playLabel",
         "textColor": "playColor",
         "bg": "playBg"
-      }
+      },
+      "fill": "Solid"
     },
     {
       "k": "textbutton",
@@ -2027,7 +2049,8 @@
       "textColor": "{{r.stopColor}}",
       "bg": "{{r.stopBg}}",
       "bgAlpha": 1,
-      "align": "Center"
+      "align": "Center",
+      "fill": "Solid"
     },
     {
       "k": "text",
@@ -2068,7 +2091,8 @@
         "text": "selLabel",
         "textColor": "selColor",
         "bg": "selBg"
-      }
+      },
+      "fill": "Solid"
     },
     {
       "k": "container",
@@ -2133,7 +2157,8 @@
       "bg": "{{sh.orangeDim}}",
       "bgAlpha": 1,
       "align": "Center",
-      "parent": "menu"
+      "parent": "menu",
+      "fill": "Solid"
     },
     {
       "k": "text",
@@ -2161,7 +2186,8 @@
       "bg": "{{sh.orangeDim}}",
       "bgAlpha": 1,
       "align": "Center",
-      "parent": "menu"
+      "parent": "menu",
+      "fill": "Solid"
     }
   ]
 }

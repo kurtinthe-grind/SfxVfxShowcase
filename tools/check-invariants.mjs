@@ -236,6 +236,29 @@ if (!/groupVisible\[n\.parent\] === false/.test(ui)) {
     problems.push("ui.ts buildNodes() does not cascade group visibility; nested groups leak when the menu is closed");
 }
 
+// ---- E. every button is drawn with a solid fill
+// A button with fill "None" renders as the engine's default grey and never shows
+// its focused colour, so a controller user cannot see which button is selected
+// (2026-10-01). MUSIC / RADIO, the chips and the keyboard were already Solid and
+// highlight in orange; everything else was None.
+const sceneJson = JSON.parse(readFileSync(resolve(ROOT, "src", "scene.json"), "utf8"));
+const unfilled = [];
+(function walk(o, where) {
+    if (Array.isArray(o)) {
+        for (const v of o) walk(v, where);
+        return;
+    }
+    if (o === null || typeof o !== "object") return;
+    if ((o.k === "textbutton" || o.k === "button") && o.fill !== "Solid") unfilled.push(where + ":" + (o.id ?? o.text));
+    for (const [k, v] of Object.entries(o)) walk(v, where === "" ? k : where);
+})(sceneJson, "");
+for (const m of ui.matchAll(/\{\s*k:\s*"textbutton"[^}]*\}/g)) {
+    if (!/fill:\s*"Solid"/.test(m[0])) unfilled.push("ui.ts:" + m[0].slice(0, 60));
+}
+if (unfilled.length > 0) {
+    problems.push(`buttons without fill "Solid" (no visible controller highlight): ${unfilled.join(", ")}`);
+}
+
 if (problems.length > 0) {
     console.error("  INVARIANT BUGS:");
     for (const p of problems) console.error("    - " + p);
@@ -244,5 +267,5 @@ if (problems.length > 0) {
 console.log(
     "  invariants: input mode owned by the root's uiInputModeWhenVisible (0 manual calls), " +
         "one click path (closures + setActionHandler, 0 event subscriptions), " +
-        "field Messages not stringified, group visibility cascades"
+        "field Messages not stringified, group visibility cascades, every button solid-filled"
 );
