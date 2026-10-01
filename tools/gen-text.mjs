@@ -198,6 +198,7 @@ const TEMPLATES = {
     mtCallLoad: "LoadMusic({})",
     mtLoadOf: "LOAD {}",
     mtLoadedOf: "{} LOADED",
+    mtLoadingOf: "LOADING {}...",
     mtQueueOf: "QUEUE TRACK {}",
     mtTrackUnloaded: "TRACK {} / {}  -  NOT LOADED, press LOAD",
     mtRadioNote: "CHANNEL {} = {}    BIOME = {} (channel 4 only)",

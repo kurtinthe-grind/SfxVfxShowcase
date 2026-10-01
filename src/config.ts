@@ -52,4 +52,10 @@ export const CONFIG = {
     // Lower the batch or raise the delay if it still crashes.
     widgetsPerBatch: 30,
     widgetBatchDelayMs: 100,
+
+    // ---- Music tester ----
+    // The SDK docs: "allow a few seconds of time for the music to load in".
+    // Music calls made within this long of a LoadMusic are held and sent once it
+    // has passed (CustomConquest waits 2 s; 5 s leaves margin).
+    musicLoadMs: 5000,
 } as const;

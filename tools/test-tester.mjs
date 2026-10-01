@@ -44,6 +44,14 @@ function expect(phase, want) {
         problems.push(`${phase}:\n        want ${want.join("\n             ")}\n        got  ${got.join("\n             ") || "(nothing)"}`);
     }
 }
+/** Lets real time pass (utils timers run on Date.now()). */
+async function wait(phase, ms) {
+    s.setPhase(phase);
+    await s.ticks(Math.ceil(ms / 16));
+}
+// CONFIG.musicLoadMs: the SDK docs say to "allow a few seconds of time for the
+// music to load in"; calls for a package still loading are held until then.
+const LOAD_MS = 5000;
 async function step(phase, fn) {
     s.setPhase(phase);
     try {
@@ -63,7 +71,10 @@ try {
     // CustomConquest does after loading Core. It isolates "music is silent in this
     // experience" from anything the tester UI does.
     await step("deploy", () => s.deploy());
-    expect("deploy", ["PlayMusic(MusicEvents.Core_LastPhaseBegin)"]);
+    // Held: Core was loaded at game-mode start, moments ago.
+    expect("deploy", []);
+    await wait("smoke", LOAD_MS + 600);
+    expect("smoke", ["PlayMusic(MusicEvents.Core_LastPhaseBegin)"]);
     await step("open", () => s.aim());
     await step("tab music", () => s.click("MUSIC"));
     expect("tab music", []);
@@ -120,7 +131,13 @@ try {
     expect("package next", []);
     await step("load br", () => s.clickId("mtLoad"));
     expect("load br", ["UnloadMusic(MusicPackages.Core)", "LoadMusic(MusicPackages.BR)"]);
-    await step("play br", () => s.clickId("mtPlay"));
+    // LOAD on a package that is already loaded must not reload it.
+    await step("load br again", () => s.clickId("mtLoad"));
+    expect("load br again", []);
+    // PLAY while BR is still loading is held, then sent once it has had time.
+    await step("play br early", () => s.clickId("mtPlay"));
+    expect("play br early", []);
+    await wait("play br", LOAD_MS + 600);
     expect("play br", [
         "SetMusicParam(MusicParams.BRGauntlet_LobbyTimerRemaining, 10, player)",
         "SetMusicParam(MusicParams.BR_Amplitude, 1, player)",
@@ -135,9 +152,13 @@ try {
     await step("queue number up", () => s.clickId("mtP4Up"));
     expect("queue number up", []);
     await step("queue", () => s.clickId("mtQueue"));
-    expect("queue", ["SetMusicParam(MusicParams.Radio_QueueTrackNumber, 1, player)"]);
-    await step("radio play", () => s.clickId("mtPlay"));
+    expect("queue", []);
+    await step("radio play early", () => s.clickId("mtPlay"));
+    expect("radio play early", []);
+    // Both held calls go out in click order once Radio has loaded.
+    await wait("radio play", LOAD_MS + 600);
     expect("radio play", [
+        "SetMusicParam(MusicParams.Radio_QueueTrackNumber, 1, player)",
         "SetMusicParam(MusicParams.Radio_Biome, 0, player)",
         "SetMusicParam(MusicParams.Radio_Channel, 2, player)",
         "SetMusicParam(MusicParams.Radio_ContinueQueueOnTrackEnd, 1, player)",
@@ -179,4 +200,4 @@ if (problems.length > 0) {
     for (const p of problems) console.error("    - " + p);
     process.exit(1);
 }
-console.log("  tester  : Core loaded at start, LOAD switches exclusively, ME/EVERYONE overloads, PLAY re-sends params, clamping, stop, radio queue + transport, every call logged");
+console.log("  tester  : Core loaded at start, calls held until loaded, LOAD switches exclusively, ME/EVERYONE overloads, PLAY re-sends params, clamping, stop, radio queue + transport, every call logged");

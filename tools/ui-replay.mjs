@@ -10,7 +10,10 @@
 // The stand-in only models what the bundle reads back: vectors, object ids,
 // Equals, Message, widget lookup by name and IsType for the player. Every other
 // mod.* call is recorded and returns undefined. Timers in bf6-portal-utils run on
-// Date.now(), so ticks here take real time (TICK_MS) for delayed batches to fire.
+// Date.now(). The replay swaps Date.now() for a virtual clock that each tick
+// advances by exactly TICK_MS, so timer-driven behaviour (widget batches, the
+// music load gate) is deterministic and fast. Real-time ticks were ~45 ms each
+// on Windows instead of 16, which made phase timing drift between machines.
 
 import { readFileSync, mkdtempSync, writeFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -75,6 +78,9 @@ export async function replay(source) {
     };
     const prevMod = globalThis.mod;
     const prevConsole = globalThis.console;
+    const realNow = Date.now;
+    let virtualNow = realNow();
+    Date.now = () => virtualNow;
     globalThis.mod = new Proxy({}, { get: (_t, p) => fnProxy(String(p)) });
     globalThis.console = {
         ...prevConsole,
@@ -90,6 +96,7 @@ export async function replay(source) {
     } catch (e) {
         globalThis.mod = prevMod;
         globalThis.console = prevConsole;
+        Date.now = realNow;
         throw e;
     }
 
@@ -108,7 +115,8 @@ export async function replay(source) {
             for (let i = 0; i < n; i++) {
                 M.OnTickStart?.();
                 M.OngoingGlobal?.();
-                await new Promise((r) => setTimeout(r, TICK_MS));
+                virtualNow += TICK_MS;
+                await new Promise((r) => setTimeout(r, 0));
                 M.OnTickEnd?.();
                 await new Promise((r) => setTimeout(r, 0));
             }
@@ -160,6 +168,7 @@ export async function replay(source) {
         dispose() {
             globalThis.mod = prevMod;
             globalThis.console = prevConsole;
+            Date.now = realNow;
             rmSync(dir, { recursive: true, force: true });
         },
     };

@@ -246,7 +246,7 @@ function handle(st: PlayerState, action: string): void {
     }
     // MUSIC / RADIO tester: every action is mt*, owned by src/tester.ts.
     if (action.slice(0, 2) === "mt") {
-        if (isTesterTab(ui.tab) && handleTesterAction(ui.tab, ui.tester, ui.player, action)) {
+        if (isTesterTab(ui.tab) && handleTesterAction(ui.tab, ui.tester, ui.player, action, () => defer(st))) {
             defer(st);
             return;
         }

@@ -13,12 +13,20 @@
 // exclusively: unload the current one, load the one on screen. Loading is
 // global, not per player.
 //
+// LOAD TIME. The SDK docs say to "allow a few seconds of time for the music to
+// load in". The third in-game run played the smoke test in the same second as
+// LoadMusic and heard nothing, so every call made within CONFIG.musicLoadMs of a
+// LoadMusic is now held and sent, in click order, once that time has passed.
+//
 // TARGET. ME uses the player overloads, EVERYONE the global ones, so a run in
 // game can tell whether the per-player calls are what is silent.
 //
 // The engine cannot be asked what is playing or what a parameter is set to, so
 // the panel shows what was SENT, and every call is written to the log.
 
+import { Timers } from "bf6-portal-utils/timers";
+
+import { CONFIG } from "./config";
 import { log } from "./diag";
 import { MUSIC_PACKAGES, PARAM_SLOTS, type MusicEventSpec, type MusicPackageSpec, type MusicParamSpec } from "./music.gen";
 import { PALETTE } from "./scene.gen";
@@ -74,6 +82,33 @@ const RADIO_BIOMES = [T.radioBiome0, T.radioBiome1, T.radioBiome2, T.radioBiome3
 
 /** The one package currently loaded. Music loading is global, so this is too. */
 let loaded: MusicPackageSpec | undefined;
+/** Date.now() of the last LoadMusic (bf6-portal-utils timers use the same clock). */
+let loadedAt = 0;
+/** Calls held until the current package has had CONFIG.musicLoadMs to load. */
+const held: (() => void)[] = [];
+let flushScheduled = false;
+
+function loading(): boolean {
+    return loaded !== undefined && Date.now() - loadedAt < CONFIG.musicLoadMs;
+}
+
+/** Runs `send` now, or once the package being loaded has had time to load. */
+function whenLoaded(send: () => void): void {
+    if (!loading()) {
+        send();
+        return;
+    }
+    held.push(send);
+    if (flushScheduled) return;
+    flushScheduled = true;
+    const wait = CONFIG.musicLoadMs - (Date.now() - loadedAt);
+    log("music: holding calls " + wait + "ms while " + (loaded === undefined ? "?" : loaded.name) + " loads");
+    Timers.setTimeout(() => {
+        flushScheduled = false;
+        const run = held.splice(0, held.length);
+        for (const f of run) f();
+    }, wait);
+}
 
 export interface TesterState {
     /** Index into MUSIC_TAB. */
@@ -101,6 +136,7 @@ export function newTesterState(): TesterState {
 export function loadStartupMusic(): void {
     mod.LoadMusic(STARTUP.pkg);
     loaded = STARTUP;
+    loadedAt = Date.now();
     log("music: LoadMusic(" + STARTUP.name + ") at game-mode start");
 }
 
@@ -113,9 +149,11 @@ export function loadStartupMusic(): void {
 export function musicSmokeTest(): void {
     if (smokeDone) return;
     smokeDone = true;
-    mod.PlayMusic(SMOKE_EVENT.event);
-    const pkgNote = loaded === undefined ? "nothing loaded" : "loaded=" + loaded.name;
-    log("music: PlayMusic(" + SMOKE_EVENT.name + ") for=everyone " + pkgNote + " [smoke test on first deploy]");
+    whenLoaded(() => {
+        mod.PlayMusic(SMOKE_EVENT.event);
+        const pkgNote = loaded === undefined ? "nothing loaded" : "loaded=" + loaded.name;
+        log("music: PlayMusic(" + SMOKE_EVENT.name + ") for=everyone " + pkgNote + " [smoke test on first deploy]");
+    });
 }
 
 function current(tab: TesterTab, st: TesterState): MusicPackageSpec {
@@ -130,15 +168,24 @@ function who(st: TesterState): string {
     return st.toAll ? "everyone" : "me";
 }
 
-function load(st: TesterState, pkg: MusicPackageSpec): void {
-    if (loaded !== undefined && loaded !== pkg) {
+function load(st: TesterState, pkg: MusicPackageSpec, redraw: () => void): void {
+    // Re-sending LoadMusic for the loaded package is never useful, and in the
+    // second in-game run it landed in the middle of a test.
+    if (loaded === pkg) {
+        log("music: " + pkg.name + " already loaded, LoadMusic not re-sent");
+        return;
+    }
+    if (loaded !== undefined) {
         mod.UnloadMusic(loaded.pkg);
         log("music: UnloadMusic(" + loaded.name + ")");
     }
     mod.LoadMusic(pkg.pkg);
     loaded = pkg;
+    loadedAt = Date.now();
     st.last = mod.Message(TPL.mtCallLoad, pkg.key);
     log("music: LoadMusic(" + pkg.name + ")");
+    // Repaint when loading ends, so the button turns from LOADING to LOADED.
+    whenLoaded(redraw);
 }
 
 function sendParam(player: mod.Player, st: TesterState, p: MusicParamSpec): void {
@@ -162,7 +209,7 @@ function stepParam(player: mod.Player, st: TesterState, p: MusicParamSpec, dir: 
     st.values[p.name] = round2(Math.min(p.max, Math.max(p.min, v)));
     // Sending the queue param queues a track: the stepper only picks the number,
     // QUEUE TRACK sends it.
-    if (!p.queues) sendParam(player, st, p);
+    if (!p.queues) whenLoaded(() => sendParam(player, st, p));
 }
 
 function queueParam(pkg: MusicPackageSpec): MusicParamSpec | undefined {
@@ -174,7 +221,7 @@ function queueParam(pkg: MusicPackageSpec): MusicParamSpec | undefined {
  * Handles one mt* action. Returns false for an action it does not know, so the
  * caller's UNHANDLED ACTION log still fires for a misrouted button.
  */
-export function handleTesterAction(tab: TesterTab, st: TesterState, player: mod.Player, action: string): boolean {
+export function handleTesterAction(tab: TesterTab, st: TesterState, player: mod.Player, action: string, redraw: () => void): boolean {
     const pkg = current(tab, st);
     const radio = tab === "radio";
 
@@ -185,7 +232,7 @@ export function handleTesterAction(tab: TesterTab, st: TesterState, player: mod.
         return true;
     }
     if (action === "mtLoad") {
-        load(st, pkg);
+        load(st, pkg, redraw);
         return true;
     }
     if (action === "mtTarget") {
@@ -195,13 +242,19 @@ export function handleTesterAction(tab: TesterTab, st: TesterState, player: mod.
     if (action === "mtQueue") {
         const q = queueParam(pkg);
         if (q === undefined) return false;
-        sendParam(player, st, q);
+        whenLoaded(() => {
+            sendParam(player, st, q);
+            redraw();
+        });
         return true;
     }
     if (action === "mtPrev" || action === "mtNext") {
         if (radio) {
             const e = action === "mtNext" ? RADIO_NEXT : RADIO_CLEAR;
-            sendEvent(player, st, e.event, e.name, e.key);
+            whenLoaded(() => {
+                sendEvent(player, st, e.event, e.name, e.key);
+                redraw();
+            });
             return true;
         }
         const n = pkg.events.length;
@@ -211,14 +264,20 @@ export function handleTesterAction(tab: TesterTab, st: TesterState, player: mod.
     if (action === "mtPlay") {
         // Re-send everything first, so what plays always matches the panel. The
         // queue param is the exception: re-sending it would queue another track.
-        for (const p of pkg.params) if (!p.queues) sendParam(player, st, p);
-        sendParam(player, st, pkg.amp);
         const e = radio ? RADIO_PLAY : pkg.events[st.evt[st.pkg]];
-        sendEvent(player, st, e.event, e.name, e.key);
+        whenLoaded(() => {
+            for (const p of pkg.params) if (!p.queues) sendParam(player, st, p);
+            sendParam(player, st, pkg.amp);
+            sendEvent(player, st, e.event, e.name, e.key);
+            redraw();
+        });
         return true;
     }
     if (action === "mtStop") {
-        sendEvent(player, st, pkg.stop, pkg.name + "_Stop", pkg.stopKey);
+        whenLoaded(() => {
+            sendEvent(player, st, pkg.stop, pkg.name + "_Stop", pkg.stopKey);
+            redraw();
+        });
         return true;
     }
     if (action === "mtVolDown" || action === "mtVolUp") {
@@ -264,7 +323,7 @@ export function testerFields(tab: TesterTab, st: TesterState): Scope {
         mtParamNote: radio ? mod.Message(TPL.mtRadioNote, ch, pickKey(RADIO_CHANNELS, ch), pickKey(RADIO_BIOMES, biome)) : mod.Message(pkg.params.length === 0 ? T.mtNoParams : T.mtNoteParams),
         mtVol: mod.Message(TPL.num1, st.values[pkg.amp.name]),
         mtLast: st.last ?? mod.Message(T.mtNothingSent),
-        mtLoadLabel: mod.Message(isLoaded ? TPL.mtLoadedOf : TPL.mtLoadOf, pkg.key),
+        mtLoadLabel: mod.Message(isLoaded ? (loading() ? TPL.mtLoadingOf : TPL.mtLoadedOf) : TPL.mtLoadOf, pkg.key),
         mtLoadBg: isLoaded ? PALETTE.green : PALETTE.amber,
         mtTargetLabel: mod.Message(st.toAll ? T.mtTargetAll : T.mtTargetMe),
         mtTargetBg: st.toAll ? PALETTE.hot : PALETTE.row,
