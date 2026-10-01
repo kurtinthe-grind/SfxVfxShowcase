@@ -9694,13 +9694,42 @@ export const SCREEN: readonly SceneNode[] = [
         "id": "mtLast",
         "x": 736,
         "y": 756,
-        "w": 718,
+        "w": 448,
         "h": 48,
         "text": "{{f.mtLast}}",
         "textSize": 20,
         "bind": {
             "text": "mtLast"
         }
+    },
+    {
+        "k": "textbutton",
+        "y": 756,
+        "w": 260,
+        "h": 48,
+        "textSize": 15,
+        "textColor": "#FFFFFF",
+        "bgAlpha": 1,
+        "align": "Center",
+        "fill": "Solid",
+        "parent": "tester",
+        "id": "mtSave",
+        "x": 1194,
+        "text": "SAVE TEMPLATE",
+        "bg": "{{sh.blue}}"
+    },
+    {
+        "k": "text",
+        "textAlpha": 1,
+        "align": "Center",
+        "color": "{{sh.muted}}",
+        "parent": "tester",
+        "x": 1194,
+        "y": 810,
+        "w": 260,
+        "h": 30,
+        "text": "Saves to FAVOURITES.",
+        "textSize": 12
     },
     {
         "k": "text",
@@ -9710,7 +9739,7 @@ export const SCREEN: readonly SceneNode[] = [
         "parent": "tester",
         "x": 736,
         "y": 810,
-        "w": 718,
+        "w": 448,
         "h": 30,
         "text": "The last call sent. The game cannot report what is playing.",
         "textSize": 12
@@ -10071,6 +10100,7 @@ export const NODE_ACTIONS: readonly string[] = [
     "mtPlay",
     "mtPrev",
     "mtQueue",
+    "mtSave",
     "mtStop",
     "mtTarget",
     "mtVolDown",
@@ -10179,208 +10209,223 @@ export const T = {
     mtRadioHelp: "sxS83",
     mtQueueStale: "sxS84",
     mtQueueEmpty: "sxS85",
-    radioCh0: "sxS86",
-    radioCh1: "sxS87",
-    radioCh2: "sxS88",
-    radioCh3: "sxS89",
-    radioCh4: "sxS90",
-    radioCh5: "sxS91",
-    radioCh6: "sxS92",
-    radioBiome0: "sxS93",
-    radioBiome1: "sxS94",
-    radioBiome2: "sxS95",
-    radioBiome3: "sxS96",
-    radioBiome4: "sxS97",
-    radioBiome5: "sxS98",
-    radioBiome6: "sxS99",
-    screenVl7gas: "sxS100",
-    screenNight: "sxS101",
-    screenSaturated: "sxS102",
-    screenStealth: "sxS103",
-    catGas: "sxS104",
-    catScreen: "sxS105",
-    logEmpty: "sxS106",
-    charCursor: "sxS107",
-    onWord: "sxS108",
-    logBadMessage: "sxS109",
-    offWord: "sxS110",
+    kindMusic: "sxS86",
+    kindRadio: "sxS87",
+    tplOpen: "sxS88",
+    radioCh0: "sxS89",
+    radioCh1: "sxS90",
+    radioCh2: "sxS91",
+    radioCh3: "sxS92",
+    radioCh4: "sxS93",
+    radioCh5: "sxS94",
+    radioCh6: "sxS95",
+    radioBiome0: "sxS96",
+    radioBiome1: "sxS97",
+    radioBiome2: "sxS98",
+    radioBiome3: "sxS99",
+    radioBiome4: "sxS100",
+    radioBiome5: "sxS101",
+    radioBiome6: "sxS102",
+    screenVl7gas: "sxS103",
+    screenNight: "sxS104",
+    screenSaturated: "sxS105",
+    screenStealth: "sxS106",
+    catGas: "sxS107",
+    catScreen: "sxS108",
+    logEmpty: "sxS109",
+    charCursor: "sxS110",
+    onWord: "sxS111",
+    logBadMessage: "sxS112",
+    offWord: "sxS113",
+} as const;
+
+/** Plain text of the radio stations, for log lines (EXPORT). Index = Radio_Channel / Radio_Biome. */
+export const RADIO_TEXT = {
+    channels: ["Hip Hop", "Rock", "BF Themes", "Reggaeton", "Biome", "Classical", "Pop"],
+    biomes: ["Gibraltar", "Tajikistan", "Egypt", "US West Coast", "US East Coast", "Bulgaria", "Turkmenistan"],
 } as const;
 
 /** Format templates, for composed strings. */
 export const TPL = {
-    t1: "sxT111",
-    t2: "sxT112",
-    t3: "sxT113",
-    t4: "sxT114",
-    num1: "sxT115",
-    gap2: "sxT116",
-    armedOf: "sxT117",
-    itemsOf: "sxT118",
-    matchOf: "sxT119",
-    matchOf2: "sxT120",
-    pageOf: "sxT121",
-    railPageOf: "sxT122",
-    exportedN: "sxT123",
-    stoppedN: "sxT124",
-    scaleOf: "sxT125",
-    spawnedOf: "sxT126",
-    filters0: "sxT127",
-    filters1: "sxT128",
-    filters2: "sxT129",
-    filters3: "sxT130",
-    screenToggle: "sxT131",
-    mtPackageOf: "sxT132",
-    mtTrackOf: "sxT133",
-    mtParamLabel: "sxT134",
-    mtCallPlay: "sxT135",
-    mtCallParam: "sxT136",
-    mtCallLoad: "sxT137",
-    mtLoadOf: "sxT138",
-    mtLoadedOf: "sxT139",
-    mtLoadingOf: "sxT140",
-    mtQueueOf: "sxT141",
-    mtTrackUnloaded: "sxT142",
-    mtRadioNote: "sxT143",
-    mtLoadFirst: "sxT144",
-    mtQueueCount: "sxT145",
+    t1: "sxT114",
+    t2: "sxT115",
+    t3: "sxT116",
+    t4: "sxT117",
+    num1: "sxT118",
+    gap2: "sxT119",
+    armedOf: "sxT120",
+    itemsOf: "sxT121",
+    matchOf: "sxT122",
+    matchOf2: "sxT123",
+    pageOf: "sxT124",
+    railPageOf: "sxT125",
+    exportedN: "sxT126",
+    stoppedN: "sxT127",
+    scaleOf: "sxT128",
+    spawnedOf: "sxT129",
+    filters0: "sxT130",
+    filters1: "sxT131",
+    filters2: "sxT132",
+    filters3: "sxT133",
+    screenToggle: "sxT134",
+    mtPackageOf: "sxT135",
+    mtTrackOf: "sxT136",
+    mtParamLabel: "sxT137",
+    mtCallPlay: "sxT138",
+    mtCallParam: "sxT139",
+    mtCallLoad: "sxT140",
+    mtLoadOf: "sxT141",
+    mtLoadedOf: "sxT142",
+    mtLoadingOf: "sxT143",
+    mtQueueOf: "sxT144",
+    mtTrackUnloaded: "sxT145",
+    mtRadioNote: "sxT146",
+    mtLoadFirst: "sxT147",
+    tplMusicOf: "sxT148",
+    tplRadioOf: "sxT149",
+    tplSaved: "sxT150",
+    tplExists: "sxT151",
+    mtQueueCount: "sxT152",
 } as const;
 
 /** key for a single keyboard character */
 export const CHAR_KEY: Readonly<Record<string, string>> = {
-    "0": "sxC150",
-    "1": "sxC151",
-    "2": "sxC152",
-    "3": "sxC153",
-    "4": "sxC154",
-    "5": "sxC155",
-    "6": "sxC156",
-    "7": "sxC157",
-    "8": "sxC158",
-    "9": "sxC159",
-    " ": "sxC146",
-    ",": "sxC147",
-    "-": "sxC148",
-    ".": "sxC149",
-    "A": "sxC160",
-    "B": "sxC161",
-    "C": "sxC162",
-    "D": "sxC163",
-    "E": "sxC164",
-    "F": "sxC165",
-    "G": "sxC166",
-    "H": "sxC167",
-    "I": "sxC168",
-    "J": "sxC169",
-    "K": "sxC170",
-    "L": "sxC171",
-    "M": "sxC172",
-    "N": "sxC173",
-    "O": "sxC174",
-    "P": "sxC175",
-    "Q": "sxC176",
-    "R": "sxC177",
-    "S": "sxC178",
-    "T": "sxC179",
-    "U": "sxC180",
-    "V": "sxC181",
-    "W": "sxC182",
-    "X": "sxC183",
-    "Y": "sxC184",
-    "Z": "sxC185",
-    "_": "sxC186",
+    "0": "sxC157",
+    "1": "sxC158",
+    "2": "sxC159",
+    "3": "sxC160",
+    "4": "sxC161",
+    "5": "sxC162",
+    "6": "sxC163",
+    "7": "sxC164",
+    "8": "sxC165",
+    "9": "sxC166",
+    " ": "sxC153",
+    ",": "sxC154",
+    "-": "sxC155",
+    ".": "sxC156",
+    "A": "sxC167",
+    "B": "sxC168",
+    "C": "sxC169",
+    "D": "sxC170",
+    "E": "sxC171",
+    "F": "sxC172",
+    "G": "sxC173",
+    "H": "sxC174",
+    "I": "sxC175",
+    "J": "sxC176",
+    "K": "sxC177",
+    "L": "sxC178",
+    "M": "sxC179",
+    "N": "sxC180",
+    "O": "sxC181",
+    "P": "sxC182",
+    "Q": "sxC183",
+    "R": "sxC184",
+    "S": "sxC185",
+    "T": "sxC186",
+    "U": "sxC187",
+    "V": "sxC188",
+    "W": "sxC189",
+    "X": "sxC190",
+    "Y": "sxC191",
+    "Z": "sxC192",
+    "_": "sxC193",
 };
 
 /** key for a literal that comes straight out of scene.json */
 export const SCENE_TEXT: Readonly<Record<string, string>> = {
-    "+": "sxN187",
-    "-": "sxN188",
-    "2D": "sxN189",
-    "3D": "sxN190",
-    "<": "sxN191",
-    "< GROUPS": "sxN192",
-    "< PREV": "sxN193",
-    ">": "sxN194",
-    "ACTION": "sxN195",
-    "ALL": "sxN196",
-    "AMPLITUDE": "sxN197",
-    "Adds the track number to the queue.": "sxN198",
-    "BACK": "sxN199",
-    "CLEAR": "sxN200",
-    "CLOSE X": "sxN201",
-    "DELETE ALL": "sxN202",
-    "DONE": "sxN203",
-    "FAV": "sxN204",
-    "FAVOURITES": "sxN205",
-    "GROUP": "sxN206",
-    "GROUPS >": "sxN207",
-    "LAST CALL": "sxN208",
-    "LOOP": "sxN209",
-    "Loads in about 5 s. One at a time.": "sxN210",
-    "ME: only you. EVERYONE: all players.": "sxN211",
-    "MUSIC": "sxN212",
-    "Multiplier: 0 = silent, 1 = normal, 3 = triple volume.": "sxN213",
-    "NAME": "sxN214",
-    "NEXT >": "sxN215",
-    "ONE": "sxN216",
-    "PARAMS": "sxN217",
-    "PLAY re-sends the package params and VOLUME before the event, so what you hear matches the numbers.": "sxN218",
-    "PLAYER": "sxN219",
-    "PREFIXES": "sxN220",
-    "RADIO": "sxN221",
-    "RANGE m": "sxN222",
-    "SCALE": "sxN223",
-    "SFX / VFX SHOWCASE": "sxN224",
-    "SOUND": "sxN225",
-    "SPACE": "sxN226",
-    "STOP ALL": "sxN227",
-    "The last call sent. The game cannot report what is playing.": "sxN228",
-    "UNDO": "sxN229",
-    "VISUAL": "sxN230",
-    "VOLUME": "sxN231",
-    "WORLD": "sxN232",
-    "amp": "sxN233",
-    "applies to the selected effect": "sxN234",
-    "armed": "sxN235",
-    "headBadge": "sxN236",
-    "hint": "sxN237",
-    "mtEvent": "sxN238",
-    "mtEventDesc": "sxN239",
-    "mtEventIdx": "sxN240",
-    "mtLast": "sxN241",
-    "mtLoadLabel": "sxN242",
-    "mtNextLabel": "sxN243",
-    "mtP0Desc": "sxN244",
-    "mtP0Label": "sxN245",
-    "mtP0Val": "sxN246",
-    "mtP1Desc": "sxN247",
-    "mtP1Label": "sxN248",
-    "mtP1Val": "sxN249",
-    "mtP2Desc": "sxN250",
-    "mtP2Label": "sxN251",
-    "mtP2Val": "sxN252",
-    "mtP3Desc": "sxN253",
-    "mtP3Label": "sxN254",
-    "mtP3Val": "sxN255",
-    "mtP4Desc": "sxN256",
-    "mtP4Label": "sxN257",
-    "mtP4Val": "sxN258",
-    "mtParamNote": "sxN259",
-    "mtPkg": "sxN260",
-    "mtPlayLabel": "sxN261",
-    "mtPrevLabel": "sxN262",
-    "mtQueueLabel": "sxN263",
-    "mtStopLabel": "sxN264",
-    "mtTargetLabel": "sxN265",
-    "mtTitle": "sxN266",
-    "mtVol": "sxN267",
-    "page": "sxN268",
-    "playLabel": "sxN269",
-    "railSummary": "sxN270",
-    "rng": "sxN271",
-    "scale": "sxN272",
-    "selLabel": "sxN273",
-    "selectLabel": "sxN274",
-    "spawned": "sxN275",
+    "+": "sxN194",
+    "-": "sxN195",
+    "2D": "sxN196",
+    "3D": "sxN197",
+    "<": "sxN198",
+    "< GROUPS": "sxN199",
+    "< PREV": "sxN200",
+    ">": "sxN201",
+    "ACTION": "sxN202",
+    "ALL": "sxN203",
+    "AMPLITUDE": "sxN204",
+    "Adds the track number to the queue.": "sxN205",
+    "BACK": "sxN206",
+    "CLEAR": "sxN207",
+    "CLOSE X": "sxN208",
+    "DELETE ALL": "sxN209",
+    "DONE": "sxN210",
+    "FAV": "sxN211",
+    "FAVOURITES": "sxN212",
+    "GROUP": "sxN213",
+    "GROUPS >": "sxN214",
+    "LAST CALL": "sxN215",
+    "LOOP": "sxN216",
+    "Loads in about 5 s. One at a time.": "sxN217",
+    "ME: only you. EVERYONE: all players.": "sxN218",
+    "MUSIC": "sxN219",
+    "Multiplier: 0 = silent, 1 = normal, 3 = triple volume.": "sxN220",
+    "NAME": "sxN221",
+    "NEXT >": "sxN222",
+    "ONE": "sxN223",
+    "PARAMS": "sxN224",
+    "PLAY re-sends the package params and VOLUME before the event, so what you hear matches the numbers.": "sxN225",
+    "PLAYER": "sxN226",
+    "PREFIXES": "sxN227",
+    "RADIO": "sxN228",
+    "RANGE m": "sxN229",
+    "SAVE TEMPLATE": "sxN230",
+    "SCALE": "sxN231",
+    "SFX / VFX SHOWCASE": "sxN232",
+    "SOUND": "sxN233",
+    "SPACE": "sxN234",
+    "STOP ALL": "sxN235",
+    "Saves to FAVOURITES.": "sxN236",
+    "The last call sent. The game cannot report what is playing.": "sxN237",
+    "UNDO": "sxN238",
+    "VISUAL": "sxN239",
+    "VOLUME": "sxN240",
+    "WORLD": "sxN241",
+    "amp": "sxN242",
+    "applies to the selected effect": "sxN243",
+    "armed": "sxN244",
+    "headBadge": "sxN245",
+    "hint": "sxN246",
+    "mtEvent": "sxN247",
+    "mtEventDesc": "sxN248",
+    "mtEventIdx": "sxN249",
+    "mtLast": "sxN250",
+    "mtLoadLabel": "sxN251",
+    "mtNextLabel": "sxN252",
+    "mtP0Desc": "sxN253",
+    "mtP0Label": "sxN254",
+    "mtP0Val": "sxN255",
+    "mtP1Desc": "sxN256",
+    "mtP1Label": "sxN257",
+    "mtP1Val": "sxN258",
+    "mtP2Desc": "sxN259",
+    "mtP2Label": "sxN260",
+    "mtP2Val": "sxN261",
+    "mtP3Desc": "sxN262",
+    "mtP3Label": "sxN263",
+    "mtP3Val": "sxN264",
+    "mtP4Desc": "sxN265",
+    "mtP4Label": "sxN266",
+    "mtP4Val": "sxN267",
+    "mtParamNote": "sxN268",
+    "mtPkg": "sxN269",
+    "mtPlayLabel": "sxN270",
+    "mtPrevLabel": "sxN271",
+    "mtQueueLabel": "sxN272",
+    "mtStopLabel": "sxN273",
+    "mtTargetLabel": "sxN274",
+    "mtTitle": "sxN275",
+    "mtVol": "sxN276",
+    "page": "sxN277",
+    "playLabel": "sxN278",
+    "railSummary": "sxN279",
+    "rng": "sxN280",
+    "scale": "sxN281",
+    "selLabel": "sxN282",
+    "selectLabel": "sxN283",
+    "spawned": "sxN284",
 };
 
 export type StaticLabel = keyof typeof T;
@@ -12909,11 +12954,11 @@ export function msgFor(t: string | number | mod.Message): mod.Message {
 }
 
 export function rowTextKey(r: Row): string {
-    return r.type === "screen" ? r.key : r.entry.key;
+    return r.type === "screen" ? r.key : r.type === "tpl" ? templateNameKey(r.tpl) : r.entry.key;
 }
 
 export function rowCatTextKey(r: Row): string {
-    return r.type === "screen" ? r.catKey : r.entry.catKey;
+    return r.type === "screen" ? r.catKey : r.type === "tpl" ? T.logEmpty : r.entry.catKey;
 }
 
 type WidgetSpec = Omit<SceneNode, "text"> & { readonly text?: string | mod.Message };
@@ -12937,22 +12982,23 @@ export type ScreenRow = { readonly type: "screen"; readonly id: string; readonly
 export type Row =
     | { readonly type: "sfx"; readonly entry: SfxEntry }
     | { readonly type: "spawn"; readonly entry: VfxEntry }
+    | { readonly type: "tpl"; readonly tpl: Template }
     | ScreenRow;
 
 export function rowKey(r: Row): string {
-    return r.type === "screen" ? "screen:" + r.id : r.entry.name;
+    return r.type === "screen" ? "screen:" + r.id : r.type === "tpl" ? "tpl" + r.tpl.n : r.entry.name;
 }
 
 export function rowDisplay(r: Row): string {
-    return r.type === "screen" ? r.display : r.entry.display;
+    return r.type === "screen" ? r.display : r.type === "tpl" ? templateName(r.tpl) : r.entry.display;
 }
 
 export function rowCategory(r: Row): string {
-    return r.type === "screen" ? r.category : r.entry.category;
+    return r.type === "screen" ? r.category : r.type === "tpl" ? "Template" : r.entry.category;
 }
 
 export function rowRawName(r: Row): string {
-    return r.type === "screen" ? r.display : r.entry.name;
+    return r.type === "screen" ? r.display : r.type === "tpl" ? templateName(r.tpl) : r.entry.name;
 }
 
 export interface FilterState {
@@ -12967,6 +13013,9 @@ export const NO_FILTERS: FilterState = { query: "", dim: "", kind: "", vfx: "" }
 export const MAX_QUERY = 24;
 
 function matches(r: Row, tab: Tab, f: FilterState): boolean {
+    // Templates are not sounds or effects, and FAVOURITES shows no filter chips,
+    // so a filter left on in SOUND or VISUAL must not hide them.
+    if (r.type === "tpl") return true;
     if (tab === "sfx") {
         if (r.type !== "sfx") return false;
         if (f.dim !== "" && r.entry.dim !== f.dim) return false;
@@ -13184,7 +13233,8 @@ export function favRows(ui: PlayerUi, f: FilterState): Row[] {
     const q = f.query.trim().toLowerCase();
     const out: Row[] = [];
     for (const key of ui.favourites) {
-        const r = findRow(key);
+        const tpl = key.startsWith("tpl") ? findTemplate(ui.tester, key) : undefined;
+        const r: Row | undefined = tpl !== undefined ? { type: "tpl", tpl: tpl } : findRow(key);
         if (r === undefined || r.type === "screen") continue;
         if (!matches(r, "vfx", f)) continue;
         if (!matchesQuery(r, q)) continue;
@@ -13382,8 +13432,39 @@ function sfxRowFields(ui: PlayerUi, e: SfxEntry, selected: boolean, armed: boole
     };
 }
 
+function tplRowFields(t: Template, selected: boolean): Scope {
+    const badge = t.kind === "music" ? P.green : P.violet;
+    return {
+        bg: selected ? P.rowSel : P.row,
+        name: K(templateNameKey(t)),
+        nameColor: selected ? P.ink : P.inkDim,
+        category: templateLine(t),
+        favLabel: K(T.favRemove),
+        favColor: P.amber,
+        favBg: P.rowSel,
+        stopLabel: K(T.stop),
+        stopColor: P.inkDim,
+        stopBg: P.panel,
+        playLabel: K(T.play),
+        playColor: "#FFFFFF",
+        playBg: badge,
+        actColor: "#FFFFFF",
+        actBg: badge,
+        b1: K(templateKindKey(t)),
+        b1Color: badge,
+        b1Bg: badge,
+        b2: mod.Message(T.logEmpty),
+        b2Color: P.row,
+        b2Bg: P.row,
+        selLabel: K(T.tplOpen),
+        selColor: P.ink,
+        selBg: P.row,
+    };
+}
+
 function vfxRowFields(ui: PlayerUi, r: Row, selected: boolean, armed: boolean, scale: number): Scope {
     if (r.type === "sfx") return sfxRowFields(ui, r.entry, selected, armed);
+    if (r.type === "tpl") return tplRowFields(r.tpl, selected);
     const world = r.type === "spawn";
     const b1c = world ? P.violet : P.green;
     const b2c = world ? P.blue : P.amber;
@@ -14391,6 +14472,10 @@ export interface TesterState {
     toAll: boolean;
     /** Tracks queued since the last CLEAR QUEUE, in order. The engine cannot be asked. */
     queue: RadioPick[];
+    /** Saved templates, in save order. Their keys ("tpl" + n) sit in the player's favourites. */
+    templates: Template[];
+    /** Number for the next template; never reused within a match. */
+    nextTemplate: number;
 }
 
 export interface RadioPick {
@@ -14405,7 +14490,7 @@ export function newTesterState(): TesterState {
         values[p.amp.name] = p.amp.def;
         for (const x of p.params) values[x.name] = x.def;
     }
-    return { pkg: 0, evt: MUSIC_TAB.map(defaultEventIndex), values: values, last: undefined, toAll: false, queue: [] };
+    return { pkg: 0, evt: MUSIC_TAB.map(defaultEventIndex), values: values, last: undefined, toAll: false, queue: [], templates: [], nextTemplate: 1 };
 }
 
 /** Called once from OnGameModeStarted: the docs advise loading early. */
@@ -14524,6 +14609,111 @@ function queueLine(st: TesterState): mod.Message {
     const q = st.queue[st.queue.length - 1];
     if (q === undefined) return mod.Message(T.mtQueueEmpty);
     return mod.Message(TPL.mtQueueCount, st.queue.length, stationKey(q.ch, q.biome), q.track);
+}
+
+// ---- Templates: a saved setup of one tab, listed in FAVOURITES.
+
+export interface MusicTemplate {
+    kind: "music";
+    n: number;
+    /** MusicPackageSpec.name, e.g. "Core". */
+    pkg: string;
+    /** MusicEventSpec.name, e.g. "Core_LastPhaseBegin". */
+    evt: string;
+    /** Every param of the package, and its amplitude, by MusicParams name. */
+    values: Record<string, number>;
+}
+
+export interface RadioTemplate {
+    kind: "radio";
+    n: number;
+    /** Every Radio param except the queue param, and Radio_Amplitude. */
+    values: Record<string, number>;
+    /** The tracks queued since the last CLEAR QUEUE, in order. */
+    queue: RadioPick[];
+}
+
+export type Template = MusicTemplate | RadioTemplate;
+
+function capture(tab: TesterTab, st: TesterState): Template {
+    const pkg = current(tab, st);
+    const values: Record<string, number> = {};
+    for (const p of pkg.params) if (!p.queues) values[p.name] = st.values[p.name];
+    values[pkg.amp.name] = st.values[pkg.amp.name];
+    if (tab === "radio") return { kind: "radio", n: 0, values: values, queue: st.queue.map((p) => ({ ch: p.ch, biome: p.biome, track: p.track })) };
+    return { kind: "music", n: 0, pkg: pkg.name, evt: pkg.events[st.evt[st.pkg]].name, values: values };
+}
+
+/** Content only: two templates with the same signature are the same setup. */
+function signature(t: Template): string {
+    return JSON.stringify({ ...t, n: 0 });
+}
+
+/** Saves the tab's setup, unless an identical template exists (then returns that one). */
+export function saveTemplate(tab: TesterTab, st: TesterState): { tpl: Template; added: boolean } {
+    const t = capture(tab, st);
+    const sig = signature(t);
+    for (const old of st.templates) if (signature(old) === sig) return { tpl: old, added: false };
+    t.n = st.nextTemplate++;
+    st.templates.push(t);
+    log("template: saved " + templateExportLine(t));
+    return { tpl: t, added: true };
+}
+
+export function templateKey(t: Template): string {
+    return "tpl" + t.n;
+}
+
+export function findTemplate(st: TesterState, key: string): Template | undefined {
+    for (const t of st.templates) if (templateKey(t) === key) return t;
+    return undefined;
+}
+
+function musicPkg(t: MusicTemplate): MusicPackageSpec {
+    return pkgNamed(t.pkg);
+}
+
+function musicEvt(t: MusicTemplate): MusicEventSpec {
+    for (const e of musicPkg(t).events) if (e.name === t.evt) return e;
+    throw new Error("template event missing from music.gen.ts: " + t.evt);
+}
+
+/** The station a radio template is about: its first queued track, else its channel setting. */
+function radioStation(t: RadioTemplate): { ch: number; biome: number } {
+    const first = t.queue[0];
+    if (first !== undefined) return first;
+    return { ch: Math.round(t.values["Radio_Channel"] ?? 0), biome: Math.round(t.values["Radio_Biome"] ?? 0) };
+}
+
+function stationText(ch: number, biome: number): string {
+    return (ch === 4 ? RADIO_TEXT.biomes[biome] : RADIO_TEXT.channels[ch]) ?? "?";
+}
+
+/** Plain-text name: the event, or the station. Used by search. */
+export function templateName(t: Template): string {
+    if (t.kind === "music") return t.evt;
+    const s = radioStation(t);
+    return stationText(s.ch, s.biome);
+}
+
+/** strings key of the row's name text. */
+export function templateNameKey(t: Template): string {
+    if (t.kind === "music") return musicEvt(t).key;
+    const s = radioStation(t);
+    return stationKey(s.ch, s.biome);
+}
+
+/** The row's second line. */
+export function templateLine(t: Template): mod.Message {
+    return t.kind === "music" ? mod.Message(TPL.tplMusicOf, t.n) : mod.Message(TPL.tplRadioOf, t.n, t.queue.length);
+}
+
+export function templateKindKey(t: Template): string {
+    return t.kind === "music" ? T.kindMusic : T.kindRadio;
+}
+
+export function templateExportLine(t: Template): string {
+    return (t.kind === "music" ? "MUSIC" : "RADIO") + " TEMPLATE " + t.n;
 }
 
 /**
@@ -15233,10 +15423,10 @@ const STEPPER = /^(btn(Amp|Rng|Scale)(Up|Down)|mtP\d(Up|Down)|mtVol(Up|Down))$/;
  * The sound for a click on `action`, or undefined for none. PLAY buttons (the
  * row's P and the tester's PLAY) are silent so the click never covers the sound
  * being tested; the favourite toggle picks its own sound once it knows the new
- * state.
+ * state, and SAVE TEMPLATE plays its own "on" sound.
  */
 export function clickSound(action: string): mod.RuntimeSpawn_Common | undefined {
-    if (action === "mtPlay" || /^r\d+_(play|fav)$/.test(action)) return undefined;
+    if (action === "mtPlay" || action === "mtSave" || /^r\d+_(play|fav)$/.test(action)) return undefined;
     if (action === "btnClose") return UI_SOUND.close;
     if (action.slice(0, 3) === "tab") return UI_SOUND.tab;
     if (STEPPER.test(action)) return UI_SOUND.step;
@@ -15457,6 +15647,16 @@ function handle(st: PlayerState, action: string): void {
             `dim=${ui.fDim} kind=${ui.fKind} vfx=${ui.fVfx} amp=${ui.amp} rng=${ui.rng} scale=${ui.scale}`
     );
 
+    // SAVE TEMPLATE: the tab's setup into FAVOURITES. Never greyed out -- saving
+    // sends nothing to the engine, so the package does not need to be loaded.
+    if (action === "mtSave" && isTesterTab(ui.tab)) {
+        const r = saveTemplate(ui.tab, ui.tester);
+        if (r.added) ui.favourites.push(templateKey(r.tpl));
+        playUiSound(ui.player, UI_SOUND.on);
+        mod.DisplayNotificationMessage(mod.Message(r.added ? TPL.tplSaved : TPL.tplExists, templateKindKey(r.tpl), r.tpl.n), ui.player);
+        defer(st);
+        return;
+    }
     // MUSIC / RADIO buttons that need their package loaded are greyed out until
     // it is; a click on one sends nothing and says what to load.
     const unloaded = isTesterTab(ui.tab) && action.slice(0, 2) === "mt" ? needsLoad(ui.tab, ui.tester, action) : undefined;
@@ -15943,7 +16143,8 @@ Events.OnRayCastHit.subscribe((player: mod.Player, point: mod.Vector, _normal: m
     const st = states[mod.GetObjId(player)];
     if (st === undefined) return;
     const armed = findRow(st.ui.armedKey);
-    if (armed === undefined) return;
+    // A template is never armed: its SELECT button is OPEN.
+    if (armed === undefined || armed.type === "tpl") return;
 
     if (armed.type === "sfx") {
         spawnSfx(st, armed.entry, point);

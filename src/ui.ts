@@ -38,7 +38,7 @@ import { CATEGORY_TEXT as CAT_TEXT, SFX_CATALOG, SFX_PREFIXES, VFX_CATALOG, VFX_
 import { FILTERS, GRID, KEYBOARD, PALETTE, RAIL, RAIL_PAGER, RAIL_ROW, ROW, SCREEN, type SceneNode } from "./scene.gen";
 import { CHAR_KEY, SCENE_TEXT, T, TPL } from "./text.gen";
 import { debugEnabled, log, reportMissingKey } from "./diag";
-import { testerFields, type TesterState } from "./tester";
+import { findTemplate, templateKindKey, templateLine, templateName, templateNameKey, testerFields, type Template, type TesterState } from "./tester";
 import { UI } from "bf6-portal-utils/ui";
 import { UIContainer } from "bf6-portal-utils/ui/components/container";
 import { UIText } from "bf6-portal-utils/ui/components/text";
@@ -82,11 +82,11 @@ export function msgFor(t: string | number | mod.Message): mod.Message {
 }
 
 export function rowTextKey(r: Row): string {
-    return r.type === "screen" ? r.key : r.entry.key;
+    return r.type === "screen" ? r.key : r.type === "tpl" ? templateNameKey(r.tpl) : r.entry.key;
 }
 
 export function rowCatTextKey(r: Row): string {
-    return r.type === "screen" ? r.catKey : r.entry.catKey;
+    return r.type === "screen" ? r.catKey : r.type === "tpl" ? T.logEmpty : r.entry.catKey;
 }
 
 type WidgetSpec = Omit<SceneNode, "text"> & { readonly text?: string | mod.Message };
@@ -110,22 +110,23 @@ export type ScreenRow = { readonly type: "screen"; readonly id: string; readonly
 export type Row =
     | { readonly type: "sfx"; readonly entry: SfxEntry }
     | { readonly type: "spawn"; readonly entry: VfxEntry }
+    | { readonly type: "tpl"; readonly tpl: Template }
     | ScreenRow;
 
 export function rowKey(r: Row): string {
-    return r.type === "screen" ? "screen:" + r.id : r.entry.name;
+    return r.type === "screen" ? "screen:" + r.id : r.type === "tpl" ? "tpl" + r.tpl.n : r.entry.name;
 }
 
 export function rowDisplay(r: Row): string {
-    return r.type === "screen" ? r.display : r.entry.display;
+    return r.type === "screen" ? r.display : r.type === "tpl" ? templateName(r.tpl) : r.entry.display;
 }
 
 export function rowCategory(r: Row): string {
-    return r.type === "screen" ? r.category : r.entry.category;
+    return r.type === "screen" ? r.category : r.type === "tpl" ? "Template" : r.entry.category;
 }
 
 export function rowRawName(r: Row): string {
-    return r.type === "screen" ? r.display : r.entry.name;
+    return r.type === "screen" ? r.display : r.type === "tpl" ? templateName(r.tpl) : r.entry.name;
 }
 
 export interface FilterState {
@@ -140,6 +141,9 @@ export const NO_FILTERS: FilterState = { query: "", dim: "", kind: "", vfx: "" }
 export const MAX_QUERY = 24;
 
 function matches(r: Row, tab: Tab, f: FilterState): boolean {
+    // Templates are not sounds or effects, and FAVOURITES shows no filter chips,
+    // so a filter left on in SOUND or VISUAL must not hide them.
+    if (r.type === "tpl") return true;
     if (tab === "sfx") {
         if (r.type !== "sfx") return false;
         if (f.dim !== "" && r.entry.dim !== f.dim) return false;
@@ -357,7 +361,8 @@ export function favRows(ui: PlayerUi, f: FilterState): Row[] {
     const q = f.query.trim().toLowerCase();
     const out: Row[] = [];
     for (const key of ui.favourites) {
-        const r = findRow(key);
+        const tpl = key.startsWith("tpl") ? findTemplate(ui.tester, key) : undefined;
+        const r: Row | undefined = tpl !== undefined ? { type: "tpl", tpl: tpl } : findRow(key);
         if (r === undefined || r.type === "screen") continue;
         if (!matches(r, "vfx", f)) continue;
         if (!matchesQuery(r, q)) continue;
@@ -555,8 +560,39 @@ function sfxRowFields(ui: PlayerUi, e: SfxEntry, selected: boolean, armed: boole
     };
 }
 
+function tplRowFields(t: Template, selected: boolean): Scope {
+    const badge = t.kind === "music" ? P.green : P.violet;
+    return {
+        bg: selected ? P.rowSel : P.row,
+        name: K(templateNameKey(t)),
+        nameColor: selected ? P.ink : P.inkDim,
+        category: templateLine(t),
+        favLabel: K(T.favRemove),
+        favColor: P.amber,
+        favBg: P.rowSel,
+        stopLabel: K(T.stop),
+        stopColor: P.inkDim,
+        stopBg: P.panel,
+        playLabel: K(T.play),
+        playColor: "#FFFFFF",
+        playBg: badge,
+        actColor: "#FFFFFF",
+        actBg: badge,
+        b1: K(templateKindKey(t)),
+        b1Color: badge,
+        b1Bg: badge,
+        b2: mod.Message(T.logEmpty),
+        b2Color: P.row,
+        b2Bg: P.row,
+        selLabel: K(T.tplOpen),
+        selColor: P.ink,
+        selBg: P.row,
+    };
+}
+
 function vfxRowFields(ui: PlayerUi, r: Row, selected: boolean, armed: boolean, scale: number): Scope {
     if (r.type === "sfx") return sfxRowFields(ui, r.entry, selected, armed);
+    if (r.type === "tpl") return tplRowFields(r.tpl, selected);
     const world = r.type === "spawn";
     const b1c = world ? P.violet : P.green;
     const b2c = world ? P.blue : P.amber;

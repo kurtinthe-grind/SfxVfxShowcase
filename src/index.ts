@@ -11,7 +11,7 @@ import { Timers } from "bf6-portal-utils/timers";
 import { SFX_CATALOG, SFX_CATEGORIES, SFX_PREFIXES, type SfxEntry, VFX_CATALOG, VFX_CATEGORIES, VFX_PREFIXES } from "./catalog";
 import { CONFIG } from "./config";
 import { debugEnabled, initLog, log, logAlways, setDebug } from "./diag";
-import { handleTesterAction, loadStartupMusic, needsLoad, newTesterState } from "./tester";
+import { handleTesterAction, loadStartupMusic, needsLoad, newTesterState, saveTemplate, templateKey, templateKindKey } from "./tester";
 import { T, TPL } from "./text.gen";
 import { clickSound, playUiSound, UI_SOUND } from "./uisound";
 import {
@@ -229,6 +229,16 @@ function handle(st: PlayerState, action: string): void {
             `dim=${ui.fDim} kind=${ui.fKind} vfx=${ui.fVfx} amp=${ui.amp} rng=${ui.rng} scale=${ui.scale}`
     );
 
+    // SAVE TEMPLATE: the tab's setup into FAVOURITES. Never greyed out -- saving
+    // sends nothing to the engine, so the package does not need to be loaded.
+    if (action === "mtSave" && isTesterTab(ui.tab)) {
+        const r = saveTemplate(ui.tab, ui.tester);
+        if (r.added) ui.favourites.push(templateKey(r.tpl));
+        playUiSound(ui.player, UI_SOUND.on);
+        mod.DisplayNotificationMessage(mod.Message(r.added ? TPL.tplSaved : TPL.tplExists, templateKindKey(r.tpl), r.tpl.n), ui.player);
+        defer(st);
+        return;
+    }
     // MUSIC / RADIO buttons that need their package loaded are greyed out until
     // it is; a click on one sends nothing and says what to load.
     const unloaded = isTesterTab(ui.tab) && action.slice(0, 2) === "mt" ? needsLoad(ui.tab, ui.tester, action) : undefined;
@@ -715,7 +725,8 @@ Events.OnRayCastHit.subscribe((player: mod.Player, point: mod.Vector, _normal: m
     const st = states[mod.GetObjId(player)];
     if (st === undefined) return;
     const armed = findRow(st.ui.armedKey);
-    if (armed === undefined) return;
+    // A template is never armed: its SELECT button is OPEN.
+    if (armed === undefined || armed.type === "tpl") return;
 
     if (armed.type === "sfx") {
         spawnSfx(st, armed.entry, point);

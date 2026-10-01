@@ -180,7 +180,7 @@ function testerSample(tab) {
     mtEventDesc: radio ? LABEL.mtRadioHelp : MUSIC_DESC["Core_PhaseEnded"],
     mtParamNote: LABEL.mtNoteParams,
     mtVol: radio ? "1" : "1.3",
-    mtLast: radio ? "SetMusicParam(Radio_QueueTrackNumber, 2)" : "PlayMusic(Core_PhaseEnded)",
+    mtLast: radio ? "SetMusicParam(Radio_ContinueQueueOnTrackEnd, 1)" : "PlayMusic(Core_PhaseEnded)",
     mtLoadLabel: radio ? "LOAD RADIO" : "CORE LOADED",
     mtLoadBg: radio ? P.amber : P.green,
     mtTargetLabel: "FOR: ME",

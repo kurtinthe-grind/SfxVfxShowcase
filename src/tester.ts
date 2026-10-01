@@ -33,7 +33,7 @@ import { CONFIG } from "./config";
 import { log } from "./diag";
 import { MUSIC_PACKAGES, PARAM_SLOTS, type MusicEventSpec, type MusicPackageSpec, type MusicParamSpec } from "./music.gen";
 import { PALETTE } from "./scene.gen";
-import { T, TPL } from "./text.gen";
+import { RADIO_TEXT, T, TPL } from "./text.gen";
 import type { Scope } from "./ui";
 
 export type TesterTab = "music" | "radio";
@@ -128,6 +128,10 @@ export interface TesterState {
     toAll: boolean;
     /** Tracks queued since the last CLEAR QUEUE, in order. The engine cannot be asked. */
     queue: RadioPick[];
+    /** Saved templates, in save order. Their keys ("tpl" + n) sit in the player's favourites. */
+    templates: Template[];
+    /** Number for the next template; never reused within a match. */
+    nextTemplate: number;
 }
 
 export interface RadioPick {
@@ -142,7 +146,7 @@ export function newTesterState(): TesterState {
         values[p.amp.name] = p.amp.def;
         for (const x of p.params) values[x.name] = x.def;
     }
-    return { pkg: 0, evt: MUSIC_TAB.map(defaultEventIndex), values: values, last: undefined, toAll: false, queue: [] };
+    return { pkg: 0, evt: MUSIC_TAB.map(defaultEventIndex), values: values, last: undefined, toAll: false, queue: [], templates: [], nextTemplate: 1 };
 }
 
 /** Called once from OnGameModeStarted: the docs advise loading early. */
@@ -261,6 +265,111 @@ function queueLine(st: TesterState): mod.Message {
     const q = st.queue[st.queue.length - 1];
     if (q === undefined) return mod.Message(T.mtQueueEmpty);
     return mod.Message(TPL.mtQueueCount, st.queue.length, stationKey(q.ch, q.biome), q.track);
+}
+
+// ---- Templates: a saved setup of one tab, listed in FAVOURITES.
+
+export interface MusicTemplate {
+    kind: "music";
+    n: number;
+    /** MusicPackageSpec.name, e.g. "Core". */
+    pkg: string;
+    /** MusicEventSpec.name, e.g. "Core_LastPhaseBegin". */
+    evt: string;
+    /** Every param of the package, and its amplitude, by MusicParams name. */
+    values: Record<string, number>;
+}
+
+export interface RadioTemplate {
+    kind: "radio";
+    n: number;
+    /** Every Radio param except the queue param, and Radio_Amplitude. */
+    values: Record<string, number>;
+    /** The tracks queued since the last CLEAR QUEUE, in order. */
+    queue: RadioPick[];
+}
+
+export type Template = MusicTemplate | RadioTemplate;
+
+function capture(tab: TesterTab, st: TesterState): Template {
+    const pkg = current(tab, st);
+    const values: Record<string, number> = {};
+    for (const p of pkg.params) if (!p.queues) values[p.name] = st.values[p.name];
+    values[pkg.amp.name] = st.values[pkg.amp.name];
+    if (tab === "radio") return { kind: "radio", n: 0, values: values, queue: st.queue.map((p) => ({ ch: p.ch, biome: p.biome, track: p.track })) };
+    return { kind: "music", n: 0, pkg: pkg.name, evt: pkg.events[st.evt[st.pkg]].name, values: values };
+}
+
+/** Content only: two templates with the same signature are the same setup. */
+function signature(t: Template): string {
+    return JSON.stringify({ ...t, n: 0 });
+}
+
+/** Saves the tab's setup, unless an identical template exists (then returns that one). */
+export function saveTemplate(tab: TesterTab, st: TesterState): { tpl: Template; added: boolean } {
+    const t = capture(tab, st);
+    const sig = signature(t);
+    for (const old of st.templates) if (signature(old) === sig) return { tpl: old, added: false };
+    t.n = st.nextTemplate++;
+    st.templates.push(t);
+    log("template: saved " + templateExportLine(t));
+    return { tpl: t, added: true };
+}
+
+export function templateKey(t: Template): string {
+    return "tpl" + t.n;
+}
+
+export function findTemplate(st: TesterState, key: string): Template | undefined {
+    for (const t of st.templates) if (templateKey(t) === key) return t;
+    return undefined;
+}
+
+function musicPkg(t: MusicTemplate): MusicPackageSpec {
+    return pkgNamed(t.pkg);
+}
+
+function musicEvt(t: MusicTemplate): MusicEventSpec {
+    for (const e of musicPkg(t).events) if (e.name === t.evt) return e;
+    throw new Error("template event missing from music.gen.ts: " + t.evt);
+}
+
+/** The station a radio template is about: its first queued track, else its channel setting. */
+function radioStation(t: RadioTemplate): { ch: number; biome: number } {
+    const first = t.queue[0];
+    if (first !== undefined) return first;
+    return { ch: Math.round(t.values["Radio_Channel"] ?? 0), biome: Math.round(t.values["Radio_Biome"] ?? 0) };
+}
+
+function stationText(ch: number, biome: number): string {
+    return (ch === 4 ? RADIO_TEXT.biomes[biome] : RADIO_TEXT.channels[ch]) ?? "?";
+}
+
+/** Plain-text name: the event, or the station. Used by search. */
+export function templateName(t: Template): string {
+    if (t.kind === "music") return t.evt;
+    const s = radioStation(t);
+    return stationText(s.ch, s.biome);
+}
+
+/** strings key of the row's name text. */
+export function templateNameKey(t: Template): string {
+    if (t.kind === "music") return musicEvt(t).key;
+    const s = radioStation(t);
+    return stationKey(s.ch, s.biome);
+}
+
+/** The row's second line. */
+export function templateLine(t: Template): mod.Message {
+    return t.kind === "music" ? mod.Message(TPL.tplMusicOf, t.n) : mod.Message(TPL.tplRadioOf, t.n, t.queue.length);
+}
+
+export function templateKindKey(t: Template): string {
+    return t.kind === "music" ? T.kindMusic : T.kindRadio;
+}
+
+export function templateExportLine(t: Template): string {
+    return (t.kind === "music" ? "MUSIC" : "RADIO") + " TEMPLATE " + t.n;
 }
 
 /**

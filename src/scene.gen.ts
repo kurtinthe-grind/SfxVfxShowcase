@@ -1863,13 +1863,42 @@ export const SCREEN: readonly SceneNode[] = [
         "id": "mtLast",
         "x": 736,
         "y": 756,
-        "w": 718,
+        "w": 448,
         "h": 48,
         "text": "{{f.mtLast}}",
-        "textSize": 20,
+        "textSize": 16,
         "bind": {
             "text": "mtLast"
         }
+    },
+    {
+        "k": "textbutton",
+        "y": 756,
+        "w": 260,
+        "h": 48,
+        "textSize": 15,
+        "textColor": "#FFFFFF",
+        "bgAlpha": 1,
+        "align": "Center",
+        "fill": "Solid",
+        "parent": "tester",
+        "id": "mtSave",
+        "x": 1194,
+        "text": "SAVE TEMPLATE",
+        "bg": "{{sh.blue}}"
+    },
+    {
+        "k": "text",
+        "textAlpha": 1,
+        "align": "Center",
+        "color": "{{sh.muted}}",
+        "parent": "tester",
+        "x": 1194,
+        "y": 810,
+        "w": 260,
+        "h": 30,
+        "text": "Saves to FAVOURITES.",
+        "textSize": 12
     },
     {
         "k": "text",
@@ -1879,7 +1908,7 @@ export const SCREEN: readonly SceneNode[] = [
         "parent": "tester",
         "x": 736,
         "y": 810,
-        "w": 718,
+        "w": 448,
         "h": 30,
         "text": "The last call sent. The game cannot report what is playing.",
         "textSize": 12
@@ -2240,6 +2269,7 @@ export const NODE_ACTIONS: readonly string[] = [
     "mtPlay",
     "mtPrev",
     "mtQueue",
+    "mtSave",
     "mtStop",
     "mtTarget",
     "mtVolDown",

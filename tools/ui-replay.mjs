@@ -186,6 +186,25 @@ export async function replay(source) {
             if (hits.length !== 1) throw new Error(`${hits.length} visible text widgets at ${want} for "${id}", expected 1`);
             return JSON.parse(hits[0].slice(6).join("|")).msg;
         },
+        /** Visible text widgets (ancestors included), top to bottom then left to right. */
+        visibleTexts() {
+            const { w, shown, abs } = widgetTree(calls);
+            return Object.keys(w)
+                .filter((n) => w[n].kind === "AddUIText" && w[n].msg !== undefined && shown(n))
+                .map((n) => {
+                    const [x, y] = abs(n);
+                    return { name: n, parent: w[n].parent, msg: w[n].msg, x: x, y: y };
+                })
+                .sort((a, b) => a.y - b.y || a.x - b.x);
+        },
+        /** Clicks the nth visible text button (top to bottom) whose label key is `key`. */
+        clickText(key, nth = 0) {
+            const buttons = new Set(calls.filter((c) => c.name === "AddUIButton").map((c) => c.args[0]));
+            const hits = session.visibleTexts().filter((t) => t.msg[0] === key && buttons.has(t.parent + "_b"));
+            const hit = hits[nth];
+            if (hit === undefined) throw new Error(`no visible button #${nth} labelled ${key} (${hits.length} found)`);
+            M.OnPlayerUIButtonEvent(player, { widget: hit.parent + "_b" }, "UIButtonEvent.ButtonUp");
+        },
         dispose() {
             globalThis.mod = prevMod;
             globalThis.console = prevConsole;
@@ -194,6 +213,39 @@ export async function replay(source) {
         },
     };
     return session;
+}
+
+/**
+ * Every widget's final state, with its absolute position and whether it and all
+ * its ancestors are visible. Positions in Portal are relative to the parent.
+ */
+function widgetTree(calls) {
+    const w = {};
+    for (const c of calls) {
+        if (/^AddUI/.test(c.name)) {
+            w[c.args[0]] = { kind: c.name, parent: c.args[4]?.widget, pos: c.args[1].v, vis: c.args[5], msg: c.name === "AddUIText" ? c.args[10]?.msg : undefined };
+            continue;
+        }
+        const n = c.args[0]?.widget;
+        if (n === undefined || w[n] === undefined) continue;
+        if (c.name === "SetUIWidgetVisible") w[n].vis = c.args[1];
+        else if (c.name === "SetUITextLabel") w[n].msg = c.args[1]?.msg;
+        else if (c.name === "SetUIWidgetPosition") w[n].pos = c.args[1].v;
+    }
+    const shown = (n) => {
+        for (let p = n; p !== undefined && w[p] !== undefined; p = w[p].parent) if (!w[p].vis) return false;
+        return true;
+    };
+    const abs = (n) => {
+        let x = 0;
+        let y = 0;
+        for (let p = n; p !== undefined && w[p] !== undefined; p = w[p].parent) {
+            x += w[p].pos[0];
+            y += w[p].pos[1];
+        }
+        return [x, y];
+    };
+    return { w, shown, abs };
 }
 
 /** Engine widgets created per render pass, in order, for one phase. */

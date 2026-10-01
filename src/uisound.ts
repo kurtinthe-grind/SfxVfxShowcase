@@ -30,10 +30,10 @@ const STEPPER = /^(btn(Amp|Rng|Scale)(Up|Down)|mtP\d(Up|Down)|mtVol(Up|Down))$/;
  * The sound for a click on `action`, or undefined for none. PLAY buttons (the
  * row's P and the tester's PLAY) are silent so the click never covers the sound
  * being tested; the favourite toggle picks its own sound once it knows the new
- * state.
+ * state, and SAVE TEMPLATE plays its own "on" sound.
  */
 export function clickSound(action: string): mod.RuntimeSpawn_Common | undefined {
-    if (action === "mtPlay" || /^r\d+_(play|fav)$/.test(action)) return undefined;
+    if (action === "mtPlay" || action === "mtSave" || /^r\d+_(play|fav)$/.test(action)) return undefined;
     if (action === "btnClose") return UI_SOUND.close;
     if (action.slice(0, 3) === "tab") return UI_SOUND.tab;
     if (STEPPER.test(action)) return UI_SOUND.step;

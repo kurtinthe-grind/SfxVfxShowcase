@@ -136,6 +136,10 @@ const STATIC = {
     mtQueueStale: "The queue holds tracks from another station. CLEAR QUEUE, then queue tracks here.",
     // Under RADIO STATION while nothing has been queued since CLEAR QUEUE.
     mtQueueEmpty: "QUEUE: empty. Pick a track number, then press QUEUE TRACK.",
+    // Template rows in FAVOURITES: type badge and the button that opens one.
+    kindMusic: "MUSIC",
+    kindRadio: "RADIO",
+    tplOpen: "OPEN",
     // Radio_Channel / Radio_Biome values, from the MusicParams JSDoc.
     radioCh0: "Hip Hop",
     radioCh1: "Rock",
@@ -210,6 +214,12 @@ const TEMPLATES = {
     mtRadioNote: "CHANNEL {} = {}    BIOME = {} (channel 4 only)",
     // Notification for a greyed-out button: package, package.
     mtLoadFirst: "{} is not loaded. Press LOAD {} first.",
+    // Template rows' second line, and the SAVE TEMPLATE notifications.
+    tplMusicOf: "MUSIC TEMPLATE {}",
+    tplRadioOf: "RADIO TEMPLATE {} - {} tracks",
+    // kind (MUSIC / RADIO), number.
+    tplSaved: "Saved as {} TEMPLATE {}",
+    tplExists: "Already saved as {} TEMPLATE {}",
     // count, station, track number of the last track queued.
     mtQueueCount: "QUEUE: {} track(s). Last added: {} #{}",
 };
@@ -333,6 +343,12 @@ L.push("");
 L.push("/** strings.json key for each curated label. */");
 L.push("export const T = {");
 for (const [name, key] of Object.entries(staticKeys)) L.push(`    ${name}: ${q(key)},`);
+L.push("} as const;");
+L.push("");
+L.push("/** Plain text of the radio stations, for log lines (EXPORT). Index = Radio_Channel / Radio_Biome. */");
+L.push("export const RADIO_TEXT = {");
+L.push("    channels: [" + [0, 1, 2, 3, 4, 5, 6].map((i) => q(STATIC["radioCh" + i])).join(", ") + "],");
+L.push("    biomes: [" + [0, 1, 2, 3, 4, 5, 6].map((i) => q(STATIC["radioBiome" + i])).join(", ") + "],");
 L.push("} as const;");
 L.push("");
 L.push("/** Format templates, for composed strings. */");

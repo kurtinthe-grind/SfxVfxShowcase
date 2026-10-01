@@ -72,6 +72,12 @@ function descOf(name) {
     if (m === null) throw new Error(`music.gen.ts has no description for ${name}`);
     return m[1];
 }
+/** The strings key music.gen.ts gave an event's name. */
+function eventKey(name) {
+    const m = new RegExp(`name: "${name}", event: [^,]+, key: "(\\w+)"`).exec(MUSIC_GEN);
+    if (m === null) throw new Error(`music.gen.ts has no event ${name}`);
+    return m[1];
+}
 /** The strings key of a curated label in text.gen.ts (T.<field>). */
 function labelKey(field) {
     const m = new RegExp(`\\b${field}: "(\\w+)"`).exec(TEXT_GEN);
@@ -97,6 +103,13 @@ function showsMsg(phase, id, want) {
     } catch (e) {
         problems.push(`${phase}: ${id}: ${e.message}`);
     }
+}
+/** Visible messages whose key is `key`, as JSON, top to bottom. */
+function rowsWith(key) {
+    return s.visibleTexts().filter((t) => t.msg[0] === key).map((t) => JSON.stringify(t.msg));
+}
+function check(phase, cond, what) {
+    if (!cond) problems.push(`${phase}: ${what}`);
 }
 function showsParams(phase, names) {
     names.forEach((n, i) => shows(phase, "mtP" + i + "Desc", () => descOf(n)));
@@ -297,6 +310,41 @@ try {
     showsMsg("queue wraps", "mtEventIdx", () => [labelKey("mtQueueCount"), 2, labelKey("radioCh3"), 0]);
     await step("radio stop", () => s.clickId("mtStop"));
     expect("radio stop", ["PlayMusic(MusicEvents.Radio_Stop, player)"]);
+
+    // ---- Templates. Radio is loaded and on screen: channel 3 (Reggaeton), queue
+    // [#1, #0] on channel 3, continue 1, loop 1, volume 1.
+    await step("save radio", () => s.clickId("mtSave"));
+    expect("save radio", []);
+    expectSounds("save radio", ["MenuNavigation_Default_ToggleOn"]);
+    check("save radio", notified("save radio").join() === labelKey("tplSaved"), `notifications ${JSON.stringify(notified("save radio"))}`);
+    // The same setup again adds nothing and names the existing template.
+    await step("save radio again", () => s.clickId("mtSave"));
+    check("save radio again", notified("save radio again").join() === labelKey("tplExists"), `notifications ${JSON.stringify(notified("save radio again"))}`);
+
+    // MUSIC still shows BR / BR_InsertionJump, lobby timer 10, volume 1.
+    await step("tab music again", () => s.click("MUSIC"));
+    await step("save music", () => s.clickId("mtSave"));
+    check("save music", notified("save music").join() === labelKey("tplSaved"), "expected one tplSaved");
+
+    await step("tab fav", () => s.click("FAVOURITES"));
+    const radioRows = rowsWith(labelKey("tplRadioOf"));
+    const musicRows = rowsWith(labelKey("tplMusicOf"));
+    check("tab fav", radioRows.join() === JSON.stringify([labelKey("tplRadioOf"), 1, 2]), `radio template rows ${radioRows.join(" ; ")}`);
+    check("tab fav", musicRows.join() === JSON.stringify([labelKey("tplMusicOf"), 2]), `music template rows ${musicRows.join(" ; ")}`);
+    check("tab fav", rowsWith(eventKey("BR_InsertionJump")).length === 1, "music template row does not name BR_InsertionJump");
+    check("tab fav", rowsWith(labelKey("radioCh3")).length >= 1, "radio template row does not name Reggaeton");
+    check("tab fav", rowsWith(labelKey("kindRadio")).length === 1 && rowsWith(labelKey("kindMusic")).length === 1, "type badges");
+    check("tab fav", rowsWith(labelKey("tplOpen")).length === 2, "two OPEN buttons");
+
+    // FAVOURITES shows no filter chips, so a filter left on in VISUAL must not
+    // hide templates there.
+    await step("filter on", () => s.click("VISUAL"));
+    await step("filter on", () => s.clickText(labelKey("chipWorld")));
+    await step("filter on", () => s.click("FAVOURITES"));
+    check("filter on", rowsWith(labelKey("tplOpen")).length === 2, "a VISUAL filter hid the templates");
+    await step("filter off", () => s.click("VISUAL"));
+    await step("filter off", () => s.clickText(labelKey("chipWorld")));
+    await step("filter off", () => s.click("FAVOURITES"));
 
     // Back on a browser tab the tester must be gone and the browser back.
     await step("tab sound", () => s.click("SOUND"));
