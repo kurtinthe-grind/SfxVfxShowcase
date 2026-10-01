@@ -19,26 +19,32 @@ export const logging = new Logging("SfxVfxShowcase");
 let installed = false;
 
 /**
- * Whether diagnostics reach the console. On by default: the controller crash
- * investigation needs a log from the very first menu open, before anyone can
- * reach the DEBUG button. The button still turns it off.
+ * Whether diagnostics reach the console. Off by default: a player who never asked
+ * for a log does not get one. The DEBUG button in the header turns it on.
  */
-let debug = true;
+let debug = false;
 
 export function debugEnabled(): boolean {
     return debug;
 }
 
+const sink = (text: string): void => console.log(text);
+
+/** bf6-portal-utils/ui logs everything while DEBUG is on, only warnings and errors while off. */
+function applyUiLogLevel(): void {
+    UI.setLogging(sink, debug ? Logging.LogLevel.Debug : Logging.LogLevel.Warning, true);
+}
+
 export function setDebug(on: boolean): void {
     debug = on;
+    if (installed) applyUiLogLevel();
 }
 
 export function initLog(): void {
     if (installed) return;
     installed = true;
-    const sink = (text: string): void => console.log(text);
     logging.setLogging(sink, Logging.LogLevel.Debug, true);
-    UI.setLogging(sink, Logging.LogLevel.Debug, true);
+    applyUiLogLevel();
 }
 
 export function log(text: string): void {

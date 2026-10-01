@@ -168,6 +168,16 @@ try {
     expect("after load", []);
     await step("open", () => s.aim());
     expectSounds("open", ["Submenu_Open"]);
+    // DEBUG starts off: until it is switched on, the mod writes nothing to the
+    // log (a player who never asked for a log should not get one).
+    const modLines = () => s.logs.filter((l) => l.includes("<SfxVfxShowcase>"));
+    check("open", modLines().length === 0, `DEBUG is on by default; logged: ${modLines().slice(0, 3).join(" | ")}`);
+    await step("debug on", () => s.clickId("btnDebug"));
+    await step("debug on", () => s.click("MUSIC"));
+    check("debug on", modLines().some((l) => l.includes("button: tabMusic")), "DEBUG ON did not start the log");
+    // Every music call from here on must be logged (checked at the end).
+    const callsFrom = s.calls.length;
+    const logsFrom = s.logs.length;
     await step("tab music", () => s.click("MUSIC"));
     expect("tab music", []);
     expectSounds("tab music", ["EOR_NavigationTab"]);
@@ -472,8 +482,8 @@ try {
 
     // Every music call must leave a log line: on 2026-10-01 the tester played
     // nothing in game and the log could not say what had been sent.
-    const sent = s.calls.filter((c) => MUSIC_CALL.test(c.name)).length;
-    const logged = s.logs.filter((l) => /music: (LoadMusic|UnloadMusic|PlayMusic|SetMusicParam)\(/.test(l)).length;
+    const sent = s.calls.slice(callsFrom).filter((c) => MUSIC_CALL.test(c.name)).length;
+    const logged = s.logs.slice(logsFrom).filter((l) => /music: (LoadMusic|UnloadMusic|PlayMusic|SetMusicParam)\(/.test(l)).length;
     if (sent !== logged) problems.push(`${sent} music calls were made but ${logged} were logged`);
 } finally {
     s.dispose();
@@ -484,4 +494,4 @@ if (problems.length > 0) {
     for (const p of problems) console.error("    - " + p);
     process.exit(1);
 }
-console.log("  tester  : Core loaded at start, PLAY / QUEUE TRACK load the package exclusively and hold, music params live only while playing, ME/EVERYONE overloads, PLAY re-sends params, clamping, track number within the station, stop, radio queue + transport, queue read-out and auto-advance, no notifications, UI sounds, every call logged");
+console.log("  tester  : Core loaded at start, PLAY / QUEUE TRACK load the package exclusively and hold, music params live only while playing, ME/EVERYONE overloads, PLAY re-sends params, clamping, track number within the station, stop, radio queue + transport, queue read-out and auto-advance, no notifications, UI sounds, DEBUG off by default, every call logged once it is on");

@@ -85,6 +85,9 @@ try {
     await s.ticks(40);
     s.aim();
     await s.ticks(40);
+    // DEBUG starts off; switch it on so an UNHANDLED ACTION would reach the log.
+    s.clickId("btnDebug");
+    await s.ticks(40);
     for (const tab of ["VISUAL", "SOUND"]) {
         s.click(tab);
         await s.ticks(40);

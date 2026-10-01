@@ -25,7 +25,16 @@ const MAX_PER_PASS = 100;
 /** Clicked in order once the menu is open; each becomes its own phase. */
 const TAB_CLICKS = ["VISUAL", "FAVOURITES", "MUSIC", "RADIO", "SOUND"];
 
-const bundle = readFileSync(resolve(ROOT, "dist", "bundle.ts"), "utf8");
+// Passes are split on the "render end" log line, which only prints with DEBUG on.
+// DEBUG starts off and its button is only reachable once the menu is open, so
+// the replayed bundle starts with it on instead.
+const DEBUG_DEFAULT = "let debug = false;";
+const shipped = readFileSync(resolve(ROOT, "dist", "bundle.ts"), "utf8");
+if (!shipped.includes(DEBUG_DEFAULT)) {
+    console.error(`  BATCHING GATE: dist/bundle.ts has no \`${DEBUG_DEFAULT}\`; the debug default moved, so passes cannot be split`);
+    process.exit(1);
+}
+const bundle = shipped.replace(DEBUG_DEFAULT, "let debug = true;");
 const BATCH_RE = /widgetsPerBatch: \d+,/;
 if (!BATCH_RE.test(bundle)) {
     console.error("  BATCHING GATE: dist/bundle.ts has no `widgetsPerBatch: N,` in CONFIG; was the batching removed?");

@@ -252,8 +252,8 @@ const chromeFields = {
   tabRadioColor: V.tab === "radio" ? "#FFFFFF" : P.inkDim,
   tabRadioBg: V.tab === "radio" ? P.hot : P.line,
   // The mod starts with debug logging on (src/diag.ts).
-  debugLabel: "DEBUG ON",
-  debugColor: P.green,
+  debugLabel: "DEBUG OFF",
+  debugColor: P.inkDim,
   debugBg: P.panel,
   browserOn: TESTER ? "0" : "1",
   testerOn: TESTER ? "1" : "0",
