@@ -195,5 +195,33 @@ the game.
 
 ---
 
-Built with [bf6-portal-utils](https://github.com/deluca-mike/bf6-portal-utils) and
-[bf6-portal-bundler](https://github.com/deluca-mike/bf6-portal-bundler).
+## Credits
+
+This mod is built on **[bf6-portal-utils](https://github.com/deluca-mike/bf6-portal-utils)**
+by [Michael De Luca (deluca-mike)](https://github.com/deluca-mike). It does a large
+part of the work here:
+
+| Module | Used for |
+|---|---|
+| `ui` | Every widget in the menu: containers, text and buttons, their clicks and the controller highlight |
+| `sounds` | The menu click sounds |
+| `timers` | Music loading waits, sound clean-up and deferred redraws |
+| `events` | All game events (deploy, gadget aim and fire, button presses) |
+| `logging` | The debug log |
+
+The mod is bundled into one file with
+**[bf6-portal-bundler](https://github.com/deluca-mike/bf6-portal-bundler)**, also by
+deluca-mike, and the asset catalog is generated from the type definitions in
+**[bf6-portal-mod-types](https://github.com/deluca-mike/bf6-portal-mod-types)**.
+The browser preview uses
+**[bf6-portal-ui-preview](https://github.com/nadorjozsef/bf6-portal-ui-preview)** by
+nadorjozsef.
+
+bf6-portal-utils is included in `dist/bundle.ts` under the MIT License,
+Copyright (c) 2026 Michael De Luca. Its license text is in
+[THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md).
+
+## License
+
+[MIT](LICENSE). You are free to use, change and share this mod, including in your own
+experiences.

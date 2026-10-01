@@ -32,5 +32,6 @@
     "devDependencies": {
         "bf6-portal-bundler": "1.4.1",
         "bf6-portal-utils": "file:../main_resources/bf6-portal-utils-master"
-    }
+    },
+    "license": "MIT"
 }
