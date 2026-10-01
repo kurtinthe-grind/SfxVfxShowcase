@@ -131,7 +131,11 @@ const STATIC = {
     mtTargetMe: "FOR: ME",
     mtTargetAll: "FOR: EVERYONE",
     // Under the radio transport, where the MUSIC tab shows the track description.
-    mtRadioHelp: "CLEAR QUEUE empties the queue. PLAY plays it. STOP stops (not a pause). NEXT TRACK skips.",
+    mtRadioHelp: "Queue tracks first. PLAY plays the queue, NEXT TRACK skips within it, CLEAR QUEUE empties it.",
+    // Replaces mtRadioHelp while the selected station is not the queued one.
+    mtQueueStale: "The queue holds tracks from another station. CLEAR QUEUE, then queue tracks here.",
+    // Under RADIO STATION while nothing has been queued since CLEAR QUEUE.
+    mtQueueEmpty: "QUEUE: empty. Pick a track number, then press QUEUE TRACK.",
     // Radio_Channel / Radio_Biome values, from the MusicParams JSDoc.
     radioCh0: "Hip Hop",
     radioCh1: "Rock",
@@ -204,6 +208,8 @@ const TEMPLATES = {
     mtQueueOf: "QUEUE TRACK {}",
     mtTrackUnloaded: "TRACK {} / {}  -  NOT LOADED, press LOAD",
     mtRadioNote: "CHANNEL {} = {}    BIOME = {} (channel 4 only)",
+    // count, station, track number of the last track queued.
+    mtQueueCount: "QUEUE: {} track(s). Last added: {} #{}",
 };
 
 const q = (s) => JSON.stringify(String(s));

@@ -15,6 +15,9 @@
 //   - STOP sends the package's own stop event;
 //   - the radio transport maps to the four Radio_* events, and the queue param
 //     is only sent by QUEUE TRACK (sending it queues a track);
+//   - QUEUE TRACK then moves the number on, wrapping at the station's last
+//     track, and the panel shows what was queued since the last CLEAR QUEUE,
+//     with a hint when the selected station is not the queued one;
 //   - the selected track and every visible param show their description.
 
 import { readFileSync } from "node:fs";
@@ -76,6 +79,16 @@ function shows(phase, id, want) {
     try {
         const w = want();
         const got = s.textId(id);
+        if (got !== w) problems.push(`${phase}: ${id} shows ${got}, expected ${w}`);
+    } catch (e) {
+        problems.push(`${phase}: ${id}: ${e.message}`);
+    }
+}
+/** Checks the text node `id` shows exactly this Message: [key, ...args]. */
+function showsMsg(phase, id, want) {
+    try {
+        const w = JSON.stringify(want());
+        const got = JSON.stringify(s.messageId(id));
         if (got !== w) problems.push(`${phase}: ${id} shows ${got}, expected ${w}`);
     } catch (e) {
         problems.push(`${phase}: ${id}: ${e.message}`);
@@ -187,6 +200,8 @@ try {
     // Radio has no track list: the line under the transport explains the buttons.
     shows("tab radio", "mtEventDesc", () => labelKey("mtRadioHelp"));
     showsParams("tab radio", ["Radio_Biome", "Radio_Channel", "Radio_ContinueQueueOnTrackEnd", "Radio_LoopQueuedTracks", "Radio_QueueTrackNumber"]);
+    // The engine cannot be asked what is queued, so the panel counts it.
+    shows("tab radio", "mtEventIdx", () => labelKey("mtQueueEmpty"));
     await step("load radio", () => s.clickId("mtLoad"));
     expect("load radio", ["UnloadMusic(MusicPackages.BR)", "LoadMusic(MusicPackages.Radio)"]);
     // Radio_QueueTrackNumber is row 4. Stepping it must NOT send: sending queues.
@@ -207,10 +222,34 @@ try {
         "SetMusicParam(MusicParams.Radio_Amplitude, 1, player)",
         "PlayMusic(MusicEvents.Radio_Play, player)",
     ]);
+    // Queued: one track, BF Themes (channel 2) number 1. The number has moved
+    // on to 2, so QUEUE TRACK again queues a different song.
+    showsMsg("radio play", "mtEventIdx", () => [labelKey("mtQueueCount"), 1, labelKey("radioCh2"), 1]);
+    await step("queue again", () => s.clickId("mtQueue"));
+    expect("queue again", ["SetMusicParam(MusicParams.Radio_QueueTrackNumber, 2, player)"]);
+    showsMsg("queue again", "mtEventIdx", () => [labelKey("mtQueueCount"), 2, labelKey("radioCh2"), 2]);
     await step("radio next", () => s.clickId("mtNext"));
     expect("radio next", ["PlayMusic(MusicEvents.Radio_NextQueuedTrack, player)"]);
+    // The channel only applies to tracks queued after it is set (SDK docs:
+    // "the channel from which you will be queueing tracks"), so changing it
+    // with tracks queued says to clear the queue first.
+    await step("channel up", () => s.clickId("mtP1Up"));
+    expect("channel up", ["SetMusicParam(MusicParams.Radio_Channel, 3, player)"]);
+    shows("channel up", "mtEventDesc", () => labelKey("mtQueueStale"));
     await step("radio clear", () => s.clickId("mtPrev"));
     expect("radio clear", ["PlayMusic(MusicEvents.Radio_ClearQueue, player)"]);
+    shows("radio clear", "mtEventIdx", () => labelKey("mtQueueEmpty"));
+    shows("radio clear", "mtEventDesc", () => labelKey("mtRadioHelp"));
+    // Channel 3 (Reggaeton) has 2 tracks, 0 and 1: after queueing 1 the number
+    // wraps to 0.
+    await step("queue number down", () => s.clickId("mtP4Down"));
+    await step("queue number down", () => s.clickId("mtP4Down"));
+    expect("queue number down", []);
+    await step("queue last", () => s.clickId("mtQueue"));
+    expect("queue last", ["SetMusicParam(MusicParams.Radio_QueueTrackNumber, 1, player)"]);
+    await step("queue wraps", () => s.clickId("mtQueue"));
+    expect("queue wraps", ["SetMusicParam(MusicParams.Radio_QueueTrackNumber, 0, player)"]);
+    showsMsg("queue wraps", "mtEventIdx", () => [labelKey("mtQueueCount"), 2, labelKey("radioCh3"), 0]);
     await step("radio stop", () => s.clickId("mtStop"));
     expect("radio stop", ["PlayMusic(MusicEvents.Radio_Stop, player)"]);
 
@@ -241,4 +280,4 @@ if (problems.length > 0) {
     for (const p of problems) console.error("    - " + p);
     process.exit(1);
 }
-console.log("  tester  : Core loaded at start, calls held until loaded, LOAD switches exclusively, ME/EVERYONE overloads, PLAY re-sends params, clamping, stop, radio queue + transport, every call logged");
+console.log("  tester  : Core loaded at start, calls held until loaded, LOAD switches exclusively, ME/EVERYONE overloads, PLAY re-sends params, clamping, stop, radio queue + transport, queue read-out and auto-advance, every call logged");

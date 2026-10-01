@@ -10146,206 +10146,209 @@ export const T = {
     mtTargetMe: "sxS81",
     mtTargetAll: "sxS82",
     mtRadioHelp: "sxS83",
-    radioCh0: "sxS84",
-    radioCh1: "sxS85",
-    radioCh2: "sxS86",
-    radioCh3: "sxS87",
-    radioCh4: "sxS88",
-    radioCh5: "sxS89",
-    radioCh6: "sxS90",
-    radioBiome0: "sxS91",
-    radioBiome1: "sxS92",
-    radioBiome2: "sxS93",
-    radioBiome3: "sxS94",
-    radioBiome4: "sxS95",
-    radioBiome5: "sxS96",
-    radioBiome6: "sxS97",
-    screenVl7gas: "sxS98",
-    screenNight: "sxS99",
-    screenSaturated: "sxS100",
-    screenStealth: "sxS101",
-    catGas: "sxS102",
-    catScreen: "sxS103",
-    logEmpty: "sxS104",
-    charCursor: "sxS105",
-    onWord: "sxS106",
-    logBadMessage: "sxS107",
-    offWord: "sxS108",
+    mtQueueStale: "sxS84",
+    mtQueueEmpty: "sxS85",
+    radioCh0: "sxS86",
+    radioCh1: "sxS87",
+    radioCh2: "sxS88",
+    radioCh3: "sxS89",
+    radioCh4: "sxS90",
+    radioCh5: "sxS91",
+    radioCh6: "sxS92",
+    radioBiome0: "sxS93",
+    radioBiome1: "sxS94",
+    radioBiome2: "sxS95",
+    radioBiome3: "sxS96",
+    radioBiome4: "sxS97",
+    radioBiome5: "sxS98",
+    radioBiome6: "sxS99",
+    screenVl7gas: "sxS100",
+    screenNight: "sxS101",
+    screenSaturated: "sxS102",
+    screenStealth: "sxS103",
+    catGas: "sxS104",
+    catScreen: "sxS105",
+    logEmpty: "sxS106",
+    charCursor: "sxS107",
+    onWord: "sxS108",
+    logBadMessage: "sxS109",
+    offWord: "sxS110",
 } as const;
 
 /** Format templates, for composed strings. */
 export const TPL = {
-    t1: "sxT109",
-    t2: "sxT110",
-    t3: "sxT111",
-    t4: "sxT112",
-    num1: "sxT113",
-    gap2: "sxT114",
-    armedOf: "sxT115",
-    itemsOf: "sxT116",
-    matchOf: "sxT117",
-    matchOf2: "sxT118",
-    pageOf: "sxT119",
-    railPageOf: "sxT120",
-    exportedN: "sxT121",
-    stoppedN: "sxT122",
-    scaleOf: "sxT123",
-    spawnedOf: "sxT124",
-    filters0: "sxT125",
-    filters1: "sxT126",
-    filters2: "sxT127",
-    filters3: "sxT128",
-    screenToggle: "sxT129",
-    mtPackageOf: "sxT130",
-    mtTrackOf: "sxT131",
-    mtParamLabel: "sxT132",
-    mtCallPlay: "sxT133",
-    mtCallParam: "sxT134",
-    mtCallLoad: "sxT135",
-    mtLoadOf: "sxT136",
-    mtLoadedOf: "sxT137",
-    mtLoadingOf: "sxT138",
-    mtQueueOf: "sxT139",
-    mtTrackUnloaded: "sxT140",
-    mtRadioNote: "sxT141",
+    t1: "sxT111",
+    t2: "sxT112",
+    t3: "sxT113",
+    t4: "sxT114",
+    num1: "sxT115",
+    gap2: "sxT116",
+    armedOf: "sxT117",
+    itemsOf: "sxT118",
+    matchOf: "sxT119",
+    matchOf2: "sxT120",
+    pageOf: "sxT121",
+    railPageOf: "sxT122",
+    exportedN: "sxT123",
+    stoppedN: "sxT124",
+    scaleOf: "sxT125",
+    spawnedOf: "sxT126",
+    filters0: "sxT127",
+    filters1: "sxT128",
+    filters2: "sxT129",
+    filters3: "sxT130",
+    screenToggle: "sxT131",
+    mtPackageOf: "sxT132",
+    mtTrackOf: "sxT133",
+    mtParamLabel: "sxT134",
+    mtCallPlay: "sxT135",
+    mtCallParam: "sxT136",
+    mtCallLoad: "sxT137",
+    mtLoadOf: "sxT138",
+    mtLoadedOf: "sxT139",
+    mtLoadingOf: "sxT140",
+    mtQueueOf: "sxT141",
+    mtTrackUnloaded: "sxT142",
+    mtRadioNote: "sxT143",
+    mtQueueCount: "sxT144",
 } as const;
 
 /** key for a single keyboard character */
 export const CHAR_KEY: Readonly<Record<string, string>> = {
-    "0": "sxC146",
-    "1": "sxC147",
-    "2": "sxC148",
-    "3": "sxC149",
-    "4": "sxC150",
-    "5": "sxC151",
-    "6": "sxC152",
-    "7": "sxC153",
-    "8": "sxC154",
-    "9": "sxC155",
-    " ": "sxC142",
-    ",": "sxC143",
-    "-": "sxC144",
-    ".": "sxC145",
-    "A": "sxC156",
-    "B": "sxC157",
-    "C": "sxC158",
-    "D": "sxC159",
-    "E": "sxC160",
-    "F": "sxC161",
-    "G": "sxC162",
-    "H": "sxC163",
-    "I": "sxC164",
-    "J": "sxC165",
-    "K": "sxC166",
-    "L": "sxC167",
-    "M": "sxC168",
-    "N": "sxC169",
-    "O": "sxC170",
-    "P": "sxC171",
-    "Q": "sxC172",
-    "R": "sxC173",
-    "S": "sxC174",
-    "T": "sxC175",
-    "U": "sxC176",
-    "V": "sxC177",
-    "W": "sxC178",
-    "X": "sxC179",
-    "Y": "sxC180",
-    "Z": "sxC181",
-    "_": "sxC182",
+    "0": "sxC149",
+    "1": "sxC150",
+    "2": "sxC151",
+    "3": "sxC152",
+    "4": "sxC153",
+    "5": "sxC154",
+    "6": "sxC155",
+    "7": "sxC156",
+    "8": "sxC157",
+    "9": "sxC158",
+    " ": "sxC145",
+    ",": "sxC146",
+    "-": "sxC147",
+    ".": "sxC148",
+    "A": "sxC159",
+    "B": "sxC160",
+    "C": "sxC161",
+    "D": "sxC162",
+    "E": "sxC163",
+    "F": "sxC164",
+    "G": "sxC165",
+    "H": "sxC166",
+    "I": "sxC167",
+    "J": "sxC168",
+    "K": "sxC169",
+    "L": "sxC170",
+    "M": "sxC171",
+    "N": "sxC172",
+    "O": "sxC173",
+    "P": "sxC174",
+    "Q": "sxC175",
+    "R": "sxC176",
+    "S": "sxC177",
+    "T": "sxC178",
+    "U": "sxC179",
+    "V": "sxC180",
+    "W": "sxC181",
+    "X": "sxC182",
+    "Y": "sxC183",
+    "Z": "sxC184",
+    "_": "sxC185",
 };
 
 /** key for a literal that comes straight out of scene.json */
 export const SCENE_TEXT: Readonly<Record<string, string>> = {
-    "+": "sxN183",
-    "-": "sxN184",
-    "2D": "sxN185",
-    "3D": "sxN186",
-    "<": "sxN187",
-    "< GROUPS": "sxN188",
-    "< PREV": "sxN189",
-    ">": "sxN190",
-    "ACTION": "sxN191",
-    "ALL": "sxN192",
-    "AMPLITUDE": "sxN193",
-    "Adds the track number to the queue.": "sxN194",
-    "BACK": "sxN195",
-    "CLEAR": "sxN196",
-    "CLOSE X": "sxN197",
-    "DELETE ALL": "sxN198",
-    "DONE": "sxN199",
-    "FAV": "sxN200",
-    "FAVOURITES": "sxN201",
-    "GROUP": "sxN202",
-    "GROUPS >": "sxN203",
-    "LAST CALL": "sxN204",
-    "LOOP": "sxN205",
-    "Loads in about 5 s. One at a time.": "sxN206",
-    "ME: only you. EVERYONE: all players.": "sxN207",
-    "MUSIC": "sxN208",
-    "Multiplier: 0 = silent, 1 = normal, 3 = triple volume.": "sxN209",
-    "NAME": "sxN210",
-    "NEXT >": "sxN211",
-    "ONE": "sxN212",
-    "PARAMS": "sxN213",
-    "PLAY re-sends the package params and VOLUME before the event, so what you hear matches the numbers.": "sxN214",
-    "PLAYER": "sxN215",
-    "PREFIXES": "sxN216",
-    "RADIO": "sxN217",
-    "RANGE m": "sxN218",
-    "SCALE": "sxN219",
-    "SFX / VFX SHOWCASE": "sxN220",
-    "SOUND": "sxN221",
-    "SPACE": "sxN222",
-    "STOP ALL": "sxN223",
-    "The last call sent. The game cannot report what is playing.": "sxN224",
-    "UNDO": "sxN225",
-    "VISUAL": "sxN226",
-    "VOLUME": "sxN227",
-    "WORLD": "sxN228",
-    "amp": "sxN229",
-    "applies to the selected effect": "sxN230",
-    "armed": "sxN231",
-    "headBadge": "sxN232",
-    "hint": "sxN233",
-    "mtEvent": "sxN234",
-    "mtEventDesc": "sxN235",
-    "mtEventIdx": "sxN236",
-    "mtLast": "sxN237",
-    "mtLoadLabel": "sxN238",
-    "mtNextLabel": "sxN239",
-    "mtP0Desc": "sxN240",
-    "mtP0Label": "sxN241",
-    "mtP0Val": "sxN242",
-    "mtP1Desc": "sxN243",
-    "mtP1Label": "sxN244",
-    "mtP1Val": "sxN245",
-    "mtP2Desc": "sxN246",
-    "mtP2Label": "sxN247",
-    "mtP2Val": "sxN248",
-    "mtP3Desc": "sxN249",
-    "mtP3Label": "sxN250",
-    "mtP3Val": "sxN251",
-    "mtP4Desc": "sxN252",
-    "mtP4Label": "sxN253",
-    "mtP4Val": "sxN254",
-    "mtParamNote": "sxN255",
-    "mtPkg": "sxN256",
-    "mtPlayLabel": "sxN257",
-    "mtPrevLabel": "sxN258",
-    "mtQueueLabel": "sxN259",
-    "mtStopLabel": "sxN260",
-    "mtTargetLabel": "sxN261",
-    "mtTitle": "sxN262",
-    "mtVol": "sxN263",
-    "page": "sxN264",
-    "playLabel": "sxN265",
-    "railSummary": "sxN266",
-    "rng": "sxN267",
-    "scale": "sxN268",
-    "selLabel": "sxN269",
-    "selectLabel": "sxN270",
-    "spawned": "sxN271",
+    "+": "sxN186",
+    "-": "sxN187",
+    "2D": "sxN188",
+    "3D": "sxN189",
+    "<": "sxN190",
+    "< GROUPS": "sxN191",
+    "< PREV": "sxN192",
+    ">": "sxN193",
+    "ACTION": "sxN194",
+    "ALL": "sxN195",
+    "AMPLITUDE": "sxN196",
+    "Adds the track number to the queue.": "sxN197",
+    "BACK": "sxN198",
+    "CLEAR": "sxN199",
+    "CLOSE X": "sxN200",
+    "DELETE ALL": "sxN201",
+    "DONE": "sxN202",
+    "FAV": "sxN203",
+    "FAVOURITES": "sxN204",
+    "GROUP": "sxN205",
+    "GROUPS >": "sxN206",
+    "LAST CALL": "sxN207",
+    "LOOP": "sxN208",
+    "Loads in about 5 s. One at a time.": "sxN209",
+    "ME: only you. EVERYONE: all players.": "sxN210",
+    "MUSIC": "sxN211",
+    "Multiplier: 0 = silent, 1 = normal, 3 = triple volume.": "sxN212",
+    "NAME": "sxN213",
+    "NEXT >": "sxN214",
+    "ONE": "sxN215",
+    "PARAMS": "sxN216",
+    "PLAY re-sends the package params and VOLUME before the event, so what you hear matches the numbers.": "sxN217",
+    "PLAYER": "sxN218",
+    "PREFIXES": "sxN219",
+    "RADIO": "sxN220",
+    "RANGE m": "sxN221",
+    "SCALE": "sxN222",
+    "SFX / VFX SHOWCASE": "sxN223",
+    "SOUND": "sxN224",
+    "SPACE": "sxN225",
+    "STOP ALL": "sxN226",
+    "The last call sent. The game cannot report what is playing.": "sxN227",
+    "UNDO": "sxN228",
+    "VISUAL": "sxN229",
+    "VOLUME": "sxN230",
+    "WORLD": "sxN231",
+    "amp": "sxN232",
+    "applies to the selected effect": "sxN233",
+    "armed": "sxN234",
+    "headBadge": "sxN235",
+    "hint": "sxN236",
+    "mtEvent": "sxN237",
+    "mtEventDesc": "sxN238",
+    "mtEventIdx": "sxN239",
+    "mtLast": "sxN240",
+    "mtLoadLabel": "sxN241",
+    "mtNextLabel": "sxN242",
+    "mtP0Desc": "sxN243",
+    "mtP0Label": "sxN244",
+    "mtP0Val": "sxN245",
+    "mtP1Desc": "sxN246",
+    "mtP1Label": "sxN247",
+    "mtP1Val": "sxN248",
+    "mtP2Desc": "sxN249",
+    "mtP2Label": "sxN250",
+    "mtP2Val": "sxN251",
+    "mtP3Desc": "sxN252",
+    "mtP3Label": "sxN253",
+    "mtP3Val": "sxN254",
+    "mtP4Desc": "sxN255",
+    "mtP4Label": "sxN256",
+    "mtP4Val": "sxN257",
+    "mtParamNote": "sxN258",
+    "mtPkg": "sxN259",
+    "mtPlayLabel": "sxN260",
+    "mtPrevLabel": "sxN261",
+    "mtQueueLabel": "sxN262",
+    "mtStopLabel": "sxN263",
+    "mtTargetLabel": "sxN264",
+    "mtTitle": "sxN265",
+    "mtVol": "sxN266",
+    "page": "sxN267",
+    "playLabel": "sxN268",
+    "railSummary": "sxN269",
+    "rng": "sxN270",
+    "scale": "sxN271",
+    "selLabel": "sxN272",
+    "selectLabel": "sxN273",
+    "spawned": "sxN274",
 };
 
 export type StaticLabel = keyof typeof T;
@@ -14307,6 +14310,12 @@ const RADIO_CLEAR = radioEvent("Radio_ClearQueue");
 const RADIO_CHANNELS = [T.radioCh0, T.radioCh1, T.radioCh2, T.radioCh3, T.radioCh4, T.radioCh5, T.radioCh6];
 const RADIO_BIOMES = [T.radioBiome0, T.radioBiome1, T.radioBiome2, T.radioBiome3, T.radioBiome4, T.radioBiome5, T.radioBiome6];
 
+// Tracks per station, numbered from 0. SDK docs (gameplay_logic.html,
+// QueueTrackNumber), "as of Season 3". Index = Radio_Channel; channel 4 is
+// per biome. Used to wrap the track number after QUEUE TRACK.
+const RADIO_TRACKS = [17, 18, 10, 2, 0, 32, 15];
+const RADIO_BIOME_TRACKS = [18, 16, 16, 19, 18, 2, 18];
+
 /** The one package currently loaded. Music loading is global, so this is too. */
 let loaded: MusicPackageSpec | undefined;
 /** Date.now() of the last LoadMusic (bf6-portal-utils timers use the same clock). */
@@ -14348,6 +14357,16 @@ export interface TesterState {
     last: mod.Message | undefined;
     /** false = player overloads (ME), true = global overloads (EVERYONE). */
     toAll: boolean;
+    /** Tracks queued since the last CLEAR QUEUE. The engine cannot be asked. */
+    queued: number;
+    /** Station and number of the last track queued, until CLEAR QUEUE. */
+    lastQueued: RadioPick | undefined;
+}
+
+interface RadioPick {
+    ch: number;
+    biome: number;
+    track: number;
 }
 
 export function newTesterState(): TesterState {
@@ -14356,7 +14375,7 @@ export function newTesterState(): TesterState {
         values[p.amp.name] = p.amp.def;
         for (const x of p.params) values[x.name] = x.def;
     }
-    return { pkg: 0, evt: MUSIC_TAB.map(defaultEventIndex), values: values, last: undefined, toAll: false };
+    return { pkg: 0, evt: MUSIC_TAB.map(defaultEventIndex), values: values, last: undefined, toAll: false, queued: 0, lastQueued: undefined };
 }
 
 /** Called once from OnGameModeStarted: the docs advise loading early. */
@@ -14432,6 +14451,52 @@ function queueParam(pkg: MusicPackageSpec): MusicParamSpec | undefined {
     return undefined;
 }
 
+function radioChannel(st: TesterState): number {
+    return Math.round(st.values["Radio_Channel"] ?? 0);
+}
+
+function radioBiome(st: TesterState): number {
+    return Math.round(st.values["Radio_Biome"] ?? 0);
+}
+
+function stationKey(ch: number, biome: number): string {
+    return ch === 4 ? pickKey(RADIO_BIOMES, biome) : pickKey(RADIO_CHANNELS, ch);
+}
+
+/**
+ * True when tracks are queued and the selected station is not theirs. The
+ * channel only applies to tracks queued after it is set (SDK docs: "the
+ * channel from which you will be queueing tracks"), so PLAY and NEXT TRACK
+ * would keep playing the queued station.
+ */
+function queueIsStale(st: TesterState): boolean {
+    const q = st.lastQueued;
+    if (q === undefined) return false;
+    const ch = radioChannel(st);
+    return ch !== q.ch || (ch === 4 && radioBiome(st) !== q.biome);
+}
+
+/**
+ * Records the track QUEUE TRACK just sent, then moves the number on to the
+ * station's next track (back to 0 after its last), so pressing QUEUE TRACK
+ * again queues a different song instead of the same one.
+ */
+function noteQueued(st: TesterState, q: MusicParamSpec): void {
+    const ch = radioChannel(st);
+    const biome = radioBiome(st);
+    const track = st.values[q.name];
+    st.queued++;
+    st.lastQueued = { ch: ch, biome: biome, track: track };
+    const n = (ch === 4 ? RADIO_BIOME_TRACKS[biome] : RADIO_TRACKS[ch]) ?? q.max + 1;
+    st.values[q.name] = track + 1 < n ? Math.min(q.max, track + 1) : q.min;
+}
+
+function queueLine(st: TesterState): mod.Message {
+    const q = st.lastQueued;
+    if (q === undefined) return mod.Message(T.mtQueueEmpty);
+    return mod.Message(TPL.mtQueueCount, st.queued, stationKey(q.ch, q.biome), q.track);
+}
+
 /**
  * Handles one mt* action. Returns false for an action it does not know, so the
  * caller's UNHANDLED ACTION log still fires for a misrouted button.
@@ -14459,6 +14524,7 @@ export function handleTesterAction(tab: TesterTab, st: TesterState, player: mod.
         if (q === undefined) return false;
         whenLoaded(() => {
             sendParam(player, st, q);
+            noteQueued(st, q);
             redraw();
         });
         return true;
@@ -14468,6 +14534,10 @@ export function handleTesterAction(tab: TesterTab, st: TesterState, player: mod.
             const e = action === "mtNext" ? RADIO_NEXT : RADIO_CLEAR;
             whenLoaded(() => {
                 sendEvent(player, st, e.event, e.name, e.key);
+                if (e === RADIO_CLEAR) {
+                    st.queued = 0;
+                    st.lastQueued = undefined;
+                }
                 redraw();
             });
             return true;
@@ -14530,8 +14600,8 @@ export function testerFields(tab: TesterTab, st: TesterState): Scope {
         mtPkgArrows: radio ? "0" : "1",
         mtPkg: mod.Message(TPL.mtPackageOf, pkg.key),
         mtEvent: mod.Message(radio ? T.mtRadioLine : evt.key),
-        mtEventIdx: radio ? mod.Message(T.logEmpty) : mod.Message(isLoaded ? TPL.mtTrackOf : TPL.mtTrackUnloaded, st.evt[st.pkg] + 1, pkg.events.length),
-        mtEventDesc: mod.Message(radio ? T.mtRadioHelp : evt.desc),
+        mtEventIdx: radio ? queueLine(st) : mod.Message(isLoaded ? TPL.mtTrackOf : TPL.mtTrackUnloaded, st.evt[st.pkg] + 1, pkg.events.length),
+        mtEventDesc: mod.Message(radio ? (queueIsStale(st) ? T.mtQueueStale : T.mtRadioHelp) : evt.desc),
         mtPrevLabel: mod.Message(radio ? T.mtClearQueue : T.mtPrev),
         mtPlayLabel: mod.Message(T.mtPlay),
         mtStopLabel: mod.Message(T.mtStop),

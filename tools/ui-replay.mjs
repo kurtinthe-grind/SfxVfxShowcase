@@ -171,6 +171,10 @@ export async function replay(source) {
          * and it throws unless exactly one visible text widget is there.
          */
         textId(id) {
+            return session.messageId(id)[0];
+        },
+        /** Like textId, but the whole Message: [key, ...args]. */
+        messageId(id) {
             const scene = JSON.parse(readFileSync(resolve(ROOT, "src", "scene.json"), "utf8"));
             const node = scene.screen.find((n) => n.id === id);
             if (node === undefined) throw new Error(`scene.json has no node "${id}"`);
@@ -180,7 +184,7 @@ export async function replay(source) {
                 .map((row) => row.split("|"))
                 .filter((f) => f[1] === "AddUIText" && f[3] === want && f[5] === "true");
             if (hits.length !== 1) throw new Error(`${hits.length} visible text widgets at ${want} for "${id}", expected 1`);
-            return JSON.parse(hits[0].slice(6).join("|")).msg[0];
+            return JSON.parse(hits[0].slice(6).join("|")).msg;
         },
         dispose() {
             globalThis.mod = prevMod;

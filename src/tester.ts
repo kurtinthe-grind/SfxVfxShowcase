@@ -79,6 +79,12 @@ const RADIO_CLEAR = radioEvent("Radio_ClearQueue");
 const RADIO_CHANNELS = [T.radioCh0, T.radioCh1, T.radioCh2, T.radioCh3, T.radioCh4, T.radioCh5, T.radioCh6];
 const RADIO_BIOMES = [T.radioBiome0, T.radioBiome1, T.radioBiome2, T.radioBiome3, T.radioBiome4, T.radioBiome5, T.radioBiome6];
 
+// Tracks per station, numbered from 0. SDK docs (gameplay_logic.html,
+// QueueTrackNumber), "as of Season 3". Index = Radio_Channel; channel 4 is
+// per biome. Used to wrap the track number after QUEUE TRACK.
+const RADIO_TRACKS = [17, 18, 10, 2, 0, 32, 15];
+const RADIO_BIOME_TRACKS = [18, 16, 16, 19, 18, 2, 18];
+
 /** The one package currently loaded. Music loading is global, so this is too. */
 let loaded: MusicPackageSpec | undefined;
 /** Date.now() of the last LoadMusic (bf6-portal-utils timers use the same clock). */
@@ -120,6 +126,16 @@ export interface TesterState {
     last: mod.Message | undefined;
     /** false = player overloads (ME), true = global overloads (EVERYONE). */
     toAll: boolean;
+    /** Tracks queued since the last CLEAR QUEUE. The engine cannot be asked. */
+    queued: number;
+    /** Station and number of the last track queued, until CLEAR QUEUE. */
+    lastQueued: RadioPick | undefined;
+}
+
+interface RadioPick {
+    ch: number;
+    biome: number;
+    track: number;
 }
 
 export function newTesterState(): TesterState {
@@ -128,7 +144,7 @@ export function newTesterState(): TesterState {
         values[p.amp.name] = p.amp.def;
         for (const x of p.params) values[x.name] = x.def;
     }
-    return { pkg: 0, evt: MUSIC_TAB.map(defaultEventIndex), values: values, last: undefined, toAll: false };
+    return { pkg: 0, evt: MUSIC_TAB.map(defaultEventIndex), values: values, last: undefined, toAll: false, queued: 0, lastQueued: undefined };
 }
 
 /** Called once from OnGameModeStarted: the docs advise loading early. */
@@ -204,6 +220,52 @@ function queueParam(pkg: MusicPackageSpec): MusicParamSpec | undefined {
     return undefined;
 }
 
+function radioChannel(st: TesterState): number {
+    return Math.round(st.values["Radio_Channel"] ?? 0);
+}
+
+function radioBiome(st: TesterState): number {
+    return Math.round(st.values["Radio_Biome"] ?? 0);
+}
+
+function stationKey(ch: number, biome: number): string {
+    return ch === 4 ? pickKey(RADIO_BIOMES, biome) : pickKey(RADIO_CHANNELS, ch);
+}
+
+/**
+ * True when tracks are queued and the selected station is not theirs. The
+ * channel only applies to tracks queued after it is set (SDK docs: "the
+ * channel from which you will be queueing tracks"), so PLAY and NEXT TRACK
+ * would keep playing the queued station.
+ */
+function queueIsStale(st: TesterState): boolean {
+    const q = st.lastQueued;
+    if (q === undefined) return false;
+    const ch = radioChannel(st);
+    return ch !== q.ch || (ch === 4 && radioBiome(st) !== q.biome);
+}
+
+/**
+ * Records the track QUEUE TRACK just sent, then moves the number on to the
+ * station's next track (back to 0 after its last), so pressing QUEUE TRACK
+ * again queues a different song instead of the same one.
+ */
+function noteQueued(st: TesterState, q: MusicParamSpec): void {
+    const ch = radioChannel(st);
+    const biome = radioBiome(st);
+    const track = st.values[q.name];
+    st.queued++;
+    st.lastQueued = { ch: ch, biome: biome, track: track };
+    const n = (ch === 4 ? RADIO_BIOME_TRACKS[biome] : RADIO_TRACKS[ch]) ?? q.max + 1;
+    st.values[q.name] = track + 1 < n ? Math.min(q.max, track + 1) : q.min;
+}
+
+function queueLine(st: TesterState): mod.Message {
+    const q = st.lastQueued;
+    if (q === undefined) return mod.Message(T.mtQueueEmpty);
+    return mod.Message(TPL.mtQueueCount, st.queued, stationKey(q.ch, q.biome), q.track);
+}
+
 /**
  * Handles one mt* action. Returns false for an action it does not know, so the
  * caller's UNHANDLED ACTION log still fires for a misrouted button.
@@ -231,6 +293,7 @@ export function handleTesterAction(tab: TesterTab, st: TesterState, player: mod.
         if (q === undefined) return false;
         whenLoaded(() => {
             sendParam(player, st, q);
+            noteQueued(st, q);
             redraw();
         });
         return true;
@@ -240,6 +303,10 @@ export function handleTesterAction(tab: TesterTab, st: TesterState, player: mod.
             const e = action === "mtNext" ? RADIO_NEXT : RADIO_CLEAR;
             whenLoaded(() => {
                 sendEvent(player, st, e.event, e.name, e.key);
+                if (e === RADIO_CLEAR) {
+                    st.queued = 0;
+                    st.lastQueued = undefined;
+                }
                 redraw();
             });
             return true;
@@ -302,8 +369,8 @@ export function testerFields(tab: TesterTab, st: TesterState): Scope {
         mtPkgArrows: radio ? "0" : "1",
         mtPkg: mod.Message(TPL.mtPackageOf, pkg.key),
         mtEvent: mod.Message(radio ? T.mtRadioLine : evt.key),
-        mtEventIdx: radio ? mod.Message(T.logEmpty) : mod.Message(isLoaded ? TPL.mtTrackOf : TPL.mtTrackUnloaded, st.evt[st.pkg] + 1, pkg.events.length),
-        mtEventDesc: mod.Message(radio ? T.mtRadioHelp : evt.desc),
+        mtEventIdx: radio ? queueLine(st) : mod.Message(isLoaded ? TPL.mtTrackOf : TPL.mtTrackUnloaded, st.evt[st.pkg] + 1, pkg.events.length),
+        mtEventDesc: mod.Message(radio ? (queueIsStale(st) ? T.mtQueueStale : T.mtRadioHelp) : evt.desc),
         mtPrevLabel: mod.Message(radio ? T.mtClearQueue : T.mtPrev),
         mtPlayLabel: mod.Message(T.mtPlay),
         mtStopLabel: mod.Message(T.mtStop),

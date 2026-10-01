@@ -229,6 +229,8 @@ Only Core is loaded when the mode starts. `LOAD` switches to the package on scre
 **RADIO**
 - The radio queue starts empty, and `PLAY` on an empty queue plays nothing. Pick a channel, choose a track number, press `QUEUE TRACK`, then `PLAY`.
 - `CLEAR QUEUE`, `PLAY`, `STOP` and `NEXT TRACK` send the four `Radio_*` events.
+- After `QUEUE TRACK` the track number moves on by one, so pressing it again queues the next song. Under RADIO STATION the panel shows how many tracks you have queued since the last `CLEAR QUEUE`, and the last one added.
+- The channel only applies to tracks queued after you set it. To switch stations, press `CLEAR QUEUE`, set the channel, then queue new tracks. The panel says so if the channel changes while tracks are queued.
 - **PARAMS** covers channel, biome, queue track number, loop queue, and continue on track end. Biome only matters on channel 4.
 
 **LAST CALL** shows the exact call that was sent last, for example `PlayMusic(Core_PhaseEnded)`. The game cannot report what is actually playing or a param's real value, so the panel shows what was sent.

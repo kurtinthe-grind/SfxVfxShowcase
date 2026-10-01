@@ -172,7 +172,7 @@ function testerSample(tab) {
     mtPkgArrows: radio ? "0" : "1",
     mtPkg: "PACKAGE: " + (radio ? "RADIO" : "CORE"),
     mtEvent: radio ? "RADIO STATION" : "Core_PhaseEnded",
-    mtEventIdx: radio ? " " : "TRACK 7 / 10",
+    mtEventIdx: radio ? "QUEUE: 3 track(s). Last added: Reggaeton #1" : "TRACK 7 / 10",
     mtPrevLabel: radio ? "CLEAR QUEUE" : "|<",
     mtPlayLabel: "PLAY",
     mtStopLabel: "STOP",
