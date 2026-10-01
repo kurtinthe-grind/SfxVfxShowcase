@@ -24,6 +24,9 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(HERE, "..");
 const ENUM_DIR = resolve(ROOT, "..", "main_resources", "bf6-portal-mod-types-master", "runtime-spawn-enums");
 const BANLIST = resolve(ROOT, "banlist.json");
+// Recorded lengths, imported by tools/import-lengths.mjs from tabbedscamper's
+// BF6 Portal SoundBoard (https://github.com/TabbedScamper/BF6_Portal_SoundBoard).
+const LENGTHS = resolve(ROOT, "src", "sound-lengths.json");
 const OUT = resolve(ROOT, "src", "catalog.ts");
 // Capacity of the keyboard's PREFIXES page, so the catalog can refuse to ship a
 // list the UI could not show in full.
@@ -76,6 +79,46 @@ function classifySfx(name) {
         unclassified.push(`${name} -> ${kind}`);
     }
     return { kind, dim: dim ?? "3d", stem };
+}
+
+// --------------------------------------------------------------- SFX lengths
+
+// One-shots with no usable recorded length. Every other one-shot must have one,
+// so a sound the SDK adds later fails the build instead of quietly falling back.
+const NO_LENGTH = {
+    SFX_VOModule_OneShot2D: "the announcer's carrier object; it makes no sound of its own",
+    SFX_Destruction_Structural_Metal_GasStation_OneShot3D: "recorded silent",
+    SFX_Gadgets_Drone_Switchblade_Engine_Propellar_OneShot3D: "recorded as a loop and trimmed to one cycle",
+    SFX_Gadgets_Flashbang_FlashbangLoop_OneShot2D: "recorded as a loop and trimmed to one cycle",
+};
+// Auto-stop window for a one-shot: never shorter than before lengths were known,
+// 1 s past the recording, and 5 s past a recording the capture slot cut off.
+const ONESHOT_MIN_MS = 2500;
+const TAIL_MS = 1000;
+const CUT_TAIL_MS = 5000;
+
+/** { lengthText, lengthKey, label, windowMs } for one SFX; lengthText "" when unknown. */
+function soundLength(name, kind, rec) {
+    if (kind === "loop") return { lengthText: "", lengthKey: "", label: "", windowMs: 8000 };
+    const usable = rec !== undefined && !rec.silent && !rec.loop;
+    if (!usable) {
+        if (NO_LENGTH[name] === undefined) {
+            throw new Error(`${name} has no recorded length (${rec === undefined ? "not in" : "unusable in"} src/sound-lengths.json); re-run tools/import-lengths.mjs or add it to NO_LENGTH with the reason`);
+        }
+        return { lengthText: "", lengthKey: "", label: "", windowMs: ONESHOT_MIN_MS };
+    }
+    if (NO_LENGTH[name] !== undefined) throw new Error(`${name} is in NO_LENGTH but now has a recorded length; remove it from NO_LENGTH`);
+    const ms = Math.round(rec.s * 1000);
+    // Text and key come from the same rounded number: toFixed and Math.round
+    // disagree on halves like 8.35.
+    const tenths = Math.round(rec.s * 10);
+    const lengthText = rec.cut ? `${Math.round(rec.s)}s+` : `${(tenths / 10).toFixed(1)}s`;
+    return {
+        lengthText,
+        lengthKey: "sxl" + (rec.cut ? Math.round(rec.s) + "p" : tenths),
+        label: "ONE " + lengthText,
+        windowMs: Math.max(ONESHOT_MIN_MS, ms + (rec.cut ? CUT_TAIL_MS : TAIL_MS)),
+    };
 }
 
 // --------------------------------------------------------------- VFX classify
@@ -136,7 +179,7 @@ function main() {
     }
 
     // ---------------------------------------------------------------- SFX
-    const WINDOW = { oneshot: 2500, loop: 8000 };
+    const lengths = JSON.parse(readFileSync(LENGTHS, "utf8")).sounds;
     const sfx = commonSfx
         .filter((n) => n.startsWith("SFX_") && !banned.has(n))
         .map((name) => {
@@ -144,13 +187,17 @@ function main() {
             // Some SDK names contain a doubled underscore (e.g. SFX_Destruction__Old_Ceramic_Generic_OneShot3D). Drop empty segments so the group is not "Destruction_".
             const seg = name.replace(/^SFX_/, "").split("_").filter((s) => s !== "");
             const rest = seg.slice(1).join("_");
+            const len = soundLength(name, kind, lengths[name]);
             return {
                 name,
                 display: rest.replace(/_/g, " ").trim(),
                 category: seg.slice(0, 2).join("_"),
                 kind,
                 dim,
-                windowMs: WINDOW[kind],
+                windowMs: len.windowMs,
+                lengthText: len.lengthText,
+                lengthKey: len.lengthKey,
+                lengthLabel: len.label,
                 asset: `mod.RuntimeSpawn_Common.${name}`,
             };
         })
@@ -272,8 +319,12 @@ function main() {
     L.push("    readonly category: string;");
     L.push("    readonly kind: SfxKind;");
     L.push("    readonly dim: SfxDim;");
-    L.push("    /** Playback window we apply, in ms. NOT asset metadata. */");
+    L.push("    /** Auto-stop after this many ms: the recorded length plus a tail for one-shots. */");
     L.push("    readonly windowMs: number;");
+    L.push("    /** Recorded length of a one-shot, e.g. \"1.2s\" or \"17s+\" (the recording was cut off); \"\" for loops and unknown. */");
+    L.push("    readonly lengthText: string;");
+    L.push("    /** strings.json key for the row badge (\"ONE 1.2s\"); \"\" when lengthText is. */");
+    L.push("    readonly lengthKey: string;");
     L.push("    /** strings.json key for this asset's visible name. */");
     L.push("    readonly key: string;");
     L.push("    /** strings.json key for this asset's group name. */");
@@ -388,7 +439,7 @@ function main() {
     for (const [i, e] of sfx.entries()) {
         L.push(
             `    { name: ${q(e.name)}, display: ${q(e.display)}, category: ${q(e.category)}, ` +
-                `kind: ${q(e.kind)}, dim: ${q(e.dim)}, windowMs: ${e.windowMs}, asset: ${e.asset}, ` +
+                `kind: ${q(e.kind)}, dim: ${q(e.dim)}, windowMs: ${e.windowMs}, lengthText: ${q(e.lengthText)}, lengthKey: ${q(e.lengthKey)}, asset: ${e.asset}, ` +
                 `key: ${q(keyOf("a", i))}, catKey: ${q(sfxCatKeys.get(e.category))} },`
         );
     }
@@ -439,6 +490,15 @@ function main() {
     vfx.forEach((e, i) => pairs.push({ key: keyOf("v", i), text: rowText(e.display) }));
     for (const [name, key] of allCatKeys) pairs.push({ key, text: groupText(name) });
     [...sfxPrefixes, ...vfxPrefixes].forEach((e, i) => pairs.push({ key: keyOf("p", i), text: rowText(e.token) }));
+    // One key per distinct length badge, shared by every sound of that length.
+    const lengthLabels = new Map();
+    for (const e of sfx) {
+        if (e.lengthKey === "") continue;
+        const seen = lengthLabels.get(e.lengthKey);
+        if (seen !== undefined && seen !== e.lengthLabel) throw new Error(`length key ${e.lengthKey} reads both "${seen}" and "${e.lengthLabel}"`);
+        lengthLabels.set(e.lengthKey, e.lengthLabel);
+    }
+    for (const [key, text] of lengthLabels) pairs.push({ key, text });
     writeFileSync(
         resolve(ROOT, "src", "textkeys.json"),
         JSON.stringify({ pairs }, null, 1) + "\n",
@@ -477,6 +537,8 @@ function main() {
     const gas = vfx.filter((e) => e.name.includes("Gas")).length;
     console.log(`         prefixes: ${sfxPrefixes.length} SFX, ${vfxPrefixes.length} VFX`);
     console.log(`         snow FX: ${snow}   gas FX: ${gas}`);
+    const timed = sfx.filter((e) => e.lengthText !== "");
+    console.log(`         lengths: ${timed.length} of ${sfx.filter((e) => e.kind === "oneshot").length} one-shots (${timed.filter((e) => e.lengthText.endsWith("+")).length} at least), ${lengthLabels.size} badges`);
     if (unclassified.length) console.log(`  note: ${unclassified.length} SFX had no kind marker (defaulted to one-shot unless Loop/Alarm/Drone/Hum/Ambience)`);
     console.log(`\n  wrote ${OUT}`);
 }

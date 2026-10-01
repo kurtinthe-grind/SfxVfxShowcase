@@ -13,7 +13,7 @@ An in-game asset browser for **Battlefield 6 Portal**. Every sound and visual ef
 You need **two** files:
 
 - `dist/bundle.ts` — the mod
-- `dist/bundle.strings.json` — the string table, **1817 keys**
+- `dist/bundle.strings.json` — the string table, **1899 keys**
 
 Add both to your experience in the Portal editor at **portal.battlefield.com**.
 
@@ -64,7 +64,7 @@ Every row is the same shape:
 | **NAME** | The asset name |
 | **GROUP** | Which group it came from |
 | `SELECT` | Arms it. One click — the menu stays open so you can keep browsing. |
-| chips | At-a-glance attributes — `3D`/`2D`, `LOOP`/`ONE`, `WORLD`/`PLAYER` |
+| chips | At-a-glance attributes — `3D`/`2D`, `LOOP`/`ONE`, `WORLD`/`PLAYER`. A one-shot shows its length, e.g. `ONE 1.2s` |
 
 **PLAY never arms anything.** You can audition twenty sounds while deciding, and what fire spawns is still whatever you last selected. Starting a new audition stops the previous one, so you never get eight copies of the same sound stacked on top of each other.
 
@@ -117,8 +117,9 @@ Hit `+` on any row to save it. The `FAVOURITES` tab is that list.
 While the FAVOURITES tab is open, the header's SELECT button becomes **EXPORT FAVOURITES**. There's nothing to confirm on a shortlist, so the button that arms everywhere else exports here. It writes to the log, one line per asset:
 
 ```
----- FAVOURITES (3) ----
-SFX_Alarm | Alarm | SFX
+---- FAVOURITES (4) ----
+SFX_Alarm | Alarm | SFX | LOOP
+SFX_Destruction_Buildings_HouseCollapse_OneShot3D | Destruction_Buildings | SFX | 13.6s
 FX_Airburst_Incendiary_Detonation | Airburst | VFX
 FX_Vehicle_Wreck_PTV | Vehicle | VFX
 ---- END FAVOURITES ----
@@ -188,7 +189,7 @@ Worth reading so you're not surprised:
 - **Two known crashers are removed from the catalog.** `SFX_Levels_Brooklyn_Spots_EmergencyExit_SimpleLoop3D` and `SFX_Levels_Brooklyn_Shared_Spots_Water_Splash_Head_SimpleLoop3D` crash the Portal instance on play, so they are filtered out at build time. The build fails if a banlist entry isn't a real asset name, so the guard can't silently rot.
 - **The `F` keycap may render as a censor glyph.** Portal censors a standalone "f" used as a single-character token. If you see it, that's the engine's filter, not a missing label. There's a documented one-line fix in [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md).
 - **The SCALE range is a best guess.** 0.25x to 4.0x is what the SDK appears to accept; if an effect vanishes at the top of the range, the usable band is narrower and I'll tune it.
-- **Loop playback windows are estimates.** The SDK exposes no duration for a spawned SFX, so the length shown on a sound row is a playback window the mod applies so loops get bounded and one-shots get cleaned up. It's a starting guess and wants tuning by ear.
+- **Sound lengths are measured from recordings.** The SDK exposes no duration for a sound. One-shot lengths come from [tabbedscamper's BF6 Portal SoundBoard](https://github.com/TabbedScamper/BF6_Portal_SoundBoard), which recorded every sound in game. A one-shot plays for its recorded length plus a second. 14 recordings filled their whole recording slot, so those show as `10s+` or `17s+` and get five extra seconds. Four one-shots have no usable recording and keep the old 2.5 s. Loops stop after 8 s. Each player can have 16 sounds playing at once; past that, the oldest stops.
 
 ---
 

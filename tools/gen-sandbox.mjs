@@ -309,7 +309,7 @@ function rowFields(r) {
     const isLoop = e.kind === "loop";
     const b1c = is3d ? P.blue : P.amber;
     const b2c = isLoop ? P.green : P.grey;
-    return { ...head, playBg: isLoop ? P.green : P.blue, actGlyph: "P", actColor: "#FFFFFF", actBg: b1c, b1: is3d ? "3D" : "2D", b1Color: b1c, b1Bg: b1c, b2: isLoop ? "LOOP" : "ONE", b2Color: b2c, b2Bg: b2c };
+    return { ...head, playBg: isLoop ? P.green : P.blue, actGlyph: "P", actColor: "#FFFFFF", actBg: b1c, b1: is3d ? "3D" : "2D", b1Color: b1c, b1Bg: b1c, b2: isLoop ? "LOOP" : e.lengthText ? "ONE " + e.lengthText : "ONE", b2Color: b2c, b2Bg: b2c };
   }
   const world = r.type === "spawn";
   const b1c = world ? P.violet : P.green;

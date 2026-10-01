@@ -18,6 +18,11 @@ export const CONFIG = {
     minAmplitude: 0.1,
     maxAmplitude: 1.0,
 
+    // Sounds playing at once per player, previews and placed ones together. Past
+    // it the oldest stops. One-shots now play their recorded length (up to ~22 s),
+    // so rapid gadget fire would otherwise stack dozens of them.
+    maxSoundsPerPlayer: 16,
+
     defaultRange: 40,
     rangeStep: 10,
     minRange: 10,

@@ -42,10 +42,17 @@ type PreviewState =
     | { readonly type: "sfx"; readonly sfx: mod.SFX; readonly key: string }
     | { readonly type: "screen"; readonly id: string; readonly key: string };
 
+/** A sound this player started, and the timer that stops it after its window. */
+interface Playing {
+    readonly sfx: mod.SFX;
+    timer: Timers.TimerID | null;
+}
+
 interface PlayerState {
     ui: PlayerUi;
     spawned: mod.VFX[];
-    playing: mod.SFX[];
+    /** Oldest first; at most CONFIG.maxSoundsPerPlayer. */
+    playing: Playing[];
     /** The sound or effect currently auditioned, so a replay replaces it. */
     preview: PreviewState | undefined;
     /** A follow-up widget batch is already scheduled; see renderLogged(). */
@@ -537,14 +544,35 @@ function spawnSfx(st: PlayerState, entry: SfxEntry, at: mod.Vector | undefined):
     return sfx;
 }
 
+/**
+ * Stops the sound after its window (its recorded length plus a tail, see
+ * tools/gen-catalog.mjs). Past CONFIG.maxSoundsPerPlayer the oldest stops now:
+ * one-shots can run 22 s, and every pending stop holds one of the 512 timers the
+ * whole server shares.
+ */
 function track(st: PlayerState, sfx: mod.SFX, windowMs: number): void {
-    st.playing.push(sfx);
-    Timers.setTimeout(() => {
-        mod.StopSound(sfx);
-        mod.UnspawnObject(sfx);
-        const i = st.playing.indexOf(sfx);
-        if (i >= 0) st.playing.splice(i, 1);
+    const p: Playing = { sfx: sfx, timer: null };
+    p.timer = Timers.setTimeout(() => {
+        p.timer = null;
+        untrack(st, sfx);
     }, windowMs);
+    st.playing.push(p);
+    if (st.playing.length > CONFIG.maxSoundsPerPlayer) {
+        const oldest = st.playing[0];
+        untrack(st, oldest.sfx);
+    }
+}
+
+/** Stops and unspawns a tracked sound and cancels its timer. Does nothing if it already stopped. */
+function untrack(st: PlayerState, sfx: mod.SFX): void {
+    let i = -1;
+    for (let k = 0; k < st.playing.length; k++) if (st.playing[k].sfx === sfx) i = k;
+    if (i < 0) return;
+    const p = st.playing[i];
+    st.playing.splice(i, 1);
+    if (p.timer !== null) Timers.clear(p.timer);
+    mod.StopSound(sfx);
+    mod.UnspawnObject(sfx);
 }
 
 /**
@@ -562,10 +590,7 @@ function stopPreview(st: PlayerState): void {
         const f = findScreenFx(p.id);
         if (f !== undefined) setScreenFx(st, f, false);
     } else if (p.type === "sfx") {
-        const i = st.playing.indexOf(p.sfx);
-        if (i >= 0) st.playing.splice(i, 1);
-        mod.StopSound(p.sfx);
-        mod.UnspawnObject(p.sfx);
+        untrack(st, p.sfx);
     }
 }
 
@@ -669,8 +694,9 @@ function exportFavourites(st: PlayerState): void {
     for (const key of ui.favourites) {
         const r = findRow(key);
         if (r === undefined) continue;
-        // name (index file) | group | type
-        logAlways(rowRawName(r) + " | " + rowCategory(r) + " | " + (r.type === "sfx" ? "SFX" : "VFX"));
+        // name (index file) | group | type, and for a sound how long it plays
+        if (r.type === "sfx") logAlways(rowRawName(r) + " | " + rowCategory(r) + " | SFX | " + soundLength(r.entry));
+        else logAlways(rowRawName(r) + " | " + rowCategory(r) + " | VFX");
     }
     // Templates after the assets, in save order: plain names and values, not code.
     for (const key of ui.favourites) {
@@ -681,13 +707,15 @@ function exportFavourites(st: PlayerState): void {
     mod.DisplayHighlightedWorldLogMessage(mod.Message(TPL.exportedN, ui.favourites.length), ui.player);
 }
 
+/** "LOOP", the recorded length ("1.2s", "17s+" when the recording was cut off), or "?" if unknown. */
+function soundLength(e: SfxEntry): string {
+    if (e.kind === "loop") return "LOOP";
+    return e.lengthText !== "" ? e.lengthText : "?";
+}
+
 function stopAll(st: PlayerState): void {
-    for (const s of st.playing) {
-        mod.StopSound(s);
-        mod.UnspawnObject(s);
-    }
     const n = st.playing.length;
-    st.playing.length = 0;
+    while (st.playing.length > 0) untrack(st, st.playing[0].sfx);
     log(`stop all: silenced ${n} sound(s)`);
     mod.DisplayHighlightedWorldLogMessage(mod.Message(TPL.stoppedN, n), st.ui.player);
 }

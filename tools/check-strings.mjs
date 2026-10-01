@@ -57,6 +57,7 @@ for (const block of ["CHAR_KEY", "SCENE_TEXT"]) {
 // Keys the catalog mints for assets, groups and prefixes.
 for (const m of catalog.matchAll(/key: "(sxa\d+|sxv\d+|sxg\d+|sxp\d+)"/g)) declared.add(m[1]);
 for (const m of catalog.matchAll(/catKey: "(sxg\d+)"/g)) declared.add(m[1]);
+for (const m of catalog.matchAll(/lengthKey: "(sxl\w+)"/g)) declared.add(m[1]);
 
 for (const key of declared) {
     if (!Object.prototype.hasOwnProperty.call(strings, key)) {

@@ -559,7 +559,8 @@ function sfxRowFields(ui: PlayerUi, e: SfxEntry, selected: boolean, armed: boole
         b1: ui.tab === "fav" ? K(T.kindSfx) : K(is3d ? T.chip3d : T.chip2d),
         b1Color: ui.tab === "fav" ? P.blue : b1c,
         b1Bg: ui.tab === "fav" ? P.blue : b1c,
-        b2: ui.tab === "fav" ? mod.Message(T.logEmpty) : K(isLoop ? T.chipLoop : T.chipOne),
+        // A one-shot shows its recorded length, "ONE 1.2s"; plain ONE if unknown.
+        b2: ui.tab === "fav" ? mod.Message(T.logEmpty) : K(isLoop ? T.chipLoop : e.lengthKey !== "" ? e.lengthKey : T.chipOne),
         b2Color: ui.tab === "fav" ? P.row : b2c,
         b2Bg: ui.tab === "fav" ? P.row : b2c,
         selLabel: K(armed ? T.armedWord : T.select),

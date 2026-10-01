@@ -844,8 +844,15 @@ effects, so nothing surprises you in game.
    simulated keyboard, which is that view's heaviest state. The package caps at
    `MAX_ELEMENTS = 2048` / `MAX_BUTTONS = 512`, so four players in the keyboard is
    the number worth watching. Fine below that; at 64, consider team-shared UI.
-7. **Loop playback windows.** 2.5 s one-shot / 8 s loop in `gen-catalog.mjs` is a
-   starting guess and wants tuning by ear.
+7. **Playback windows.** A one-shot stops 1 s after its recorded length (5 s for
+   the 14 whose recording filled the capture slot, never under 2.5 s); a loop
+   after 8 s. Lengths are in `src/sound-lengths.json`, imported by
+   `tools/import-lengths.mjs` from tabbedscamper's BF6 Portal SoundBoard
+   (https://github.com/TabbedScamper/BF6_Portal_SoundBoard). `gen-catalog.mjs`
+   fails on a one-shot with no length unless `NO_LENGTH` lists it with a reason,
+   so re-run the import when the SDK adds sounds. Each player plays at most
+   `CONFIG.maxSoundsPerPlayer` (16) at once, since each pending stop holds one of
+   the 512 timers `bf6-portal-utils/timers` shares across the server.
 8. **The `Events` module caveat.** `sounds/README.md` warns that using `Events`
    forbids exporting your own Portal handlers. This mod subscribes through
    `Events` and exports nothing, which satisfies it — but confirm Portal accepts

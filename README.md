@@ -66,6 +66,10 @@ The **SOUND** and **VISUAL** tabs list the catalog, 8 rows per page.
 | `PLAY` / `STOP` | Auditions it now, without arming it. Player-wide effects toggle on and off |
 | `SELECT` | Arms it for the gadget |
 
+A one-shot sound's row shows how long it plays, for example `ONE 1.2s`. `17s+` means
+the sound is at least that long. Sounds play for their whole length, and each player
+can have 16 playing at once; past that, the oldest stops.
+
 - **Group rail** (left): pick a group, page with `< GROUPS` / `GROUPS >`. `ALL`
   shows everything again.
 - **SEARCH** opens an on-screen keyboard. Search ignores the group rail and matches
@@ -86,8 +90,9 @@ together. **EXPORT FAVOURITES** writes the list to the game's log as asset names
 you can paste into your own code:
 
 ```
----- FAVOURITES (3) ----
-SFX_Alarm | Alarm | SFX
+---- FAVOURITES (4) ----
+SFX_Alarm | Alarm | SFX | LOOP
+SFX_Destruction_Buildings_HouseCollapse_OneShot3D | Destruction_Buildings | SFX | 13.6s
 FX_Airburst_Incendiary_Detonation | Airburst | VFX
 FX_Vehicle_Wreck_PTV | Vehicle | VFX
 ---- END FAVOURITES ----
@@ -138,8 +143,11 @@ The full guide, with every option and known limit, is in
 - **A few names are spelled differently on screen** because the game masks some
   words with `#`: `MF` shows as `MFX` (the MF group as `MuzzleFlash`) and `Smoke` as
   `SmokeFX`. Exported names are unchanged.
-- **Loop lengths are estimates.** The SDK gives no duration for a sound, so the mod
-  stops looping sounds after a fixed window.
+- **Sound lengths come from recordings.** The SDK gives no length for a sound, so
+  one-shot lengths are measured from tabbedscamper's in-game recordings (see
+  Credits). 14 recordings filled their whole recording slot, so those sounds show as
+  "at least" (`10s+`, `17s+`). Four one-shots have no usable recording and show plain
+  `ONE`. Loops stop after 8 seconds.
 - **Radio tracks have numbers, not names.** The SDK gives no song names.
 - **Many players on the search keyboard at once** is the heaviest case: Portal's UI
   limits are comfortable up to about four players using it at the same time.
@@ -216,6 +224,13 @@ deluca-mike, and the asset catalog is generated from the type definitions in
 The browser preview uses
 **[bf6-portal-ui-preview](https://github.com/nadorjozsef/bf6-portal-ui-preview)** by
 nadorjozsef.
+
+Sound lengths are measured from the in-game recordings of the
+**[BF6 Portal SoundBoard](https://github.com/TabbedScamper/BF6_Portal_SoundBoard)** by
+[tabbedscamper](https://github.com/TabbedScamper). Only the measured numbers are used
+(`src/sound-lengths.json`, imported by `tools/import-lengths.mjs`); no audio is
+included. To hear any sound before using it, try their soundboard:
+https://tabbedscamper.github.io/BF6_Portal_SoundBoard/
 
 bf6-portal-utils is included in `dist/bundle.ts` under the MIT License,
 Copyright (c) 2026 Michael De Luca. Its license text is in
