@@ -1,0 +1,17 @@
+{
+    // Type-checks the standalone music probe against Tier 0 types only:
+    // no bf6-portal-utils, no bundler, exactly what the Portal editor compiles.
+    // DOM only for console, which Portal QuickJS provides (PortalLog shows
+    // "QuickJS: console.log"); src/ uses the same lib.
+    "compilerOptions": {
+        "target": "ES2020",
+        "module": "ES2020",
+        "lib": ["ES2020", "DOM"],
+        "strict": true,
+        "noEmit": true,
+        "noUnusedLocals": true,
+        "skipLibCheck": true,
+        "types": []
+    },
+    "files": ["MusicProbe.ts", "../../main_resources/types_original/mod/index.d.ts"]
+}
