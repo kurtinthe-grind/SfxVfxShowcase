@@ -1690,15 +1690,85 @@
       "bg": "{{sh.orangeDim}}"
     },
     {
+      "k": "textbutton",
+      "y": 756,
+      "w": 260,
+      "h": 48,
+      "textSize": 15,
+      "textColor": "#FFFFFF",
+      "bgAlpha": 1,
+      "align": "Center",
+      "fill": "Solid",
+      "parent": "tester",
+      "id": "mtLoad",
+      "x": 196,
+      "text": "{{f.mtLoadLabel}}",
+      "bg": "{{f.mtLoadBg}}",
+      "bind": {
+        "text": "mtLoadLabel",
+        "bg": "mtLoadBg"
+      }
+    },
+    {
+      "k": "group",
+      "id": "mtQueueGrp",
+      "x": 0,
+      "y": 0,
+      "visible": false,
+      "bind": {
+        "visible": "mtQueueOn"
+      },
+      "parent": "tester"
+    },
+    {
+      "k": "textbutton",
+      "y": 756,
+      "w": 260,
+      "h": 48,
+      "textSize": 15,
+      "textColor": "#FFFFFF",
+      "bgAlpha": 1,
+      "align": "Center",
+      "fill": "Solid",
+      "parent": "mtQueueGrp",
+      "id": "mtQueue",
+      "x": 466,
+      "text": "{{f.mtQueueLabel}}",
+      "bg": "{{sh.violet}}",
+      "bind": {
+        "text": "mtQueueLabel"
+      }
+    },
+    {
+      "k": "textbutton",
+      "y": 756,
+      "w": 260,
+      "h": 48,
+      "textSize": 15,
+      "textColor": "#FFFFFF",
+      "bgAlpha": 1,
+      "align": "Center",
+      "fill": "Solid",
+      "parent": "tester",
+      "id": "mtTarget",
+      "x": 1464,
+      "text": "{{f.mtTargetLabel}}",
+      "bg": "{{f.mtTargetBg}}",
+      "bind": {
+        "text": "mtTargetLabel",
+        "bg": "mtTargetBg"
+      }
+    },
+    {
       "k": "text",
       "textAlpha": 1,
       "align": "Center",
       "color": "{{sh.green}}",
       "parent": "tester",
       "id": "mtLast",
-      "x": 196,
+      "x": 736,
       "y": 756,
-      "w": 1528,
+      "w": 718,
       "h": 48,
       "text": "{{f.mtLast}}",
       "textSize": 20,

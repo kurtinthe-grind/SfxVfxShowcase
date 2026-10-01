@@ -1,17 +1,27 @@
 // MUSIC / RADIO tester: per-player state, the fields the tester panel binds to,
 // and the mt* actions that make the music calls.
 //
-// Tier 0 (types_original/mod/index.d.ts): LoadMusic(MusicPackages),
-// PlayMusic(MusicEvents, Player), SetMusicParam(MusicParams, number, Player).
+// Tier 0 (types_original/mod/index.d.ts): LoadMusic / UnloadMusic(MusicPackages),
+// PlayMusic(MusicEvents[, Player]), SetMusicParam(MusicParams, number[, Player]).
 // The package/event/param tables are generated from those enums by
 // tools/gen-music.mjs, so nothing here names a music member by hand except the
 // four Radio_* transport events, which are looked up by name and checked.
 //
+// LOADING. Official modes load exactly one package at the start. The first
+// version of this tester loaded all four at once and nothing played in game
+// (2026-10-01), so now only Core is loaded at start and LOAD switches packages
+// exclusively: unload the current one, load the one on screen. Loading is
+// global, not per player.
+//
+// TARGET. ME uses the player overloads, EVERYONE the global ones, so a run in
+// game can tell whether the per-player calls are what is silent.
+//
 // The engine cannot be asked what is playing or what a parameter is set to, so
-// the panel shows what was SENT: our values and the last call. Every call uses
-// the player overload -- a tester must never play music to the whole lobby.
+// the panel shows what was SENT, and every call is written to the log.
 
+import { log } from "./diag";
 import { MUSIC_PACKAGES, PARAM_SLOTS, type MusicEventSpec, type MusicPackageSpec, type MusicParamSpec } from "./music.gen";
+import { PALETTE } from "./scene.gen";
 import { T, TPL } from "./text.gen";
 import type { Scope } from "./ui";
 
@@ -26,6 +36,8 @@ function pkgNamed(name: string): MusicPackageSpec {
 /** The MUSIC tab cycles these, in this order. Radio has its own tab. */
 const MUSIC_TAB: readonly MusicPackageSpec[] = [pkgNamed("Core"), pkgNamed("BR"), pkgNamed("Gauntlet")];
 const RADIO = pkgNamed("Radio");
+/** Loaded at game-mode start, as the official examples do. */
+const STARTUP = MUSIC_TAB[0];
 
 function radioEvent(name: string): MusicEventSpec {
     for (const e of RADIO.events) if (e.name === name) return e;
@@ -34,6 +46,12 @@ function radioEvent(name: string): MusicEventSpec {
 const RADIO_PLAY = radioEvent("Radio_Play");
 const RADIO_NEXT = radioEvent("Radio_NextQueuedTrack");
 const RADIO_CLEAR = radioEvent("Radio_ClearQueue");
+
+const RADIO_CHANNELS = [T.radioCh0, T.radioCh1, T.radioCh2, T.radioCh3, T.radioCh4, T.radioCh5, T.radioCh6];
+const RADIO_BIOMES = [T.radioBiome0, T.radioBiome1, T.radioBiome2, T.radioBiome3, T.radioBiome4, T.radioBiome5, T.radioBiome6];
+
+/** The one package currently loaded. Music loading is global, so this is too. */
+let loaded: MusicPackageSpec | undefined;
 
 export interface TesterState {
     /** Index into MUSIC_TAB. */
@@ -44,6 +62,8 @@ export interface TesterState {
     values: Record<string, number>;
     /** The last call sent, as on-screen text. */
     last: mod.Message | undefined;
+    /** false = player overloads (ME), true = global overloads (EVERYONE). */
+    toAll: boolean;
 }
 
 export function newTesterState(): TesterState {
@@ -52,13 +72,14 @@ export function newTesterState(): TesterState {
         values[p.amp.name] = p.amp.def;
         for (const x of p.params) values[x.name] = x.def;
     }
-    return { pkg: 0, evt: MUSIC_TAB.map(() => 0), values: values, last: undefined };
+    return { pkg: 0, evt: MUSIC_TAB.map(() => 0), values: values, last: undefined, toAll: false };
 }
 
 /** Called once from OnGameModeStarted: the docs advise loading early. */
-export function loadAllMusic(): void {
-    for (const p of MUSIC_TAB) mod.LoadMusic(p.pkg);
-    mod.LoadMusic(RADIO.pkg);
+export function loadStartupMusic(): void {
+    mod.LoadMusic(STARTUP.pkg);
+    loaded = STARTUP;
+    log("music: LoadMusic(" + STARTUP.name + ") at game-mode start");
 }
 
 function current(tab: TesterTab, st: TesterState): MusicPackageSpec {
@@ -69,21 +90,48 @@ function round2(v: number): number {
     return Math.round(v * 100) / 100;
 }
 
-function sendParam(player: mod.Player, st: TesterState, p: MusicParamSpec): void {
-    const v = st.values[p.name];
-    mod.SetMusicParam(p.param, v, player);
-    st.last = mod.Message(TPL.mtCallParam, p.key, v);
+function who(st: TesterState): string {
+    return st.toAll ? "everyone" : "me";
 }
 
-function sendEvent(player: mod.Player, st: TesterState, event: mod.MusicEvents, key: string): void {
-    mod.PlayMusic(event, player);
+function load(st: TesterState, pkg: MusicPackageSpec): void {
+    if (loaded !== undefined && loaded !== pkg) {
+        mod.UnloadMusic(loaded.pkg);
+        log("music: UnloadMusic(" + loaded.name + ")");
+    }
+    mod.LoadMusic(pkg.pkg);
+    loaded = pkg;
+    st.last = mod.Message(TPL.mtCallLoad, pkg.key);
+    log("music: LoadMusic(" + pkg.name + ")");
+}
+
+function sendParam(player: mod.Player, st: TesterState, p: MusicParamSpec): void {
+    const v = st.values[p.name];
+    if (st.toAll) mod.SetMusicParam(p.param, v);
+    else mod.SetMusicParam(p.param, v, player);
+    st.last = mod.Message(TPL.mtCallParam, p.key, v);
+    log("music: SetMusicParam(" + p.name + ", " + v + ") for=" + who(st));
+}
+
+function sendEvent(player: mod.Player, st: TesterState, event: mod.MusicEvents, name: string, key: string): void {
+    if (st.toAll) mod.PlayMusic(event);
+    else mod.PlayMusic(event, player);
     st.last = mod.Message(TPL.mtCallPlay, key);
+    const pkgNote = loaded === undefined ? "nothing loaded" : "loaded=" + loaded.name;
+    log("music: PlayMusic(" + name + ") for=" + who(st) + " " + pkgNote);
 }
 
 function stepParam(player: mod.Player, st: TesterState, p: MusicParamSpec, dir: number): void {
     const v = st.values[p.name] + dir * p.step;
     st.values[p.name] = round2(Math.min(p.max, Math.max(p.min, v)));
-    sendParam(player, st, p);
+    // Sending the queue param queues a track: the stepper only picks the number,
+    // QUEUE TRACK sends it.
+    if (!p.queues) sendParam(player, st, p);
+}
+
+function queueParam(pkg: MusicPackageSpec): MusicParamSpec | undefined {
+    for (const p of pkg.params) if (p.queues) return p;
+    return undefined;
 }
 
 /**
@@ -100,10 +148,24 @@ export function handleTesterAction(tab: TesterTab, st: TesterState, player: mod.
         st.pkg = (st.pkg + (action === "mtPkgNext" ? 1 : n - 1)) % n;
         return true;
     }
+    if (action === "mtLoad") {
+        load(st, pkg);
+        return true;
+    }
+    if (action === "mtTarget") {
+        st.toAll = !st.toAll;
+        return true;
+    }
+    if (action === "mtQueue") {
+        const q = queueParam(pkg);
+        if (q === undefined) return false;
+        sendParam(player, st, q);
+        return true;
+    }
     if (action === "mtPrev" || action === "mtNext") {
         if (radio) {
             const e = action === "mtNext" ? RADIO_NEXT : RADIO_CLEAR;
-            sendEvent(player, st, e.event, e.key);
+            sendEvent(player, st, e.event, e.name, e.key);
             return true;
         }
         const n = pkg.events.length;
@@ -111,15 +173,16 @@ export function handleTesterAction(tab: TesterTab, st: TesterState, player: mod.
         return true;
     }
     if (action === "mtPlay") {
-        // Re-send everything first, so what plays always matches the panel.
-        for (const p of pkg.params) sendParam(player, st, p);
+        // Re-send everything first, so what plays always matches the panel. The
+        // queue param is the exception: re-sending it would queue another track.
+        for (const p of pkg.params) if (!p.queues) sendParam(player, st, p);
         sendParam(player, st, pkg.amp);
         const e = radio ? RADIO_PLAY : pkg.events[st.evt[st.pkg]];
-        sendEvent(player, st, e.event, e.key);
+        sendEvent(player, st, e.event, e.name, e.key);
         return true;
     }
     if (action === "mtStop") {
-        sendEvent(player, st, pkg.stop, pkg.stopKey);
+        sendEvent(player, st, pkg.stop, pkg.name + "_Stop", pkg.stopKey);
         return true;
     }
     if (action === "mtVolDown" || action === "mtVolUp") {
@@ -138,24 +201,39 @@ export function handleTesterAction(tab: TesterTab, st: TesterState, player: mod.
     return false;
 }
 
+function pickKey(keys: readonly string[], v: number): string {
+    const k = keys[Math.round(v)];
+    return k === undefined ? T.logEmpty : k;
+}
+
 /** Field values for the tester nodes in scene.json (the `f` scope). */
 export function testerFields(tab: TesterTab, st: TesterState): Scope {
     const pkg = current(tab, st);
     const radio = tab === "radio";
+    const isLoaded = loaded === pkg;
     const evt = pkg.events[st.evt[st.pkg]];
+    const q = queueParam(pkg);
+    const ch = st.values["Radio_Channel"] ?? 0;
+    const biome = st.values["Radio_Biome"] ?? 0;
     const f: Scope = {
         mtTitle: mod.Message(radio ? T.mtCardRadio : T.mtCardTrack),
         mtPkgArrows: radio ? "0" : "1",
         mtPkg: mod.Message(TPL.mtPackageOf, pkg.key),
         mtEvent: mod.Message(radio ? T.mtRadioLine : evt.key),
-        mtEventIdx: radio ? mod.Message(T.logEmpty) : mod.Message(TPL.mtTrackOf, st.evt[st.pkg] + 1, pkg.events.length),
+        mtEventIdx: radio ? mod.Message(T.logEmpty) : mod.Message(isLoaded ? TPL.mtTrackOf : TPL.mtTrackUnloaded, st.evt[st.pkg] + 1, pkg.events.length),
         mtPrevLabel: mod.Message(radio ? T.mtClearQueue : T.mtPrev),
         mtPlayLabel: mod.Message(T.mtPlay),
         mtStopLabel: mod.Message(T.mtStop),
         mtNextLabel: mod.Message(radio ? T.mtNextTrack : T.mtNext),
-        mtParamNote: mod.Message(pkg.params.length === 0 ? T.mtNoParams : T.mtNoteParams),
+        mtParamNote: radio ? mod.Message(TPL.mtRadioNote, ch, pickKey(RADIO_CHANNELS, ch), pickKey(RADIO_BIOMES, biome)) : mod.Message(pkg.params.length === 0 ? T.mtNoParams : T.mtNoteParams),
         mtVol: mod.Message(TPL.num1, st.values[pkg.amp.name]),
         mtLast: st.last ?? mod.Message(T.mtNothingSent),
+        mtLoadLabel: mod.Message(isLoaded ? TPL.mtLoadedOf : TPL.mtLoadOf, pkg.key),
+        mtLoadBg: isLoaded ? PALETTE.green : PALETTE.amber,
+        mtTargetLabel: mod.Message(st.toAll ? T.mtTargetAll : T.mtTargetMe),
+        mtTargetBg: st.toAll ? PALETTE.hot : PALETTE.row,
+        mtQueueOn: q === undefined ? "0" : "1",
+        mtQueueLabel: q === undefined ? mod.Message(T.logEmpty) : mod.Message(TPL.mtQueueOf, st.values[q.name]),
     };
     for (let i = 0; i < PARAM_SLOTS; i++) {
         const p = pkg.params[i];

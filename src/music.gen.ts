@@ -11,6 +11,8 @@ export interface MusicParamSpec {
     readonly max: number;
     readonly step: number;
     readonly def: number;
+    /** Sending this param queues a track: steppers must not send it. */
+    readonly queues: boolean;
 }
 
 export interface MusicEventSpec {
@@ -58,9 +60,9 @@ export const MUSIC_PACKAGES: readonly MusicPackageSpec[] = [
             { name: "BRGauntlet_LobbyFilled", event: mod.MusicEvents.BRGauntlet_LobbyFilled, key: "sxM15" },
             { name: "BRGauntlet_WaitingForPlayers_Loop", event: mod.MusicEvents.BRGauntlet_WaitingForPlayers_Loop, key: "sxM16" },
         ],
-        amp: { name: "BR_Amplitude", param: mod.MusicParams.BR_Amplitude, key: "sxM17", min: 0, max: 2, step: 0.1, def: 1 },
+        amp: { name: "BR_Amplitude", param: mod.MusicParams.BR_Amplitude, key: "sxM17", min: 0, max: 3, step: 0.1, def: 1, queues: false },
         params: [
-            { name: "BRGauntlet_LobbyTimerRemaining", param: mod.MusicParams.BRGauntlet_LobbyTimerRemaining, key: "sxM18", min: 0, max: 300, step: 10, def: 60 },
+            { name: "BRGauntlet_LobbyTimerRemaining", param: mod.MusicParams.BRGauntlet_LobbyTimerRemaining, key: "sxM18", min: 0, max: 10, step: 1, def: 10, queues: false },
         ],
     },
     {
@@ -81,12 +83,12 @@ export const MUSIC_PACKAGES: readonly MusicPackageSpec[] = [
             { name: "Core_Stinger_Positive", event: mod.MusicEvents.Core_Stinger_Positive, key: "sxM29" },
             { name: "Core_Stinger_RankUp", event: mod.MusicEvents.Core_Stinger_RankUp, key: "sxM30" },
         ],
-        amp: { name: "Core_Amplitude", param: mod.MusicParams.Core_Amplitude, key: "sxM31", min: 0, max: 2, step: 0.1, def: 1 },
+        amp: { name: "Core_Amplitude", param: mod.MusicParams.Core_Amplitude, key: "sxM31", min: 0, max: 3, step: 0.1, def: 1, queues: false },
         params: [
-            { name: "Core_IsWinning", param: mod.MusicParams.Core_IsWinning, key: "sxM32", min: 0, max: 1, step: 1, def: 0 },
-            { name: "Core_PhaseUrgency", param: mod.MusicParams.Core_PhaseUrgency, key: "sxM33", min: 0, max: 1, step: 0.1, def: 0 },
-            { name: "Core_Sector", param: mod.MusicParams.Core_Sector, key: "sxM34", min: 0, max: 10, step: 1, def: 0 },
-            { name: "Core_Urgency", param: mod.MusicParams.Core_Urgency, key: "sxM35", min: 0, max: 1, step: 0.1, def: 0 },
+            { name: "Core_IsWinning", param: mod.MusicParams.Core_IsWinning, key: "sxM32", min: 0, max: 1, step: 1, def: 0, queues: false },
+            { name: "Core_PhaseUrgency", param: mod.MusicParams.Core_PhaseUrgency, key: "sxM33", min: 0, max: 3, step: 0.5, def: 0, queues: false },
+            { name: "Core_Sector", param: mod.MusicParams.Core_Sector, key: "sxM34", min: 0, max: 3, step: 1, def: 0, queues: false },
+            { name: "Core_Urgency", param: mod.MusicParams.Core_Urgency, key: "sxM35", min: 0, max: 4, step: 0.5, def: 0, queues: false },
         ],
     },
     {
@@ -111,7 +113,7 @@ export const MUSIC_PACKAGES: readonly MusicPackageSpec[] = [
             { name: "Gauntlet_Urgency_FinalMission", event: mod.MusicEvents.Gauntlet_Urgency_FinalMission, key: "sxM50" },
             { name: "Gauntlet_WonOperation_Loop", event: mod.MusicEvents.Gauntlet_WonOperation_Loop, key: "sxM51" },
         ],
-        amp: { name: "Gauntlet_Amplitude", param: mod.MusicParams.Gauntlet_Amplitude, key: "sxM52", min: 0, max: 2, step: 0.1, def: 1 },
+        amp: { name: "Gauntlet_Amplitude", param: mod.MusicParams.Gauntlet_Amplitude, key: "sxM52", min: 0, max: 3, step: 0.1, def: 1, queues: false },
         params: [
         ],
     },
@@ -126,13 +128,13 @@ export const MUSIC_PACKAGES: readonly MusicPackageSpec[] = [
             { name: "Radio_NextQueuedTrack", event: mod.MusicEvents.Radio_NextQueuedTrack, key: "sxM56" },
             { name: "Radio_Play", event: mod.MusicEvents.Radio_Play, key: "sxM57" },
         ],
-        amp: { name: "Radio_Amplitude", param: mod.MusicParams.Radio_Amplitude, key: "sxM58", min: 0, max: 2, step: 0.1, def: 1 },
+        amp: { name: "Radio_Amplitude", param: mod.MusicParams.Radio_Amplitude, key: "sxM58", min: 0, max: 3, step: 0.1, def: 1, queues: false },
         params: [
-            { name: "Radio_Biome", param: mod.MusicParams.Radio_Biome, key: "sxM59", min: 0, max: 10, step: 1, def: 0 },
-            { name: "Radio_Channel", param: mod.MusicParams.Radio_Channel, key: "sxM60", min: 0, max: 10, step: 1, def: 0 },
-            { name: "Radio_ContinueQueueOnTrackEnd", param: mod.MusicParams.Radio_ContinueQueueOnTrackEnd, key: "sxM61", min: 0, max: 1, step: 1, def: 1 },
-            { name: "Radio_LoopQueuedTracks", param: mod.MusicParams.Radio_LoopQueuedTracks, key: "sxM62", min: 0, max: 1, step: 1, def: 0 },
-            { name: "Radio_QueueTrackNumber", param: mod.MusicParams.Radio_QueueTrackNumber, key: "sxM63", min: 0, max: 20, step: 1, def: 0 },
+            { name: "Radio_Biome", param: mod.MusicParams.Radio_Biome, key: "sxM59", min: 0, max: 6, step: 1, def: 0, queues: false },
+            { name: "Radio_Channel", param: mod.MusicParams.Radio_Channel, key: "sxM60", min: 0, max: 6, step: 1, def: 2, queues: false },
+            { name: "Radio_ContinueQueueOnTrackEnd", param: mod.MusicParams.Radio_ContinueQueueOnTrackEnd, key: "sxM61", min: 0, max: 1, step: 1, def: 1, queues: false },
+            { name: "Radio_LoopQueuedTracks", param: mod.MusicParams.Radio_LoopQueuedTracks, key: "sxM62", min: 0, max: 1, step: 1, def: 1, queues: false },
+            { name: "Radio_QueueTrackNumber", param: mod.MusicParams.Radio_QueueTrackNumber, key: "sxM63", min: 0, max: 31, step: 1, def: 0, queues: true },
         ],
     },
 ];

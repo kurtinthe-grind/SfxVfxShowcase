@@ -19,23 +19,33 @@ const TYPES = resolve(ROOT, "..", "main_resources", "types_original", "mod", "in
 const OUT_TS = resolve(ROOT, "src", "music.gen.ts");
 const OUT_KEYS = resolve(ROOT, "src", "musickeys.json");
 
-// Parameter ranges. The engine cannot be queried for them, so these are guesses
-// to be tuned in game; the panel says so. Anything missing here falls back to
-// DEFAULT_SPEC and is reported, so a new SDK param is never silently unusable.
+// Parameter ranges, from the MusicParams JSDoc in bf6-portal-mod-types
+// (enums.d.ts). Anything missing here falls back to DEFAULT_SPEC and is reported,
+// so a new SDK param is never silently unusable.
 const SPEC = {
+    // "effectively a boolean ... takes in a number 0 or 1"
     Core_IsWinning: { min: 0, max: 1, step: 1, def: 0 },
-    Core_Sector: { min: 0, max: 10, step: 1, def: 0 },
-    Core_Urgency: { min: 0, max: 1, step: 0.1, def: 0 },
-    Core_PhaseUrgency: { min: 0, max: 1, step: 0.1, def: 0 },
-    BRGauntlet_LobbyTimerRemaining: { min: 0, max: 300, step: 10, def: 60 },
-    Radio_Channel: { min: 0, max: 10, step: 1, def: 0 },
-    Radio_Biome: { min: 0, max: 10, step: 1, def: 0 },
-    Radio_QueueTrackNumber: { min: 0, max: 20, step: 1, def: 0 },
-    Radio_LoopQueuedTracks: { min: 0, max: 1, step: 1, def: 0 },
+    // "0 ... does not use sectors (e.g. Conquest), or use values 1, 2, or 3"
+    Core_Sector: { min: 0, max: 3, step: 1, def: 0 },
+    // "clamped to a range between 0 and 4 ... decimals ... act as a crossfade"
+    Core_Urgency: { min: 0, max: 4, step: 0.5, def: 0 },
+    // "clamped to a range between 0 and 3"
+    Core_PhaseUrgency: { min: 0, max: 3, step: 0.5, def: 0 },
+    // "a timer from 10 to 0 ... only need to set this timer once"
+    BRGauntlet_LobbyTimerRemaining: { min: 0, max: 10, step: 1, def: 10 },
+    // 0 Hip Hop, 1 Rock, 2 BF Themes, 3 Reggaeton, 4 Biome, 5 Classical, 6 Pop
+    Radio_Channel: { min: 0, max: 6, step: 1, def: 2 },
+    // 0 Gibraltar .. 6 Turkmenistan; only used on channel 4
+    Radio_Biome: { min: 0, max: 6, step: 1, def: 0 },
+    // "Select which track to add next in the queue" -- largest station has 32
+    // Setting it QUEUES that track, so the stepper only picks the number and the
+    // tester's QUEUE TRACK button sends it (queues: true).
+    Radio_QueueTrackNumber: { min: 0, max: 31, step: 1, def: 0, queues: true },
+    Radio_LoopQueuedTracks: { min: 0, max: 1, step: 1, def: 1 },
     Radio_ContinueQueueOnTrackEnd: { min: 0, max: 1, step: 1, def: 1 },
 };
-// Volume. The SDK examples use 1.3 and 1.8, so 2 is a guess at a sane top.
-const AMP_SPEC = { min: 0, max: 2, step: 0.1, def: 1 };
+// "0 is silent, 1 is the full default volume ... clamped from 0 to 3"
+const AMP_SPEC = { min: 0, max: 3, step: 0.1, def: 1 };
 const DEFAULT_SPEC = { min: 0, max: 10, step: 1, def: 0 };
 
 /** The UI has this many param rows; gen fails if a package needs more. */
@@ -121,6 +131,8 @@ L.push("    readonly min: number;");
 L.push("    readonly max: number;");
 L.push("    readonly step: number;");
 L.push("    readonly def: number;");
+L.push("    /** Sending this param queues a track: steppers must not send it. */");
+L.push("    readonly queues: boolean;");
 L.push("}");
 L.push("");
 L.push("export interface MusicEventSpec {");
@@ -145,7 +157,7 @@ L.push("");
 L.push(`export const PARAM_SLOTS = ${PARAM_SLOTS};`);
 L.push("");
 const param = (p) =>
-    `{ name: ${q(p.name)}, param: mod.MusicParams.${p.name}, key: ${q(p.key)}, min: ${p.min}, max: ${p.max}, step: ${p.step}, def: ${p.def} }`;
+    `{ name: ${q(p.name)}, param: mod.MusicParams.${p.name}, key: ${q(p.key)}, min: ${p.min}, max: ${p.max}, step: ${p.step}, def: ${p.def}, queues: ${p.queues === true} }`;
 L.push("export const MUSIC_PACKAGES: readonly MusicPackageSpec[] = [");
 for (const p of out) {
     L.push("    {");

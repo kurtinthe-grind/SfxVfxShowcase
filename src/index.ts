@@ -11,7 +11,7 @@ import { Timers } from "bf6-portal-utils/timers";
 import { SFX_CATALOG, SFX_CATEGORIES, SFX_PREFIXES, type SfxEntry, VFX_CATALOG, VFX_CATEGORIES, VFX_PREFIXES } from "./catalog";
 import { CONFIG } from "./config";
 import { debugEnabled, initLog, log, logAlways, setDebug } from "./diag";
-import { handleTesterAction, loadAllMusic, newTesterState } from "./tester";
+import { handleTesterAction, loadStartupMusic, newTesterState } from "./tester";
 import { T, TPL } from "./text.gen";
 import {
     destroyUI,
@@ -101,8 +101,8 @@ Events.OnGameModeStarted.subscribe(() => {
         screenRows
     );
     mod.SetSpawnMode(mod.SpawnModes.AutoSpawn);
-    // MUSIC / RADIO tester: every package, once, as early as possible.
-    loadAllMusic();
+    // MUSIC / RADIO tester: Core only, as early as possible. LOAD switches.
+    loadStartupMusic();
 });
 
 // Grant the portal gadget at runtime on every deployment, so it survives death

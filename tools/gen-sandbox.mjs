@@ -166,8 +166,15 @@ function testerSample(tab) {
     mtNextLabel: radio ? "NEXT TRACK" : ">|",
     mtParamNote: "Sent to you only. Ranges are guesses - the engine does not report them.",
     mtVol: radio ? "1" : "1.3",
-    mtLast: radio ? "SetMusicParam(Radio_Channel, 3)" : "PlayMusic(Core_PhaseEnded)",
+    mtLast: radio ? "SetMusicParam(Radio_QueueTrackNumber, 2)" : "PlayMusic(Core_PhaseEnded)",
+    mtLoadLabel: radio ? "LOAD RADIO" : "CORE LOADED",
+    mtLoadBg: radio ? P.amber : P.green,
+    mtTargetLabel: "FOR: ME",
+    mtTargetBg: P.row,
+    mtQueueOn: radio ? "1" : "0",
+    mtQueueLabel: "QUEUE TRACK 2",
   };
+  if (radio) f.mtParamNote = "CHANNEL 3 = Reggaeton    BIOME = Gibraltar (channel 4 only)";
   for (let i = 0; i < 5; i++) {
     const r = rows[i];
     f["mtP" + i + "On"] = r === undefined ? "0" : "1";
@@ -251,9 +258,9 @@ const chromeFields = {
   selectLabel: V.selected === "" ? "SELECT AN ITEM" : V.armed === V.selected ? "SELECTED \\u2713" : "SELECT",
   selectBg: V.selected === "" ? P.row : V.armed === V.selected ? P.green : P.blue,
   hint: V.tab === "music"
-    ? "Pick a package and a track, then PLAY. Params and VOLUME apply live, and PLAY re-sends them first."
+    ? "LOAD the package first, then pick a track and PLAY. Params and VOLUME apply live; PLAY re-sends them first."
     : V.tab === "radio"
-    ? "PLAY starts the radio with the params on the right. NEXT TRACK and CLEAR QUEUE drive its queue."
+    ? "LOAD RADIO, pick a channel, pick a track number and QUEUE TRACK it, then PLAY. The queue starts empty."
     : !V.open
     ? "MENU CLOSED \u2014 aim (right mouse) to reopen \u00b7 fire (left mouse) to spawn what is armed"
     : V.tab === "vfx"

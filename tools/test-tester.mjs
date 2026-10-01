@@ -4,12 +4,17 @@
 // calls that reach the engine. The engine cannot be asked what is playing, so
 // the calls ARE the behaviour:
 //
-//   - all four packages are loaded once, at game-mode start;
-//   - every PlayMusic / SetMusicParam targets the clicking player only;
+//   - only Core is loaded at start, and LOAD switches packages exclusively
+//     (official modes load exactly one package; loading all four at once
+//     played nothing in game on 2026-10-01);
+//   - PlayMusic / SetMusicParam target the clicking player, or everyone when
+//     the target toggle says so (the global overloads);
+//   - every music call is written to the log, so a silent run is diagnosable;
 //   - PLAY re-sends the package's params and volume, then the event;
 //   - steppers send immediately and clamp to the range;
 //   - STOP sends the package's own stop event;
-//   - the radio transport maps to the four Radio_* events.
+//   - the radio transport maps to the four Radio_* events, and the queue param
+//     is only sent by QUEUE TRACK (sending it queues a track).
 
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -17,12 +22,13 @@ import { ROOT, replay } from "./ui-replay.mjs";
 
 const bundle = readFileSync(resolve(ROOT, "dist", "bundle.ts"), "utf8");
 const s = await replay(bundle);
+const MUSIC_CALL = /^(LoadMusic|UnloadMusic|PlayMusic|SetMusicParam)$/;
 const problems = [];
 
 /** Music calls in a phase, as readable strings. Numbers keep 2 decimals. */
 function music(phase) {
     return s.calls
-        .filter((c) => c.phase === phase && /^(LoadMusic|UnloadMusic|PlayMusic|SetMusicParam)$/.test(c.name))
+        .filter((c) => c.phase === phase && MUSIC_CALL.test(c.name))
         .map((c) =>
             c.name +
             "(" +
@@ -51,12 +57,7 @@ async function step(phase, fn) {
 try {
     s.start();
     await s.ticks(5);
-    expect("boot", [
-        "LoadMusic(MusicPackages.Core)",
-        "LoadMusic(MusicPackages.BR)",
-        "LoadMusic(MusicPackages.Gauntlet)",
-        "LoadMusic(MusicPackages.Radio)",
-    ]);
+    expect("boot", ["LoadMusic(MusicPackages.Core)"]);
 
     await step("deploy", () => s.deploy());
     await step("open", () => s.aim());
@@ -96,24 +97,46 @@ try {
     await step("volume up", () => s.clickId("mtVolUp"));
     expect("volume up", ["SetMusicParam(MusicParams.Core_Amplitude, 1.1, player)"]);
 
+    // EVERYONE: the same PLAY through the global overloads.
+    await step("target all", () => s.clickId("mtTarget"));
+    expect("target all", []);
+    await step("play all", () => s.clickId("mtPlay"));
+    expect("play all", [
+        "SetMusicParam(MusicParams.Core_IsWinning, 1)",
+        "SetMusicParam(MusicParams.Core_PhaseUrgency, 0)",
+        "SetMusicParam(MusicParams.Core_Sector, 0)",
+        "SetMusicParam(MusicParams.Core_Urgency, 0)",
+        "SetMusicParam(MusicParams.Core_Amplitude, 1.1)",
+        "PlayMusic(MusicEvents.Core_EndOfRound_Loop)",
+    ]);
+    await step("target me", () => s.clickId("mtTarget"));
+
     await step("package next", () => s.clickId("mtPkgNext"));
     expect("package next", []);
+    await step("load br", () => s.clickId("mtLoad"));
+    expect("load br", ["UnloadMusic(MusicPackages.Core)", "LoadMusic(MusicPackages.BR)"]);
     await step("play br", () => s.clickId("mtPlay"));
     expect("play br", [
-        "SetMusicParam(MusicParams.BRGauntlet_LobbyTimerRemaining, 60, player)",
+        "SetMusicParam(MusicParams.BRGauntlet_LobbyTimerRemaining, 10, player)",
         "SetMusicParam(MusicParams.BR_Amplitude, 1, player)",
         "PlayMusic(MusicEvents.BR_InsertionCinematic_Dropzone_Loop, player)",
     ]);
 
     await step("tab radio", () => s.click("RADIO"));
     expect("tab radio", []);
+    await step("load radio", () => s.clickId("mtLoad"));
+    expect("load radio", ["UnloadMusic(MusicPackages.BR)", "LoadMusic(MusicPackages.Radio)"]);
+    // Radio_QueueTrackNumber is row 4. Stepping it must NOT send: sending queues.
+    await step("queue number up", () => s.clickId("mtP4Up"));
+    expect("queue number up", []);
+    await step("queue", () => s.clickId("mtQueue"));
+    expect("queue", ["SetMusicParam(MusicParams.Radio_QueueTrackNumber, 1, player)"]);
     await step("radio play", () => s.clickId("mtPlay"));
     expect("radio play", [
         "SetMusicParam(MusicParams.Radio_Biome, 0, player)",
-        "SetMusicParam(MusicParams.Radio_Channel, 0, player)",
+        "SetMusicParam(MusicParams.Radio_Channel, 2, player)",
         "SetMusicParam(MusicParams.Radio_ContinueQueueOnTrackEnd, 1, player)",
-        "SetMusicParam(MusicParams.Radio_LoopQueuedTracks, 0, player)",
-        "SetMusicParam(MusicParams.Radio_QueueTrackNumber, 0, player)",
+        "SetMusicParam(MusicParams.Radio_LoopQueuedTracks, 1, player)",
         "SetMusicParam(MusicParams.Radio_Amplitude, 1, player)",
         "PlayMusic(MusicEvents.Radio_Play, player)",
     ]);
@@ -136,6 +159,12 @@ try {
     if (!testerHidden) problems.push("tab sound: the tester's PLAY button is still visible over the browser");
 
     for (const l of s.logs) if (/UNHANDLED ACTION|error|exception/i.test(l)) problems.push("log: " + l);
+
+    // Every music call must leave a log line: on 2026-10-01 the tester played
+    // nothing in game and the log could not say what had been sent.
+    const sent = s.calls.filter((c) => MUSIC_CALL.test(c.name)).length;
+    const logged = s.logs.filter((l) => /music: (LoadMusic|UnloadMusic|PlayMusic|SetMusicParam)\(/.test(l)).length;
+    if (sent !== logged) problems.push(`${sent} music calls were made but ${logged} were logged`);
 } finally {
     s.dispose();
 }
@@ -145,4 +174,4 @@ if (problems.length > 0) {
     for (const p of problems) console.error("    - " + p);
     process.exit(1);
 }
-console.log("  tester  : packages loaded at start, per-player play/params, PLAY re-sends params, clamping, stop and radio transport all correct");
+console.log("  tester  : Core loaded at start, LOAD switches exclusively, ME/EVERYONE overloads, PLAY re-sends params, clamping, stop, radio queue + transport, every call logged");
