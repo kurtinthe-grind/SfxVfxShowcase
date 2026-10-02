@@ -10,7 +10,8 @@ files to any experience and play.
 - **936 sounds** and **312 visual effects**, plus 4 player-wide screen effects, in
   113 groups
 - **Search** with an on-screen keyboard, filter chips and one-click name prefixes
-- **Favourites** you can export as a list of asset names to paste into your own mod
+- **Favourites** you can export as a list of asset names to paste into your own mod,
+  or show as a **QR code** that opens the full list on your phone
 - A **MUSIC / RADIO tester** for every Core, BR, Gauntlet and Radio event and
   parameter, with savable templates
 - Works with mouse and keyboard, and with a controller (the selected button turns orange)
@@ -101,6 +102,21 @@ FX_Vehicle_Wreck_PTV | Vehicle | VFX
 On PC the log is `PortalLog.txt` in `%TEMP%\Battlefield™ 6\`. Favourites last for
 the match.
 
+### QR CODE (for console players)
+
+On console you cannot open the log, so FAVOURITES also has **QR CODE**. Scan the code
+on screen with your phone camera. It opens the
+**[SFX/VFX Decoder](https://kurtinthe-grind.github.io/SfxVfxShowcase/)**, which lists
+every full asset name and template. From there you can copy the list or download it as
+JSON or CSV. A long list is split into several codes (`<` / `>` on screen); scan each one
+and the site joins them.
+
+The code holds short IDs, not names (`0XG` stands for
+`FX_ArtilleryStrike_Explosion_01`), so about 210 assets fit in one code instead of 12.
+An ID never changes meaning, so old codes keep working. The site can also read a
+photo or screenshot of a code, and older codes that hold full names. How it works:
+[docs/QR-MAPPING.md](docs/QR-MAPPING.md).
+
 ### Music and radio
 
 **MUSIC**: pick a package with `<` / `>` (CORE, BR or GAUNTLET), a track with
@@ -179,6 +195,7 @@ npm install
 npm run build      # generate, typecheck, bundle to dist/, and run every check and test
 npm run release    # build, then copy dist/ to SfxVfxShowcase.ts + SfxVfxShowcase.strings.json
 npm run preview    # layout preview in the browser
+npm run site       # the QR decoder website on http://localhost:8080/
 ```
 
 `npm run build` fails on any broken check. The checks include strings that would not
@@ -196,6 +213,9 @@ the game.
 | `src/scene.json` | Layout and colours of the whole menu, shared with the preview |
 | `src/config.ts` | Tunable numbers |
 | `src/*.gen.ts`, `src/catalog.ts` | Generated from the SDK by `tools/gen-*.mjs` |
+| `src/qrexport.ts` | Builds the QR CODE payloads from compact asset IDs |
+| `registry/` | The append-only asset ID registry behind QR codes ([docs/QR-MAPPING.md](docs/QR-MAPPING.md)) |
+| `site/` | The QR decoder website, deployed to GitHub Pages by `.github/workflows/pages.yml` |
 | `tools/` | Generators, build checks and replay tests |
 | `preview/` | Browser layout preview |
 | `probe/` | A small music test mod used to check music behaviour in game |
@@ -216,6 +236,7 @@ part of the work here:
 | `timers` | Music loading waits, sound clean-up and deferred redraws |
 | `events` | All game events (deploy, gadget aim and fire, button presses) |
 | `logging` | The debug log |
+| `ui/components/qr-code` | Encoding and drawing the QR CODE panel |
 
 The mod is bundled into one file with
 **[bf6-portal-bundler](https://github.com/deluca-mike/bf6-portal-bundler)**, also by
@@ -231,6 +252,12 @@ Sound lengths are measured from the in-game recordings of the
 (`src/sound-lengths.json`, imported by `tools/import-lengths.mjs`); no audio is
 included. To hear any sound before using it, try their soundboard:
 https://tabbedscamper.github.io/BF6_Portal_SoundBoard/
+
+The QR CODE export was mikedeluca_'s idea: a way for console players, who cannot
+open `PortalLog.txt`, to get their favourites out of the game.
+
+The QR decoder website reads images of codes with
+**[jsQR](https://github.com/cozmo/jsQR)** (Apache-2.0), included in `site/vendor/`.
 
 bf6-portal-utils is included in `dist/bundle.ts` under the MIT License,
 Copyright (c) 2026 Michael De Luca. Its license text is in

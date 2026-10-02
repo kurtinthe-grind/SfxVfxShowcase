@@ -1983,7 +1983,7 @@ export const SCREEN: readonly SceneNode[] = [
         "y": 200,
         "w": 620,
         "h": 120,
-        "text": "Your phone shows your favourites as text. Copy it into a note or a message.",
+        "text": "Your phone opens the SFX/VFX Showcase website with the full asset names. For a list in parts, scan each part.",
         "textSize": 18,
         "color": "{{sh.inkDim}}",
         "align": "Left",

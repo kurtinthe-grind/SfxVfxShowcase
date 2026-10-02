@@ -29,3 +29,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
+
+## jsQR
+
+https://github.com/cozmo/jsQR
+
+The QR decoder website (`site/`, not the mod) includes `site/vendor/jsQR.js`, version
+1.4.0, under the Apache License 2.0. The full license text is in
+[site/vendor/jsQR.LICENSE.txt](site/vendor/jsQR.LICENSE.txt).

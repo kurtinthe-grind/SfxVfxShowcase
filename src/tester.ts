@@ -7,6 +7,8 @@ import { Timers } from "bf6-portal-utils/timers";
 import { CONFIG } from "./config";
 import { log } from "./diag";
 import { MUSIC_PACKAGES, PARAM_SLOTS, type MusicEventSpec, type MusicPackageSpec, type MusicParamSpec } from "./music.gen";
+import { qrId, qrNum } from "./qrexport";
+import { NAMED_IDS } from "./qrids.gen";
 import { PALETTE } from "./scene.gen";
 import { RADIO_TEXT, T, TPL } from "./text.gen";
 import type { Scope } from "./ui";
@@ -442,6 +444,21 @@ export function templateExportLine(t: Template): string {
         " | continue " + t.values["Radio_ContinueQueueOnTrackEnd"] + ", loop " + t.values["Radio_LoopQueuedTracks"] +
         " | volume " + t.values["Radio_Amplitude"]
     );
+}
+
+function namedId(key: string): string {
+    const n = NAMED_IDS[key];
+    return n === undefined ? "???" : qrId(n);
+}
+
+/** The template's QR code: event and param IDs with their values, then radio picks. */
+export function templateQrCode(t: Template): string {
+    const pkg = templatePkg(t);
+    let code = t.kind === "music" ? "~M" + namedId("e:" + t.evt) : "~R";
+    for (const p of pkg.params) if (!p.queues) code += "," + namedId("p:" + p.name) + qrNum(t.values[p.name] ?? p.def);
+    code += "," + namedId("p:" + pkg.amp.name) + qrNum(t.values[pkg.amp.name] ?? pkg.amp.def);
+    if (t.kind === "radio") for (const q of t.queue) code += ";" + q.ch + "." + q.biome + "." + q.track;
+    return code;
 }
 
 /** PLAY re-sends everything but the queue param. */

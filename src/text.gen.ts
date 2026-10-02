@@ -265,7 +265,7 @@ export const SCENE_TEXT: Readonly<Record<string, string>> = {
     "VISUAL": "sxN239",
     "VOLUME": "sxN240",
     "WORLD": "sxN241",
-    "Your phone shows your favourites as text. Copy it into a note or a message.": "sxN242",
+    "Your phone opens the SFX/VFX Showcase website with the full asset names. For a list in parts, scan each part.": "sxN242",
     "amp": "sxN243",
     "applies to the selected effect": "sxN244",
     "armed": "sxN245",

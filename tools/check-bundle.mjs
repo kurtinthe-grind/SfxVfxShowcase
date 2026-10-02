@@ -126,8 +126,10 @@ require(bundle.includes("OnPortalGadgetAimStart"), "gadget aim does not open the
 const a = bundle.indexOf("export const SFX_CATALOG");
 const b = bundle.indexOf("export const VFX_CATALOG");
 const sfxBlock = bundle.slice(a, b);
-const sfx = sfxBlock.match(/\n {4}\{ name: /g)?.length ?? 0;
-const vfx = bundle.slice(b).match(/\n {4}\{ name: /g)?.length ?? 0;
+// The bundle is compacted (no indentation), so each block ends at the next export.
+const vfxBlock = bundle.slice(b, bundle.indexOf("\nexport ", b + 1));
+const sfx = sfxBlock.match(/\n *\{ name: /g)?.length ?? 0;
+const vfx = vfxBlock.match(/\n *\{ name: /g)?.length ?? 0;
 require(sfx === 936, `expected 936 sfx, found ${sfx}`);
 require(vfx === 312, `expected 312 vfx, found ${vfx}`);
 require(
