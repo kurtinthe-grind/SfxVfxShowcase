@@ -4217,29 +4217,21 @@ export const PREFIX_TEXT: readonly TextPair[] = [
 ];
 
 // --- SOURCE: src\config.ts ---
-// Tunables. Anything a designer might want to twist lives here.
-
+// Tunables.
 export const CONFIG = {
-    // Aim raycast from the soldier's eyes when the portal gadget is fired.
     rayLength: 100,
 
-    // Row glyphs for the ACTION column: P auditions the sound in place, S spawns
-    // the effect in the world, T toggles a player-wide effect. ASCII on purpose --
-    // Portal's UI font has no arbitrary UTF-8, so the triangles and circles these
-    // replaced rendered as "*".
+    // ASCII glyphs: Portal's font has no UTF-8.
     playGlyph: "P",
     spawnGlyph: "S",
     effectGlyph: "T",
 
-    // ---- SFX ----
     defaultAmplitude: 0.8,
     amplitudeStep: 0.1,
     minAmplitude: 0.1,
     maxAmplitude: 1.0,
 
-    // Sounds playing at once per player, previews and placed ones together. Past
-    // it the oldest stops. One-shots now play their recorded length (up to ~22 s),
-    // so rapid gadget fire would otherwise stack dozens of them.
+    // Cap concurrent sounds per player; oldest stops first.
     maxSoundsPerPlayer: 16,
 
     defaultRange: 40,
@@ -4247,50 +4239,31 @@ export const CONFIG = {
     minRange: 10,
     maxRange: 120,
 
-    // ---- VFX ----
-    // mod.SetVFXScale takes an engine-specific multiplier. Range is a guess and
-    // wants an in-game pass: if an effect vanishes at the top of the range, the
-    // engine's usable band is narrower than assumed.
+    // Scale range is an engine guess; verify in game.
     defaultScale: 1.0,
     scaleStep: 0.1,
     minScale: 0.25,
     maxScale: 4.0,
 
-    // VFX are persistent once placed; this is the ceiling on concurrent effects
-    // per player before the oldest is auto-removed. Undo/Delete All work below it.
+    // Cap concurrent placed effects; oldest is removed.
     maxSpawnedPerPlayer: 24,
 
-    // How many VFX groups the rail shows. The rail fits RAIL.visibleRows rows and
-    // there are 52 VFX groups, so this is a shortlist, not a full list.
+    // Number of VFX groups shown on the rail.
     vfxTopGroups: 28,
 
     vfxColor: [1.0, 1.0, 1.0] as const,
 
-    // ---- UI loading ----
-    // The open menu is ~328 engine widgets. Creating ~245 of them in the tick the
-    // menu opens now crashes the game, so at most widgetsPerBatch NEW elements are
-    // created per batch, one batch every widgetBatchDelayMs. An element is a
-    // bf6-portal-utils component, and a text button is three engine widgets
-    // (container + button + text), so 30 elements is up to ~80 engine widgets.
-    // 30 / 100 ms builds the open menu in five batches, about half a second.
-    // Lower the batch or raise the delay if it still crashes.
+    // Build the menu in batches; one widget burst can crash.
+    // Lower the batch if opening still crashes.
     widgetsPerBatch: 30,
     widgetBatchDelayMs: 100,
 
-    // ---- QR CODE (src/qrexport.ts) ----
-    // A full code is ~1600 rectangle widgets. UIQRCode creates them across ticks;
-    // its default of 10 a tick took ~5 s per code. 30 a tick draws one in under
-    // 2 s and stays far below the ~245-per-tick crash. Lower it if drawing hitches.
+    // QR codes draw across ticks; lower this if drawing hitches.
     qrWidgetsPerTick: 30,
 
-    // ---- Music tester ----
-    // The SDK docs: "allow a few seconds of time for the music to load in".
-    // Music calls made within this long of a LoadMusic are held and sent once it
-    // has passed (CustomConquest waits 2 s; 5 s leaves margin).
+    // Calls within musicLoadMs of LoadMusic are held, then sent.
     musicLoadMs: 5000,
 
-    // ---- UI sounds (src/uisound.ts) ----
-    // Menu one-shots are well under a second; the object is unspawned after this.
     uiSoundMs: 2000,
     uiSoundAmp: 1.0,
 } as const;
@@ -7635,19 +7608,8 @@ export namespace UI {
 
 
 // --- SOURCE: src\diag.ts ---
-// The mod's console.log sink, shared by index.ts and ui.ts.
-//
-// This lives in its own module so ui.ts can report a missing text key without
-// importing index.ts, which would be circular.
-//
-// console.log is a QuickJS global provided by Portal, not a mod.* API, so it does
-// not appear in index.d.ts. It is used as a logging sink by
-// bf6-portal-utils/logging itself, and console.error appears in modlib_original.
-// tsconfig sets lib:["ES2020","DOM"], which is what makes it typecheck.
-//
-// AGENT.md §9: PortalLog.txt is user-gated. Nothing here reads it -- the log exists
-// so the user can paste it into chat.
-
+// Shared console.log sink. console.log is a QuickJS global, not a mod.* API.
+// Nothing reads PortalLog.txt here; the log exists so users can paste it.
 
 
 
@@ -7655,10 +7617,7 @@ export const logging = new Logging("SfxVfxShowcase");
 
 let installed = false;
 
-/**
- * Whether diagnostics reach the console. Off by default: a player who never asked
- * for a log does not get one. The DEBUG button in the header turns it on.
- */
+/** Diagnostics reach the console only when the DEBUG button turns them on. */
 let debug = false;
 
 export function debugEnabled(): boolean {
@@ -7667,7 +7626,6 @@ export function debugEnabled(): boolean {
 
 const sink = (text: string): void => console.log(text);
 
-/** bf6-portal-utils/ui logs everything while DEBUG is on, only warnings and errors while off. */
 function applyUiLogLevel(): void {
     UI.setLogging(sink, debug ? Logging.LogLevel.Debug : Logging.LogLevel.Warning, true);
 }
@@ -7703,21 +7661,7 @@ export function reportMissingKey(literal: string, where: string): void {
 
 
 // --- SOURCE: src\qrexport.ts ---
-// Packs the favourites into QR code texts for the QR CODE panel.
-//
-// Console players cannot open PortalLog.txt, so EXPORT FAVOURITES does nothing for
-// them. QR CODE shows the same list as QR codes holding plain text: a phone camera
-// shows the text and the player copies it. Nothing is hosted anywhere.
-// (Suggested by mikedeluca_, the author of bf6-portal-utils.)
-//
-// One code holds QR_BYTES; a longer list is split into parts, each with a header
-// line "SFX/VFX SHOWCASE FAVOURITES i/n" so a player can tell the pieces apart.
-
-/**
- * The most text one code carries: QR version 18 at error correction L, the
- * largest code UIQRCode draws (UIQRCode.MAX_QR_VERSION). ECC L is enough for a
- * code shown on a screen, and it leaves the most room for names.
- */
+// Packs favourites into plain-text QR payloads for console players.
 export const QR_BYTES = 718;
 
 const HEADER = "SFX/VFX SHOWCASE FAVOURITES ";
@@ -7726,15 +7670,10 @@ function header(part: number, of: number): string {
     return HEADER + part + "/" + of;
 }
 
-/**
- * Splits `lines` into code texts, in order, each at most QR_BYTES. A line is
- * never split. Returns [] for no lines. The text is ASCII (asset names and
- * template lines), so a character is a byte.
- */
+/** Splits lines into QR_BYTES payloads without splitting a line. */
 export function packQrTexts(lines: readonly string[]): string[] {
     if (lines.length === 0) return [];
-    // Room for the longest header this list could need ("99/99"), so the count
-    // can be filled in after packing without overflowing a part.
+    // Reserve room for the widest "99/99" header.
     const room = QR_BYTES - (header(99, 99).length + 1);
     const parts: string[][] = [];
     let cur: string[] = [];
@@ -15758,41 +15697,9 @@ export namespace UIQRCode {
 
 
 // --- SOURCE: src\ui.ts ---
-// Tabbed asset browser: two tabs, a group rail, filter chips, a simulated QWERTY
-// search keyboard with a clickable prefix page, and per-tab parameter footers.
-// Renders src/scene.json (generated into scene.gen.ts) for the shipping mod;
-// tools/gen-sandbox.mjs renders the SAME scene data for a browser preview, so
-// geometry and palette cannot drift. That preview is LAYOUT-ONLY: it has no
-// mod.Message and no widget layer, so it cannot validate anything about the
-// Portal UI itself.
-//
-// Portal has NO keyboard or text-input API - the only UI event is
-// OnPlayerUIButtonEvent - so the search field is necessarily a grid of ordinary
-// UI buttons that append to a query string.
-//
-// WIDGETS ARE bf6-portal-utils/ui, NOT hand-rolled mod.AddUI*.
-//
-// This file used to call mod.AddUIContainer / AddUIText / AddUIButton /
-// SetUITextLabel directly, and that was wrong three times over:
-//
-//   * AddUIButton's overloads take no message and SetUITextLabel is for text
-//     widgets, so every button label rendered blank;
-//   * the container was positioned at (0,0) while its children sat at absolute
-//     coordinates, a malformed tree that drew correctly but was never hit-tested;
-//   * clicks were routed by parsing widget names against a private
-//     "w<playerId>_<action>" scheme, while mod.GetUIWidgetName on a button is not
-//     something this code controls.
-//
-// AGENT.md 2.4 and 4.2 require the vetted utils. UIContainer / UIText /
-// UITextButton own widget creation, naming, input-mode reference counting and
-// click routing; this file owns layout, state and content. Buttons carry an
-// onClickUp closure instead of a name lookup.
-//
-// The UI core is a Structure-of-Arrays with dirty flags, generational slot
-// recycling and a coalesced UI.flush() on OnTickEnd. That machinery exists so
-// properties can be MUTATED rather than widgets recreated, so elements are
-// allocated once (lazily, per group) and then updated in place. The browser
-// preview still rebuilds each frame; the two differ deliberately.
+// Asset browser UI. Renders scene.json; the browser preview is layout-only.
+// Search is a button grid because Portal has no text-input API.
+// Widgets and clicks come from bf6-portal-utils/ui via onClickUp closures.
 
 
 
@@ -15805,14 +15712,7 @@ export namespace UIQRCode {
 
 
 
-
-// ---------------------------------------------------------------------------
-// Text plumbing. Portal's mod.Message() is a lookup into strings.json, not a
-// formatter: mod.Message("SOUND") prints <unknown string> because "SOUND" is not
-// a key in that file. Arguments have to be keys as well (numbers are passed raw),
-// so composed text is assembled from key strings and only becomes a Message at the
-// point it reaches the UI.
-// ---------------------------------------------------------------------------
+// Text must be mod.Message keys from strings.json, never raw strings.
 export type Text = string | mod.Message;
 
 export function K(key: string): mod.Message {
@@ -15862,7 +15762,6 @@ const P = PALETTE as Record<string, string>;
 
 export type Tab = "sfx" | "vfx" | "fav" | "music" | "radio";
 
-/** MUSIC and RADIO are the tester tabs: no rail, list, chips or keyboard. */
 export function isTesterTab(tab: Tab): tab is "music" | "radio" {
     return tab === "music" || tab === "radio";
 }
@@ -15903,8 +15802,7 @@ export const NO_FILTERS: FilterState = { query: "", dim: "", kind: "", vfx: "" }
 export const MAX_QUERY = 24;
 
 function matches(r: Row, tab: Tab, f: FilterState): boolean {
-    // Templates are not sounds or effects, and FAVOURITES shows no filter chips,
-    // so a filter left on in SOUND or VISUAL must not hide them.
+// Filters must not hide templates or favourites.
     if (r.type === "tpl") return true;
     if (tab === "sfx") {
         if (r.type !== "sfx") return false;
@@ -15923,11 +15821,7 @@ function matchesQuery(r: Row, q: string): boolean {
     return rowDisplay(r).toLowerCase().indexOf(needle) >= 0 || rowRawName(r).toLowerCase().indexOf(needle) >= 0;
 }
 
-/**
- * Colour conversion for bf6-portal-utils/ui, whose UI.Color is a plain
- * { r, g, b } rather than an opaque mod.Vector. scene.json stores hex so the
- * preview and the mod read one source; this is the only conversion point.
- */
+/** Hex-to-UI.Color conversion; scene.json stores hex. */
 const rgbCache: Record<string, UI.Color> = {};
 
 export function rgb(hex: string): UI.Color {
@@ -15943,7 +15837,6 @@ export function rgb(hex: string): UI.Color {
 function scaleRgb(c: UI.Color, k: number): UI.Color {
     return { r: Math.min(1, c.r * k), g: Math.min(1, c.g * k), b: Math.min(1, c.b * k) };
 }
-
 
 interface RgbPalette {
     base: UI.Color;
@@ -15961,11 +15854,7 @@ function buttonPalette(hex: string): RgbPalette {
         p = {
             base: base,
             disabled: scaleRgb(base, 0.5),
-            // Both interactive states are the same saturated orange, and neither
-            // is derived from the base. Scaling a near-black base by 0.75 made
-            // press look like a shadow, and scaling it by 1.15 made cursor-over
-            // look like nothing, which is why the highlight never registered on
-            // the keyboard keys, the prefix tiles or the small steppers.
+    // Pressed/focused are fixed orange, never scaled from the base.
             pressed: rgb(P.hot),
             hover: rgb(P.hot),
             focused: rgb(P.hot),
@@ -16026,8 +15915,7 @@ function resolveToken(tok: string, fields: Fields): string | number | mod.Messag
     const g = fields[body.slice(0, dot)];
     if (g === undefined) return body;
     const v = g[body.slice(dot + 1)];
-    // Returned untouched. A field can hold a mod.Message, and String() on an opaque
-    // Message gives "[object Object]", which msgFor() cannot resolve to a key.
+    // Never String() a Message: it becomes "[object Object]".
     return v === undefined ? body : v;
 }
 
@@ -16055,9 +15943,7 @@ function rawProp(n: WidgetNode, key: string, fields: Fields, scope: string): str
     const raw = (n as unknown as Record<string, unknown>)[key];
     if (raw === undefined) return undefined;
     if (typeof raw === "string" && raw.startsWith("{{")) return resolveToken(raw, fields);
-    // Returned as-is. An inline spec can carry a mod.Message directly (the filter
-    // chips, SEARCH, the keyboard), and String() on an opaque Message gives
-    // "[object Object]", which msgFor() cannot resolve to a key.
+    // Inline specs may carry a Message directly; never String() it.
     return raw as string | number | mod.Message;
 }
 
@@ -16072,9 +15958,7 @@ let SCREEN_ROWS: ScreenRow[] = [];
 
 export function registerGroups(sfxGroups: string[], vfxGroups: string[], screenRows: ScreenRow[]): void {
     SFX_GROUPS = sfxGroups;
-    // Screen-effect rows carry their own categories (Gas, Screen). Fold them in at
-    // the FRONT of the VFX group list: otherwise VL7 is only reachable by paging
-    // through ALL, and the rail can only show a slice of the groups anyway.
+    // Screen-effect rows go first so VL7 stays reachable.
     const merged: string[] = [];
     for (const r of screenRows) if (merged.indexOf(r.category) < 0) merged.push(r.category);
     for (const g of vfxGroups) if (merged.indexOf(g) < 0) merged.push(g);
@@ -16112,13 +15996,7 @@ function allRows(tab: Tab): Row[] {
     return out;
 }
 
-/**
- * The saved assets, in the order they were saved.
- *
- * A query still applies, so searching inside the shortlist works as it does
- * everywhere else. The group rail is not offered here -- a shortlist is meant to be
- * short -- and the type badges say which of the two kinds each entry is.
- */
+/** Saved assets, in save order; the query still applies. */
 export function favRows(ui: PlayerUi, f: FilterState): Row[] {
     const q = f.query.trim().toLowerCase();
     const out: Row[] = [];
@@ -16137,14 +16015,7 @@ export function isFavourite(ui: PlayerUi, key: string): boolean {
     return ui.favourites.indexOf(key) >= 0;
 }
 
-/**
- * The list the menu is currently showing, and the only place it is derived.
- *
- * render() and the row buttons both call this. They used to compute it separately,
- * and on the shortlist they disagreed: listFor("fav", ...) falls through to the "*"
- * group and returns every VFX row, so a click on a saved asset addressed an unrelated
- * catalog entry and deleting a favourite added a new one instead.
- */
+/** The visible list. Render and row buttons share it; it is derived once. */
 export function visibleList(ui: PlayerUi): Row[] {
     if (isTesterTab(ui.tab)) return [];
     const f = filtersOf(ui);
@@ -16217,26 +16088,8 @@ interface Handle {
     el: UI.Element;
     kind: "container" | "text" | "textbutton";
     labelled: boolean;
-    /**
-     * True while the button is held down.
-     *
-     * Not hover. There is no hover: bf6-portal-utils does not route a hover event
-     * (ui/index.ts logs "HoverIn and HoverOut button events not supported") and
-     * exposes no hover colour, so the engine's hoverColor is only reachable through
-     * the raw mod.AddUIButton overloads, which AGENT.md section 5 forbids.
-     *
-     * Transient, and render() is state-driven, so it cannot live only inside the
-     * handlers: the next pass re-applies baseColor and would wipe a highlight the
-     * player is still looking at. The update path consults this instead.
-     */
+/** True while the button is held. Not hover: the package routes no hover event. */
     lit: boolean;
-    /**
-     * What a click on this button does, as passed by the latest render. The engine
-     * handlers are bound once, at creation, so they must read this rather than the
-     * resolver they were created with: a rail slot is reused for another group on
-     * every rail page, and a stale resolver made a page-2 group show the page-1
-     * group in the same slot (2026-10-01, Panzerfaust showed Airplane).
-     */
     resolve?: () => string;
 }
 
@@ -16250,13 +16103,7 @@ export interface PlayerUi {
     page: number;
     selectedKey: string;
     armedKey: string;
-    /**
-     * Saved assets, as row keys, in the order they were saved.
-     *
-     * An array rather than a Set because the order is the point: the SAVED tab is a
-     * shortlist someone is building, and a shortlist that reshuffles itself every time
-     * they add to it is useless for the thing they are making it for.
-     */
+/** Saved asset keys, in save order. An array, not a Set: order is the point. */
     favourites: string[];
     scale: number;
     amp: number;
@@ -16268,7 +16115,6 @@ export interface PlayerUi {
     fDim: string;
     fKind: string;
     fVfx: string;
-    /** MUSIC / RADIO tester state; see src/tester.ts. */
     tester: TesterState;
 
     root: UIContainer | undefined;
@@ -16276,23 +16122,12 @@ export interface PlayerUi {
     keyAct: string[];
     pfxAct: string[];
     rowKeys: string[];
-    /**
-     * The action each filter-chip slot currently dispatches.
-     *
-     * Empty for an unused slot. The chips are keyed by slot rather than by action
-     * because the two tabs emit different actions for the same slot -- the sfx tab
-     * puts fd2 where the vfx tab puts fp -- and keying by action stacked two
-     * buttons on one position.
-     */
+/** Per-slot chip action. Chips are keyed by slot, not action. */
     chipAct: string[];
 
-    /** The QR CODE panel is up; it replaces the whole menu. */
     qrOpen: boolean;
-    /** The texts to show, one per code (src/qrexport.ts), made when QR CODE is pressed. */
     qrParts: string[];
-    /** Index into qrParts of the code on screen. */
     qrPart: number;
-    /** The code being drawn or shown, and which part it is. */
     qr: UIQRCode | undefined;
     qrShown: number;
 }
@@ -16322,8 +16157,7 @@ function sfxRowFields(ui: PlayerUi, e: SfxEntry, selected: boolean, armed: boole
         stopColor: P.inkDim,
         stopBg: P.panel,
         playLabel: K(T.play),
-        // PLAY is the accent on this row, so it stays green whether or not the row
-        // is the armed one -- the point of the button is "hear this now".
+    // PLAY stays green: it means "hear this now".
         playColor: "#FFFFFF",
         playBg: isLoop ? P.green : P.blue,
         actColor: "#FFFFFF",
@@ -16331,7 +16165,6 @@ function sfxRowFields(ui: PlayerUi, e: SfxEntry, selected: boolean, armed: boole
         b1: ui.tab === "fav" ? K(T.kindSfx) : K(is3d ? T.chip3d : T.chip2d),
         b1Color: ui.tab === "fav" ? P.blue : b1c,
         b1Bg: ui.tab === "fav" ? P.blue : b1c,
-        // A one-shot shows its recorded length, "ONE 1.2s"; plain ONE if unknown.
         b2: ui.tab === "fav" ? mod.Message(T.logEmpty) : K(isLoop ? T.chipLoop : e.lengthKey !== "" ? e.lengthKey : T.chipOne),
         b2Color: ui.tab === "fav" ? P.row : b2c,
         b2Bg: ui.tab === "fav" ? P.row : b2c,
@@ -16378,8 +16211,7 @@ function vfxRowFields(ui: PlayerUi, r: Row, selected: boolean, armed: boolean, s
     const b1c = world ? P.violet : P.green;
     const b2c = world ? P.blue : P.amber;
     const saved = isFavourite(ui, rowKey(r));
-    // On the shortlist the attribute badges are redundant -- everything in it is the
-    // same kind of choice -- so they become a type badge instead.
+    // On the shortlist, attribute badges become a type badge.
     const onShortlist = ui.tab === "fav";
     const kindColor = P.violet;
     return {
@@ -16412,7 +16244,6 @@ function vfxRowFields(ui: PlayerUi, r: Row, selected: boolean, armed: boolean, s
 }
 
 export function railFields(tab: Tab, row: number, count: number, active: boolean): Scope {
-    // `row` is the group index groupRows() and the rail action use: 0 is ALL.
     const label = groupTextKey(tab, row);
     return {
         label: mod.Message(TPL.gap2, label, count),
@@ -16444,7 +16275,6 @@ export function chromeFields(ui: PlayerUi, shown: number, listed: number, total:
         qrOn: ui.open && ui.qrOpen ? "1" : "0",
         qrNav: ui.qrParts.length > 1 ? "1" : "0",
         qrPart: mod.Message(TPL.qrPartOf, ui.qrPart + 1, Math.max(1, ui.qrParts.length)),
-        // On FAVOURITES the armed readout makes way for QR CODE.
         armedOn: onFav ? "0" : "1",
         favHead: onFav ? "1" : "0",
         qrBtnColor: ui.favourites.length > 0 ? "#FFFFFF" : P.faint,
@@ -16453,10 +16283,7 @@ export function chromeFields(ui: PlayerUi, shown: number, listed: number, total:
         vfxParams: sfx ? "0" : "1",
         searchOpen: ui.searchOpen ? "1" : "0",
         searchBg: ui.searchOpen ? P.green : P.line,
-        // Every tab has a resting background, and the selected one is the same
-        // orange as the press highlight. Held as a field rather than a hover
-        // state, because the selected tab has to stay lit after the click, and
-        // the utils package exposes no cursor-over event to hang it on.
+    // The selected tab stays orange via a held field, not hover.
         tabSfxColor: sfx ? "#FFFFFF" : P.inkDim,
         tabSfxBg: sfx ? P.hot : P.line,
         tabVfxColor: ui.tab === "vfx" ? "#FFFFFF" : P.inkDim,
@@ -16470,8 +16297,7 @@ export function chromeFields(ui: PlayerUi, shown: number, listed: number, total:
         browserOn: tester ? "0" : "1",
         testerOn: tester ? "1" : "0",
         ...testerFields(ui.tab === "radio" ? "radio" : "music", ui.tester),
-        // On the shortlist the header's button exports instead of arming: there is
-        // nothing to confirm, the whole tab IS the selection.
+    // On the shortlist the header button exports instead of arming.
         selectLabel: onFav ? K(ui.favourites.length === 0 ? T.noFavourites : T.exportFavs) : K(ui.selectedKey === "" ? T.selectAnItem : ui.armedKey === ui.selectedKey ? T.selected : T.select),
         selectColor: onFav ? P.ink : "#FFFFFF",
         selectBg: onFav ? P.panel : ui.selectedKey === "" ? P.row : ui.armedKey === ui.selectedKey ? P.green : P.blue,
@@ -16540,9 +16366,7 @@ function ensureWidget(
     const tColorHex = propStr(n, n.k === "text" ? "color" : "textColor", fields, scope) ?? "#FFFFFF";
     const tAlpha = Number(prop(n, "textAlpha", fields, scope) ?? 1);
     const tAnchor = uiAnchor(propStr(n, "align", fields, scope));
-    // A node with no text of its own (a container, a repeat) is not a missing key.
-    // Coercing the absent value to "" and feeding it to msgFor() reported
-    // MISSING TEXT KEY: "" once at boot, which reads like a broken strings table.
+    // A textless node is not a missing key; "" must not reach msgFor().
     const rawText = prop(n, "text", fields, scope);
     const label = rawText === undefined || rawText === "" ? mod.Message(T.logEmpty) : msgFor(rawText);
 
@@ -16576,8 +16400,7 @@ function ensureWidget(
             b.textAlpha = tAlpha;
             b.textAnchor = tAnchor;
             const pal = buttonPalette(bgHex);
-            // Hover wins over base: a state change elsewhere must not wipe the
-            // highlight the cursor is currently on.
+            // A held highlight survives unrelated state changes.
             b.baseColor = existing.lit ? pal.hover : pal.base;
             b.baseAlpha = bgAlpha;
             b.disabledColor = pal.disabled;
@@ -16592,8 +16415,7 @@ function ensureWidget(
         return existing;
     }
 
-    // Creation budget (see renderBatch). Checked before anything is allocated, so
-    // a pass that stops here leaves no half-built widget behind.
+            // Budget is checked before allocating anything.
     if (createBudget <= 0) throw BUDGET_SPENT;
     createBudget--;
     createdThisPass++;
@@ -16630,8 +16452,7 @@ function ensureWidget(
         };
     } else {
         const pal = buttonPalette(bgHex);
-        // The focus handlers close over `handle`, which is assigned on the next line.
-        // They only ever run on a later engine event, so by then it is bound.
+            // Handlers run on later engine events, after `handle` is bound.
         const btn = new UITextButton({
             ...base,
             label: label,
@@ -16646,13 +16467,11 @@ function ensureWidget(
             disabledAlpha: bgAlpha,
             pressedColor: pal.pressed,
             pressedAlpha: bgAlpha,
-            // The engine's own focused-state repaint, if it does one, uses the same
-            // highlight -- so the effect shows even if the handlers below never fire.
+            // Same highlight for the engine's own focused repaint.
             focusedColor: pal.hover,
             focusedAlpha: bgAlpha,
             onClickUp: () => {
-                // Settle first, so a render triggered by the action does not inherit
-                // the pressed highlight.
+            // Settle first so the action's render starts unlit.
                 handle.lit = false;
                 btn.baseColor = pal.base;
                 btn.textColor = rgb(tColorHex);
@@ -16665,12 +16484,7 @@ function ensureWidget(
                 btn.textColor = rgb("#FFFFFF");
             },
             onFocusIn: () => {
-                // Kept even though it never fires today: if Portal ever maps
-                // cursor-over to focus, this is the whole hover feature and it is
-                // already wired.
-                // Controller-crash instrumentation: focus events only fire on a
-                // gamepad, so this is the first line that tells a controller log
-                // from a mouse one.
+            // Wired in case Portal ever maps cursor-over to focus.
                 log("focus in: " + action);
                 handle.lit = true;
                 btn.baseColor = pal.hover;
@@ -16721,7 +16535,7 @@ function buildNodes(
     inheritedVisible: boolean
 ): void {
     const groupVisible: Record<string, boolean> = {};
-    // A group can carry its own origin; children are positioned relative to it.
+    // Children are positioned relative to their group's origin.
     const groupOrigin: Record<string, { x: number; y: number }> = {};
 
     for (let i = 0; i < nodes.length; i++) {
@@ -16775,10 +16589,7 @@ function buildNodes(
             continue;
         }
 
-        // A hidden node is not created until its group is first shown. Every
-        // scene node used to be allocated on the first open, including whole tabs
-        // nobody had visited; with the 2026-10-01 widget-burst crash, widgets that
-        // are never seen are pure risk.
+    // Hidden nodes are created lazily, on first show.
         if (!visible && ui.nodes[action] === undefined) continue;
         ensureWidget(ui, n, action, parent, fields, scope, ox + gx, oy + gy, visible);
     }
@@ -16792,10 +16603,7 @@ export function initUI(ui: PlayerUi): void {
         anchor: UI.Anchor.TopLeft,
         receiver: ui.player,
         visible: ui.open,
-        // The utils reference-count mod.EnableUIInputMode against this flag, which
-        // is what the hand-rolled version got wrong and what locked the player out
-        // of the match at boot. Their README is explicit: do not also call
-        // mod.EnableUIInputMode by hand.
+    // The utils reference-count EnableUIInputMode here; never call it by hand.
         uiInputModeWhenVisible: true,
     });
     const rows: string[] = [];
@@ -16840,14 +16648,7 @@ function chipIsActive(ui: PlayerUi, key: string, val: string): boolean {
     return false;
 }
 
-    /**
- * The strings.json key for a filter chip's label.
- *
- * The empty value has to be tested FIRST. It means "ALL", but it also means
- * c.val is neither "3d" nor "loop" nor "world", so testing the key first fell
- * through to the sibling chip and rendered the ALL chip as "2D" (sfx) or "PLAYER"
- * (vfx).
- */
+    /** Chip label key. The empty value ("ALL") must be tested first. */
 function chipTextKey(c: { key: string; val: string }): string {
     if (c.val === "") return T.chipAll;
     if (c.key === "dim") return c.val === "3d" ? T.chip3d : T.chip2d;
@@ -16876,13 +16677,7 @@ const KEY_CHARS: string[] = (() => {
 const KEY_SLOTS = KEY_CHARS.length;
 const PFX_SLOTS = KEYBOARD.prefixGrid.max;
 
-// ---------------------------------------------------------------------------
-// Batched widget creation. Opening the menu used to create ~245 widgets in one
-// tick, and the game now crashes as soon as the menu opens. renderBatch() caps how
-// many NEW widgets one pass may create; widgets that already exist are only
-// updated and cost nothing. render() is state-driven and idempotent, so the caller
-// simply runs another pass a moment later and it picks up where this one stopped.
-// ---------------------------------------------------------------------------
+// Widget creation is batched; one burst can crash. Later passes resume.
 const BUDGET_SPENT = { budgetSpent: true };
 let createBudget = Number.POSITIVE_INFINITY;
 let createdThisPass = 0;
@@ -16911,8 +16706,7 @@ export function render(ui: PlayerUi, spawnedCount: number): void {
     ui.spawnedCount = spawnedCount;
 
     const onFav = ui.tab === "fav";
-    // The FAVOURITES tab ignores the group rail entirely -- there are no groups in
-    // a shortlist -- so its total is the shortlist, not the catalog.
+    // FAVOURITES has no groups; its total is the shortlist.
     const tester = isTesterTab(ui.tab);
     const list = visibleList(ui);
     const total = tester ? 0 : onFav ? ui.favourites.length : totalCount(ui.tab);
@@ -16926,27 +16720,22 @@ export function render(ui: PlayerUi, spawnedCount: number): void {
 
     const fields: Fields = { sh: P, f: chromeFields(ui, list.length, 0, total) };
     buildNodes(ui, SCREEN, parent, fields, "f", 0, 0, "", open);
-    // After the panel's nodes, so the code is drawn on top of its backdrop.
     syncQr(ui, parent);
 
-    // The rail, chips, rows and keyboard live outside the `menu` group, so the
-    // group's bind does not cover them. They are gated on `open` explicitly.
+    // Rail, chips, rows and keyboard live outside `menu`; gate them on `open`.
     if (!open) return;
 
-    // The QR panel covers the whole menu, so the browser's own widgets hide too.
     if (ui.qrOpen) {
         hideBrowserWidgets(ui);
         return;
     }
 
-    // The tester panel is all scene nodes, drawn by buildNodes above. Everything
-    // the browser builds by hand has to be hidden here, for the same reason.
+    // Hand-built browser widgets are hidden alongside scene nodes.
     if (tester) {
         hideBrowserWidgets(ui);
         return;
     }
 
-    // ---- filter chips + search button
     const chips = ui.tab === "sfx" ? FILTERS.sfx : FILTERS.vfx;
     for (let i = 0; i < MAX_CHIPS; i++) {
         const c = chips[i];
@@ -16957,9 +16746,7 @@ export function render(ui: PlayerUi, spawnedCount: number): void {
             continue;
         }
         const active = chipIsActive(ui, c.key, c.val);
-        // The slot decides which button this is; the action is read at click time.
-        // Keying by action instead put fp and fd2 on the same position and made the
-        // chips unreachable.
+    // Chips are keyed by slot; the action is read at click time.
         ui.chipAct[i] = chipAction(c.key, c.val);
         const label = K(chipTextKey(c));
         const bg = active ? P.blue : P.row;
@@ -16990,7 +16777,6 @@ export function render(ui: PlayerUi, spawnedCount: number): void {
         ensureWidget(ui, { k: "textbutton", x: FILTERS.searchX, y: FILTERS.searchY, w: FILTERS.searchW, h: FILTERS.searchH, fill: "Solid", bg: ui.searchOpen ? P.green : P.panel, bgAlpha: 1, text: K(ui.searchOpen ? T.keyboardOpen : T.search), textSize: 14, textColor: ui.searchOpen ? "#FFFFFF" : P.ink, align: "Center" }, "btnSearch", parent, sf, "f", 0, 0, true);
     }
 
-    // ---- rail, paged (absent on the shortlist: there is nothing to group)
     if (onFav) {
         for (let slot = 0; slot < RAIL.visibleRows - 1; slot++) {
             const spare = ui.nodes["railBtn" + slot];
@@ -17002,10 +16788,7 @@ export function render(ui: PlayerUi, spawnedCount: number): void {
         }
     } else {
     const counts = groupCounts(ui.tab);
-    // Group index 0 is ALL (groupName), and it sits on every rail page as a
-    // button of its own: it is how a picked group is cleared. It has its own key
-    // ("railAll"), never shared with the group slots, so its handle never has to
-    // change kind. The group buttons get the rows below it.
+    // ALL clears the group and keeps its own railAll key.
     const groupTotal = counts.length - 1;
     const groupRows = RAIL.visibleRows - 1;
     const railPages = Math.max(1, Math.ceil(groupTotal / groupRows));
@@ -17015,7 +16798,6 @@ export function render(ui: PlayerUi, spawnedCount: number): void {
     ensureWidget(ui, RAIL_ROW, "railAll", parent, { sh: P, rail: railFields(ui.tab, 0, counts[0], ui.group === 0) }, "rail", railX, RAIL.rowsY, true, () => "rail0");
     const railFirst = ui.railPage * groupRows;
     for (let slot = 0; slot < groupRows; slot++) {
-        // Group index, 1-based: 0 is ALL.
         const gi = railFirst + slot + 1;
         if (gi > groupTotal) {
             const spare = ui.nodes["railBtn" + slot];
@@ -17024,14 +16806,11 @@ export function render(ui: PlayerUi, spawnedCount: number): void {
         }
         const active = ui.group === gi;
         const rf: Fields = { sh: P, rail: railFields(ui.tab, gi, counts[gi], active) };
-        // The emitted action is the group index itself, not the slot, so the
-        // handler needs no knowledge of paging and the two halves cannot drift.
+        // Actions carry the group index, not the slot.
         const action = "rail" + gi;
         ensureWidget(ui, RAIL_ROW, "railBtn" + slot, parent, rf, "rail", railX, RAIL.rowsY + (slot + 1) * RAIL.rowH, true, () => action);
     }
-    // Only the two buttons come from the scene; the page read-out is drawn by
-    // hand below so it does not collide with a node buildNodes() would allocate
-    // under the same key.
+    // The pager readout is hand-drawn to avoid a key collision.
     for (const n of RAIL_PAGER) {
         if (n.k !== "textbutton") continue;
         const nf: Fields = { sh: P, f: { text: n.text === undefined ? mod.Message(T.logEmpty) : S(n.text), textColor: "#FFFFFF", bg: P.orangeDim } };
@@ -17054,7 +16833,6 @@ export function render(ui: PlayerUi, spawnedCount: number): void {
     }
     }
 
-    // ---- rows, one container each so a short page can hide the leftovers
     const page = pageSlice(list, ui.page);
     for (let i = 0; i < GRID.rows; i++) {
         const item = page[i];
@@ -17084,24 +16862,11 @@ export function render(ui: PlayerUi, spawnedCount: number): void {
         buildNodes(ui, ROW, asParent(box), rf, "r", 0, 0, "r" + i + "_", true);
     }
 
-    // ---- simulated keyboard
     if (ui.searchOpen) buildKeyboard(ui, list.length, total);
     else hideKeyboard(ui);
 }
 
-/**
- * The query readout.
- *
- * One widget per character, because arbitrary user input has no strings.json key of
- * its own. Portal's UI font is not monospaced, so these are fixed-width cells and
- * spacing varies slightly -- the same compromise the bf6-portal-utils logger makes.
- *
- * Everything here is positioned relative to the keyboard container, not the scene.
- * The key rows subtract kb.y when they are placed; this function used to use the
- * absolute kb.queryY, which put the readout 216px too low -- straight on top of the
- * third key row, where it was invisible under the keys and unreadable. That is why
- * there was nothing to see while typing.
- */
+/** One fixed-width widget per query character, relative to the keyboard container. */
 function buildQueryBar(ui: PlayerUi, parent: UI.Parent, kb: typeof KEYBOARD, shown: number, total: number): void {
     const q = ui.query;
     const qx = 16;
@@ -17109,9 +16874,7 @@ function buildQueryBar(ui: PlayerUi, parent: UI.Parent, kb: typeof KEYBOARD, sho
     const countW = 380;
     const fieldW = kb.w - countW - 40;
 
-    // A visible field, not floating text. Without a background the readout is the
-    // same near-black as the keyboard behind it and there is no cue that it is an
-    // input at all.
+    // The readout needs a background to read as an input.
     const field = ensureWidget(
         ui,
         { k: "container", x: qx - 8, y: qy - 6, w: fieldW + 16, h: kb.queryH + 12, fill: "Solid", bg: P.line, bgAlpha: 1 },
@@ -17148,8 +16911,7 @@ function buildQueryBar(ui: PlayerUi, parent: UI.Parent, kb: typeof KEYBOARD, sho
         );
         h.el.visible = key !== undefined;
     }
-    // A trailing underscore stands in for a cursor: the block-cursor glyph the
-    // design started with is not in Portal's font and rendered as "*".
+    // Underscore cursor: the block glyph is not in Portal's font.
     const cur = ensureWidget(ui, { k: "text", x: qx + q.length * QUERY_CELL_W, y: qy, w: QUERY_CELL_W, h: kb.queryH, text: K(T.charCursor), textSize: 20, textColor: P.green, align: "Center" }, "kbcur", parent, { sh: P, f: { text: K(T.charCursor), textColor: P.green } }, "f", 0, 0, true);
     cur.el.visible = q !== "";
 }
@@ -17163,7 +16925,7 @@ function buildKeyboard(ui: PlayerUi, shown: number, total: number): void {
     buildQueryBar(ui, kbParent, kb, shown, total);
 
     if (ui.kbPage === 1) {
-        // Page 2: clickable asset prefixes, so nobody has to type SFX_ / Gadgets_ / Snow.
+        // Page 2: clickable asset prefixes.
         hideSlots(ui, "key", KEY_SLOTS);
         const pg = kb.prefixGrid;
         const all = prefixesFor(ui.tab);
@@ -17207,7 +16969,7 @@ function buildKeyboard(ui: PlayerUi, shown: number, total: number): void {
             );
         }
     } else {
-        // Page 1: QWERTY.
+    
         hideSlots(ui, "pfx", PFX_SLOTS);
         for (let r = 0; r < kb.rows.length; r++) {
             const chars = kb.rows[r];
@@ -17224,7 +16986,6 @@ function buildKeyboard(ui: PlayerUi, shown: number, total: number): void {
         }
     }
 
-    // bottom row
     let bx = kb.x0 - kb.x;
     for (const b of kb.bottom) {
         const isDone = b.action === "done";
@@ -17236,7 +16997,6 @@ function buildKeyboard(ui: PlayerUi, shown: number, total: number): void {
     }
 }
 
-/** Hides every widget render() builds by hand for the asset browser. */
 UIQRCode.tickBudget = CONFIG.qrWidgetsPerTick;
 
 const QR_SLOT = (() => {
@@ -17244,12 +17004,6 @@ const QR_SLOT = (() => {
     throw new Error("scene.json has no qrSlot");
 })();
 
-/**
- * Keeps the drawn QR code in step with the panel: the part on screen, or none.
- * A code is a few hundred widgets, so it is deleted whenever it is not shown
- * rather than hidden; UIQRCode spreads both the drawing and the deleting over
- * several ticks (10 widgets a tick), well under the widget-burst crash.
- */
 function syncQr(ui: PlayerUi, parent: UI.Parent): void {
     const text = ui.open && ui.qrOpen ? ui.qrParts[ui.qrPart] : undefined;
     if (ui.qr !== undefined && (text === undefined || ui.qrShown !== ui.qrPart)) {
@@ -17301,35 +17055,10 @@ function hideKeyboard(ui: PlayerUi): void {
 
 
 // --- SOURCE: src\tester.ts ---
-// MUSIC / RADIO tester: per-player state, the fields the tester panel binds to,
-// and the mt* actions that make the music calls.
-//
-// Tier 0 (types_original/mod/index.d.ts): LoadMusic / UnloadMusic(MusicPackages),
-// PlayMusic(MusicEvents[, Player]), SetMusicParam(MusicParams, number[, Player]).
-// The package/event/param tables are generated from those enums by
-// tools/gen-music.mjs, so nothing here names a music member by hand except the
-// four Radio_* transport events, which are looked up by name and checked.
-//
-// NO MUSIC ON PORTAL SANDBOX. Scripted music plays nothing on the Portal Sandbox
-// map, on any build, with calls copied verbatim from the SDK docs and
-// CustomConquest (probe/MusicProbe.ts). Every other map plays it (confirmed in
-// game, 2026-10-01). Four tester builds were spent blaming loading and timing
-// before the map was isolated, so test music on any map but Portal Sandbox.
-//
-// LOADING. Official modes load exactly one package at the start, so only Core
-// is loaded at start and LOAD switches packages exclusively: unload the current
-// one, load the one on screen. Loading is global, not per player.
-//
-// LOAD TIME. The SDK docs say to "allow a few seconds of time for the music to
-// load in", so every call made within CONFIG.musicLoadMs of a LoadMusic is held
-// and sent, in click order, once that time has passed.
-//
-// TARGET. ME uses the player overloads, EVERYONE the global ones, so a run in
-// game can tell whether the per-player calls are what is silent.
-//
-// The engine cannot be asked what is playing or what a parameter is set to, so
-// the panel shows what was SENT, and every call is written to the log.
-
+// Music/radio tester: mt* actions and per-player state.
+// No scripted music on Portal Sandbox; test elsewhere. Loading is global.
+// Calls within CONFIG.musicLoadMs are held, then sent in order.
+// The panel shows sent calls; the engine cannot be queried.
 
 
 
@@ -17347,18 +17076,12 @@ function pkgNamed(name: string): MusicPackageSpec {
     throw new Error("music package missing from music.gen.ts: " + name);
 }
 
-/** The MUSIC tab cycles these, in this order. Radio has its own tab. */
+/** MUSIC tab cycle order. */
 const MUSIC_TAB: readonly MusicPackageSpec[] = [pkgNamed("Core"), pkgNamed("BR"), pkgNamed("Gauntlet")];
 const RADIO = pkgNamed("Radio");
-/** Loaded at game-mode start, as the official examples do. */
 const STARTUP = MUSIC_TAB[0];
 
-/**
- * Where each MUSIC package's track selector starts: the loud one-shots the
- * reference mods play (CustomConquest: Core_LastPhaseBegin, AcePursuit:
- * BR_InsertionJump). Index 0 of Core is Core_Deploy_Loop, a "quiet and ambient"
- * deploy-screen loop, too quiet to tell whether music works at all.
- */
+/** Audible one-shots per package, not the quiet ambient loops. */
 const DEFAULT_EVENT: Readonly<Record<string, string>> = {
     Core: "Core_LastPhaseBegin",
     BR: "BR_InsertionJump",
@@ -17382,10 +17105,7 @@ const RADIO_CLEAR = radioEvent("Radio_ClearQueue");
 const RADIO_CHANNELS = [T.radioCh0, T.radioCh1, T.radioCh2, T.radioCh3, T.radioCh4, T.radioCh5, T.radioCh6];
 const RADIO_BIOMES = [T.radioBiome0, T.radioBiome1, T.radioBiome2, T.radioBiome3, T.radioBiome4, T.radioBiome5, T.radioBiome6];
 
-// Tracks per station, numbered from 0. SDK docs (gameplay_logic.html,
-// QueueTrackNumber), "as of Season 3". Index = Radio_Channel; channel 4 is
-// per biome. The track number stays below the selected station's count, and
-// wraps there after QUEUE TRACK.
+// Track counts per station; channel 4 is per biome.
 const RADIO_TRACKS = [17, 18, 10, 2, 0, 32, 15];
 const RADIO_BIOME_TRACKS = [18, 16, 16, 19, 18, 2, 18];
 
@@ -17393,11 +17113,9 @@ function stationTracks(ch: number, biome: number): number | undefined {
     return ch === 4 ? RADIO_BIOME_TRACKS[biome] : RADIO_TRACKS[ch];
 }
 
-/** The one package currently loaded. Music loading is global, so this is too. */
+/** Currently loaded package; loading is global. */
 let loaded: MusicPackageSpec | undefined;
-/** Date.now() of the last LoadMusic (bf6-portal-utils timers use the same clock). */
 let loadedAt = 0;
-/** Calls held until the current package has had CONFIG.musicLoadMs to load. */
 const held: (() => void)[] = [];
 let flushScheduled = false;
 
@@ -17405,7 +17123,7 @@ function loading(): boolean {
     return loaded !== undefined && Date.now() - loadedAt < CONFIG.musicLoadMs;
 }
 
-/** Runs `send` now, or once the package being loaded has had time to load. */
+/** Runs `send` now, or once the loading package is ready. */
 function whenLoaded(send: () => void): void {
     if (!loading()) {
         send();
@@ -17424,27 +17142,23 @@ function whenLoaded(send: () => void): void {
 }
 
 export interface TesterState {
-    /** Index into MUSIC_TAB. */
+    
     pkg: number;
-    /** Selected event index, per MUSIC_TAB package. */
+    
     evt: number[];
-    /** Last value set per MusicParams name, amplitudes included. */
+    /** Last value set per param, amplitudes included. */
     values: Record<string, number>;
-    /** The last call sent, as on-screen text. */
+    
     last: mod.Message | undefined;
-    /** false = player overloads (ME), true = global overloads (EVERYONE). */
+    /** false = player calls (ME), true = global calls (EVERYONE). */
     toAll: boolean;
-    /** Tracks queued since the last CLEAR QUEUE, in order. The engine cannot be asked. */
+    /** Queued tracks, in order. The engine cannot be asked. */
     queue: RadioPick[];
-    /** Saved templates, in save order. Their keys ("tpl" + n) sit in the player's favourites. */
+    /** Saved templates; keys ("tpl" + n) sit in favourites. */
     templates: Template[];
-    /** Number for the next template; never reused within a match. */
+    /** Next template number; never reused within a match. */
     nextTemplate: number;
-    /**
-     * The MUSIC package this player last pressed PLAY on and has not stopped, or
-     * "". Its params are sent live; any other package's only change the panel,
-     * because some params start music by themselves (Core_Urgency above 0).
-     */
+/** Package with live params. Others change the panel only; some params self-start music. */
     playing: string;
 }
 
@@ -17463,10 +17177,8 @@ export function newTesterState(): TesterState {
     return { pkg: 0, evt: MUSIC_TAB.map(defaultEventIndex), values: values, last: undefined, toAll: false, queue: [], templates: [], nextTemplate: 1, playing: "" };
 }
 
-/** Called once from OnGameModeStarted: the docs advise loading early. */
+/** Loads the startup package early, then its amplitude. */
 export function loadStartupMusic(): void {
-    // The SDK doc's example (gameplay_logic.html, Music System Summary), call
-    // for call: LoadMusic, then the package's amplitude, in OnGameModeStarted.
     mod.LoadMusic(STARTUP.pkg);
     loaded = STARTUP;
     loadedAt = Date.now();
@@ -17488,8 +17200,7 @@ function who(st: TesterState): string {
 }
 
 function load(st: TesterState, pkg: MusicPackageSpec, redraw: () => void): void {
-    // Re-sending LoadMusic for the loaded package is never useful, and in the
-    // second in-game run it landed in the middle of a test.
+    // Never re-send LoadMusic for the loaded package.
     if (loaded === pkg) {
         log("music: " + pkg.name + " already loaded, LoadMusic not re-sent");
         return;
@@ -17503,11 +17214,10 @@ function load(st: TesterState, pkg: MusicPackageSpec, redraw: () => void): void 
     loadedAt = Date.now();
     st.last = mod.Message(TPL.mtCallLoad, pkg.key);
     log("music: LoadMusic(" + pkg.name + ")");
-    // Repaint when loading ends, so the track line drops its LOADING note.
     whenLoaded(redraw);
 }
 
-/** There is no LOAD button: whatever needs a package loads it first. */
+/** No LOAD button: anything needing a package loads it first. */
 function ensureLoaded(st: TesterState, pkg: MusicPackageSpec, redraw: () => void): void {
     if (loaded !== pkg) load(st, pkg, redraw);
 }
@@ -17528,30 +17238,25 @@ function sendEvent(player: mod.Player, st: TesterState, event: mod.MusicEvents, 
     log("music: PlayMusic(" + name + ") for=" + who(st) + " " + pkgNote);
 }
 
-/** Highest value `p` may take now: the queue number stops at the station's last track. */
+
 function maxOf(st: TesterState, p: MusicParamSpec): number {
     if (!p.queues) return p.max;
     const n = stationTracks(radioChannel(st), radioBiome(st));
     return n === undefined ? p.max : Math.min(p.max, n - 1);
 }
 
-/** Keeps the queue number inside the selected station after the station changes. */
+
 function clampQueueNumber(st: TesterState): void {
     const q = queueParam(RADIO);
     if (q !== undefined && st.values[q.name] > maxOf(st, q)) st.values[q.name] = maxOf(st, q);
 }
 
-/**
- * A stepper press. The value always changes on the panel; it reaches the engine
- * now only when that can be heard: a MUSIC package while its track plays, the
- * radio while Radio is loaded. PLAY sends everything anyway.
- */
+/** Steppers always update the panel; they reach the engine only when audible. */
 function stepParam(player: mod.Player, st: TesterState, pkg: MusicPackageSpec, p: MusicParamSpec, dir: number): void {
     const v = st.values[p.name] + dir * p.step;
     st.values[p.name] = round2(Math.min(maxOf(st, p), Math.max(p.min, v)));
     if (pkg === RADIO) clampQueueNumber(st);
-    // Sending the queue param queues a track: the stepper only picks the number,
-    // QUEUE TRACK sends it.
+    // The stepper only picks the number; QUEUE TRACK sends it.
     if (p.queues || loaded !== pkg) return;
     if (pkg !== RADIO && st.playing !== pkg.name) return;
     whenLoaded(() => sendParam(player, st, p));
@@ -17574,12 +17279,7 @@ function stationKey(ch: number, biome: number): string {
     return ch === 4 ? pickKey(RADIO_BIOMES, biome) : pickKey(RADIO_CHANNELS, ch);
 }
 
-/**
- * True when tracks are queued and the selected station is not theirs. The
- * channel only applies to tracks queued after it is set (SDK docs: "the
- * channel from which you will be queueing tracks"), so PLAY and NEXT TRACK
- * would keep playing the queued station.
- */
+/** True when the queued tracks belong to another station. The channel applies only to later tracks. */
 function queueIsStale(st: TesterState): boolean {
     const q = st.queue[st.queue.length - 1];
     if (q === undefined) return false;
@@ -17587,11 +17287,7 @@ function queueIsStale(st: TesterState): boolean {
     return ch !== q.ch || (ch === 4 && radioBiome(st) !== q.biome);
 }
 
-/**
- * Records the track QUEUE TRACK just sent, then moves the number on to the
- * station's next track (back to 0 after its last), so pressing QUEUE TRACK
- * again queues a different song instead of the same one.
- */
+/** Records the queued track, then advances the number so repeats queue the next song. */
 function noteQueued(st: TesterState, q: MusicParamSpec): void {
     const ch = radioChannel(st);
     const biome = radioBiome(st);
@@ -17600,11 +17296,7 @@ function noteQueued(st: TesterState, q: MusicParamSpec): void {
     st.values[q.name] = track + 1 <= maxOf(st, q) ? track + 1 : q.min;
 }
 
-/**
- * QUEUE TRACK: the station on screen, then the number. The channel is sent first
- * because it only applies to tracks queued after it, and one picked while Radio
- * was not loaded may never have reached the engine.
- */
+/** Sends channel, biome, then number; the channel must go first. */
 function sendQueue(player: mod.Player, st: TesterState, q: MusicParamSpec): void {
     sendParam(player, st, paramNamed(RADIO, "Radio_Channel"));
     sendParam(player, st, paramNamed(RADIO, "Radio_Biome"));
@@ -17618,25 +17310,18 @@ function queueLine(st: TesterState): mod.Message {
     return mod.Message(TPL.mtQueueCount, st.queue.length, stationKey(q.ch, q.biome), q.track);
 }
 
-// ---- Templates: a saved setup of one tab, listed in FAVOURITES.
-
 export interface MusicTemplate {
     kind: "music";
     n: number;
-    /** MusicPackageSpec.name, e.g. "Core". */
     pkg: string;
-    /** MusicEventSpec.name, e.g. "Core_LastPhaseBegin". */
     evt: string;
-    /** Every param of the package, and its amplitude, by MusicParams name. */
     values: Record<string, number>;
 }
 
 export interface RadioTemplate {
     kind: "radio";
     n: number;
-    /** Every Radio param except the queue param, and Radio_Amplitude. */
     values: Record<string, number>;
-    /** The tracks queued since the last CLEAR QUEUE, in order. */
     queue: RadioPick[];
 }
 
@@ -17651,12 +17336,12 @@ function capture(tab: TesterTab, st: TesterState): Template {
     return { kind: "music", n: 0, pkg: pkg.name, evt: pkg.events[st.evt[st.pkg]].name, values: values };
 }
 
-/** Content only: two templates with the same signature are the same setup. */
+
 function signature(t: Template): string {
     return JSON.stringify({ ...t, n: 0 });
 }
 
-/** Saves the tab's setup, unless an identical template exists (then returns that one). */
+/** Saves the tab's setup; returns the existing identical template if any. */
 export function saveTemplate(tab: TesterTab, st: TesterState): { tpl: Template; added: boolean } {
     const t = capture(tab, st);
     const sig = signature(t);
@@ -17685,7 +17370,7 @@ function musicEvt(t: MusicTemplate): MusicEventSpec {
     throw new Error("template event missing from music.gen.ts: " + t.evt);
 }
 
-/** The station a radio template is about: its first queued track, else its channel setting. */
+
 function radioStation(t: RadioTemplate): { ch: number; biome: number } {
     const first = t.queue[0];
     if (first !== undefined) return first;
@@ -17696,21 +17381,21 @@ function stationText(ch: number, biome: number): string {
     return (ch === 4 ? RADIO_TEXT.biomes[biome] : RADIO_TEXT.channels[ch]) ?? "?";
 }
 
-/** Plain-text name: the event, or the station. Used by search. */
+/** Plain-text name used by search. */
 export function templateName(t: Template): string {
     if (t.kind === "music") return t.evt;
     const s = radioStation(t);
     return stationText(s.ch, s.biome);
 }
 
-/** strings key of the row's name text. */
+
 export function templateNameKey(t: Template): string {
     if (t.kind === "music") return musicEvt(t).key;
     const s = radioStation(t);
     return stationKey(s.ch, s.biome);
 }
 
-/** The row's second line. */
+
 export function templateLine(t: Template): mod.Message {
     return t.kind === "music" ? mod.Message(TPL.tplMusicOf, t.n) : mod.Message(TPL.tplRadioOf, t.n, t.queue.length);
 }
@@ -17723,11 +17408,7 @@ function templatePkg(t: Template): MusicPackageSpec {
     return t.kind === "music" ? musicPkg(t) : RADIO;
 }
 
-/**
- * Puts the template into the panel and returns the tab to show. Sends nothing:
- * OPEN is for looking and tweaking. The radio queue state is left alone, because
- * it records what the engine has queued, and OPEN queues nothing.
- */
+/** Loads a template into the panel without sending anything. */
 export function applyTemplate(st: TesterState, t: Template): TesterTab {
     for (const name of Object.keys(t.values)) st.values[name] = t.values[name];
     if (t.kind === "radio") return "radio";
@@ -17737,12 +17418,7 @@ export function applyTemplate(st: TesterState, t: Template): TesterTab {
     return "music";
 }
 
-/**
- * P on a template row: apply it, LOAD its package if another one is loaded, then
- * play. A radio template rebuilds the queue first -- clear, then for each track
- * its channel and biome (when they change) and its number -- because the queue
- * is what Radio_Play plays.
- */
+/** Applies a template, loads its package, then plays. */
 export function playTemplate(st: TesterState, player: mod.Player, t: Template, redraw: () => void): void {
     const tab = applyTemplate(st, t);
     const pkg = templatePkg(t);
@@ -17778,7 +17454,7 @@ function requeue(st: TesterState, player: mod.Player, t: RadioTemplate): void {
         sendParam(player, st, q);
         noteQueued(st, q);
     }
-    // The saved settings, not the last track's station, are what PLAY re-sends.
+    // Restore saved settings after rebuilding the queue.
     for (const name of Object.keys(t.values)) st.values[name] = t.values[name];
 }
 
@@ -17787,12 +17463,12 @@ function paramNamed(pkg: MusicPackageSpec, name: string): MusicParamSpec {
     throw new Error("param missing from music.gen.ts: " + name);
 }
 
-/** STOP on a template row: the same as STOP on its tab. */
+
 export function stopTemplate(st: TesterState, player: mod.Player, t: Template): void {
     sendStop(st, player, templatePkg(t));
 }
 
-/** STOP. A package that is not loaded is not playing: nothing to send. */
+/** STOP sends nothing for an unloaded package. */
 function sendStop(st: TesterState, player: mod.Player, pkg: MusicPackageSpec): void {
     if (loaded !== pkg) return;
     if (st.playing === pkg.name) st.playing = "";
@@ -17804,10 +17480,7 @@ export function removeTemplate(st: TesterState, key: string): void {
     log("template: removed " + key);
 }
 
-/**
- * One plain-text line for EXPORT: names and values only, not code. A radio queue
- * names each track's station when any track is not on the template's own station.
- */
+/** One plain-text EXPORT line: names and values only. */
 export function templateExportLine(t: Template): string {
     if (t.kind === "music") {
         const pkg = musicPkg(t);
@@ -17828,10 +17501,7 @@ export function templateExportLine(t: Template): string {
     );
 }
 
-/**
- * What PLAY sends. Re-send everything first, so what plays always matches the
- * panel. The queue param is the exception: re-sending it would queue another track.
- */
+/** PLAY re-sends everything but the queue param. */
 function sendPlay(tab: TesterTab, st: TesterState, player: mod.Player): void {
     const pkg = current(tab, st);
     const e = tab === "radio" ? RADIO_PLAY : pkg.events[st.evt[st.pkg]];
@@ -17841,10 +17511,7 @@ function sendPlay(tab: TesterTab, st: TesterState, player: mod.Player): void {
     st.playing = pkg.name;
 }
 
-/**
- * Handles one mt* action. Returns false for an action it does not know, so the
- * caller's UNHANDLED ACTION log still fires for a misrouted button.
- */
+/** Handles one mt* action; false for unknown actions. */
 export function handleTesterAction(tab: TesterTab, st: TesterState, player: mod.Player, action: string, redraw: () => void): boolean {
     const pkg = current(tab, st);
     const radio = tab === "radio";
@@ -17872,8 +17539,7 @@ export function handleTesterAction(tab: TesterTab, st: TesterState, player: mod.
     if (action === "mtPrev" || action === "mtNext") {
         if (radio) {
             const e = action === "mtNext" ? RADIO_NEXT : RADIO_CLEAR;
-            // NEXT TRACK skips within what is playing: with Radio not loaded,
-            // nothing is. CLEAR QUEUE loads Radio, so the queue really is empty.
+            // NEXT TRACK needs Radio loaded; CLEAR QUEUE loads it.
             if (e === RADIO_NEXT && loaded !== pkg) return true;
             ensureLoaded(st, pkg, redraw);
             whenLoaded(() => {
@@ -17908,7 +17574,7 @@ export function handleTesterAction(tab: TesterTab, st: TesterState, player: mod.
     const m = /^mtP(\d)(Down|Up)$/.exec(action);
     if (m !== null) {
         const p = pkg.params[parseInt(m[1], 10)];
-        // A hidden row cannot be clicked; reaching here means a stale widget.
+        // Hidden rows cannot be clicked; this means a stale widget.
         if (p === undefined) return false;
         stepParam(player, st, pkg, p, m[2] === "Up" ? 1 : -1);
         return true;
@@ -17921,7 +17587,7 @@ function pickKey(keys: readonly string[], v: number): string {
     return k === undefined ? T.logEmpty : k;
 }
 
-/** The line under the radio params: the station on screen and its track numbers. */
+
 function radioNote(st: TesterState, ch: number, biome: number): mod.Message {
     const q = queueParam(RADIO);
     const last = q === undefined ? 0 : maxOf(st, q);
@@ -17929,7 +17595,7 @@ function radioNote(st: TesterState, ch: number, biome: number): mod.Message {
     return mod.Message(TPL.mtRadioNote, ch, pickKey(RADIO_CHANNELS, ch), last);
 }
 
-/** Field values for the tester nodes in scene.json (the `f` scope). */
+
 export function testerFields(tab: TesterTab, st: TesterState): Scope {
     const pkg = current(tab, st);
     const radio = tab === "radio";
@@ -18494,13 +18160,7 @@ export namespace Sounds {
 
 
 // --- SOURCE: src\uisound.ts ---
-// Button feedback: the game's own menu sounds, played to the clicking player.
-//
-// bf6-portal-utils/sounds' playOneShot spawns the 2D sound, plays it to one
-// player and unspawns it after CONFIG.uiSoundMs, so clicks never pile up SFX
-// objects. Every asset here is a RuntimeSpawn_Common member that the catalog
-// ships (none is in banlist.json).
-
+// Menu click sounds, played 2D to the clicking player.
 
 
 
@@ -18521,12 +18181,7 @@ export function playUiSound(player: mod.Player, asset: mod.RuntimeSpawn_Common):
 
 const STEPPER = /^(btn(Amp|Rng|Scale)(Up|Down)|mtP\d(Up|Down)|mtVol(Up|Down))$/;
 
-/**
- * The sound for a click on `action`, or undefined for none. PLAY buttons (the
- * row's P and the tester's PLAY) are silent so the click never covers the sound
- * being tested; the favourite toggle picks its own sound once it knows the new
- * state, and SAVE TEMPLATE plays its own "on" sound.
- */
+/** Click sound for an action. PLAY and favourite toggles handle their own sound. */
 export function clickSound(action: string): mod.RuntimeSpawn_Common | undefined {
     if (action === "mtPlay" || action === "mtSave" || /^r\d+_(play|fav)$/.test(action)) return undefined;
     if (action === "btnClose") return UI_SOUND.close;
@@ -18537,13 +18192,7 @@ export function clickSound(action: string): mod.RuntimeSpawn_Common | undefined 
 
 
 // --- SOURCE: src\index.ts ---
-// SFX / VFX Showcase - Battlefield 6 Portal
-//
-// A browser for the game's sound and effect catalogs, reached through the portal
-// gadget. Aim opens it, pick an asset, and firing the gadget raycasts from your eyes
-// and spawns what you armed at the hit point. Every row can also be played in place,
-// and + saves an asset to the shortlist on the SAVED tab, which exports the
-// index-file names to the log.
+// Portal-gadget SFX/VFX browser.
 
 
 
@@ -18563,7 +18212,6 @@ type PreviewState =
     | { readonly type: "sfx"; readonly sfx: mod.SFX; readonly key: string }
     | { readonly type: "screen"; readonly id: string; readonly key: string };
 
-/** A sound this player started, and the timer that stops it after its window. */
 interface Playing {
     readonly sfx: mod.SFX;
     timer: Timers.TimerID | null;
@@ -18572,20 +18220,14 @@ interface Playing {
 interface PlayerState {
     ui: PlayerUi;
     spawned: mod.VFX[];
-    /** Oldest first; at most CONFIG.maxSoundsPerPlayer. */
     playing: Playing[];
-    /** The sound or effect currently auditioned, so a replay replaces it. */
     preview: PreviewState | undefined;
-    /** A follow-up widget batch is already scheduled; see renderLogged(). */
     building: boolean;
 }
 
 const states: Record<number, PlayerState> = {};
 
-// ------------------------------------------------------- player-wide effects
-// These are not world objects: they toggle a post-process / soldier state on the
-// firing player only, so they work on any map with nothing placed.
-
+// Player-wide effects toggle state on the firing player.
 interface ScreenFx {
     id: string;
     display: string;
@@ -18602,12 +18244,6 @@ const SCREEN_FX: ScreenFx[] = [
     { id: "saturated", display: "Saturated", category: "Screen", cat: T.catScreen, key: T.screenSaturated, effect: mod.ScreenEffects.Saturated },
     { id: "stealth", display: "Stealth", category: "Screen", cat: T.catScreen, key: T.screenStealth, effect: mod.ScreenEffects.Stealth },
 ];
-
-// ------------------------------------------------------------------ logging
-//
-// console.log is the sink. bf6-portal-utils/logging wraps it in try/catch so a
-// logging failure can never crash the mod, and tags every line so a pasted log is
-// unambiguous. Level is Debug: this is a build being debugged, not a shipped mode.
 
 function labelOf(key: string): string {
     return key === "" ? "(none)" : key;
@@ -18630,13 +18266,10 @@ Events.OnGameModeStarted.subscribe(() => {
         screenRows
     );
     mod.SetSpawnMode(mod.SpawnModes.AutoSpawn);
-    // MUSIC / RADIO tester: Core only, as early as possible. LOAD switches.
     loadStartupMusic();
 });
 
-// Grant the portal gadget at runtime on every deployment, so it survives death
-// and respawn. Tier 0: AddEquipment(player, gadget: Gadgets) with
-// Gadgets.Misc_PortalGadget; the SDK PortalGadgetExample does exactly this.
+// Grant the gadget on every deployment so it survives death and respawn.
 Events.OnPlayerDeployed.subscribe((player: mod.Player) => {
     mod.AddEquipment(player, mod.Gadgets.Misc_PortalGadget);
     ensure(player);
@@ -18659,9 +18292,7 @@ function ensure(player: mod.Player): PlayerState {
         player: player,
         pid: pid,
         tab: "sfx",
-        // Closed until the player aims the portal gadget. Opening on spawn buried
-    // the HUD over the whole screen and looked like a broken UI.
-    open: false,
+        open: false,
         group: 0,
         railPage: 0,
         page: 0,
@@ -18701,13 +18332,7 @@ function redraw(st: PlayerState): void {
     renderLogged(st);
 }
 
-// Widgets are created in batches of CONFIG.widgetsPerBatch, one batch every
-// CONFIG.widgetBatchDelayMs, instead of all at once. A pass that runs out of
-// budget schedules the next one; only one follow-up is ever pending per player,
-// and any redraw in between simply spends that pass's budget too.
-//
-// Crash instrumentation: a "render begin" with no matching "render end" means
-// the game died inside the render pass.
+// Batched render. A "render begin" with no "render end" means the game died mid-pass.
 function renderLogged(st: PlayerState): void {
     const ui = st.ui;
     log(`render begin: open=${ui.open} tab=${ui.tab}`);
@@ -18726,31 +18351,16 @@ function defer(st: PlayerState): void {
     Timers.setTimeout(() => redraw(st), 0);
 }
 
-/**
- * Clicks arrive here.
- *
- * ui.ts hands every button an onClickUp closure that calls this, so there is no
- * widget-name parsing and no second subscription to OnPlayerUIButtonEvent --
- * bf6-portal-utils/ui already owns that event and routes it by element id.
- */
+/** Single entry point for button actions. */
 setActionHandler((ui, action) => {
     const st = states[mod.GetObjId(ui.player)];
     if (st !== undefined) handle(st, action);
 });
 
-/**
- * The only place `ui.open` changes.
- *
- * render() pushes this onto the root container, which carries
- * uiInputModeWhenVisible: true, so bf6-portal-utils reference-counts
- * mod.EnableUIInputMode against it. Calling EnableUIInputMode by hand alongside
- * that is unsupported (the engine cannot be queried for the state) and is what
- * locked the player out of the match at boot.
- */
+/** The only place `ui.open` changes. Never call EnableUIInputMode by hand. */
 function setOpen(ui: PlayerUi, open: boolean): void {
     if (ui.open === open) return;
     ui.open = open;
-    // Reopening the menu shows the browser, not a code left over from before.
     if (!open) ui.qrOpen = false;
     log(`menu ${open ? "opened" : "closed"}`);
 }
@@ -18764,8 +18374,6 @@ function handle(st: PlayerState, action: string): void {
             `dim=${ui.fDim} kind=${ui.fKind} vfx=${ui.fVfx} amp=${ui.amp} rng=${ui.rng} scale=${ui.scale}`
     );
 
-    // SAVE TEMPLATE: the tab's setup into FAVOURITES. The sound is the only
-    // feedback: no notification (asked for on 2026-10-01).
     if (action === "mtSave" && isTesterTab(ui.tab)) {
         const r = saveTemplate(ui.tab, ui.tester);
         if (r.added) ui.favourites.push(templateKey(r.tpl));
@@ -18791,7 +18399,6 @@ function handle(st: PlayerState, action: string): void {
         defer(st);
         return;
     }
-    // MUSIC / RADIO tester: every action is mt*, owned by src/tester.ts.
     if (action.slice(0, 2) === "mt") {
         if (isTesterTab(ui.tab) && handleTesterAction(ui.tab, ui.tester, ui.player, action, () => defer(st))) {
             defer(st);
@@ -18806,7 +18413,6 @@ function handle(st: PlayerState, action: string): void {
         return;
     }
 
-    // Filter chips: fa=clear, fd3/fd2=3D/2D, fl/fo=loop/one-shot, fw/fp=world/player.
     if (action.length === 2 || action.length === 3) {
         const F = action[0] === "f";
         if (F && action.charAt(1) !== undefined) {
@@ -18828,7 +18434,6 @@ function handle(st: PlayerState, action: string): void {
         }
     }
 
-    // Simulated keyboard: key_<char> appends; page/spc/bksp/clr/done act on the query.
     if (action.slice(0, 4) === "key_") {
         if (ui.query.length >= MAX_QUERY) return;
         ui.query += action.slice(4);
@@ -18844,8 +18449,6 @@ function handle(st: PlayerState, action: string): void {
     if (action.slice(0, 4) === "pfx_") {
         const token = action.slice(4);
         if (ui.query.length < MAX_QUERY) ui.query += token;
-        // Typing a prefix is only a starting point, so jump back to the free-text
-        // page where the player can finish the word.
         ui.kbPage = 0;
         ui.page = 0;
         defer(st);
@@ -18930,9 +18533,7 @@ function handle(st: PlayerState, action: string): void {
         return;
     }
     if (action === "btnSelect") {
-        // On the shortlist the same button exports, because there is nothing to
-        // confirm there -- the tab is the selection.
-        if (ui.tab === "fav") {
+    if (ui.tab === "fav") {
             exportFavourites(st);
             return;
         }
@@ -18940,8 +18541,6 @@ function handle(st: PlayerState, action: string): void {
         return;
     }
 
-    // QR CODE: the favourites as plain-text QR codes, for players who cannot open
-    // the log (consoles). See src/qrexport.ts.
     if (action === "btnQr") {
         if (ui.tab !== "fav" || ui.favourites.length === 0) return;
         ui.qrParts = packQrTexts(favouriteQrLines(st));
@@ -18970,14 +18569,10 @@ function handle(st: PlayerState, action: string): void {
         defer(st);
         return;
     }
-    // Rail: rail<group> selects a group. The number is the group index itself,
-    // not a slot on the current page, so the handler needs no paging arithmetic
-    // to agree with the emit side. "c<row>" is still accepted so a stray legacy
-    // name cannot dead-end, but nothing emits it any more.
+    // rail<group> selects a group; "c<row>" is accepted for legacy actions.
     if (action.slice(0, 4) === "rail" || (action.charAt(0) === "c" && action.length > 1)) {
         const body = action.slice(0, 4) === "rail" ? action.slice(4) : action.slice(1);
         const group = parseInt(body, 10);
-        // 0 is ALL (the ALL row emits rail0), 1.. are the groups.
         if (isNaN(group) || group < 0) return;
         ui.group = group;
         ui.page = 0;
@@ -18985,7 +18580,6 @@ function handle(st: PlayerState, action: string): void {
         return;
     }
 
-    // ---- the rail's own pager
     if (action === "btnRailPrev") {
         ui.railPage = Math.max(0, ui.railPage - 1);
         defer(st);
@@ -18997,7 +18591,7 @@ function handle(st: PlayerState, action: string): void {
         return;
     }
 
-    // Row actions: r<index>_<act|sel>
+    // Row actions: r<index>_<tag>.
     if (action.charAt(0) === "r") {
         const us = action.indexOf("_");
         if (us < 2) return;
@@ -19035,18 +18629,13 @@ function handle(st: PlayerState, action: string): void {
             }
         }
         if (tag === "sel") {
-            // One click arms. This used to only highlight, which made every pick a
-            // two-step: row, then the header's SELECT again. The menu stays open --
-            // closing is the header button's job, and auditioning a list should not
-            // yank the browser away on every selection.
+            // One click arms and leaves the menu open.
             ui.selectedKey = key;
             ui.armedKey = key;
             defer(st);
             return;
         }
         if (tag === "fav") {
-            // Toggle in place. The shortlist is the point of the button, so it has to
-            // be reachable from any row without leaving the tab you are browsing.
             const at = ui.favourites.indexOf(key);
             if (at >= 0) ui.favourites.splice(at, 1);
             else ui.favourites.push(key);
@@ -19060,7 +18649,7 @@ function handle(st: PlayerState, action: string): void {
             return;
         }
         if (tag === "play") {
-            // Audition without arming, so browsing does not change what fire spawns.
+            // Audition without arming.
             ui.selectedKey = key;
             preview(st, item);
             defer(st);
@@ -19068,9 +18657,7 @@ function handle(st: PlayerState, action: string): void {
         }
     }
 
-    // Nothing above claimed it. A ui.ts that emits an action handle() does not
-    // know about looks exactly like a dead button, which is the failure this
-    // whole migration exists to eliminate -- so it is always reported.
+    // Unclaimed actions are logged because they mean a dead button.
     log(`UNHANDLED ACTION "${action}" (open=${ui.open} tab=${ui.tab})`);
 }
 
@@ -19089,13 +18676,6 @@ function armSelected(st: PlayerState): void {
     defer(st);
 }
 
-/**
- * Plays a sound at `at`. A 3D sound needs the location and range: without them it
- * plays where it was spawned. PLAY used to spawn at the map origin with no
- * location, so 3D sounds were silent on PLAY (the origin is often underground)
- * while gadget fire worked. `onlyMe` keeps an audition to the player who clicked;
- * a placed sound is heard by everyone near it. 2D sounds go to the player only.
- */
 function spawnSfx(st: PlayerState, entry: SfxEntry, at: mod.Vector, onlyMe: boolean): mod.SFX {
     const sfx = mod.SpawnObject(entry.asset, at, ZERO, ONE) as mod.SFX;
     if (entry.dim === "2d") mod.PlaySound(sfx, st.ui.amp, st.ui.player);
@@ -19105,12 +18685,6 @@ function spawnSfx(st: PlayerState, entry: SfxEntry, at: mod.Vector, onlyMe: bool
     return sfx;
 }
 
-/**
- * Stops the sound after its window (its recorded length plus a tail, see
- * tools/gen-catalog.mjs). Past CONFIG.maxSoundsPerPlayer the oldest stops now:
- * one-shots can run 22 s, and every pending stop holds one of the 512 timers the
- * whole server shares.
- */
 function track(st: PlayerState, sfx: mod.SFX, windowMs: number): void {
     const p: Playing = { sfx: sfx, timer: null };
     p.timer = Timers.setTimeout(() => {
@@ -19124,7 +18698,6 @@ function track(st: PlayerState, sfx: mod.SFX, windowMs: number): void {
     }
 }
 
-/** Stops and unspawns a tracked sound and cancels its timer. Does nothing if it already stopped. */
 function untrack(st: PlayerState, sfx: mod.SFX): void {
     let i = -1;
     for (let k = 0; k < st.playing.length; k++) if (st.playing[k].sfx === sfx) i = k;
@@ -19136,13 +18709,6 @@ function untrack(st: PlayerState, sfx: mod.SFX): void {
     mod.UnspawnObject(sfx);
 }
 
-/**
- * Stop the previous audition, so replaying a row does not stack.
- *
- * Holding a button in any real UI retriggers the same sound rather than layering
- * new copies of it. Eight clicks on PLAY in a second produced eight simultaneous
- * sounds, which is not a preview of anything.
- */
 function stopPreview(st: PlayerState): void {
     const p = st.preview;
     if (p === undefined) return;
@@ -19158,7 +18724,6 @@ function stopPreview(st: PlayerState): void {
 function preview(st: PlayerState, r: Row): void {
     stopPreview(st);
     if (r.type === "sfx") {
-        // 3 m in front of the eyes, like a VFX audition.
         const sfx = spawnSfx(st, r.entry, eyeFront(st), true);
         st.preview = { type: "sfx", sfx: sfx, key: rowKey(r) };
         return;
@@ -19204,8 +18769,7 @@ function eyeFront(st: PlayerState): mod.Vector {
     return mod.Add(mod.GetSoldierState(p, mod.SoldierStateVector.EyePosition), mod.Multiply(facing, 3));
 }
 
-// UNVERIFIED: mod.SpawnObject on an FX_ member returns `Any`; the cast to
-// mod.VFX follows the same shape the SDK example uses for SFX and is inference.
+// UNVERIFIED: SpawnObject on FX_ returns `Any`; the VFX cast is inference.
 function spawnVfx(st: PlayerState, r: Row, at: mod.Vector): void {
     if (r.type !== "spawn") return;
     const vfx = mod.SpawnObject(r.entry.asset, at, ZERO, ONE) as mod.VFX;
@@ -19229,23 +18793,7 @@ function undoLast(st: PlayerState): void {
     mod.UnspawnObject(v);
 }
 
-/**
- * Stop every sound this player has ringing, and leave the placed effects alone.
- *
- * DELETE ALL removes the VFX; nothing stopped the SFX, so a long audition kept
- * ringing over everything else. The tracked handles in st.playing are the only
- * sounds this mod owns -- a sound spawned by the game itself is not ours to touch.
- */
-/**
- * Write every saved asset to the log, by its index-file name.
- *
- * The name is the point: the output is meant to be pasted back into a Portal editor
- * or looked up in index.d.ts, so it carries the enum member verbatim -- SFX_Alarm,
- * FX_Airburst_Incendiary_Detonation -- not the display name the menu shows.
- *
- * It goes out through logAlways, not log, so it still works with debug logging off.
- * An export the player can silence is not an export.
- */
+/** Exports saved assets by index-file name through logAlways. */
 function exportFavourites(st: PlayerState): void {
     const ui = st.ui;
     if (ui.favourites.length === 0) {
@@ -19256,11 +18804,9 @@ function exportFavourites(st: PlayerState): void {
     for (const key of ui.favourites) {
         const r = findRow(key);
         if (r === undefined) continue;
-        // name (index file) | group | type, and for a sound how long it plays
         if (r.type === "sfx") logAlways(rowRawName(r) + " | " + rowCategory(r) + " | SFX | " + soundLength(r.entry));
         else logAlways(rowRawName(r) + " | " + rowCategory(r) + " | VFX");
     }
-    // Templates after the assets, in save order: plain names and values, not code.
     for (const key of ui.favourites) {
         const t = key.startsWith("tpl") ? findTemplate(ui.tester, key) : undefined;
         if (t !== undefined) logAlways(templateExportLine(t));
@@ -19269,18 +18815,11 @@ function exportFavourites(st: PlayerState): void {
     mod.DisplayHighlightedWorldLogMessage(mod.Message(TPL.exportedN, ui.favourites.length), ui.player);
 }
 
-/** "LOOP", the recorded length ("1.2s", "17s+" when the recording was cut off), or "?" if unknown. */
 function soundLength(e: SfxEntry): string {
     if (e.kind === "loop") return "LOOP";
     return e.lengthText !== "" ? e.lengthText : "?";
 }
 
-/**
- * What QR CODE carries: the asset names, then the template lines, in the order
- * EXPORT FAVOURITES writes them. Names only, without EXPORT's group and length
- * columns: a phone shows the code as text, and the names are what a player
- * pastes into their own mod. Full lines would halve what one code holds.
- */
 function favouriteQrLines(st: PlayerState): string[] {
     const ui = st.ui;
     const lines: string[] = [];
@@ -19316,16 +18855,7 @@ function clearAll(st: PlayerState): void {
     for (const f of SCREEN_FX) setScreenFx(st, f, false);
 }
 
-// --------------------------------------------------------------- portal gadget
-//
-// Control scheme:
-//   AIM  (right mouse)  -> opens the menu
-//   FIRE (left mouse)   -> spawns the armed asset at the raycast hit point, then closes
-//   SELECT in the menu  -> arms the highlighted row and closes the menu
-//
-// There is deliberately no MENU button: aim is the only opener, so a click on the
-// world never has a second way into the menu.
-
+// Gadget controls: aim opens, fire spawns, SELECT arms. No MENU button; aim is the only opener.
 Events.OnPortalGadgetAimStart.subscribe((player: mod.Player) => {
     const st = ensure(player);
     if (st.ui.open) return;
@@ -19338,10 +18868,7 @@ Events.OnPortalGadgetAimStart.subscribe((player: mod.Player) => {
 Events.OnPortalGadgetFireStart.subscribe((player: mod.Player) => {
     const st = ensure(player);
     if (st.ui.armedKey === "") {
-        // The hint used to open the menu as well. That made fire a second opener, so
-        // both triggers opened the menu and neither one read as "spawn" -- a player
-        // with nothing armed who pulled the trigger expected a sound and got the
-        // browser instead. The hint is enough; fire stays a pure spawn gesture.
+        // Fire never opens the menu; it stays a pure spawn gesture.
         mod.DisplayHighlightedWorldLogMessage(mod.Message(T.armFirst), player);
         log("gadget fire: nothing armed (menu not opened)");
         return;
@@ -19358,7 +18885,6 @@ Events.OnRayCastHit.subscribe((player: mod.Player, point: mod.Vector, _normal: m
     const st = states[mod.GetObjId(player)];
     if (st === undefined) return;
     const armed = findRow(st.ui.armedKey);
-    // A template is never armed: its SELECT button is OPEN.
     if (armed === undefined || armed.type === "tpl") return;
 
     if (armed.type === "sfx") {

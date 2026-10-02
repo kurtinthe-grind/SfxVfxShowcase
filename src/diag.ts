@@ -1,16 +1,5 @@
-// The mod's console.log sink, shared by index.ts and ui.ts.
-//
-// This lives in its own module so ui.ts can report a missing text key without
-// importing index.ts, which would be circular.
-//
-// console.log is a QuickJS global provided by Portal, not a mod.* API, so it does
-// not appear in index.d.ts. It is used as a logging sink by
-// bf6-portal-utils/logging itself, and console.error appears in modlib_original.
-// tsconfig sets lib:["ES2020","DOM"], which is what makes it typecheck.
-//
-// AGENT.md §9: PortalLog.txt is user-gated. Nothing here reads it -- the log exists
-// so the user can paste it into chat.
-
+// Shared console.log sink. console.log is a QuickJS global, not a mod.* API.
+// Nothing reads PortalLog.txt here; the log exists so users can paste it.
 import { Logging } from "bf6-portal-utils/logging";
 import { UI } from "bf6-portal-utils/ui";
 
@@ -18,10 +7,7 @@ export const logging = new Logging("SfxVfxShowcase");
 
 let installed = false;
 
-/**
- * Whether diagnostics reach the console. Off by default: a player who never asked
- * for a log does not get one. The DEBUG button in the header turns it on.
- */
+/** Diagnostics reach the console only when the DEBUG button turns them on. */
 let debug = false;
 
 export function debugEnabled(): boolean {
@@ -30,7 +16,6 @@ export function debugEnabled(): boolean {
 
 const sink = (text: string): void => console.log(text);
 
-/** bf6-portal-utils/ui logs everything while DEBUG is on, only warnings and errors while off. */
 function applyUiLogLevel(): void {
     UI.setLogging(sink, debug ? Logging.LogLevel.Debug : Logging.LogLevel.Warning, true);
 }

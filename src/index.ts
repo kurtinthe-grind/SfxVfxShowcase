@@ -1,10 +1,4 @@
-// SFX / VFX Showcase - Battlefield 6 Portal
-//
-// A browser for the game's sound and effect catalogs, reached through the portal
-// gadget. Aim opens it, pick an asset, and firing the gadget raycasts from your eyes
-// and spawns what you armed at the hit point. Every row can also be played in place,
-// and + saves an asset to the shortlist on the SAVED tab, which exports the
-// index-file names to the log.
+// Portal-gadget SFX/VFX browser.
 import { Events } from "bf6-portal-utils/events";
 import { Timers } from "bf6-portal-utils/timers";
 
@@ -43,7 +37,6 @@ type PreviewState =
     | { readonly type: "sfx"; readonly sfx: mod.SFX; readonly key: string }
     | { readonly type: "screen"; readonly id: string; readonly key: string };
 
-/** A sound this player started, and the timer that stops it after its window. */
 interface Playing {
     readonly sfx: mod.SFX;
     timer: Timers.TimerID | null;
@@ -52,20 +45,14 @@ interface Playing {
 interface PlayerState {
     ui: PlayerUi;
     spawned: mod.VFX[];
-    /** Oldest first; at most CONFIG.maxSoundsPerPlayer. */
     playing: Playing[];
-    /** The sound or effect currently auditioned, so a replay replaces it. */
     preview: PreviewState | undefined;
-    /** A follow-up widget batch is already scheduled; see renderLogged(). */
     building: boolean;
 }
 
 const states: Record<number, PlayerState> = {};
 
-// ------------------------------------------------------- player-wide effects
-// These are not world objects: they toggle a post-process / soldier state on the
-// firing player only, so they work on any map with nothing placed.
-
+// Player-wide effects toggle state on the firing player.
 interface ScreenFx {
     id: string;
     display: string;
@@ -82,12 +69,6 @@ const SCREEN_FX: ScreenFx[] = [
     { id: "saturated", display: "Saturated", category: "Screen", cat: T.catScreen, key: T.screenSaturated, effect: mod.ScreenEffects.Saturated },
     { id: "stealth", display: "Stealth", category: "Screen", cat: T.catScreen, key: T.screenStealth, effect: mod.ScreenEffects.Stealth },
 ];
-
-// ------------------------------------------------------------------ logging
-//
-// console.log is the sink. bf6-portal-utils/logging wraps it in try/catch so a
-// logging failure can never crash the mod, and tags every line so a pasted log is
-// unambiguous. Level is Debug: this is a build being debugged, not a shipped mode.
 
 function labelOf(key: string): string {
     return key === "" ? "(none)" : key;
@@ -110,13 +91,10 @@ Events.OnGameModeStarted.subscribe(() => {
         screenRows
     );
     mod.SetSpawnMode(mod.SpawnModes.AutoSpawn);
-    // MUSIC / RADIO tester: Core only, as early as possible. LOAD switches.
     loadStartupMusic();
 });
 
-// Grant the portal gadget at runtime on every deployment, so it survives death
-// and respawn. Tier 0: AddEquipment(player, gadget: Gadgets) with
-// Gadgets.Misc_PortalGadget; the SDK PortalGadgetExample does exactly this.
+// Grant the gadget on every deployment so it survives death and respawn.
 Events.OnPlayerDeployed.subscribe((player: mod.Player) => {
     mod.AddEquipment(player, mod.Gadgets.Misc_PortalGadget);
     ensure(player);
@@ -139,9 +117,7 @@ function ensure(player: mod.Player): PlayerState {
         player: player,
         pid: pid,
         tab: "sfx",
-        // Closed until the player aims the portal gadget. Opening on spawn buried
-    // the HUD over the whole screen and looked like a broken UI.
-    open: false,
+        open: false,
         group: 0,
         railPage: 0,
         page: 0,
@@ -181,13 +157,7 @@ function redraw(st: PlayerState): void {
     renderLogged(st);
 }
 
-// Widgets are created in batches of CONFIG.widgetsPerBatch, one batch every
-// CONFIG.widgetBatchDelayMs, instead of all at once. A pass that runs out of
-// budget schedules the next one; only one follow-up is ever pending per player,
-// and any redraw in between simply spends that pass's budget too.
-//
-// Crash instrumentation: a "render begin" with no matching "render end" means
-// the game died inside the render pass.
+// Batched render. A "render begin" with no "render end" means the game died mid-pass.
 function renderLogged(st: PlayerState): void {
     const ui = st.ui;
     log(`render begin: open=${ui.open} tab=${ui.tab}`);
@@ -206,31 +176,16 @@ function defer(st: PlayerState): void {
     Timers.setTimeout(() => redraw(st), 0);
 }
 
-/**
- * Clicks arrive here.
- *
- * ui.ts hands every button an onClickUp closure that calls this, so there is no
- * widget-name parsing and no second subscription to OnPlayerUIButtonEvent --
- * bf6-portal-utils/ui already owns that event and routes it by element id.
- */
+/** Single entry point for button actions. */
 setActionHandler((ui, action) => {
     const st = states[mod.GetObjId(ui.player)];
     if (st !== undefined) handle(st, action);
 });
 
-/**
- * The only place `ui.open` changes.
- *
- * render() pushes this onto the root container, which carries
- * uiInputModeWhenVisible: true, so bf6-portal-utils reference-counts
- * mod.EnableUIInputMode against it. Calling EnableUIInputMode by hand alongside
- * that is unsupported (the engine cannot be queried for the state) and is what
- * locked the player out of the match at boot.
- */
+/** The only place `ui.open` changes. Never call EnableUIInputMode by hand. */
 function setOpen(ui: PlayerUi, open: boolean): void {
     if (ui.open === open) return;
     ui.open = open;
-    // Reopening the menu shows the browser, not a code left over from before.
     if (!open) ui.qrOpen = false;
     log(`menu ${open ? "opened" : "closed"}`);
 }
@@ -244,8 +199,6 @@ function handle(st: PlayerState, action: string): void {
             `dim=${ui.fDim} kind=${ui.fKind} vfx=${ui.fVfx} amp=${ui.amp} rng=${ui.rng} scale=${ui.scale}`
     );
 
-    // SAVE TEMPLATE: the tab's setup into FAVOURITES. The sound is the only
-    // feedback: no notification (asked for on 2026-10-01).
     if (action === "mtSave" && isTesterTab(ui.tab)) {
         const r = saveTemplate(ui.tab, ui.tester);
         if (r.added) ui.favourites.push(templateKey(r.tpl));
@@ -271,7 +224,6 @@ function handle(st: PlayerState, action: string): void {
         defer(st);
         return;
     }
-    // MUSIC / RADIO tester: every action is mt*, owned by src/tester.ts.
     if (action.slice(0, 2) === "mt") {
         if (isTesterTab(ui.tab) && handleTesterAction(ui.tab, ui.tester, ui.player, action, () => defer(st))) {
             defer(st);
@@ -286,7 +238,6 @@ function handle(st: PlayerState, action: string): void {
         return;
     }
 
-    // Filter chips: fa=clear, fd3/fd2=3D/2D, fl/fo=loop/one-shot, fw/fp=world/player.
     if (action.length === 2 || action.length === 3) {
         const F = action[0] === "f";
         if (F && action.charAt(1) !== undefined) {
@@ -308,7 +259,6 @@ function handle(st: PlayerState, action: string): void {
         }
     }
 
-    // Simulated keyboard: key_<char> appends; page/spc/bksp/clr/done act on the query.
     if (action.slice(0, 4) === "key_") {
         if (ui.query.length >= MAX_QUERY) return;
         ui.query += action.slice(4);
@@ -324,8 +274,6 @@ function handle(st: PlayerState, action: string): void {
     if (action.slice(0, 4) === "pfx_") {
         const token = action.slice(4);
         if (ui.query.length < MAX_QUERY) ui.query += token;
-        // Typing a prefix is only a starting point, so jump back to the free-text
-        // page where the player can finish the word.
         ui.kbPage = 0;
         ui.page = 0;
         defer(st);
@@ -410,9 +358,7 @@ function handle(st: PlayerState, action: string): void {
         return;
     }
     if (action === "btnSelect") {
-        // On the shortlist the same button exports, because there is nothing to
-        // confirm there -- the tab is the selection.
-        if (ui.tab === "fav") {
+    if (ui.tab === "fav") {
             exportFavourites(st);
             return;
         }
@@ -420,8 +366,6 @@ function handle(st: PlayerState, action: string): void {
         return;
     }
 
-    // QR CODE: the favourites as plain-text QR codes, for players who cannot open
-    // the log (consoles). See src/qrexport.ts.
     if (action === "btnQr") {
         if (ui.tab !== "fav" || ui.favourites.length === 0) return;
         ui.qrParts = packQrTexts(favouriteQrLines(st));
@@ -450,14 +394,10 @@ function handle(st: PlayerState, action: string): void {
         defer(st);
         return;
     }
-    // Rail: rail<group> selects a group. The number is the group index itself,
-    // not a slot on the current page, so the handler needs no paging arithmetic
-    // to agree with the emit side. "c<row>" is still accepted so a stray legacy
-    // name cannot dead-end, but nothing emits it any more.
+    // rail<group> selects a group; "c<row>" is accepted for legacy actions.
     if (action.slice(0, 4) === "rail" || (action.charAt(0) === "c" && action.length > 1)) {
         const body = action.slice(0, 4) === "rail" ? action.slice(4) : action.slice(1);
         const group = parseInt(body, 10);
-        // 0 is ALL (the ALL row emits rail0), 1.. are the groups.
         if (isNaN(group) || group < 0) return;
         ui.group = group;
         ui.page = 0;
@@ -465,7 +405,6 @@ function handle(st: PlayerState, action: string): void {
         return;
     }
 
-    // ---- the rail's own pager
     if (action === "btnRailPrev") {
         ui.railPage = Math.max(0, ui.railPage - 1);
         defer(st);
@@ -477,7 +416,7 @@ function handle(st: PlayerState, action: string): void {
         return;
     }
 
-    // Row actions: r<index>_<act|sel>
+    // Row actions: r<index>_<tag>.
     if (action.charAt(0) === "r") {
         const us = action.indexOf("_");
         if (us < 2) return;
@@ -515,18 +454,13 @@ function handle(st: PlayerState, action: string): void {
             }
         }
         if (tag === "sel") {
-            // One click arms. This used to only highlight, which made every pick a
-            // two-step: row, then the header's SELECT again. The menu stays open --
-            // closing is the header button's job, and auditioning a list should not
-            // yank the browser away on every selection.
+            // One click arms and leaves the menu open.
             ui.selectedKey = key;
             ui.armedKey = key;
             defer(st);
             return;
         }
         if (tag === "fav") {
-            // Toggle in place. The shortlist is the point of the button, so it has to
-            // be reachable from any row without leaving the tab you are browsing.
             const at = ui.favourites.indexOf(key);
             if (at >= 0) ui.favourites.splice(at, 1);
             else ui.favourites.push(key);
@@ -540,7 +474,7 @@ function handle(st: PlayerState, action: string): void {
             return;
         }
         if (tag === "play") {
-            // Audition without arming, so browsing does not change what fire spawns.
+            // Audition without arming.
             ui.selectedKey = key;
             preview(st, item);
             defer(st);
@@ -548,9 +482,7 @@ function handle(st: PlayerState, action: string): void {
         }
     }
 
-    // Nothing above claimed it. A ui.ts that emits an action handle() does not
-    // know about looks exactly like a dead button, which is the failure this
-    // whole migration exists to eliminate -- so it is always reported.
+    // Unclaimed actions are logged because they mean a dead button.
     log(`UNHANDLED ACTION "${action}" (open=${ui.open} tab=${ui.tab})`);
 }
 
@@ -569,13 +501,6 @@ function armSelected(st: PlayerState): void {
     defer(st);
 }
 
-/**
- * Plays a sound at `at`. A 3D sound needs the location and range: without them it
- * plays where it was spawned. PLAY used to spawn at the map origin with no
- * location, so 3D sounds were silent on PLAY (the origin is often underground)
- * while gadget fire worked. `onlyMe` keeps an audition to the player who clicked;
- * a placed sound is heard by everyone near it. 2D sounds go to the player only.
- */
 function spawnSfx(st: PlayerState, entry: SfxEntry, at: mod.Vector, onlyMe: boolean): mod.SFX {
     const sfx = mod.SpawnObject(entry.asset, at, ZERO, ONE) as mod.SFX;
     if (entry.dim === "2d") mod.PlaySound(sfx, st.ui.amp, st.ui.player);
@@ -585,12 +510,6 @@ function spawnSfx(st: PlayerState, entry: SfxEntry, at: mod.Vector, onlyMe: bool
     return sfx;
 }
 
-/**
- * Stops the sound after its window (its recorded length plus a tail, see
- * tools/gen-catalog.mjs). Past CONFIG.maxSoundsPerPlayer the oldest stops now:
- * one-shots can run 22 s, and every pending stop holds one of the 512 timers the
- * whole server shares.
- */
 function track(st: PlayerState, sfx: mod.SFX, windowMs: number): void {
     const p: Playing = { sfx: sfx, timer: null };
     p.timer = Timers.setTimeout(() => {
@@ -604,7 +523,6 @@ function track(st: PlayerState, sfx: mod.SFX, windowMs: number): void {
     }
 }
 
-/** Stops and unspawns a tracked sound and cancels its timer. Does nothing if it already stopped. */
 function untrack(st: PlayerState, sfx: mod.SFX): void {
     let i = -1;
     for (let k = 0; k < st.playing.length; k++) if (st.playing[k].sfx === sfx) i = k;
@@ -616,13 +534,6 @@ function untrack(st: PlayerState, sfx: mod.SFX): void {
     mod.UnspawnObject(sfx);
 }
 
-/**
- * Stop the previous audition, so replaying a row does not stack.
- *
- * Holding a button in any real UI retriggers the same sound rather than layering
- * new copies of it. Eight clicks on PLAY in a second produced eight simultaneous
- * sounds, which is not a preview of anything.
- */
 function stopPreview(st: PlayerState): void {
     const p = st.preview;
     if (p === undefined) return;
@@ -638,7 +549,6 @@ function stopPreview(st: PlayerState): void {
 function preview(st: PlayerState, r: Row): void {
     stopPreview(st);
     if (r.type === "sfx") {
-        // 3 m in front of the eyes, like a VFX audition.
         const sfx = spawnSfx(st, r.entry, eyeFront(st), true);
         st.preview = { type: "sfx", sfx: sfx, key: rowKey(r) };
         return;
@@ -684,8 +594,7 @@ function eyeFront(st: PlayerState): mod.Vector {
     return mod.Add(mod.GetSoldierState(p, mod.SoldierStateVector.EyePosition), mod.Multiply(facing, 3));
 }
 
-// UNVERIFIED: mod.SpawnObject on an FX_ member returns `Any`; the cast to
-// mod.VFX follows the same shape the SDK example uses for SFX and is inference.
+// UNVERIFIED: SpawnObject on FX_ returns `Any`; the VFX cast is inference.
 function spawnVfx(st: PlayerState, r: Row, at: mod.Vector): void {
     if (r.type !== "spawn") return;
     const vfx = mod.SpawnObject(r.entry.asset, at, ZERO, ONE) as mod.VFX;
@@ -709,23 +618,7 @@ function undoLast(st: PlayerState): void {
     mod.UnspawnObject(v);
 }
 
-/**
- * Stop every sound this player has ringing, and leave the placed effects alone.
- *
- * DELETE ALL removes the VFX; nothing stopped the SFX, so a long audition kept
- * ringing over everything else. The tracked handles in st.playing are the only
- * sounds this mod owns -- a sound spawned by the game itself is not ours to touch.
- */
-/**
- * Write every saved asset to the log, by its index-file name.
- *
- * The name is the point: the output is meant to be pasted back into a Portal editor
- * or looked up in index.d.ts, so it carries the enum member verbatim -- SFX_Alarm,
- * FX_Airburst_Incendiary_Detonation -- not the display name the menu shows.
- *
- * It goes out through logAlways, not log, so it still works with debug logging off.
- * An export the player can silence is not an export.
- */
+/** Exports saved assets by index-file name through logAlways. */
 function exportFavourites(st: PlayerState): void {
     const ui = st.ui;
     if (ui.favourites.length === 0) {
@@ -736,11 +629,9 @@ function exportFavourites(st: PlayerState): void {
     for (const key of ui.favourites) {
         const r = findRow(key);
         if (r === undefined) continue;
-        // name (index file) | group | type, and for a sound how long it plays
         if (r.type === "sfx") logAlways(rowRawName(r) + " | " + rowCategory(r) + " | SFX | " + soundLength(r.entry));
         else logAlways(rowRawName(r) + " | " + rowCategory(r) + " | VFX");
     }
-    // Templates after the assets, in save order: plain names and values, not code.
     for (const key of ui.favourites) {
         const t = key.startsWith("tpl") ? findTemplate(ui.tester, key) : undefined;
         if (t !== undefined) logAlways(templateExportLine(t));
@@ -749,18 +640,11 @@ function exportFavourites(st: PlayerState): void {
     mod.DisplayHighlightedWorldLogMessage(mod.Message(TPL.exportedN, ui.favourites.length), ui.player);
 }
 
-/** "LOOP", the recorded length ("1.2s", "17s+" when the recording was cut off), or "?" if unknown. */
 function soundLength(e: SfxEntry): string {
     if (e.kind === "loop") return "LOOP";
     return e.lengthText !== "" ? e.lengthText : "?";
 }
 
-/**
- * What QR CODE carries: the asset names, then the template lines, in the order
- * EXPORT FAVOURITES writes them. Names only, without EXPORT's group and length
- * columns: a phone shows the code as text, and the names are what a player
- * pastes into their own mod. Full lines would halve what one code holds.
- */
 function favouriteQrLines(st: PlayerState): string[] {
     const ui = st.ui;
     const lines: string[] = [];
@@ -796,16 +680,7 @@ function clearAll(st: PlayerState): void {
     for (const f of SCREEN_FX) setScreenFx(st, f, false);
 }
 
-// --------------------------------------------------------------- portal gadget
-//
-// Control scheme:
-//   AIM  (right mouse)  -> opens the menu
-//   FIRE (left mouse)   -> spawns the armed asset at the raycast hit point, then closes
-//   SELECT in the menu  -> arms the highlighted row and closes the menu
-//
-// There is deliberately no MENU button: aim is the only opener, so a click on the
-// world never has a second way into the menu.
-
+// Gadget controls: aim opens, fire spawns, SELECT arms. No MENU button; aim is the only opener.
 Events.OnPortalGadgetAimStart.subscribe((player: mod.Player) => {
     const st = ensure(player);
     if (st.ui.open) return;
@@ -818,10 +693,7 @@ Events.OnPortalGadgetAimStart.subscribe((player: mod.Player) => {
 Events.OnPortalGadgetFireStart.subscribe((player: mod.Player) => {
     const st = ensure(player);
     if (st.ui.armedKey === "") {
-        // The hint used to open the menu as well. That made fire a second opener, so
-        // both triggers opened the menu and neither one read as "spawn" -- a player
-        // with nothing armed who pulled the trigger expected a sound and got the
-        // browser instead. The hint is enough; fire stays a pure spawn gesture.
+        // Fire never opens the menu; it stays a pure spawn gesture.
         mod.DisplayHighlightedWorldLogMessage(mod.Message(T.armFirst), player);
         log("gadget fire: nothing armed (menu not opened)");
         return;
@@ -838,7 +710,6 @@ Events.OnRayCastHit.subscribe((player: mod.Player, point: mod.Vector, _normal: m
     const st = states[mod.GetObjId(player)];
     if (st === undefined) return;
     const armed = findRow(st.ui.armedKey);
-    // A template is never armed: its SELECT button is OPEN.
     if (armed === undefined || armed.type === "tpl") return;
 
     if (armed.type === "sfx") {

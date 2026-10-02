@@ -1,10 +1,4 @@
-// Button feedback: the game's own menu sounds, played to the clicking player.
-//
-// bf6-portal-utils/sounds' playOneShot spawns the 2D sound, plays it to one
-// player and unspawns it after CONFIG.uiSoundMs, so clicks never pile up SFX
-// objects. Every asset here is a RuntimeSpawn_Common member that the catalog
-// ships (none is in banlist.json).
-
+// Menu click sounds, played 2D to the clicking player.
 import { Sounds } from "bf6-portal-utils/sounds";
 
 import { CONFIG } from "./config";
@@ -25,12 +19,7 @@ export function playUiSound(player: mod.Player, asset: mod.RuntimeSpawn_Common):
 
 const STEPPER = /^(btn(Amp|Rng|Scale)(Up|Down)|mtP\d(Up|Down)|mtVol(Up|Down))$/;
 
-/**
- * The sound for a click on `action`, or undefined for none. PLAY buttons (the
- * row's P and the tester's PLAY) are silent so the click never covers the sound
- * being tested; the favourite toggle picks its own sound once it knows the new
- * state, and SAVE TEMPLATE plays its own "on" sound.
- */
+/** Click sound for an action. PLAY and favourite toggles handle their own sound. */
 export function clickSound(action: string): mod.RuntimeSpawn_Common | undefined {
     if (action === "mtPlay" || action === "mtSave" || /^r\d+_(play|fav)$/.test(action)) return undefined;
     if (action === "btnClose") return UI_SOUND.close;

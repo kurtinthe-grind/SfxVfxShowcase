@@ -1,39 +1,6 @@
-// Tabbed asset browser: two tabs, a group rail, filter chips, a simulated QWERTY
-// search keyboard with a clickable prefix page, and per-tab parameter footers.
-// Renders src/scene.json (generated into scene.gen.ts) for the shipping mod;
-// tools/gen-sandbox.mjs renders the SAME scene data for a browser preview, so
-// geometry and palette cannot drift. That preview is LAYOUT-ONLY: it has no
-// mod.Message and no widget layer, so it cannot validate anything about the
-// Portal UI itself.
-//
-// Portal has NO keyboard or text-input API - the only UI event is
-// OnPlayerUIButtonEvent - so the search field is necessarily a grid of ordinary
-// UI buttons that append to a query string.
-//
-// WIDGETS ARE bf6-portal-utils/ui, NOT hand-rolled mod.AddUI*.
-//
-// This file used to call mod.AddUIContainer / AddUIText / AddUIButton /
-// SetUITextLabel directly, and that was wrong three times over:
-//
-//   * AddUIButton's overloads take no message and SetUITextLabel is for text
-//     widgets, so every button label rendered blank;
-//   * the container was positioned at (0,0) while its children sat at absolute
-//     coordinates, a malformed tree that drew correctly but was never hit-tested;
-//   * clicks were routed by parsing widget names against a private
-//     "w<playerId>_<action>" scheme, while mod.GetUIWidgetName on a button is not
-//     something this code controls.
-//
-// AGENT.md 2.4 and 4.2 require the vetted utils. UIContainer / UIText /
-// UITextButton own widget creation, naming, input-mode reference counting and
-// click routing; this file owns layout, state and content. Buttons carry an
-// onClickUp closure instead of a name lookup.
-//
-// The UI core is a Structure-of-Arrays with dirty flags, generational slot
-// recycling and a coalesced UI.flush() on OnTickEnd. That machinery exists so
-// properties can be MUTATED rather than widgets recreated, so elements are
-// allocated once (lazily, per group) and then updated in place. The browser
-// preview still rebuilds each frame; the two differ deliberately.
-
+// Asset browser UI. Renders scene.json; the browser preview is layout-only.
+// Search is a button grid because Portal has no text-input API.
+// Widgets and clicks come from bf6-portal-utils/ui via onClickUp closures.
 import { CATEGORY_TEXT as CAT_TEXT, SFX_CATALOG, SFX_PREFIXES, VFX_CATALOG, VFX_PREFIXES, type PrefixEntry, type SfxEntry, type VfxEntry } from "./catalog";
 import { FILTERS, GRID, KEYBOARD, PALETTE, RAIL, RAIL_PAGER, RAIL_ROW, ROW, SCREEN, type SceneNode } from "./scene.gen";
 import { CHAR_KEY, SCENE_TEXT, T, TPL } from "./text.gen";
@@ -46,13 +13,7 @@ import { UIText } from "bf6-portal-utils/ui/components/text";
 import { UITextButton } from "bf6-portal-utils/ui/components/text-button";
 import { UIQRCode } from "bf6-portal-utils/ui/components/qr-code";
 
-// ---------------------------------------------------------------------------
-// Text plumbing. Portal's mod.Message() is a lookup into strings.json, not a
-// formatter: mod.Message("SOUND") prints <unknown string> because "SOUND" is not
-// a key in that file. Arguments have to be keys as well (numbers are passed raw),
-// so composed text is assembled from key strings and only becomes a Message at the
-// point it reaches the UI.
-// ---------------------------------------------------------------------------
+// Text must be mod.Message keys from strings.json, never raw strings.
 export type Text = string | mod.Message;
 
 export function K(key: string): mod.Message {
@@ -102,7 +63,6 @@ const P = PALETTE as Record<string, string>;
 
 export type Tab = "sfx" | "vfx" | "fav" | "music" | "radio";
 
-/** MUSIC and RADIO are the tester tabs: no rail, list, chips or keyboard. */
 export function isTesterTab(tab: Tab): tab is "music" | "radio" {
     return tab === "music" || tab === "radio";
 }
@@ -143,8 +103,7 @@ export const NO_FILTERS: FilterState = { query: "", dim: "", kind: "", vfx: "" }
 export const MAX_QUERY = 24;
 
 function matches(r: Row, tab: Tab, f: FilterState): boolean {
-    // Templates are not sounds or effects, and FAVOURITES shows no filter chips,
-    // so a filter left on in SOUND or VISUAL must not hide them.
+// Filters must not hide templates or favourites.
     if (r.type === "tpl") return true;
     if (tab === "sfx") {
         if (r.type !== "sfx") return false;
@@ -163,11 +122,7 @@ function matchesQuery(r: Row, q: string): boolean {
     return rowDisplay(r).toLowerCase().indexOf(needle) >= 0 || rowRawName(r).toLowerCase().indexOf(needle) >= 0;
 }
 
-/**
- * Colour conversion for bf6-portal-utils/ui, whose UI.Color is a plain
- * { r, g, b } rather than an opaque mod.Vector. scene.json stores hex so the
- * preview and the mod read one source; this is the only conversion point.
- */
+/** Hex-to-UI.Color conversion; scene.json stores hex. */
 const rgbCache: Record<string, UI.Color> = {};
 
 export function rgb(hex: string): UI.Color {
@@ -183,7 +138,6 @@ export function rgb(hex: string): UI.Color {
 function scaleRgb(c: UI.Color, k: number): UI.Color {
     return { r: Math.min(1, c.r * k), g: Math.min(1, c.g * k), b: Math.min(1, c.b * k) };
 }
-
 
 interface RgbPalette {
     base: UI.Color;
@@ -201,11 +155,7 @@ function buttonPalette(hex: string): RgbPalette {
         p = {
             base: base,
             disabled: scaleRgb(base, 0.5),
-            // Both interactive states are the same saturated orange, and neither
-            // is derived from the base. Scaling a near-black base by 0.75 made
-            // press look like a shadow, and scaling it by 1.15 made cursor-over
-            // look like nothing, which is why the highlight never registered on
-            // the keyboard keys, the prefix tiles or the small steppers.
+    // Pressed/focused are fixed orange, never scaled from the base.
             pressed: rgb(P.hot),
             hover: rgb(P.hot),
             focused: rgb(P.hot),
@@ -266,8 +216,7 @@ function resolveToken(tok: string, fields: Fields): string | number | mod.Messag
     const g = fields[body.slice(0, dot)];
     if (g === undefined) return body;
     const v = g[body.slice(dot + 1)];
-    // Returned untouched. A field can hold a mod.Message, and String() on an opaque
-    // Message gives "[object Object]", which msgFor() cannot resolve to a key.
+    // Never String() a Message: it becomes "[object Object]".
     return v === undefined ? body : v;
 }
 
@@ -295,9 +244,7 @@ function rawProp(n: WidgetNode, key: string, fields: Fields, scope: string): str
     const raw = (n as unknown as Record<string, unknown>)[key];
     if (raw === undefined) return undefined;
     if (typeof raw === "string" && raw.startsWith("{{")) return resolveToken(raw, fields);
-    // Returned as-is. An inline spec can carry a mod.Message directly (the filter
-    // chips, SEARCH, the keyboard), and String() on an opaque Message gives
-    // "[object Object]", which msgFor() cannot resolve to a key.
+    // Inline specs may carry a Message directly; never String() it.
     return raw as string | number | mod.Message;
 }
 
@@ -312,9 +259,7 @@ let SCREEN_ROWS: ScreenRow[] = [];
 
 export function registerGroups(sfxGroups: string[], vfxGroups: string[], screenRows: ScreenRow[]): void {
     SFX_GROUPS = sfxGroups;
-    // Screen-effect rows carry their own categories (Gas, Screen). Fold them in at
-    // the FRONT of the VFX group list: otherwise VL7 is only reachable by paging
-    // through ALL, and the rail can only show a slice of the groups anyway.
+    // Screen-effect rows go first so VL7 stays reachable.
     const merged: string[] = [];
     for (const r of screenRows) if (merged.indexOf(r.category) < 0) merged.push(r.category);
     for (const g of vfxGroups) if (merged.indexOf(g) < 0) merged.push(g);
@@ -352,13 +297,7 @@ function allRows(tab: Tab): Row[] {
     return out;
 }
 
-/**
- * The saved assets, in the order they were saved.
- *
- * A query still applies, so searching inside the shortlist works as it does
- * everywhere else. The group rail is not offered here -- a shortlist is meant to be
- * short -- and the type badges say which of the two kinds each entry is.
- */
+/** Saved assets, in save order; the query still applies. */
 export function favRows(ui: PlayerUi, f: FilterState): Row[] {
     const q = f.query.trim().toLowerCase();
     const out: Row[] = [];
@@ -377,14 +316,7 @@ export function isFavourite(ui: PlayerUi, key: string): boolean {
     return ui.favourites.indexOf(key) >= 0;
 }
 
-/**
- * The list the menu is currently showing, and the only place it is derived.
- *
- * render() and the row buttons both call this. They used to compute it separately,
- * and on the shortlist they disagreed: listFor("fav", ...) falls through to the "*"
- * group and returns every VFX row, so a click on a saved asset addressed an unrelated
- * catalog entry and deleting a favourite added a new one instead.
- */
+/** The visible list. Render and row buttons share it; it is derived once. */
 export function visibleList(ui: PlayerUi): Row[] {
     if (isTesterTab(ui.tab)) return [];
     const f = filtersOf(ui);
@@ -457,26 +389,8 @@ interface Handle {
     el: UI.Element;
     kind: "container" | "text" | "textbutton";
     labelled: boolean;
-    /**
-     * True while the button is held down.
-     *
-     * Not hover. There is no hover: bf6-portal-utils does not route a hover event
-     * (ui/index.ts logs "HoverIn and HoverOut button events not supported") and
-     * exposes no hover colour, so the engine's hoverColor is only reachable through
-     * the raw mod.AddUIButton overloads, which AGENT.md section 5 forbids.
-     *
-     * Transient, and render() is state-driven, so it cannot live only inside the
-     * handlers: the next pass re-applies baseColor and would wipe a highlight the
-     * player is still looking at. The update path consults this instead.
-     */
+/** True while the button is held. Not hover: the package routes no hover event. */
     lit: boolean;
-    /**
-     * What a click on this button does, as passed by the latest render. The engine
-     * handlers are bound once, at creation, so they must read this rather than the
-     * resolver they were created with: a rail slot is reused for another group on
-     * every rail page, and a stale resolver made a page-2 group show the page-1
-     * group in the same slot (2026-10-01, Panzerfaust showed Airplane).
-     */
     resolve?: () => string;
 }
 
@@ -490,13 +404,7 @@ export interface PlayerUi {
     page: number;
     selectedKey: string;
     armedKey: string;
-    /**
-     * Saved assets, as row keys, in the order they were saved.
-     *
-     * An array rather than a Set because the order is the point: the SAVED tab is a
-     * shortlist someone is building, and a shortlist that reshuffles itself every time
-     * they add to it is useless for the thing they are making it for.
-     */
+/** Saved asset keys, in save order. An array, not a Set: order is the point. */
     favourites: string[];
     scale: number;
     amp: number;
@@ -508,7 +416,6 @@ export interface PlayerUi {
     fDim: string;
     fKind: string;
     fVfx: string;
-    /** MUSIC / RADIO tester state; see src/tester.ts. */
     tester: TesterState;
 
     root: UIContainer | undefined;
@@ -516,23 +423,12 @@ export interface PlayerUi {
     keyAct: string[];
     pfxAct: string[];
     rowKeys: string[];
-    /**
-     * The action each filter-chip slot currently dispatches.
-     *
-     * Empty for an unused slot. The chips are keyed by slot rather than by action
-     * because the two tabs emit different actions for the same slot -- the sfx tab
-     * puts fd2 where the vfx tab puts fp -- and keying by action stacked two
-     * buttons on one position.
-     */
+/** Per-slot chip action. Chips are keyed by slot, not action. */
     chipAct: string[];
 
-    /** The QR CODE panel is up; it replaces the whole menu. */
     qrOpen: boolean;
-    /** The texts to show, one per code (src/qrexport.ts), made when QR CODE is pressed. */
     qrParts: string[];
-    /** Index into qrParts of the code on screen. */
     qrPart: number;
-    /** The code being drawn or shown, and which part it is. */
     qr: UIQRCode | undefined;
     qrShown: number;
 }
@@ -562,8 +458,7 @@ function sfxRowFields(ui: PlayerUi, e: SfxEntry, selected: boolean, armed: boole
         stopColor: P.inkDim,
         stopBg: P.panel,
         playLabel: K(T.play),
-        // PLAY is the accent on this row, so it stays green whether or not the row
-        // is the armed one -- the point of the button is "hear this now".
+    // PLAY stays green: it means "hear this now".
         playColor: "#FFFFFF",
         playBg: isLoop ? P.green : P.blue,
         actColor: "#FFFFFF",
@@ -571,7 +466,6 @@ function sfxRowFields(ui: PlayerUi, e: SfxEntry, selected: boolean, armed: boole
         b1: ui.tab === "fav" ? K(T.kindSfx) : K(is3d ? T.chip3d : T.chip2d),
         b1Color: ui.tab === "fav" ? P.blue : b1c,
         b1Bg: ui.tab === "fav" ? P.blue : b1c,
-        // A one-shot shows its recorded length, "ONE 1.2s"; plain ONE if unknown.
         b2: ui.tab === "fav" ? mod.Message(T.logEmpty) : K(isLoop ? T.chipLoop : e.lengthKey !== "" ? e.lengthKey : T.chipOne),
         b2Color: ui.tab === "fav" ? P.row : b2c,
         b2Bg: ui.tab === "fav" ? P.row : b2c,
@@ -618,8 +512,7 @@ function vfxRowFields(ui: PlayerUi, r: Row, selected: boolean, armed: boolean, s
     const b1c = world ? P.violet : P.green;
     const b2c = world ? P.blue : P.amber;
     const saved = isFavourite(ui, rowKey(r));
-    // On the shortlist the attribute badges are redundant -- everything in it is the
-    // same kind of choice -- so they become a type badge instead.
+    // On the shortlist, attribute badges become a type badge.
     const onShortlist = ui.tab === "fav";
     const kindColor = P.violet;
     return {
@@ -652,7 +545,6 @@ function vfxRowFields(ui: PlayerUi, r: Row, selected: boolean, armed: boolean, s
 }
 
 export function railFields(tab: Tab, row: number, count: number, active: boolean): Scope {
-    // `row` is the group index groupRows() and the rail action use: 0 is ALL.
     const label = groupTextKey(tab, row);
     return {
         label: mod.Message(TPL.gap2, label, count),
@@ -684,7 +576,6 @@ export function chromeFields(ui: PlayerUi, shown: number, listed: number, total:
         qrOn: ui.open && ui.qrOpen ? "1" : "0",
         qrNav: ui.qrParts.length > 1 ? "1" : "0",
         qrPart: mod.Message(TPL.qrPartOf, ui.qrPart + 1, Math.max(1, ui.qrParts.length)),
-        // On FAVOURITES the armed readout makes way for QR CODE.
         armedOn: onFav ? "0" : "1",
         favHead: onFav ? "1" : "0",
         qrBtnColor: ui.favourites.length > 0 ? "#FFFFFF" : P.faint,
@@ -693,10 +584,7 @@ export function chromeFields(ui: PlayerUi, shown: number, listed: number, total:
         vfxParams: sfx ? "0" : "1",
         searchOpen: ui.searchOpen ? "1" : "0",
         searchBg: ui.searchOpen ? P.green : P.line,
-        // Every tab has a resting background, and the selected one is the same
-        // orange as the press highlight. Held as a field rather than a hover
-        // state, because the selected tab has to stay lit after the click, and
-        // the utils package exposes no cursor-over event to hang it on.
+    // The selected tab stays orange via a held field, not hover.
         tabSfxColor: sfx ? "#FFFFFF" : P.inkDim,
         tabSfxBg: sfx ? P.hot : P.line,
         tabVfxColor: ui.tab === "vfx" ? "#FFFFFF" : P.inkDim,
@@ -710,8 +598,7 @@ export function chromeFields(ui: PlayerUi, shown: number, listed: number, total:
         browserOn: tester ? "0" : "1",
         testerOn: tester ? "1" : "0",
         ...testerFields(ui.tab === "radio" ? "radio" : "music", ui.tester),
-        // On the shortlist the header's button exports instead of arming: there is
-        // nothing to confirm, the whole tab IS the selection.
+    // On the shortlist the header button exports instead of arming.
         selectLabel: onFav ? K(ui.favourites.length === 0 ? T.noFavourites : T.exportFavs) : K(ui.selectedKey === "" ? T.selectAnItem : ui.armedKey === ui.selectedKey ? T.selected : T.select),
         selectColor: onFav ? P.ink : "#FFFFFF",
         selectBg: onFav ? P.panel : ui.selectedKey === "" ? P.row : ui.armedKey === ui.selectedKey ? P.green : P.blue,
@@ -780,9 +667,7 @@ function ensureWidget(
     const tColorHex = propStr(n, n.k === "text" ? "color" : "textColor", fields, scope) ?? "#FFFFFF";
     const tAlpha = Number(prop(n, "textAlpha", fields, scope) ?? 1);
     const tAnchor = uiAnchor(propStr(n, "align", fields, scope));
-    // A node with no text of its own (a container, a repeat) is not a missing key.
-    // Coercing the absent value to "" and feeding it to msgFor() reported
-    // MISSING TEXT KEY: "" once at boot, which reads like a broken strings table.
+    // A textless node is not a missing key; "" must not reach msgFor().
     const rawText = prop(n, "text", fields, scope);
     const label = rawText === undefined || rawText === "" ? mod.Message(T.logEmpty) : msgFor(rawText);
 
@@ -816,8 +701,7 @@ function ensureWidget(
             b.textAlpha = tAlpha;
             b.textAnchor = tAnchor;
             const pal = buttonPalette(bgHex);
-            // Hover wins over base: a state change elsewhere must not wipe the
-            // highlight the cursor is currently on.
+            // A held highlight survives unrelated state changes.
             b.baseColor = existing.lit ? pal.hover : pal.base;
             b.baseAlpha = bgAlpha;
             b.disabledColor = pal.disabled;
@@ -832,8 +716,7 @@ function ensureWidget(
         return existing;
     }
 
-    // Creation budget (see renderBatch). Checked before anything is allocated, so
-    // a pass that stops here leaves no half-built widget behind.
+            // Budget is checked before allocating anything.
     if (createBudget <= 0) throw BUDGET_SPENT;
     createBudget--;
     createdThisPass++;
@@ -870,8 +753,7 @@ function ensureWidget(
         };
     } else {
         const pal = buttonPalette(bgHex);
-        // The focus handlers close over `handle`, which is assigned on the next line.
-        // They only ever run on a later engine event, so by then it is bound.
+            // Handlers run on later engine events, after `handle` is bound.
         const btn = new UITextButton({
             ...base,
             label: label,
@@ -886,13 +768,11 @@ function ensureWidget(
             disabledAlpha: bgAlpha,
             pressedColor: pal.pressed,
             pressedAlpha: bgAlpha,
-            // The engine's own focused-state repaint, if it does one, uses the same
-            // highlight -- so the effect shows even if the handlers below never fire.
+            // Same highlight for the engine's own focused repaint.
             focusedColor: pal.hover,
             focusedAlpha: bgAlpha,
             onClickUp: () => {
-                // Settle first, so a render triggered by the action does not inherit
-                // the pressed highlight.
+            // Settle first so the action's render starts unlit.
                 handle.lit = false;
                 btn.baseColor = pal.base;
                 btn.textColor = rgb(tColorHex);
@@ -905,12 +785,7 @@ function ensureWidget(
                 btn.textColor = rgb("#FFFFFF");
             },
             onFocusIn: () => {
-                // Kept even though it never fires today: if Portal ever maps
-                // cursor-over to focus, this is the whole hover feature and it is
-                // already wired.
-                // Controller-crash instrumentation: focus events only fire on a
-                // gamepad, so this is the first line that tells a controller log
-                // from a mouse one.
+            // Wired in case Portal ever maps cursor-over to focus.
                 log("focus in: " + action);
                 handle.lit = true;
                 btn.baseColor = pal.hover;
@@ -961,7 +836,7 @@ function buildNodes(
     inheritedVisible: boolean
 ): void {
     const groupVisible: Record<string, boolean> = {};
-    // A group can carry its own origin; children are positioned relative to it.
+    // Children are positioned relative to their group's origin.
     const groupOrigin: Record<string, { x: number; y: number }> = {};
 
     for (let i = 0; i < nodes.length; i++) {
@@ -1015,10 +890,7 @@ function buildNodes(
             continue;
         }
 
-        // A hidden node is not created until its group is first shown. Every
-        // scene node used to be allocated on the first open, including whole tabs
-        // nobody had visited; with the 2026-10-01 widget-burst crash, widgets that
-        // are never seen are pure risk.
+    // Hidden nodes are created lazily, on first show.
         if (!visible && ui.nodes[action] === undefined) continue;
         ensureWidget(ui, n, action, parent, fields, scope, ox + gx, oy + gy, visible);
     }
@@ -1032,10 +904,7 @@ export function initUI(ui: PlayerUi): void {
         anchor: UI.Anchor.TopLeft,
         receiver: ui.player,
         visible: ui.open,
-        // The utils reference-count mod.EnableUIInputMode against this flag, which
-        // is what the hand-rolled version got wrong and what locked the player out
-        // of the match at boot. Their README is explicit: do not also call
-        // mod.EnableUIInputMode by hand.
+    // The utils reference-count EnableUIInputMode here; never call it by hand.
         uiInputModeWhenVisible: true,
     });
     const rows: string[] = [];
@@ -1080,14 +949,7 @@ function chipIsActive(ui: PlayerUi, key: string, val: string): boolean {
     return false;
 }
 
-    /**
- * The strings.json key for a filter chip's label.
- *
- * The empty value has to be tested FIRST. It means "ALL", but it also means
- * c.val is neither "3d" nor "loop" nor "world", so testing the key first fell
- * through to the sibling chip and rendered the ALL chip as "2D" (sfx) or "PLAYER"
- * (vfx).
- */
+    /** Chip label key. The empty value ("ALL") must be tested first. */
 function chipTextKey(c: { key: string; val: string }): string {
     if (c.val === "") return T.chipAll;
     if (c.key === "dim") return c.val === "3d" ? T.chip3d : T.chip2d;
@@ -1116,13 +978,7 @@ const KEY_CHARS: string[] = (() => {
 const KEY_SLOTS = KEY_CHARS.length;
 const PFX_SLOTS = KEYBOARD.prefixGrid.max;
 
-// ---------------------------------------------------------------------------
-// Batched widget creation. Opening the menu used to create ~245 widgets in one
-// tick, and the game now crashes as soon as the menu opens. renderBatch() caps how
-// many NEW widgets one pass may create; widgets that already exist are only
-// updated and cost nothing. render() is state-driven and idempotent, so the caller
-// simply runs another pass a moment later and it picks up where this one stopped.
-// ---------------------------------------------------------------------------
+// Widget creation is batched; one burst can crash. Later passes resume.
 const BUDGET_SPENT = { budgetSpent: true };
 let createBudget = Number.POSITIVE_INFINITY;
 let createdThisPass = 0;
@@ -1151,8 +1007,7 @@ export function render(ui: PlayerUi, spawnedCount: number): void {
     ui.spawnedCount = spawnedCount;
 
     const onFav = ui.tab === "fav";
-    // The FAVOURITES tab ignores the group rail entirely -- there are no groups in
-    // a shortlist -- so its total is the shortlist, not the catalog.
+    // FAVOURITES has no groups; its total is the shortlist.
     const tester = isTesterTab(ui.tab);
     const list = visibleList(ui);
     const total = tester ? 0 : onFav ? ui.favourites.length : totalCount(ui.tab);
@@ -1166,27 +1021,22 @@ export function render(ui: PlayerUi, spawnedCount: number): void {
 
     const fields: Fields = { sh: P, f: chromeFields(ui, list.length, 0, total) };
     buildNodes(ui, SCREEN, parent, fields, "f", 0, 0, "", open);
-    // After the panel's nodes, so the code is drawn on top of its backdrop.
     syncQr(ui, parent);
 
-    // The rail, chips, rows and keyboard live outside the `menu` group, so the
-    // group's bind does not cover them. They are gated on `open` explicitly.
+    // Rail, chips, rows and keyboard live outside `menu`; gate them on `open`.
     if (!open) return;
 
-    // The QR panel covers the whole menu, so the browser's own widgets hide too.
     if (ui.qrOpen) {
         hideBrowserWidgets(ui);
         return;
     }
 
-    // The tester panel is all scene nodes, drawn by buildNodes above. Everything
-    // the browser builds by hand has to be hidden here, for the same reason.
+    // Hand-built browser widgets are hidden alongside scene nodes.
     if (tester) {
         hideBrowserWidgets(ui);
         return;
     }
 
-    // ---- filter chips + search button
     const chips = ui.tab === "sfx" ? FILTERS.sfx : FILTERS.vfx;
     for (let i = 0; i < MAX_CHIPS; i++) {
         const c = chips[i];
@@ -1197,9 +1047,7 @@ export function render(ui: PlayerUi, spawnedCount: number): void {
             continue;
         }
         const active = chipIsActive(ui, c.key, c.val);
-        // The slot decides which button this is; the action is read at click time.
-        // Keying by action instead put fp and fd2 on the same position and made the
-        // chips unreachable.
+    // Chips are keyed by slot; the action is read at click time.
         ui.chipAct[i] = chipAction(c.key, c.val);
         const label = K(chipTextKey(c));
         const bg = active ? P.blue : P.row;
@@ -1230,7 +1078,6 @@ export function render(ui: PlayerUi, spawnedCount: number): void {
         ensureWidget(ui, { k: "textbutton", x: FILTERS.searchX, y: FILTERS.searchY, w: FILTERS.searchW, h: FILTERS.searchH, fill: "Solid", bg: ui.searchOpen ? P.green : P.panel, bgAlpha: 1, text: K(ui.searchOpen ? T.keyboardOpen : T.search), textSize: 14, textColor: ui.searchOpen ? "#FFFFFF" : P.ink, align: "Center" }, "btnSearch", parent, sf, "f", 0, 0, true);
     }
 
-    // ---- rail, paged (absent on the shortlist: there is nothing to group)
     if (onFav) {
         for (let slot = 0; slot < RAIL.visibleRows - 1; slot++) {
             const spare = ui.nodes["railBtn" + slot];
@@ -1242,10 +1089,7 @@ export function render(ui: PlayerUi, spawnedCount: number): void {
         }
     } else {
     const counts = groupCounts(ui.tab);
-    // Group index 0 is ALL (groupName), and it sits on every rail page as a
-    // button of its own: it is how a picked group is cleared. It has its own key
-    // ("railAll"), never shared with the group slots, so its handle never has to
-    // change kind. The group buttons get the rows below it.
+    // ALL clears the group and keeps its own railAll key.
     const groupTotal = counts.length - 1;
     const groupRows = RAIL.visibleRows - 1;
     const railPages = Math.max(1, Math.ceil(groupTotal / groupRows));
@@ -1255,7 +1099,6 @@ export function render(ui: PlayerUi, spawnedCount: number): void {
     ensureWidget(ui, RAIL_ROW, "railAll", parent, { sh: P, rail: railFields(ui.tab, 0, counts[0], ui.group === 0) }, "rail", railX, RAIL.rowsY, true, () => "rail0");
     const railFirst = ui.railPage * groupRows;
     for (let slot = 0; slot < groupRows; slot++) {
-        // Group index, 1-based: 0 is ALL.
         const gi = railFirst + slot + 1;
         if (gi > groupTotal) {
             const spare = ui.nodes["railBtn" + slot];
@@ -1264,14 +1107,11 @@ export function render(ui: PlayerUi, spawnedCount: number): void {
         }
         const active = ui.group === gi;
         const rf: Fields = { sh: P, rail: railFields(ui.tab, gi, counts[gi], active) };
-        // The emitted action is the group index itself, not the slot, so the
-        // handler needs no knowledge of paging and the two halves cannot drift.
+        // Actions carry the group index, not the slot.
         const action = "rail" + gi;
         ensureWidget(ui, RAIL_ROW, "railBtn" + slot, parent, rf, "rail", railX, RAIL.rowsY + (slot + 1) * RAIL.rowH, true, () => action);
     }
-    // Only the two buttons come from the scene; the page read-out is drawn by
-    // hand below so it does not collide with a node buildNodes() would allocate
-    // under the same key.
+    // The pager readout is hand-drawn to avoid a key collision.
     for (const n of RAIL_PAGER) {
         if (n.k !== "textbutton") continue;
         const nf: Fields = { sh: P, f: { text: n.text === undefined ? mod.Message(T.logEmpty) : S(n.text), textColor: "#FFFFFF", bg: P.orangeDim } };
@@ -1294,7 +1134,6 @@ export function render(ui: PlayerUi, spawnedCount: number): void {
     }
     }
 
-    // ---- rows, one container each so a short page can hide the leftovers
     const page = pageSlice(list, ui.page);
     for (let i = 0; i < GRID.rows; i++) {
         const item = page[i];
@@ -1324,24 +1163,11 @@ export function render(ui: PlayerUi, spawnedCount: number): void {
         buildNodes(ui, ROW, asParent(box), rf, "r", 0, 0, "r" + i + "_", true);
     }
 
-    // ---- simulated keyboard
     if (ui.searchOpen) buildKeyboard(ui, list.length, total);
     else hideKeyboard(ui);
 }
 
-/**
- * The query readout.
- *
- * One widget per character, because arbitrary user input has no strings.json key of
- * its own. Portal's UI font is not monospaced, so these are fixed-width cells and
- * spacing varies slightly -- the same compromise the bf6-portal-utils logger makes.
- *
- * Everything here is positioned relative to the keyboard container, not the scene.
- * The key rows subtract kb.y when they are placed; this function used to use the
- * absolute kb.queryY, which put the readout 216px too low -- straight on top of the
- * third key row, where it was invisible under the keys and unreadable. That is why
- * there was nothing to see while typing.
- */
+/** One fixed-width widget per query character, relative to the keyboard container. */
 function buildQueryBar(ui: PlayerUi, parent: UI.Parent, kb: typeof KEYBOARD, shown: number, total: number): void {
     const q = ui.query;
     const qx = 16;
@@ -1349,9 +1175,7 @@ function buildQueryBar(ui: PlayerUi, parent: UI.Parent, kb: typeof KEYBOARD, sho
     const countW = 380;
     const fieldW = kb.w - countW - 40;
 
-    // A visible field, not floating text. Without a background the readout is the
-    // same near-black as the keyboard behind it and there is no cue that it is an
-    // input at all.
+    // The readout needs a background to read as an input.
     const field = ensureWidget(
         ui,
         { k: "container", x: qx - 8, y: qy - 6, w: fieldW + 16, h: kb.queryH + 12, fill: "Solid", bg: P.line, bgAlpha: 1 },
@@ -1388,8 +1212,7 @@ function buildQueryBar(ui: PlayerUi, parent: UI.Parent, kb: typeof KEYBOARD, sho
         );
         h.el.visible = key !== undefined;
     }
-    // A trailing underscore stands in for a cursor: the block-cursor glyph the
-    // design started with is not in Portal's font and rendered as "*".
+    // Underscore cursor: the block glyph is not in Portal's font.
     const cur = ensureWidget(ui, { k: "text", x: qx + q.length * QUERY_CELL_W, y: qy, w: QUERY_CELL_W, h: kb.queryH, text: K(T.charCursor), textSize: 20, textColor: P.green, align: "Center" }, "kbcur", parent, { sh: P, f: { text: K(T.charCursor), textColor: P.green } }, "f", 0, 0, true);
     cur.el.visible = q !== "";
 }
@@ -1403,7 +1226,7 @@ function buildKeyboard(ui: PlayerUi, shown: number, total: number): void {
     buildQueryBar(ui, kbParent, kb, shown, total);
 
     if (ui.kbPage === 1) {
-        // Page 2: clickable asset prefixes, so nobody has to type SFX_ / Gadgets_ / Snow.
+        // Page 2: clickable asset prefixes.
         hideSlots(ui, "key", KEY_SLOTS);
         const pg = kb.prefixGrid;
         const all = prefixesFor(ui.tab);
@@ -1447,7 +1270,7 @@ function buildKeyboard(ui: PlayerUi, shown: number, total: number): void {
             );
         }
     } else {
-        // Page 1: QWERTY.
+    
         hideSlots(ui, "pfx", PFX_SLOTS);
         for (let r = 0; r < kb.rows.length; r++) {
             const chars = kb.rows[r];
@@ -1464,7 +1287,6 @@ function buildKeyboard(ui: PlayerUi, shown: number, total: number): void {
         }
     }
 
-    // bottom row
     let bx = kb.x0 - kb.x;
     for (const b of kb.bottom) {
         const isDone = b.action === "done";
@@ -1476,7 +1298,6 @@ function buildKeyboard(ui: PlayerUi, shown: number, total: number): void {
     }
 }
 
-/** Hides every widget render() builds by hand for the asset browser. */
 UIQRCode.tickBudget = CONFIG.qrWidgetsPerTick;
 
 const QR_SLOT = (() => {
@@ -1484,12 +1305,6 @@ const QR_SLOT = (() => {
     throw new Error("scene.json has no qrSlot");
 })();
 
-/**
- * Keeps the drawn QR code in step with the panel: the part on screen, or none.
- * A code is a few hundred widgets, so it is deleted whenever it is not shown
- * rather than hidden; UIQRCode spreads both the drawing and the deleting over
- * several ticks (10 widgets a tick), well under the widget-burst crash.
- */
 function syncQr(ui: PlayerUi, parent: UI.Parent): void {
     const text = ui.open && ui.qrOpen ? ui.qrParts[ui.qrPart] : undefined;
     if (ui.qr !== undefined && (text === undefined || ui.qrShown !== ui.qrPart)) {
