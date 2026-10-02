@@ -1,0 +1,53 @@
+# Publishes site/ (the QR decoder) to GitHub Pages:
+#   https://kurtinthe-grind.github.io/SfxVfxShowcase/
+# One-time setup: repository Settings > Pages > Build and deployment > Source: GitHub Actions.
+name: Companion site
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "site/**"
+      - "registry/**"
+      - "tools/gen-ids.mjs"
+      - "tools/registry.mjs"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      # Fails if the registry is invalid, a published ID changed meaning, or
+      # site/data and src/qrids.gen.ts are out of date with the registry.
+      - run: node tools/gen-ids.mjs --check
+
+  deploy:
+    needs: check
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - id: deployment
+        uses: actions/deploy-pages@v4

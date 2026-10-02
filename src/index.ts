@@ -5,8 +5,9 @@ import { Timers } from "bf6-portal-utils/timers";
 import { SFX_CATALOG, SFX_CATEGORIES, SFX_PREFIXES, type SfxEntry, VFX_CATALOG, VFX_CATEGORIES, VFX_PREFIXES } from "./catalog";
 import { CONFIG } from "./config";
 import { debugEnabled, initLog, log, logAlways, setDebug } from "./diag";
-import { packQrTexts } from "./qrexport";
-import { applyTemplate, findTemplate, handleTesterAction, loadStartupMusic, newTesterState, playTemplate, removeTemplate, saveTemplate, stopTemplate, templateExportLine, templateKey } from "./tester";
+import { packQrPayloads, qrId, runId } from "./qrexport";
+import { NAMED_IDS, SFX_ID_RUNS, VFX_ID_RUNS } from "./qrids.gen";
+import { applyTemplate, findTemplate, handleTesterAction, loadStartupMusic, newTesterState, playTemplate, removeTemplate, saveTemplate, stopTemplate, templateExportLine, templateKey, templateQrCode } from "./tester";
 import { T, TPL } from "./text.gen";
 import { clickSound, playUiSound, UI_SOUND } from "./uisound";
 import {
@@ -368,7 +369,8 @@ function handle(st: PlayerState, action: string): void {
 
     if (action === "btnQr") {
         if (ui.tab !== "fav" || ui.favourites.length === 0) return;
-        ui.qrParts = packQrTexts(favouriteQrLines(st));
+        const site: string = CONFIG.qrSite;
+        ui.qrParts = packQrPayloads(favouriteQrCodes(st), site === "" ? "" : site + "#");
         ui.qrPart = 0;
         ui.qrOpen = ui.qrParts.length > 0;
         logQrText(ui);
@@ -645,18 +647,25 @@ function soundLength(e: SfxEntry): string {
     return e.lengthText !== "" ? e.lengthText : "?";
 }
 
-function favouriteQrLines(st: PlayerState): string[] {
+/** EXPORT order: assets, then templates. DEBUG logs each name and its code. */
+function favouriteQrCodes(st: PlayerState): string[] {
     const ui = st.ui;
-    const lines: string[] = [];
+    const codes: string[] = [];
+    const add = (name: string, code: string) => {
+        log("QR MAP " + name + " -> " + code);
+        codes.push(code);
+    };
     for (const key of ui.favourites) {
         const r = findRow(key);
-        if (r !== undefined) lines.push(rowRawName(r));
+        if (r === undefined) continue;
+        const n = r.type === "sfx" ? runId(SFX_ID_RUNS, SFX_CATALOG.indexOf(r.entry)) : r.type === "spawn" ? runId(VFX_ID_RUNS, VFX_CATALOG.indexOf(r.entry)) : NAMED_IDS[key];
+        if (n !== undefined) add(rowRawName(r), qrId(n));
     }
     for (const key of ui.favourites) {
         const t = key.startsWith("tpl") ? findTemplate(ui.tester, key) : undefined;
-        if (t !== undefined) lines.push(templateExportLine(t));
+        if (t !== undefined) add(templateExportLine(t), templateQrCode(t));
     }
-    return lines;
+    return codes;
 }
 
 function logQrText(ui: PlayerUi): void {

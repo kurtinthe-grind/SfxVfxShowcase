@@ -41,6 +41,8 @@ export const CONFIG = {
 
     // QR codes draw across ticks; lower this if drawing hitches.
     qrWidgetsPerTick: 30,
+    // QR CODE links here (site/, on GitHub Pages); "" puts the bare payload in the code.
+    qrSite: "https://kurtinthe-grind.github.io/SfxVfxShowcase/",
 
     // Calls within musicLoadMs of LoadMusic are held, then sent.
     musicLoadMs: 5000,

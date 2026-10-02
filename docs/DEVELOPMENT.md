@@ -931,3 +931,26 @@ Since 2026-10-01 the game client crashes when about 245 UI widgets are created i
 - `npm run release` builds, then copies `dist/` to `SfxVfxShowcase.ts` + `SfxVfxShowcase.strings.json`, the two files to upload.
 - `npm run test:tester` runs the tester behaviour test. It is also part of `build`.
 
+
+## QR codes: compact IDs (2026-10-02)
+
+QR CODE no longer puts asset names in its codes. Each favourite becomes a 3-character ID from `registry/mapping-1.json`, and the code links to the decoder site in `site/` (GitHub Pages), which expands the IDs back to names. One code now holds about 210 assets instead of 12. Full design, format and maintenance steps: `docs/QR-MAPPING.md`.
+
+| Piece | Role |
+| --- | --- |
+| `registry/mapping-1.json` | Append-only ID registry, the only source of truth. Never edit an `id`, `kind` or `name` by hand |
+| `tools/gen-ids.mjs` (last step of `npm run gen`) | Gives new assets the next IDs, retires removed ones, refuses any change to a committed ID, writes `src/qrids.gen.ts` and `site/data/` |
+| `src/qrexport.ts` | Payload builder; must match `site/js/codec.js` (checked by `test:qr-mapping` on 200 random lists) |
+| `tools/test-qr.mjs` | Replays the bundle, rebuilds the drawn code, scans it with jsQR, decodes it with the site's codec, and compares with EXPORT |
+| `tools/test-qr-mapping.mjs` | Registry rules, codec edge cases, mapping versions, legacy codes, sizes |
+| `tools/test-site.mjs` | The site in headless Chromium (needs Playwright; not in `build`) |
+
+The mod side costs about 5 KB of `dist/bundle.ts`: catalog IDs are stored as runs (`[first index, its ID]`), one run per catalog while no asset has been inserted mid-catalog.
+
+## Commands added (QR)
+
+- `npm run test:qr-mapping` runs the mapping tests. It is part of `build`.
+- `npm run test:site` runs the browser test of the decoder site.
+- `npm run check:ids` verifies the registry and generated ID tables without writing.
+- `npm run qr:inspect -- <names | payload>` shows name -> ID -> payload, or decodes a payload.
+- `npm run site` serves `site/` on http://localhost:8080/.

@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SFX/VFX Decoder</title>
+    <meta name="description" content="Decode SFX/VFX Showcase QR codes back into full Battlefield 6 Portal asset names.">
+    <meta name="color-scheme" content="light dark">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23ff7a1a'/%3E%3Cpath d='M3 3h4v4H3zM9 3h4v4H9zM3 9h4v4H3zM10 10h2v2h-2z' fill='%23111'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="css/site.css">
+    <script type="module" src="js/app.js"></script>
+</head>
+<body>
+    <header class="top">
+        <div class="wrap top-row">
+            <div class="brand">
+                <span class="mark" aria-hidden="true"></span>
+                <div>
+                    <h1>SFX/VFX Decoder</h1>
+                    <p class="sub">Turns SFX/VFX Showcase QR codes back into full asset names</p>
+                </div>
+            </div>
+            <a class="repo" href="https://github.com/kurtinthe-grind/SfxVfxShowcase">GitHub</a>
+        </div>
+    </header>
+
+    <main class="wrap">
+        <section class="card" id="input" aria-labelledby="input-h">
+            <h2 id="input-h">Read a code</h2>
+            <div class="actions three">
+                <button type="button" class="btn primary" id="btn-camera">Open camera</button>
+                <label class="btn" id="btn-upload">Upload QR image<input type="file" id="file" accept="image/*" hidden></label>
+                <button type="button" class="btn" id="btn-paste">Paste QR data</button>
+            </div>
+
+            <div id="camera" class="camera" hidden>
+                <video id="video" playsinline muted></video>
+                <div class="aim" aria-hidden="true"></div>
+                <button type="button" class="btn small stop" id="btn-camera-stop">Stop camera</button>
+            </div>
+
+            <form id="paste" class="paste" hidden>
+                <label for="paste-text">QR data, a decoder link, IDs, or a pasted EXPORT list</label>
+                <textarea id="paste-text" rows="4" spellcheck="false" autocomplete="off" placeholder="SV1.1.1-1.TSTD.0XG0Y40Y00XS.W5G8"></textarea>
+                <div class="row-end">
+                    <button type="submit" class="btn primary">Decode</button>
+                </div>
+            </form>
+
+            <p class="status" id="input-status" role="status" aria-live="polite"></p>
+        </section>
+
+        <section class="card" id="result" hidden aria-labelledby="result-h">
+            <div class="result-head">
+                <h2 id="result-h">Experience Assets</h2>
+                <span class="pill" id="result-pill"></span>
+            </div>
+
+            <ul class="messages" id="messages"></ul>
+
+            <dl class="meta" id="meta"></dl>
+
+            <div class="parts" id="parts" hidden>
+                <p id="parts-text"></p>
+                <div class="actions">
+                    <button type="button" class="btn small" id="btn-parts-view"></button>
+                    <button type="button" class="btn small ghost" id="btn-parts-clear">Forget scanned parts</button>
+                </div>
+            </div>
+
+            <ol class="assets" id="assets"></ol>
+
+            <div class="actions wrap-row" id="export-actions">
+                <button type="button" class="btn small" data-export="copy">Copy asset list</button>
+                <button type="button" class="btn small" data-export="json">Download JSON</button>
+                <button type="button" class="btn small" data-export="csv">Download CSV</button>
+                <button type="button" class="btn small" data-export="link">Copy link to this code</button>
+            </div>
+
+            <details class="debug" id="debug">
+                <summary>Developer view</summary>
+                <div id="debug-body"></div>
+            </details>
+        </section>
+
+        <section class="card" id="lookup" aria-labelledby="lookup-h">
+            <details>
+                <summary><h2 id="lookup-h">Look up an asset or ID</h2></summary>
+                <label for="lookup-q" class="sr-only">Asset name or ID</label>
+                <input id="lookup-q" type="search" placeholder="Search a name, group or ID (for example 0XG or Smoke)" autocomplete="off" spellcheck="false">
+                <p class="hint" id="lookup-count"></p>
+                <ol class="lookup" id="lookup-list"></ol>
+            </details>
+        </section>
+
+        <section class="card about" aria-labelledby="about-h">
+            <h2 id="about-h">How this works</h2>
+            <p>The mod's <b>QR CODE</b> button does not put asset names in the code. It puts short IDs, three characters each, for example <code>0XG</code> for <code>FX_ArtilleryStrike_Explosion_01</code>. This page has the public table that turns the IDs back into names. That keeps the codes small enough to scan from across the room.</p>
+            <p>An ID never changes meaning, so a code you made months ago still reads the same. The IDs are labels, not encryption: anyone can look them up here or in the <a href="https://github.com/kurtinthe-grind/SfxVfxShowcase/tree/master/registry">registry</a>. Nothing you scan or paste leaves your browser.</p>
+            <p>Older codes that hold full names still work.</p>
+        </section>
+    </main>
+
+    <footer class="wrap foot">
+        <span id="foot-map">Loading mapping...</span>
+        <span>QR image decoding by <a href="https://github.com/cozmo/jsQR">jsQR</a> (Apache-2.0).</span>
+    </footer>
+</body>
+</html>

@@ -139,6 +139,16 @@ Saving the same setup twice keeps one copy. In FAVOURITES, a template row shows 
 
 `EXPORT FAVOURITES` writes each template as one plain line of names and values. Templates last for the match, like the rest of your favourites.
 
+**QR CODE.** Console players can't open the log, so FAVOURITES also has a **QR CODE** button. It covers the browser with a QR code of your list; scan it with your phone camera and it opens the [SFX/VFX Decoder](https://kurtinthe-grind.github.io/SfxVfxShowcase/), which shows the same list EXPORT writes: every asset name, then every template line. There you can copy it, download it as JSON or CSV, or copy a link to it.
+
+- The code holds short IDs, not names: `0XG` stands for `FX_ArtilleryStrike_Explosion_01`. About 210 assets fit in one code.
+- A longer list is split into parts, `QR 1 / 3` and so on. Page with `<` and `>` and scan each part; the site remembers the parts you scanned and joins them.
+- The code takes a few seconds to draw. If your phone does not pick it up, move closer or turn up the screen brightness. The site can also read a photo or screenshot of the code (**Upload QR image**).
+- `CLOSE QR` goes back to the list. Closing the menu closes the code too.
+- An ID never changes meaning, so a code you saved months ago still reads the same. The IDs are public labels, not encryption.
+
+With DEBUG on, QR CODE also logs each favourite's ID (`QR MAP <name> -> <ID>`) and the exact text in each code (`QR TEXT 1/1: ...`). The format, the ID registry and how to maintain it are in [docs/QR-MAPPING.md](docs/QR-MAPPING.md).
+
 ---
 
 ## Parameters
