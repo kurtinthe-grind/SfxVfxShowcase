@@ -16,7 +16,7 @@
         "check:bundle": "node tools/check-bundle.mjs",
         "check:layout": "node tools/locate-syntax.mjs src/ui.ts && node tools/brace-audit.mjs src/ui.ts",
         "test:gates": "node tools/test-ascii-gate.mjs && node tools/test-invariants.mjs && node tools/test-fields.mjs && node tools/test-actions.mjs",
-        "bundle": "bf6-portal-bundler --entrypoint ./src/index.ts --outDir ./dist",
+        "bundle": "bf6-portal-bundler --entrypoint ./src/index.ts --outDir ./dist && node tools/compact-bundle.mjs",
         "typecheck:dist": "node tools/check-dist.mjs",
         "build": "npm run gen && npm run typecheck && npm run check:strings && npm run check:invariants && npm run check:fields && npm run check:actions && npm run check:layout && npm run bundle && npm run typecheck:dist && npm run check:bundle && npm run check:batching && npm run test:rail && npm run test:lengths && npm run test:qr-mapping && npm run test:qr && npm run test:tester && npm run test:probe",
         "preview": "node preview/server.mjs",

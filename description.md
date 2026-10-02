@@ -146,6 +146,7 @@ Saving the same setup twice keeps one copy. In FAVOURITES, a template row shows 
 - The code takes a few seconds to draw. If your phone does not pick it up, move closer or turn up the screen brightness. The site can also read a photo or screenshot of the code (**Upload QR image**).
 - `CLOSE QR` goes back to the list. Closing the menu closes the code too.
 - An ID never changes meaning, so a code you saved months ago still reads the same. The IDs are public labels, not encryption.
+- Thanks to mikedeluca_ for the idea, and for the `qr-code` component in bf6-portal-utils that draws the code.
 
 With DEBUG on, QR CODE also logs each favourite's ID (`QR MAP <name> -> <ID>`) and the exact text in each code (`QR TEXT 1/1: ...`). The format, the ID registry and how to maintain it are in [docs/QR-MAPPING.md](docs/QR-MAPPING.md).
 

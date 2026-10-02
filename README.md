@@ -236,6 +236,7 @@ part of the work here:
 | `timers` | Music loading waits, sound clean-up and deferred redraws |
 | `events` | All game events (deploy, gadget aim and fire, button presses) |
 | `logging` | The debug log |
+| `ui/components/qr-code` | Encoding and drawing the QR CODE panel |
 
 The mod is bundled into one file with
 **[bf6-portal-bundler](https://github.com/deluca-mike/bf6-portal-bundler)**, also by
@@ -251,6 +252,9 @@ Sound lengths are measured from the in-game recordings of the
 (`src/sound-lengths.json`, imported by `tools/import-lengths.mjs`); no audio is
 included. To hear any sound before using it, try their soundboard:
 https://tabbedscamper.github.io/BF6_Portal_SoundBoard/
+
+The QR CODE export was mikedeluca_'s idea: a way for console players, who cannot
+open `PortalLog.txt`, to get their favourites out of the game.
 
 The QR decoder website reads images of codes with
 **[jsQR](https://github.com/cozmo/jsQR)** (Apache-2.0), included in `site/vendor/`.

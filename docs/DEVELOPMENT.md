@@ -156,10 +156,19 @@ npm run preview      # http://localhost:8081/
 | `npm run strip-comments` | Comment cleanup; add `--write` to apply, omit it to report |
 | `npm run check:bundle` | Assertions on the shipped `dist/bundle.ts` |
 | `npm run test:gates` | Proves each gate still bites, by injecting its bug and expecting a failure |
-| `npm run bundle` | `bf6-portal-bundler` → `dist/bundle.ts` + `dist/bundle.strings.json` |
+| `npm run bundle` | `bf6-portal-bundler` → `dist/bundle.ts` + `dist/bundle.strings.json`, then `tools/compact-bundle.mjs` |
 | `npm run typecheck:dist` | **Delivery gate** — parses/typechecks the real bundle |
 
 `npm run build` runs all of the above in order and stops at the first failure.
+
+**Portal accepts at most 1 MB per uploaded file.** The raw bundle is about 1,015 KB, so
+`tools/compact-bundle.mjs` removes comments, indentation and blank lines after bundling
+(about 817 KB). It compiles the bundle before and after with TypeScript and fails if
+the emitted code differs, and it fails the build if `dist/bundle.ts` or
+`dist/bundle.strings.json` reach 1,000,000 bytes. If the bundle outgrows that again,
+the next saving is the catalog: `SFX_CATALOG` repeats each name three times
+(`name`, `display`, `asset`), and `SFX_TEXT`/`VFX_TEXT`/`PREFIX_TEXT` are not read
+at runtime.
 
 `npm run gen` fails the build on a bad banlist name, on an unbracketed generated
 array, and on **any layout overflow** (every screen/row/rail node must fit its
