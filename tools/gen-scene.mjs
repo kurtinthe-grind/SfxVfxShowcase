@@ -105,6 +105,11 @@ if (scene.rail.visibleRows > railFit) {
 // armed text was right-aligned into a column that began over the tab -- and the
 // only thing that noticed was a screenshot. Buttons and text are both included,
 // because a label under a tab is invisible and a tab under a label is unclickable.
+//
+// The one exception is a pair that takes turns in the same spot: on FAVOURITES
+// the armed read-out gives way to QR CODE. Their groups' visibility fields are
+// opposites (armedOn / favHead in chromeFields), so they are never shown together.
+const SAME_SPOT = [["armed", "btnQr"]];
 {
     const band = [scene.panel.y, scene.rail.y];
     const nodes = scene.screen
@@ -116,7 +121,8 @@ if (scene.rail.visibleRows > railFit) {
             const b = nodes[j];
             const overlapX = Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x);
             const overlapY = Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y);
-            if (overlapX > 0 && overlapY > 0) {
+            const alternates = SAME_SPOT.some((p) => p.includes(a.id) && p.includes(b.id));
+            if (overlapX > 0 && overlapY > 0 && !alternates) {
                 problems.push(
                     `header: "${a.id}" and "${b.id}" overlap by ${overlapX}x${overlapY}px ` +
                         `(a ${a.x},${a.y} ${a.w}x${a.h}, b ${b.x},${b.y} ${b.w}x${b.h})`

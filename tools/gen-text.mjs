@@ -188,6 +188,7 @@ const TEMPLATES = {
     matchOf: "{} / {} MATCH",
     matchOf2: "{} of {} MATCH",
     pageOf: "PAGE {} / {}",
+    qrPartOf: "QR {} / {}",
     railPageOf: "GROUPS {} / {}",
     exportedN: "Exported {} asset name(s) to the log",
     stoppedN: "Stopped {} sound(s)",

@@ -58,6 +58,12 @@ export const CONFIG = {
     widgetsPerBatch: 30,
     widgetBatchDelayMs: 100,
 
+    // ---- QR CODE (src/qrexport.ts) ----
+    // A full code is ~1600 rectangle widgets. UIQRCode creates them across ticks;
+    // its default of 10 a tick took ~5 s per code. 30 a tick draws one in under
+    // 2 s and stays far below the ~245-per-tick crash. Lower it if drawing hitches.
+    qrWidgetsPerTick: 30,
+
     // ---- Music tester ----
     // The SDK docs: "allow a few seconds of time for the music to load in".
     // Music calls made within this long of a LoadMusic are held and sent once it

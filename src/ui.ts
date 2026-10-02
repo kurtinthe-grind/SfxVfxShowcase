@@ -37,12 +37,14 @@
 import { CATEGORY_TEXT as CAT_TEXT, SFX_CATALOG, SFX_PREFIXES, VFX_CATALOG, VFX_PREFIXES, type PrefixEntry, type SfxEntry, type VfxEntry } from "./catalog";
 import { FILTERS, GRID, KEYBOARD, PALETTE, RAIL, RAIL_PAGER, RAIL_ROW, ROW, SCREEN, type SceneNode } from "./scene.gen";
 import { CHAR_KEY, SCENE_TEXT, T, TPL } from "./text.gen";
+import { CONFIG } from "./config";
 import { debugEnabled, log, reportMissingKey } from "./diag";
 import { findTemplate, templateKindKey, templateLine, templateName, templateNameKey, testerFields, type Template, type TesterState } from "./tester";
 import { UI } from "bf6-portal-utils/ui";
 import { UIContainer } from "bf6-portal-utils/ui/components/container";
 import { UIText } from "bf6-portal-utils/ui/components/text";
 import { UITextButton } from "bf6-portal-utils/ui/components/text-button";
+import { UIQRCode } from "bf6-portal-utils/ui/components/qr-code";
 
 // ---------------------------------------------------------------------------
 // Text plumbing. Portal's mod.Message() is a lookup into strings.json, not a
@@ -523,6 +525,16 @@ export interface PlayerUi {
      * buttons on one position.
      */
     chipAct: string[];
+
+    /** The QR CODE panel is up; it replaces the whole menu. */
+    qrOpen: boolean;
+    /** The texts to show, one per code (src/qrexport.ts), made when QR CODE is pressed. */
+    qrParts: string[];
+    /** Index into qrParts of the code on screen. */
+    qrPart: number;
+    /** The code being drawn or shown, and which part it is. */
+    qr: UIQRCode | undefined;
+    qrShown: number;
 }
 
 export function prefixesFor(tab: Tab): readonly PrefixEntry[] {
@@ -668,7 +680,15 @@ export function chromeFields(ui: PlayerUi, shown: number, listed: number, total:
     const armedRow = ui.armedKey === "" ? undefined : findRow(ui.armedKey);
     const armedTextKey = armedRow === undefined ? T.nothingArmed : rowTextKey(armedRow);
     return {
-        menuOpen: ui.open ? "1" : "0",
+        menuOpen: ui.open && !ui.qrOpen ? "1" : "0",
+        qrOn: ui.open && ui.qrOpen ? "1" : "0",
+        qrNav: ui.qrParts.length > 1 ? "1" : "0",
+        qrPart: mod.Message(TPL.qrPartOf, ui.qrPart + 1, Math.max(1, ui.qrParts.length)),
+        // On FAVOURITES the armed readout makes way for QR CODE.
+        armedOn: onFav ? "0" : "1",
+        favHead: onFav ? "1" : "0",
+        qrBtnColor: ui.favourites.length > 0 ? "#FFFFFF" : P.faint,
+        qrBtnBg: ui.favourites.length > 0 ? P.blue : P.panel,
         sfxParams: sfx ? "1" : "0",
         vfxParams: sfx ? "0" : "1",
         searchOpen: ui.searchOpen ? "1" : "0",
@@ -1038,6 +1058,8 @@ function root(ui: PlayerUi): UI.Parent {
 }
 
 export function destroyUI(ui: PlayerUi): void {
+    if (ui.qr !== undefined) ui.qr.delete();
+    ui.qr = undefined;
     if (ui.root !== undefined) ui.root.delete();
     ui.root = undefined;
     ui.nodes = {};
@@ -1144,10 +1166,18 @@ export function render(ui: PlayerUi, spawnedCount: number): void {
 
     const fields: Fields = { sh: P, f: chromeFields(ui, list.length, 0, total) };
     buildNodes(ui, SCREEN, parent, fields, "f", 0, 0, "", open);
+    // After the panel's nodes, so the code is drawn on top of its backdrop.
+    syncQr(ui, parent);
 
     // The rail, chips, rows and keyboard live outside the `menu` group, so the
     // group's bind does not cover them. They are gated on `open` explicitly.
     if (!open) return;
+
+    // The QR panel covers the whole menu, so the browser's own widgets hide too.
+    if (ui.qrOpen) {
+        hideBrowserWidgets(ui);
+        return;
+    }
 
     // The tester panel is all scene nodes, drawn by buildNodes above. Everything
     // the browser builds by hand has to be hidden here, for the same reason.
@@ -1447,6 +1477,38 @@ function buildKeyboard(ui: PlayerUi, shown: number, total: number): void {
 }
 
 /** Hides every widget render() builds by hand for the asset browser. */
+UIQRCode.tickBudget = CONFIG.qrWidgetsPerTick;
+
+const QR_SLOT = (() => {
+    for (const n of SCREEN) if (n.id === "qrSlot") return { x: n.x, y: n.y, size: Math.min(n.w ?? 0, n.h ?? 0) };
+    throw new Error("scene.json has no qrSlot");
+})();
+
+/**
+ * Keeps the drawn QR code in step with the panel: the part on screen, or none.
+ * A code is a few hundred widgets, so it is deleted whenever it is not shown
+ * rather than hidden; UIQRCode spreads both the drawing and the deleting over
+ * several ticks (10 widgets a tick), well under the widget-burst crash.
+ */
+function syncQr(ui: PlayerUi, parent: UI.Parent): void {
+    const text = ui.open && ui.qrOpen ? ui.qrParts[ui.qrPart] : undefined;
+    if (ui.qr !== undefined && (text === undefined || ui.qrShown !== ui.qrPart)) {
+        ui.qr.delete();
+        ui.qr = undefined;
+    }
+    if (text === undefined || ui.qr !== undefined) return;
+    ui.qr = new UIQRCode({
+        data: text,
+        ecc: UIQRCode.ECC.Low,
+        position: { x: QR_SLOT.x, y: QR_SLOT.y },
+        size: { width: QR_SLOT.size, height: QR_SLOT.size },
+        anchor: UI.Anchor.TopLeft,
+        parent: parent,
+        margin: 4,
+    });
+    ui.qrShown = ui.qrPart;
+}
+
 function hideBrowserWidgets(ui: PlayerUi): void {
     hideSlots(ui, "chip", MAX_CHIPS);
     hideSlots(ui, "railBtn", RAIL.visibleRows - 1);

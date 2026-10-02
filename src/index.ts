@@ -11,6 +11,7 @@ import { Timers } from "bf6-portal-utils/timers";
 import { SFX_CATALOG, SFX_CATEGORIES, SFX_PREFIXES, type SfxEntry, VFX_CATALOG, VFX_CATEGORIES, VFX_PREFIXES } from "./catalog";
 import { CONFIG } from "./config";
 import { debugEnabled, initLog, log, logAlways, setDebug } from "./diag";
+import { packQrTexts } from "./qrexport";
 import { applyTemplate, findTemplate, handleTesterAction, loadStartupMusic, newTesterState, playTemplate, removeTemplate, saveTemplate, stopTemplate, templateExportLine, templateKey } from "./tester";
 import { T, TPL } from "./text.gen";
 import { clickSound, playUiSound, UI_SOUND } from "./uisound";
@@ -164,6 +165,11 @@ function ensure(player: mod.Player): PlayerState {
         rowKeys: [],
         chipAct: [],
         tester: newTesterState(),
+        qrOpen: false,
+        qrParts: [],
+        qrPart: 0,
+        qr: undefined,
+        qrShown: -1,
     };
     const st: PlayerState = { ui: ui, spawned: [], playing: [], preview: undefined, building: false };
     states[pid] = st;
@@ -224,6 +230,8 @@ setActionHandler((ui, action) => {
 function setOpen(ui: PlayerUi, open: boolean): void {
     if (ui.open === open) return;
     ui.open = open;
+    // Reopening the menu shows the browser, not a code left over from before.
+    if (!open) ui.qrOpen = false;
     log(`menu ${open ? "opened" : "closed"}`);
 }
 
@@ -255,6 +263,7 @@ function handle(st: PlayerState, action: string): void {
     }
     if (action === "tabSfx" || action === "tabVfx" || action === "tabFav" || action === "tabMusic" || action === "tabRadio") {
         ui.tab = action === "tabSfx" ? "sfx" : action === "tabVfx" ? "vfx" : action === "tabFav" ? "fav" : action === "tabMusic" ? "music" : "radio";
+        ui.qrOpen = false;
         ui.group = 0;
         ui.railPage = 0;
         ui.page = 0;
@@ -408,6 +417,31 @@ function handle(st: PlayerState, action: string): void {
             return;
         }
         armSelected(st);
+        return;
+    }
+
+    // QR CODE: the favourites as plain-text QR codes, for players who cannot open
+    // the log (consoles). See src/qrexport.ts.
+    if (action === "btnQr") {
+        if (ui.tab !== "fav" || ui.favourites.length === 0) return;
+        ui.qrParts = packQrTexts(favouriteQrLines(st));
+        ui.qrPart = 0;
+        ui.qrOpen = ui.qrParts.length > 0;
+        logQrText(ui);
+        defer(st);
+        return;
+    }
+    if (action === "btnQrPrev" || action === "btnQrNext") {
+        const next = ui.qrPart + (action === "btnQrNext" ? 1 : -1);
+        if (!ui.qrOpen || next < 0 || next >= ui.qrParts.length) return;
+        ui.qrPart = next;
+        logQrText(ui);
+        defer(st);
+        return;
+    }
+    if (action === "btnQrClose") {
+        ui.qrOpen = false;
+        defer(st);
         return;
     }
 
@@ -719,6 +753,31 @@ function exportFavourites(st: PlayerState): void {
 function soundLength(e: SfxEntry): string {
     if (e.kind === "loop") return "LOOP";
     return e.lengthText !== "" ? e.lengthText : "?";
+}
+
+/**
+ * What QR CODE carries: the asset names, then the template lines, in the order
+ * EXPORT FAVOURITES writes them. Names only, without EXPORT's group and length
+ * columns: a phone shows the code as text, and the names are what a player
+ * pastes into their own mod. Full lines would halve what one code holds.
+ */
+function favouriteQrLines(st: PlayerState): string[] {
+    const ui = st.ui;
+    const lines: string[] = [];
+    for (const key of ui.favourites) {
+        const r = findRow(key);
+        if (r !== undefined) lines.push(rowRawName(r));
+    }
+    for (const key of ui.favourites) {
+        const t = key.startsWith("tpl") ? findTemplate(ui.tester, key) : undefined;
+        if (t !== undefined) lines.push(templateExportLine(t));
+    }
+    return lines;
+}
+
+function logQrText(ui: PlayerUi): void {
+    const text = ui.qrParts[ui.qrPart];
+    if (text !== undefined) log(`QR TEXT ${ui.qrPart + 1}/${ui.qrParts.length}: ${JSON.stringify(text)}`);
 }
 
 function stopAll(st: PlayerState): void {
